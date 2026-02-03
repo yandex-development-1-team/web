@@ -1,6 +1,61 @@
 @import 'tailwindcss';
 
+@font-face {
+  font-family: 'Open Sans';
+  src: url('../src/assets/fonts/OpenSans-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  src: url('../src/assets/fonts/OpenSans-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  src: url('../src/assets/fonts/OpenSans-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  src: url('../src/assets/fonts/OpenSans-Italic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
 @theme {
+  /* Font & text */
+  --font-display: 'Open Sans', sans-serif;
+
+  --text-h2: 32px;
+  --text-h2--font-weight: 700;
+
+  --text-h3: 24px;
+  --text-h3--font-weight: 700;
+
+  --text-h4: 20px;
+
+  --text-h4sb: 20px;
+  --text-h4sb--font-weight: 600;
+
+  --text-h5: 16px;
+
+  --text-button: 16px;
+  --text-button--font-weight: 600;
+
+  --text-small: 14px;
+  
+  --text-xs: 14px;
+
+  --text-xxs: 12px;
+
+  /* Colors */
   --color-white: #fff;
   --color-black: #353434;
   --color-creamy: #fffff8;
