@@ -1,0 +1,57 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-white: #fff;
+  --color-black: #353434;
+  --color-creamy: #fffff8;
+
+  /* Grey */
+  --color-grey-dark: #8b8c8b;
+  --color-grey-light: #c5c6c5;
+  --color-grey-extra-light: #f3f3f3;
+  --color-grey-blue-light: #d5d9e2;
+
+  /* Yellow */
+  --color-yellow-accent-light: #f4db54;
+  --color-yellow-accent-dark: #ffc831;
+  --color-yellow-light: #faeba0;
+  --color-yellow-dark: #8b6f06;
+
+  /* Blue */
+  --color-blue-dark: #194f8d;
+  --color-blue-light: #d7e3f4;
+
+  /* Green */
+  --color-green-dark: #2e6a32;
+  --color-green-light: #d9eedb;
+
+  /* Red */
+  --color-red-dark: #f43331;
+  --color-red-medium: #f05252;
+  --color-red-light: #ee8989;
+
+  /* Text colors */
+  --color-text: var(--color-black);
+  --color-text-grey-dark: var(--color-grey-dark);
+  --color-text-grey-light: var(--color-grey-light);
+  --color-text-error: var(--color-red-dark);
+
+  /* System colors */
+  --color-system-grey-light: var(--color-grey-light);
+  --color-system-grey-dark: var(--color-grey-dark);
+  --color-system-background: var(--color-white);
+  --color-system-error: var(--color-red-dark);
+  --color-system-error-medium: var(--color-red-medium);
+  --color-system-error-light: var(--color-red-light);
+
+  /* Labels */
+  --color-labels-yellow-light: var(--color-yellow-light);
+  --color-labels-yellow-dark: var(--color-yellow-dark);
+  --color-labels-blue-dark: var(--color-blue-dark);
+  --color-labels-blue-light: var(--color-blue-light);
+  --color-labels-green-dark: var(--color-green-dark);
+  --color-labels-green-light: var(--color-green-light);
+
+  /* Overlay */
+  --color-overlay: rgba(53, 52, 52, 0.4);
+}
