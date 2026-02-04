@@ -1,4 +1,4 @@
-const Popularity: React.FC = () => {
+const Popularity = () => {
   return (
     <>
       <h1>Популярность коробочных решений</h1>
@@ -7,4 +7,4 @@ const Popularity: React.FC = () => {
   )
 }
 
-export default Popularity
+export const Component = Popularity

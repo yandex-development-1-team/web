@@ -1,4 +1,4 @@
-const EditEmployees: React.FC = () => {
+const EditEmployees = () => {
   return (
     <>
       <h1>Редактировать сотрудника</h1>
@@ -7,4 +7,4 @@ const EditEmployees: React.FC = () => {
   )
 }
 
-export default EditEmployees
+export const Component = EditEmployees

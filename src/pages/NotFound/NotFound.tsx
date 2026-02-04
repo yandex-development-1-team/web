@@ -1,4 +1,4 @@
-const NotFound: React.FC = () => {
+const NotFound = () => {
   return (
     <>
       <h1>404</h1>
@@ -7,4 +7,4 @@ const NotFound: React.FC = () => {
   )
 }
 
-export default NotFound
+export const Component = NotFound

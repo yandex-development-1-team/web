@@ -1,4 +1,4 @@
-const SpecialProjects: React.FC = () => {
+const SpecialProjects = () => {
   return (
     <>
       <h1>Управление спецпроектами</h1>
@@ -7,4 +7,4 @@ const SpecialProjects: React.FC = () => {
   )
 }
 
-export default SpecialProjects
+export const Component = SpecialProjects

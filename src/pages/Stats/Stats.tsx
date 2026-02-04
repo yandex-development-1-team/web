@@ -1,4 +1,4 @@
-const Stats: React.FC = () => {
+const Stats = () => {
   return (
     <>
       <h1>Аналитика</h1>
@@ -7,4 +7,4 @@ const Stats: React.FC = () => {
   )
 }
 
-export default Stats
+export const Component = Stats

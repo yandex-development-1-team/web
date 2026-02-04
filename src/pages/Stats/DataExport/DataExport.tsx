@@ -1,4 +1,4 @@
-const DataExport: React.FC = () => {
+const DataExport = () => {
   return (
     <>
       <h1>Экспортированные файлы</h1>
@@ -7,4 +7,4 @@ const DataExport: React.FC = () => {
   )
 }
 
-export default DataExport
+export const Component = DataExport

@@ -1,4 +1,4 @@
-const Schedule: React.FC = () => {
+const Schedule = () => {
   return (
     <>
       <h1>Управление расписанием</h1>
@@ -7,4 +7,4 @@ const Schedule: React.FC = () => {
   )
 }
 
-export default Schedule
+export const Component = Schedule

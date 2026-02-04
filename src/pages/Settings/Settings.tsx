@@ -1,4 +1,4 @@
-const Settings: React.FC = () => {
+const Settings = () => {
   return (
     <>
       <h1>Системные настройки</h1>
@@ -7,4 +7,4 @@ const Settings: React.FC = () => {
   )
 }
 
-export default Settings
+export const Component = Settings

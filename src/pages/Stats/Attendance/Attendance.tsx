@@ -1,4 +1,4 @@
-const Attendance: React.FC = () => {
+const Attendance = () => {
   return (
     <>
       <h1>Средняя посещаемость на коробку</h1>
@@ -7,4 +7,4 @@ const Attendance: React.FC = () => {
   )
 }
 
-export default Attendance
+export const Component = Attendance

@@ -1,4 +1,4 @@
-const ViewEmployees: React.FC = () => {
+const ViewEmployees = () => {
   return (
     <>
       <h1>Карточка сотрудника</h1>
@@ -7,4 +7,4 @@ const ViewEmployees: React.FC = () => {
   )
 }
 
-export default ViewEmployees
+export const Component = ViewEmployees

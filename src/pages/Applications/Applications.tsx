@@ -1,10 +1,10 @@
-const Applications: React.FC = () => {
+const Applications = () => {
   return (
     <>
       <h1>Заявки</h1>
-      <p>Страница в разработке...</p>
+      <p>Страница в разработке... </p>
     </>
   )
 }
 
-export default Applications
+export const Component = Applications

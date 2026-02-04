@@ -1,23 +1,11 @@
 import { createBrowserRouter } from 'react-router-dom'
 import { ROUTES } from './routes'
-import { LazyLogin } from '@/pages/Login'
-import { LazyHome } from '@/pages/Home'
-import { LazyBoxSolutions } from '@/pages/BoxSolutions'
-import { LazySpecialProjects } from '@/pages/SpecialProjects'
-import { LazyApplications } from '@/pages/Applications'
-import { LazyResources } from '@/pages/Resources'
-import { LazyNotFound } from '@/pages/NotFound'
-import { LazyAttendance, LazyDataExport, LazyPopularity, LazyStats, LazyUsersStats } from '@/pages/Stats'
-import { LazyManageSolutions } from '@/pages/ManageSolutions'
-import { LazySchedule } from '@/pages/Schedule'
-import { LazyCreateEmployees, LazyEditEmployees, LazyEmployees, LazyViewEmployees } from '@/pages/Employees'
-import { LazySettings } from '@/pages/Settings'
 import { Layout } from '@/components/layout'
 
 export const router = createBrowserRouter([
   {
     path: ROUTES.login,
-    element: <LazyLogin />
+    lazy: () => import('@/pages/Login/Login')
   },
   {
     path: ROUTES.home,
@@ -25,79 +13,79 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <LazyHome />
+        lazy: () => import('@/pages/Home/Home')
       },
       {
         path: ROUTES.boxSolutions,
-        element: <LazyBoxSolutions />
+        lazy: () => import('@/pages/BoxSolutions/BoxSolutions')
       },
       {
         path: ROUTES.specialProjects,
-        element: <LazySpecialProjects />
+        lazy: () => import('@/pages/SpecialProjects/SpecialProjects')
       },
       {
         path: ROUTES.applications,
-        element: <LazyApplications />
+        lazy: () => import('@/pages/Applications/Applications')
       },
       {
         path: ROUTES.resources,
-        element: <LazyResources />
+        lazy: () => import('@/pages/Resources/Resources')
       },
       {
         path: ROUTES.stats,
-        element: <LazyStats />
+        lazy: () => import('@/pages/Stats/Stats')
       },
       {
         path: ROUTES.statsAttendance,
-        element: <LazyAttendance />
+        lazy: () => import('@/pages/Stats/Attendance/Attendance')
       },
       {
         path: ROUTES.statsApplications,
-        element: <LazyApplications />
+        lazy: () => import('@/pages/Stats/ApplicationsStats/ApplicationStats')
       },
       {
         path: ROUTES.statsPopularity,
-        element: <LazyPopularity />
+        lazy: () => import('@/pages/Stats/Popularity/Popularity')
       },
       {
         path: ROUTES.statsDataExport,
-        element: <LazyDataExport />
+        lazy: () => import('@/pages/Stats/DataExport/DataExport')
       },
       {
         path: ROUTES.statsUsers,
-        element: <LazyUsersStats />
+        lazy: () => import('@/pages/Stats/UsersStats/UsersStats')
       },
       {
         path: ROUTES.manageSolutions,
-        element: <LazyManageSolutions />
+        lazy: () => import('@/pages/ManageSolutions/ManageSolutions')
       },
       {
         path: ROUTES.schedule,
-        element: <LazySchedule />
+        lazy: () => import('@/pages/Schedule/Schedule')
       },
       {
         path: ROUTES.employees,
-        element: <LazyEmployees />
+        lazy: () => import('@/pages/Employees/Employees')
       },
       {
         path: ROUTES.employeesCreate,
-        element: <LazyCreateEmployees />
+        lazy: () => import('@/pages/Employees/CreateEmployees/CreateEmployees')
       },
       {
         path: ROUTES.employeesEdit,
-        element: <LazyEditEmployees />
+        lazy: () => import('@/pages/Employees/id/EditEmployees/EditEmployees')
       },
       {
         path: ROUTES.employeesView,
-        element: <LazyViewEmployees />
+        lazy: () => import('@/pages/Employees/id/ViewEmployees/ViewEmployees')
       },
       {
         path: ROUTES.settings,
-        element: <LazySettings />
+        lazy: () => import('@/pages/Settings/Settings')
       },
       {
         path: '*',
-        element: <LazyNotFound />
+        lazy: () => import('@/pages/NotFound/NotFound')
       }
     ]
   }

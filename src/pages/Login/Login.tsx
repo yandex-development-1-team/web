@@ -1,4 +1,4 @@
-const Login: React.FC = () => {
+const Login = () => {
   return (
     <>
       <h1>Вход</h1>
@@ -7,4 +7,4 @@ const Login: React.FC = () => {
   )
 }
 
-export default Login
+export const Component = Login

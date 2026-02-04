@@ -1,4 +1,4 @@
-const ManageSolutions: React.FC = () => {
+const ManageSolutions = () => {
   return (
     <>
       <h1>Управление коробками</h1>
@@ -7,4 +7,4 @@ const ManageSolutions: React.FC = () => {
   )
 }
 
-export default ManageSolutions
+export const Component = ManageSolutions

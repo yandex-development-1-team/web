@@ -1,4 +1,4 @@
-const Resources: React.FC = () => {
+const Resources = () => {
   return (
     <>
       <h1>Ссылки и ресурсы</h1>
@@ -7,4 +7,4 @@ const Resources: React.FC = () => {
   )
 }
 
-export default Resources
+export const Component = Resources

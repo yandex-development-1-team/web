@@ -1,4 +1,4 @@
-const Home: React.FC = () => {
+const Home = () => {
   return (
     <>
       <h1>Главная страница</h1>
@@ -7,4 +7,4 @@ const Home: React.FC = () => {
   )
 }
 
-export default Home
+export const Component = Home

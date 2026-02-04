@@ -1,4 +1,4 @@
-const BoxSolutions: React.FC = () => {
+const BoxSolutions = () => {
   return (
     <>
       <h1>Коробочные решения</h1>
@@ -7,4 +7,4 @@ const BoxSolutions: React.FC = () => {
   )
 }
 
-export default BoxSolutions
+export const Component = BoxSolutions
