@@ -8,16 +8,10 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: pages
-  cancel-in-progress: false
+  contents: write
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -48,51 +42,19 @@ jobs:
         env:
           VITE_BASE_PATH: /${{ steps.repo.outputs.name }}/preview/
 
-      - name: Download current gh-pages
-        uses: actions/checkout@v4
-        with:
-          ref: gh-pages
-          path: gh-pages-current
-        continue-on-error: true
-
-      - name: Prepare deploy directory (main)
+      - name: Deploy main to root
         if: github.ref == 'refs/heads/main'
-        run: |
-          mkdir -p deploy
-          cp -r dist/* deploy/
-          # Preserve preview folder if exists
-          if [ -d "gh-pages-current/preview" ]; then
-            cp -r gh-pages-current/preview deploy/
-          fi
-
-      - name: Prepare deploy directory (develop)
-        if: github.ref == 'refs/heads/develop'
-        run: |
-          mkdir -p deploy
-          # Copy existing content if gh-pages exists
-          if [ -d "gh-pages-current" ]; then
-            cp -r gh-pages-current/* deploy/ 2>/dev/null || true
-          fi
-          # Replace preview folder with new build
-          rm -rf deploy/preview
-          mkdir -p deploy/preview
-          cp -r dist/* deploy/preview/
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          path: deploy
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          keep_files: true
 
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Deploy develop to /preview
+        if: github.ref == 'refs/heads/develop'
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          destination_dir: preview
+          keep_files: true
