@@ -85,6 +85,12 @@
   --color-red-medium: #f05252;
   --color-red-light: #ee8989;
 
+  /* Box rating colors */
+  --color-rating-first: #42c8ea;
+  --color-rating-second: #ed506d;
+  --color-rating-third: #ffb500;
+  --color-rating-fourth: #5a7ce5;
+
   /* Text colors */
   --color-text: var(--color-black);
   --color-text-grey-dark: var(--color-grey-dark);
