@@ -48,35 +48,42 @@ jobs:
         env:
           VITE_BASE_PATH: /${{ steps.repo.outputs.name }}/preview/
 
-      - name: Download current gh-pages
-        uses: actions/checkout@v4
+      # Restore cached deploy directory
+      - name: Restore deploy cache
+        uses: actions/cache/restore@v4
         with:
-          ref: gh-pages
-          path: gh-pages-current
-        continue-on-error: true
+          path: deploy-cache
+          key: gh-pages-deploy
 
       - name: Prepare deploy directory (main)
         if: github.ref == 'refs/heads/main'
         run: |
           mkdir -p deploy
           cp -r dist/* deploy/
-          # Preserve preview folder if exists
-          if [ -d "gh-pages-current/preview" ]; then
-            cp -r gh-pages-current/preview deploy/
+          # Restore preview from cache if exists
+          if [ -d "deploy-cache/preview" ]; then
+            cp -r deploy-cache/preview deploy/
           fi
 
       - name: Prepare deploy directory (develop)
         if: github.ref == 'refs/heads/develop'
         run: |
           mkdir -p deploy
-          # Copy existing content if gh-pages exists
-          if [ -d "gh-pages-current" ]; then
-            cp -r gh-pages-current/* deploy/ 2>/dev/null || true
+          # Restore root content from cache if exists
+          if [ -d "deploy-cache" ]; then
+            cp -r deploy-cache/* deploy/ 2>/dev/null || true
+            rm -rf deploy/preview
           fi
-          # Replace preview folder with new build
-          rm -rf deploy/preview
+          # Add new preview build
           mkdir -p deploy/preview
           cp -r dist/* deploy/preview/
+
+      # Save to cache for next deployment
+      - name: Save deploy cache
+        uses: actions/cache/save@v4
+        with:
+          path: deploy
+          key: gh-pages-deploy
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
