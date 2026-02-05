@@ -10,6 +10,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    # Выбираем Environment в зависимости от ветки
     environment: ${{ github.ref == 'refs/heads/main' && 'github-pages' || 'gh-pages-develop' }}
 
     steps:
@@ -34,34 +35,45 @@ jobs:
       - name: Build site
         run: |
           if [ "${GITHUB_REF}" == "refs/heads/main" ]; then
+            echo "Building main..."
             npm run build
+            echo "DEPLOY_BRANCH=gh-pages" >> $GITHUB_ENV
             echo "DEPLOY_PATH=./dist" >> $GITHUB_ENV
           else
+            echo "Building develop..."
             npm run build
+            echo "DEPLOY_BRANCH=gh-pages-develop" >> $GITHUB_ENV
             echo "DEPLOY_PATH=./dist" >> $GITHUB_ENV
           fi
 
-      # --- Deploy via git push ---
-      - name: Deploy to gh-pages branch
+      # --- Deploy через git push ---
+      - name: Deploy via git
         env:
           GH_PAT: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
 
-          # Клонируем ветку gh-pages
-          git clone --branch gh-pages https://x-access-token:${GH_PAT}@github.com/${{ github.repository }} gh-pages
-          cd gh-pages
-
-          # Копируем старый контент
-          cp -r ../$DEPLOY_PATH/* .
-
-          # Если это develop, кладём в папку /preview
-          if [ "${GITHUB_REF}" == "refs/heads/develop" ]; then
-            mkdir -p preview
-            cp -r ../$DEPLOY_PATH/* preview/
+          # Проверяем, существует ли ветка деплоя
+          if ! git ls-remote --exit-code --heads origin $DEPLOY_BRANCH; then
+            git checkout --orphan $DEPLOY_BRANCH
+            git reset --hard
+            git commit --allow-empty -m "Initialize $DEPLOY_BRANCH"
+            git push origin $DEPLOY_BRANCH
+            cd $GITHUB_WORKSPACE
           fi
 
+          # Клонируем ветку деплоя
+          git clone --branch $DEPLOY_BRANCH https://x-access-token:${GH_PAT}@github.com/${{ github.repository }} deploy-repo
+          cd deploy-repo
+
+          # Очищаем старый контент
+          git rm -rf *
+          
+          # Копируем новые файлы
+          cp -r $GITHUB_WORKSPACE/dist/* .
+
+          # Commit & push
           git add .
-          git commit -m "Deploy from $GITHUB_REF"
-          git push origin gh-pages
+          git commit -m "Deploy from $GITHUB_REF" || echo "No changes to commit"
+          git push origin $DEPLOY_BRANCH --force
