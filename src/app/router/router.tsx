@@ -1,7 +1,7 @@
 import { createBrowserRouter, Outlet } from 'react-router-dom'
 import { ROUTES } from './routes'
+import { NotificationProvider } from '@/app/providers/notification'
 import App from '@/App'
-import { NotificationProvider } from '../providers/notification'
 
 export const router = createBrowserRouter([
   {
@@ -98,4 +98,6 @@ export const router = createBrowserRouter([
       }
     ]
   }
-])
+], {
+  basename: import.meta.env.BASE_URL
+})
