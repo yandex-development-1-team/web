@@ -54,17 +54,24 @@ jobs:
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
 
+          DEPLOY_REPO="https://x-access-token:${GH_PAT}@github.com/${{ github.repository }}"
+
           # Проверяем, существует ли ветка деплоя
-          if ! git ls-remote --exit-code --heads origin $DEPLOY_BRANCH; then
+          if git ls-remote --exit-code --heads $DEPLOY_REPO $DEPLOY_BRANCH; then
+            echo "Branch $DEPLOY_BRANCH exists"
+          else
+            echo "Branch $DEPLOY_BRANCH does not exist, creating..."
+            git clone $DEPLOY_REPO temp-repo
+            cd temp-repo
             git checkout --orphan $DEPLOY_BRANCH
-            git reset --hard
+            git rm -rf .
             git commit --allow-empty -m "Initialize $DEPLOY_BRANCH"
             git push origin $DEPLOY_BRANCH
-            cd $GITHUB_WORKSPACE
+            cd ..
           fi
 
           # Клонируем ветку деплоя
-          git clone --branch $DEPLOY_BRANCH https://x-access-token:${GH_PAT}@github.com/${{ github.repository }} deploy-repo
+          git clone --branch $DEPLOY_BRANCH $DEPLOY_REPO deploy-repo
           cd deploy-repo
 
           # Очищаем старый контент
