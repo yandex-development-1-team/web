@@ -44,6 +44,10 @@ jobs:
         env:
           VITE_BASE_PATH: /${{ github.event.repository.name }}/preview/
 
+      # --- Copy index.html to 404.html для SPA роутинга ---
+      - name: Copy index.html to 404.html
+        run: cp dist/index.html dist/404.html
+
       # --- Deploy main → корень gh-pages (сохраняет /preview/) ---
       - name: Deploy main to root
         if: github.ref == 'refs/heads/main'
