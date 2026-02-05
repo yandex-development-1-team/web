@@ -1,14 +1,30 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html>
   <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>yandex-razvitie</title>
-    <script type="module" crossorigin src="/web/preview/assets/index-BfeA1dQP.js"></script>
-    <link rel="stylesheet" crossorigin href="/web/preview/assets/index-C2oMc6Lm.css">
+    <meta charset="utf-8">
+    <title>Redirecting...</title>
+    <script>
+      // Universal 404 handler for GitHub Pages SPA
+      // Detect if we're in /web/ or /web/preview/
+      var path = window.location.pathname;
+      var redirect;
+      
+      if (path.startsWith('/web/preview/')) {
+        // Redirect to preview index
+        redirect = '/web/preview/';
+      } else if (path.startsWith('/web/')) {
+        // Redirect to main index
+        redirect = '/web/';
+      } else {
+        redirect = '/';
+      }
+      
+      // Store original path for client-side router
+      sessionStorage.setItem('redirectPath', path);
+      window.location.replace(redirect);
+    </script>
   </head>
   <body>
-    <div id="root"></div>
+    <p>Redirecting...</p>
   </body>
 </html>
