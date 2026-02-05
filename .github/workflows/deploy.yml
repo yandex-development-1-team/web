@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: Deploy Pages
 
 on:
   push:
@@ -7,18 +7,10 @@ on:
       - develop
   workflow_dispatch:
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: pages-${{ github.ref }}
-  cancel-in-progress: false
-
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
+    environment: ${{ github.ref == 'refs/heads/main' && 'github-pages' || 'gh-pages-develop' }}
 
     steps:
       # --- Checkout исходной ветки ---
@@ -38,72 +30,38 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # --- Получаем имя репозитория ---
-      - name: Get repo name
-        id: repo
-        run: echo "name=$(echo ${{ github.repository }} | cut -d'/' -f2)" >> $GITHUB_OUTPUT
-
-      # --- Build main или develop ---
-      - name: Build main
-        if: github.ref == 'refs/heads/main'
-        run: npm run build
-        env:
-          VITE_BASE_PATH: /${{ steps.repo.outputs.name }}/
-
-      - name: Build develop
-        if: github.ref == 'refs/heads/develop'
-        run: npm run build
-        env:
-          VITE_BASE_PATH: /${{ steps.repo.outputs.name }}/preview/
-
-      # --- Скачать текущий gh-pages, чтобы сохранить старый контент ---
-      - name: Download current gh-pages
-        uses: actions/checkout@v4
-        with:
-          ref: gh-pages
-          path: gh-pages-current
-          fetch-depth: 0
-        continue-on-error: true
-
-      # --- Подготовка deploy ---
-      - name: Prepare deploy directory
+      # --- Build site ---
+      - name: Build site
         run: |
-          mkdir -p deploy
-
-          # Копируем старый контент, чтобы ничего не потерялось
-          if [ -d "gh-pages-current" ]; then
-            cp -r gh-pages-current/* deploy/ 2>/dev/null || true
-          fi
-
-          # Перезаписываем только нужную ветку
           if [ "${GITHUB_REF}" == "refs/heads/main" ]; then
-            cp -r dist/* deploy/
+            npm run build
+            echo "DEPLOY_PATH=./dist" >> $GITHUB_ENV
+          else
+            npm run build
+            echo "DEPLOY_PATH=./dist" >> $GITHUB_ENV
           fi
 
+      # --- Deploy via git push ---
+      - name: Deploy to gh-pages branch
+        env:
+          GH_PAT: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+
+          # Клонируем ветку gh-pages
+          git clone --branch gh-pages https://x-access-token:${GH_PAT}@github.com/${{ github.repository }} gh-pages
+          cd gh-pages
+
+          # Копируем старый контент
+          cp -r ../$DEPLOY_PATH/* .
+
+          # Если это develop, кладём в папку /preview
           if [ "${GITHUB_REF}" == "refs/heads/develop" ]; then
-            rm -rf deploy/preview
-            mkdir -p deploy/preview
-            cp -r dist/* deploy/preview/
+            mkdir -p preview
+            cp -r ../$DEPLOY_PATH/* preview/
           fi
 
-      # --- Настройка Pages ---
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
-
-      # --- Загружаем артефакт ---
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: deploy
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          git add .
+          git commit -m "Deploy from $GITHUB_REF"
+          git push origin gh-pages
