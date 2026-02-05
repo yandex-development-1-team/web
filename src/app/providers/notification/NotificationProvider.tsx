@@ -1,7 +1,7 @@
-import {  type ReactNode } from 'react'
+import { type ReactNode } from 'react'
 import { Toaster, toast } from 'sonner'
-import type { ShowNotificationParams } from './types'
 import { NotificationContext } from './NotificationContext'
+import type { ShowNotificationParams } from './types'
 
 const DEFAULT_DURATION = 6000
 
