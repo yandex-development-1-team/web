@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: Deploy Pages
 
 on:
   push:
@@ -8,98 +8,60 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: pages
-  cancel-in-progress: false
+  contents: write
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout
+      # --- Checkout исходной ветки ---
+      - name: Checkout repo
         uses: actions/checkout@v4
 
+      # --- Setup Node ---
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
 
+      # --- Install dependencies ---
       - name: Install dependencies
         run: npm ci
 
-      - name: Get repo name
-        id: repo
-        run: echo "name=$(echo ${{ github.repository }} | cut -d'/' -f2)" >> $GITHUB_OUTPUT
-
-      - name: Build (main)
+      # --- Build site (main) → корень сайта ---
+      - name: Build site (main)
         if: github.ref == 'refs/heads/main'
         run: npm run build
         env:
-          VITE_BASE_PATH: /${{ steps.repo.outputs.name }}/
+          VITE_BASE_PATH: /${{ github.event.repository.name }}/
 
-      - name: Build (develop)
+      # --- Build site (develop) → /preview/ ---
+      - name: Build site (develop)
         if: github.ref == 'refs/heads/develop'
         run: npm run build
         env:
-          VITE_BASE_PATH: /${{ steps.repo.outputs.name }}/preview/
+          VITE_BASE_PATH: /${{ github.event.repository.name }}/preview/
 
-      # Restore cached deploy directory
-      - name: Restore deploy cache
-        uses: actions/cache/restore@v4
-        with:
-          path: deploy-cache
-          key: gh-pages-deploy
-
-      - name: Prepare deploy directory (main)
+      # --- Deploy main → корень gh-pages (сохраняет /preview/) ---
+      - name: Deploy main to root
         if: github.ref == 'refs/heads/main'
-        run: |
-          mkdir -p deploy
-          cp -r dist/* deploy/
-          # Restore preview from cache if exists
-          if [ -d "deploy-cache/preview" ]; then
-            cp -r deploy-cache/preview deploy/
-          fi
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          publish_branch: gh-pages
+          keep_files: true
+          exclude_assets: 'preview'
 
-      - name: Prepare deploy directory (develop)
+      # --- Deploy develop → /preview/ в gh-pages (сохраняет корень) ---
+      - name: Deploy develop to /preview/
         if: github.ref == 'refs/heads/develop'
-        run: |
-          mkdir -p deploy
-          # Restore root content from cache if exists
-          if [ -d "deploy-cache" ]; then
-            cp -r deploy-cache/* deploy/ 2>/dev/null || true
-            rm -rf deploy/preview
-          fi
-          # Add new preview build
-          mkdir -p deploy/preview
-          cp -r dist/* deploy/preview/
-
-      # Save to cache for next deployment
-      - name: Save deploy cache
-        uses: actions/cache/save@v4
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          path: deploy
-          key: gh-pages-deploy
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: deploy
-
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          publish_branch: gh-pages
+          destination_dir: preview
+          keep_files: true
