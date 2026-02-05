@@ -6,7 +6,15 @@
     <script>
       // GitHub Pages SPA redirect hack
       sessionStorage.redirect = location.href;
-      location.replace(location.origin + location.pathname.split('/').slice(0, 3).join('/'));
+      
+      var path = location.pathname;
+      var basePath = '/web/';
+      
+      if (path.indexOf('/web/preview/') === 0) {
+        basePath = '/web/preview/';
+      }
+      
+      location.replace(location.origin + basePath);
     </script>
   </head>
   <body>
