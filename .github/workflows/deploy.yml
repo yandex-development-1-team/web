@@ -1,0 +1,67 @@
+name: Deploy Pages
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # --- Checkout исходной ветки ---
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      # --- Setup Node ---
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      # --- Install dependencies ---
+      - name: Install dependencies
+        run: npm ci
+
+      # --- Build site (main) → корень сайта ---
+      - name: Build site (main)
+        if: github.ref == 'refs/heads/main'
+        run: npm run build
+        env:
+          VITE_BASE_PATH: /${{ github.event.repository.name }}/
+
+      # --- Build site (develop) → /preview/ ---
+      - name: Build site (develop)
+        if: github.ref == 'refs/heads/develop'
+        run: npm run build
+        env:
+          VITE_BASE_PATH: /${{ github.event.repository.name }}/preview/
+
+      # --- Deploy main → корень gh-pages (сохраняет /preview/) ---
+      - name: Deploy main to root
+        if: github.ref == 'refs/heads/main'
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          publish_branch: gh-pages
+          keep_files: true
+          exclude_assets: 'preview'
+
+      # --- Deploy develop → /preview/ в gh-pages (сохраняет корень) ---
+      - name: Deploy develop to /preview/
+        if: github.ref == 'refs/heads/develop'
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          publish_branch: gh-pages
+          destination_dir: preview
+          keep_files: true
