@@ -1,12 +1,8 @@
-import { NotificationProvider } from './app/providers/notification'
+import { Outlet } from 'react-router-dom'
 import './App.css'
 
 function App() {
-  return (
-    <NotificationProvider>
-      <></>
-    </NotificationProvider>
-  )
+  return <Outlet />
 }
 
 export default App
