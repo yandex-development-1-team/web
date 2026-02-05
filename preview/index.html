@@ -5,13 +5,8 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>yandex-razvitie</title>
-    <script type="module" crossorigin src="/web/preview/assets/index-BfeA1dQP.js"></script>
-    <link rel="stylesheet" crossorigin href="/web/preview/assets/index-C2oMc6Lm.css">
-  </head>
-  <body>
-    <div id="root"></div>
     <script>
-      // Restore path after 404 redirect
+      // Restore path after 404 redirect - MUST run before React
       (function(){
         var redirectPath = sessionStorage.getItem('redirectPath');
         if (redirectPath) {
@@ -20,5 +15,10 @@
         }
       })();
     </script>
+    <script type="module" crossorigin src="/web/preview/assets/index-BfeA1dQP.js"></script>
+    <link rel="stylesheet" crossorigin href="/web/preview/assets/index-C2oMc6Lm.css">
+  </head>
+  <body>
+    <div id="root"></div>
   </body>
 </html>
