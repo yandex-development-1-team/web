@@ -44,10 +44,6 @@ jobs:
         env:
           VITE_BASE_PATH: /${{ github.event.repository.name }}/preview/
 
-      # --- Copy index.html to 404.html для SPA роутинга ---
-      - name: Copy index.html to 404.html
-        run: cp dist/index.html dist/404.html
-
       # --- Deploy main → корень gh-pages (сохраняет /preview/) ---
       - name: Deploy main to root
         if: github.ref == 'refs/heads/main'
@@ -68,4 +64,20 @@ jobs:
           publish_dir: ./dist
           publish_branch: gh-pages
           destination_dir: preview
+          keep_files: true
+
+      # --- Deploy 404.html в корень gh-pages (для обоих веток) ---
+      - name: Deploy 404.html to root
+        if: github.ref == 'refs/heads/develop'
+        run: |
+          mkdir -p temp-404
+          cp dist/404.html temp-404/404.html
+
+      - name: Push 404.html to gh-pages root
+        if: github.ref == 'refs/heads/develop'
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./temp-404
+          publish_branch: gh-pages
           keep_files: true
