@@ -3,19 +3,6 @@
   <head>
     <meta charset="utf-8">
     <title>Redirecting...</title>
-    <script>
-      // GitHub Pages SPA redirect hack
-      sessionStorage.redirect = location.href;
-      
-      var path = location.pathname;
-      var basePath = '/web/';
-      
-      if (path.indexOf('/web/preview/') === 0) {
-        basePath = '/web/preview/';
-      }
-      
-      location.replace(location.origin + basePath);
-    </script>
   </head>
   <body>
     Redirecting...
