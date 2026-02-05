@@ -17,7 +17,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -48,42 +48,35 @@ jobs:
         env:
           VITE_BASE_PATH: /${{ steps.repo.outputs.name }}/preview/
 
-      # Restore cached deploy directory
-      - name: Restore deploy cache
-        uses: actions/cache/restore@v4
+      - name: Download current gh-pages
+        uses: actions/checkout@v4
         with:
-          path: deploy-cache
-          key: gh-pages-deploy
+          ref: gh-pages
+          path: gh-pages-current
+        continue-on-error: true
 
       - name: Prepare deploy directory (main)
         if: github.ref == 'refs/heads/main'
         run: |
           mkdir -p deploy
           cp -r dist/* deploy/
-          # Restore preview from cache if exists
-          if [ -d "deploy-cache/preview" ]; then
-            cp -r deploy-cache/preview deploy/
+          # Preserve preview folder if exists
+          if [ -d "gh-pages-current/preview" ]; then
+            cp -r gh-pages-current/preview deploy/
           fi
 
       - name: Prepare deploy directory (develop)
         if: github.ref == 'refs/heads/develop'
         run: |
           mkdir -p deploy
-          # Restore root content from cache if exists
-          if [ -d "deploy-cache" ]; then
-            cp -r deploy-cache/* deploy/ 2>/dev/null || true
-            rm -rf deploy/preview
+          # Copy existing content if gh-pages exists
+          if [ -d "gh-pages-current" ]; then
+            cp -r gh-pages-current/* deploy/ 2>/dev/null || true
           fi
-          # Add new preview build
+          # Replace preview folder with new build
+          rm -rf deploy/preview
           mkdir -p deploy/preview
           cp -r dist/* deploy/preview/
-
-      # Save to cache for next deployment
-      - name: Save deploy cache
-        uses: actions/cache/save@v4
-        with:
-          path: deploy
-          key: gh-pages-deploy
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
