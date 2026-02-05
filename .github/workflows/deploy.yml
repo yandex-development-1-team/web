@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: Deploy Pages
 
 on:
   push:
@@ -8,24 +8,16 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: pages-${{ github.ref }}
-  cancel-in-progress: false
+  contents: write
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
       # --- Checkout исходной ветки ---
       - name: Checkout repo
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       # --- Setup Node ---
       - name: Setup Node
@@ -38,72 +30,38 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # --- Получаем имя репозитория ---
-      - name: Get repo name
-        id: repo
-        run: echo "name=$(echo ${{ github.repository }} | cut -d'/' -f2)" >> $GITHUB_OUTPUT
-
-      # --- Build main или develop ---
-      - name: Build main
+      # --- Build site (main) → корень сайта ---
+      - name: Build site (main)
         if: github.ref == 'refs/heads/main'
         run: npm run build
         env:
-          VITE_BASE_PATH: /${{ steps.repo.outputs.name }}/
+          VITE_BASE_PATH: /${{ github.event.repository.name }}/
 
-      - name: Build develop
+      # --- Build site (develop) → /preview/ ---
+      - name: Build site (develop)
         if: github.ref == 'refs/heads/develop'
         run: npm run build
         env:
-          VITE_BASE_PATH: /${{ steps.repo.outputs.name }}/preview/
+          VITE_BASE_PATH: /${{ github.event.repository.name }}/preview/
 
-      # --- Скачать текущий gh-pages, чтобы сохранить старый контент ---
-      - name: Download current gh-pages
-        uses: actions/checkout@v4
+      # --- Deploy main → корень gh-pages (сохраняет /preview/) ---
+      - name: Deploy main to root
+        if: github.ref == 'refs/heads/main'
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          ref: gh-pages
-          path: gh-pages-current
-          fetch-depth: 0
-        continue-on-error: true
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          publish_branch: gh-pages
+          keep_files: true
+          exclude_assets: 'preview'
 
-      # --- Подготовка deploy ---
-      - name: Prepare deploy directory
-        run: |
-          mkdir -p deploy
-
-          # Копируем старый контент, чтобы ничего не потерялось
-          if [ -d "gh-pages-current" ]; then
-            cp -r gh-pages-current/* deploy/ 2>/dev/null || true
-          fi
-
-          # Перезаписываем только нужную ветку
-          if [ "${GITHUB_REF}" == "refs/heads/main" ]; then
-            cp -r dist/* deploy/
-          fi
-
-          if [ "${GITHUB_REF}" == "refs/heads/develop" ]; then
-            rm -rf deploy/preview
-            mkdir -p deploy/preview
-            cp -r dist/* deploy/preview/
-          fi
-
-      # --- Настройка Pages ---
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
-
-      # --- Загружаем артефакт ---
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
+      # --- Deploy develop → /preview/ в gh-pages (сохраняет корень) ---
+      - name: Deploy develop to /preview/
+        if: github.ref == 'refs/heads/develop'
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          path: deploy
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          publish_branch: gh-pages
+          destination_dir: preview
+          keep_files: true
