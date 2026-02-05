@@ -7,18 +7,17 @@ on:
       - develop
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    # Выбираем Environment в зависимости от ветки
-    environment: ${{ github.ref == 'refs/heads/main' && 'github-pages' || 'gh-pages-develop' }}
 
     steps:
       # --- Checkout исходной ветки ---
       - name: Checkout repo
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       # --- Setup Node ---
       - name: Setup Node
@@ -31,56 +30,38 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # --- Build site ---
-      - name: Build site
-        run: |
-          if [ "${GITHUB_REF}" == "refs/heads/main" ]; then
-            echo "Building main..."
-            npm run build
-            echo "DEPLOY_BRANCH=gh-pages" >> $GITHUB_ENV
-            echo "DEPLOY_PATH=./dist" >> $GITHUB_ENV
-          else
-            echo "Building develop..."
-            npm run build
-            echo "DEPLOY_BRANCH=gh-pages-develop" >> $GITHUB_ENV
-            echo "DEPLOY_PATH=./dist" >> $GITHUB_ENV
-          fi
-
-      # --- Deploy через git push ---
-      - name: Deploy via git
+      # --- Build site (main) → корень сайта ---
+      - name: Build site (main)
+        if: github.ref == 'refs/heads/main'
+        run: npm run build
         env:
-          GH_PAT: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          git config --global user.name "github-actions"
-          git config --global user.email "github-actions@github.com"
+          VITE_BASE_PATH: /${{ github.event.repository.name }}/
 
-          DEPLOY_REPO="https://x-access-token:${GH_PAT}@github.com/${{ github.repository }}"
+      # --- Build site (develop) → /preview/ ---
+      - name: Build site (develop)
+        if: github.ref == 'refs/heads/develop'
+        run: npm run build
+        env:
+          VITE_BASE_PATH: /${{ github.event.repository.name }}/preview/
 
-          # Проверяем, существует ли ветка деплоя
-          if git ls-remote --exit-code --heads $DEPLOY_REPO $DEPLOY_BRANCH; then
-            echo "Branch $DEPLOY_BRANCH exists"
-          else
-            echo "Branch $DEPLOY_BRANCH does not exist, creating..."
-            git clone $DEPLOY_REPO temp-repo
-            cd temp-repo
-            git checkout --orphan $DEPLOY_BRANCH
-            git rm -rf .
-            git commit --allow-empty -m "Initialize $DEPLOY_BRANCH"
-            git push origin $DEPLOY_BRANCH
-            cd ..
-          fi
+      # --- Deploy main → корень gh-pages (сохраняет /preview/) ---
+      - name: Deploy main to root
+        if: github.ref == 'refs/heads/main'
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          personal_token: ${{ secrets.PAT_TOKEN }}
+          publish_dir: ./dist
+          publish_branch: gh-pages
+          keep_files: true
+          exclude_assets: 'preview'
 
-          # Клонируем ветку деплоя
-          git clone --branch $DEPLOY_BRANCH $DEPLOY_REPO deploy-repo
-          cd deploy-repo
-
-          # Очищаем старый контент
-          git rm -rf *
-          
-          # Копируем новые файлы
-          cp -r $GITHUB_WORKSPACE/dist/* .
-
-          # Commit & push
-          git add .
-          git commit -m "Deploy from $GITHUB_REF" || echo "No changes to commit"
-          git push origin $DEPLOY_BRANCH --force
+      # --- Deploy develop → /preview/ в gh-pages (сохраняет корень) ---
+      - name: Deploy develop to /preview/
+        if: github.ref == 'refs/heads/develop'
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          personal_token: ${{ secrets.PAT_TOKEN }}
+          publish_dir: ./dist
+          publish_branch: gh-pages
+          destination_dir: preview
+          keep_files: true
