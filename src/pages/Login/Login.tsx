@@ -1,14 +1,15 @@
+import { useState } from 'react'
+import loginImage from '@/assets/images/Login_Image.png'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { useState } from 'react'
+import EventLogo from '@/assets/icons/Event.svg?react'
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false)
   return (
     <div className="flex max-w-[1376px] w-full h-screen overflow-hidden py-[20px] px-[32px] gap-[20px] ">
       <div className="flex flex-col w-[445px] min-w-[445px] h-full pt-[20px] pr-[66px] pl-[67px] rounded-[8px] bg-[#fff]">
-        <h1 className="text-[#FFC831] text-[36px] mb-8 font-bold  font-[Arsenal]">Event</h1>
-
+        <EventLogo className="h-[51px] w-[96px]" />
         <div className="flex flex-col justify-center flex-1 ">
           <h2 className="mb-[32px] font-bold text-[32px] text-left">Вход</h2>
           <form action="">
@@ -16,7 +17,7 @@ export default function Login() {
               placeholder="Логин"
               required
               minLength={6}
-              className="mb-[20px] rounded-[8px] py-[12px] px-[12px]  min-h-[46px]"
+              className="mb-[20px] rounded-[8px] py-[12px] px-[12px]  min-h-[46px] border-[#C5C6C5] italic font-[14px]"
             />
             <div className="relative mb-[4px]">
               <Input
@@ -24,7 +25,7 @@ export default function Login() {
                 type={showPassword ? 'text' : 'password'}
                 required
                 minLength={8}
-                className="rounded-[12px] min-h-[46px] pr-[40px]"
+                className="rounded-[12px] min-h-[46px] pr-[40px] italic font-[14px] border-[#C5C6C5]"
               />
 
               <button
@@ -69,7 +70,7 @@ export default function Login() {
 
       {/* правая часть */}
       <div className="flex-1">
-        <img src="../../assets/LoginImage.jpg" alt="" className="w-full h-full object-cover rounded-[8px]" />
+        <img src={loginImage} alt="картинка" className="w-full h-full object-cover rounded-[8px]" />
       </div>
     </div>
   )
