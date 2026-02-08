@@ -1,15 +1,18 @@
 import { createBrowserRouter, Outlet } from 'react-router-dom'
 import { ROUTES } from './routes'
 import { NotificationProvider } from '@/app/providers/notification'
+import { AxiosProvider } from '@/app/providers/axios/AxiosProvider'
 import App from '@/App'
 
 export const router = createBrowserRouter(
   [
     {
       element: (
-        <NotificationProvider>
-          <Outlet />
-        </NotificationProvider>
+        <AxiosProvider>
+          <NotificationProvider>
+            <Outlet />
+          </NotificationProvider>
+        </AxiosProvider>
       ),
       children: [
         {
