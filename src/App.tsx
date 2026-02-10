@@ -7,7 +7,7 @@ function App() {
     <div className="flex">
       <Sidebar role="admin" />
 
-      <main>
+      <main className="p-[20px]">
         <Outlet />
       </main>
     </div>

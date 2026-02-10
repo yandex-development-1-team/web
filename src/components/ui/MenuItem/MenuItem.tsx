@@ -11,7 +11,7 @@ export const MenuItem = ({ Icon, title, route, childrenItems }: MenuItemProps) =
         {({ isActive }) => (
           <div
             className={`
-            pr-[8px] pl-[12px] rounded-xl flex items-center gap-[8px] cursor-pointer
+            pr-[8px] pl-[12px] rounded-[12px] flex items-center gap-[8px] cursor-pointer
             hover:bg-grey-extra-light group active:bg-system-background relative
             ${isActive ? 'bg-yellow-light' : ''}
           `}

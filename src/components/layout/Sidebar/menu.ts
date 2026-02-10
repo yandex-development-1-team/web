@@ -80,7 +80,7 @@ export const MENU_DOWN: MenuItemProps[] = [
   {
     Icon: Support,
     title: 'Поддержка',
-    route: ROUTES.home
+    route: ROUTES.login
   },
   {
     Icon: Exit,
