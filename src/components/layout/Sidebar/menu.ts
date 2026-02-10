@@ -9,6 +9,8 @@ import Box from '@/assets/icons/Box.svg?react'
 import Schedule from '@/assets/icons/Schedule.svg?react'
 import Users from '@/assets/icons/Users.svg?react'
 import SystemSettings from '@/assets/icons/System_Settings.svg?react'
+import Support from '@/assets/icons/Support.svg?react'
+import Exit from '@/assets/icons/Exit.svg?react'
 import type { MenuItemProps } from '@/components/ui/MenuItem/MenuItem.types'
 
 export const MENU_MANAGER: MenuItemProps[] = [
@@ -71,5 +73,18 @@ export const MENU_ADMIN: MenuItemProps[] = [
     Icon: SystemSettings,
     title: 'Системные настройки',
     route: ROUTES.settings
+  }
+]
+
+export const MENU_DOWN: MenuItemProps[] = [
+  {
+    Icon: Support,
+    title: 'Поддержка',
+    route: ROUTES.home
+  },
+  {
+    Icon: Exit,
+    title: 'Выход',
+    route: ROUTES.login
   }
 ]
