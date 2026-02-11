@@ -5,5 +5,5 @@ export interface MenuItemProps {
   title: string
   route: string
   childrenItems?: Omit<MenuItemProps, 'Icon'>[]
-  isOpen?: boolean
+  isExpanded: boolean
 }

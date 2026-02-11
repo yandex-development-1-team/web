@@ -3,8 +3,9 @@ import { NavLink } from 'react-router-dom'
 import Arrow from '@/assets/icons/Arrow.svg?react'
 import type { MenuItemProps } from './MenuItem.types'
 
-export const MenuItem = ({ Icon, title, route, childrenItems }: MenuItemProps) => {
+export const MenuItem = ({ Icon, title, route, childrenItems, isExpanded }: MenuItemProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
+
   return (
     <div className="flex flex-col gap-[13px]">
       <NavLink to={route}>
@@ -16,8 +17,13 @@ export const MenuItem = ({ Icon, title, route, childrenItems }: MenuItemProps) =
             ${isActive ? 'bg-yellow-light' : ''}
           `}
           >
-            <Icon className="w-[60px] h-[60px] group-active:text-yellow-accent-light text-text" />
-            <h5 className="text-text text-h5 font-display w-[174px]">{title}</h5>
+            <div className="w-[60px] h-[60px] flex-shrink-0">
+              <Icon className="w-full h-full text-text group-active:text-yellow-accent-light" />
+            </div>
+            <div className="overflow-hidden">
+              <h5 className="text-text text-h5 font-display w-[174px]">{title}</h5>
+            </div>
+
             {childrenItems?.length && (
               <button
                 type="button"
@@ -26,7 +32,11 @@ export const MenuItem = ({ Icon, title, route, childrenItems }: MenuItemProps) =
                   e.stopPropagation()
                   setIsOpen(state => !state)
                 }}
-                className="absolute inset-y-[30%] right-[12px] cursor-pointer"
+                className={`
+                  absolute inset-y-[30%] right-[12px] cursor-pointer
+                  overflow-hidden transition-[width,opacity] duration-400
+                  ${isExpanded ? 'w-[24px] opacity-100' : 'w-0 opacity-0'}
+                `}
               >
                 <Arrow
                   className={`
@@ -39,10 +49,11 @@ export const MenuItem = ({ Icon, title, route, childrenItems }: MenuItemProps) =
           </div>
         )}
       </NavLink>
+
       {childrenItems?.length && isOpen && (
         <div className="pl-[77px] pr-[12px] flex flex-col gap-[21.5px]">
           {childrenItems.map(item => (
-            <NavLink to={item.route}>
+            <NavLink key={item.route} to={item.route}>
               {({ isActive }) => (
                 <div
                   className={`
