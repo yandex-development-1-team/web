@@ -17,7 +17,7 @@ export const MenuItem = ({ Icon, title, route, childrenItems }: MenuItemProps) =
           `}
           >
             <Icon className="w-[60px] h-[60px] group-active:text-yellow-accent-light text-text" />
-            <h5 className="text-text text-h5 font-display w-[180px]">{title}</h5>
+            <h5 className="text-text text-h5 font-display w-[174px]">{title}</h5>
             {childrenItems?.length && (
               <button
                 type="button"
