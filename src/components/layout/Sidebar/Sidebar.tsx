@@ -83,7 +83,7 @@ export const Sidebar = ({ user }: { user: MockUserDataProps }) => {
         </div>
         <div
           className={`flex flex-col border-t border-grey-extra-light transition-[gap] duration-400
-            ${isExpanded ? 'pt-[16px]' : 'pt-[12px]'}`}
+            ${isExpanded ? 'pt-[16px]' : 'pt-[12px] items-center'}`}
           style={{ gap: isExpanded ? '16px' : '12px' }}
         >
           {MENU_DOWN.map((item, index) => (

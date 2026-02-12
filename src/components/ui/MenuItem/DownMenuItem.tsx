@@ -7,21 +7,17 @@ export const DownMenuItem = ({ Icon, title, route, onClick, isExpanded }: MenuIt
   const content = (isActive: boolean = false) => (
     <div
       className={`
-      pr-[8px] pl-[12px] rounded-xl flex items-center cursor-pointer
-      hover:bg-grey-extra-light group active:bg-system-background transition-[gap] duration-400
-      ${isActive ? 'bg-yellow-light' : ''}
-    `}
-      style={{ gap: isExpanded ? '8px' : '0px' }}
+        pr-[8px] pl-[12px] rounded-xl flex items-center cursor-pointer gap-[8px]
+        hover:bg-grey-extra-light group active:bg-system-background
+        ${isActive ? 'bg-yellow-light' : ''}
+      `}
     >
-      <div
-        className={`h-[40px] flex-shrink-0 transition-[margin] duration-400 
-        ${isExpanded ? 'w-[40px]' : 'w-[40px] mx-auto'}`}
-      >
+      <div className="w-[40px] h-[40px] flex-shrink-0">
         <Icon className="w-full h-full text-text group-active:text-yellow-accent-light" />
       </div>
       <div
         className={`overflow-hidden transition-[width] duration-400
-            ${isExpanded ? 'width-[180px]' : 'w-0'}`}
+          ${isExpanded ? 'width-[180px]' : 'w-0'}`}
       >
         <h5 className="text-text text-h5 font-display w-[180px]">{title}</h5>
       </div>
@@ -34,7 +30,7 @@ export const DownMenuItem = ({ Icon, title, route, onClick, isExpanded }: MenuIt
   }
 
   return (
-    <div className="flex flex-col gap-[13px]">
+    <div className={`flex flex-col gap-[13px] transition-[width] duration-400 ${isExpanded ? 'w-full' : 'w-[60px]'}`}>
       {route ? (
         <NavLink to={route} onClick={onClick}>
           {({ isActive }) => content(isActive)}
