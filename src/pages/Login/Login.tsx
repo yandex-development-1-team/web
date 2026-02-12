@@ -4,11 +4,11 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import EventLogo from '@/assets/icons/Event.svg?react'
 
-export default function Login() {
+const Login = () => {
   const [showPassword, setShowPassword] = useState(false)
   return (
     <div className="flex max-w-[1376px] w-full h-screen overflow-hidden py-[20px] px-[32px] gap-[20px] ">
-      <div className="flex flex-col w-[445px] min-w-[445px] h-full pt-[20px] pr-[66px] pl-[67px] rounded-[8px] bg-[#fff]">
+      <div className="flex flex-col w-[445px] min-w-[445px] h-full pt-[20px] pr-[66px] pl-[67px] rounded-[8px] bg-[var(--color-white)]">
         <EventLogo className="h-[51px] w-[96px]" />
         <div className="flex flex-col justify-center flex-1 ">
           <h2 className="mb-[32px] font-bold text-[32px] text-left">Вход</h2>
@@ -16,8 +16,7 @@ export default function Login() {
             <Input
               placeholder="Логин"
               required
-              minLength={6}
-              className="mb-[20px] rounded-[8px] py-[12px] px-[12px]  min-h-[46px] border-[#C5C6C5] italic font-[14px]"
+              className="mb-[20px] rounded-[8px] py-[12px] px-[12px]  min-h-[46px] border-[var(--color-grey-light)] italic font-[14px]"
             />
             <div className="relative mb-[4px]">
               <Input
@@ -25,7 +24,7 @@ export default function Login() {
                 type={showPassword ? 'text' : 'password'}
                 required
                 minLength={8}
-                className="rounded-[12px] min-h-[46px] pr-[40px] italic font-[14px] border-[#C5C6C5]"
+                className="rounded-[12px] min-h-[46px] pr-[40px] italic font-[14px] border-[var(--color-grey-light)]"
               />
 
               <button
@@ -56,12 +55,12 @@ export default function Login() {
             </div>
 
             <div className="mb-[40px]">
-              <a href="#!" className="text-left text-[#8B8C8B]">
+              <a href="#!" className="text-left text-[var(--color-grey-dark)]">
                 Забыли пароль?
               </a>
             </div>
 
-            <Button className="w-full min-h-[46px] bg-[#F4DB54] text-[#353434] font-semibold rounded-[12px] py-[12px]">
+            <Button className="w-full min-h-[46px] bg-[var(--color-yellow-accent-light)] text-[var(--color-black)] font-semibold rounded-[12px] py-[12px]">
               Войти
             </Button>
           </form>
@@ -75,4 +74,4 @@ export default function Login() {
     </div>
   )
 }
-
+export const Component = Login
