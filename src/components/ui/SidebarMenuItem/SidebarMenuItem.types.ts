@@ -1,10 +1,10 @@
 import type React from 'react'
 
-export interface MenuItemProps {
+export interface SidebarMenuItemProps {
   Icon: React.FC<React.SVGProps<SVGSVGElement>>
   title: string
   route?: string
   onClick?: () => void
-  childrenItems?: Omit<MenuItemProps, 'Icon' | 'isExpanded'>[]
+  childrenItems?: Omit<SidebarMenuItemProps, 'Icon' | 'isExpanded'>[]
   isExpanded: boolean
 }

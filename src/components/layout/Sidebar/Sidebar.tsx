@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { DownMenuItem, MenuItem } from '@/components/ui/MenuItem'
+import { SidebarDownMenuItem, SidebarMenuItem } from '@/components/ui/SidebarMenuItem'
 import Event from '@/assets/icons/Event.svg?react'
 import ArrowReturn from '@/assets/icons/Arrow_Return.svg?react'
 import Arrow from '@/assets/icons/Arrow.svg?react'
@@ -71,7 +71,7 @@ export const Sidebar = ({ user }: { user: MockUserDataProps }) => {
       <nav className="flex flex-col justify-between flex-1">
         <div className="flex flex-col transition-[gap] duration-400" style={{ gap: isExpanded ? '19.5px' : '16px' }}>
           {menu.map(item => (
-            <MenuItem
+            <SidebarMenuItem
               key={`${item.route}-${isExpanded}`}
               Icon={item.Icon}
               title={item.title}
@@ -87,7 +87,7 @@ export const Sidebar = ({ user }: { user: MockUserDataProps }) => {
           style={{ gap: isExpanded ? '16px' : '12px' }}
         >
           {MENU_DOWN.map((item, index) => (
-            <DownMenuItem
+            <SidebarDownMenuItem
               key={`${item.route}-${index}`}
               Icon={item.Icon}
               title={item.title}
