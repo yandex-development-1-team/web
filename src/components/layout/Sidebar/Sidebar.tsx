@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { DownItem, MenuItem } from '@/components/ui/MenuItem'
+import { DownMenuItem, MenuItem } from '@/components/ui/MenuItem'
 import Event from '@/assets/icons/Event.svg?react'
 import ArrowReturn from '@/assets/icons/Arrow_Return.svg?react'
 import Arrow from '@/assets/icons/Arrow.svg?react'
@@ -87,7 +87,7 @@ export const Sidebar = ({ user }: { user: MockUserDataProps }) => {
           style={{ gap: isExpanded ? '16px' : '12px' }}
         >
           {MENU_DOWN.map((item, index) => (
-            <DownItem
+            <DownMenuItem
               key={`${item.route}-${index}`}
               Icon={item.Icon}
               title={item.title}

@@ -13,7 +13,7 @@ import Support from '@/assets/icons/Support.svg?react'
 import Exit from '@/assets/icons/Exit.svg?react'
 import type { MenuItemProps } from '@/components/ui/MenuItem/MenuItem.types'
 
-export const MENU_MANAGER: MenuItemProps[] = [
+export const MENU_MANAGER: Omit<MenuItemProps, 'isExpanded'>[] = [
   {
     Icon: Home,
     title: 'Главная',
@@ -41,7 +41,7 @@ export const MENU_MANAGER: MenuItemProps[] = [
   }
 ]
 
-export const MENU_ADMIN: MenuItemProps[] = [
+export const MENU_ADMIN: Omit<MenuItemProps, 'isExpanded'>[] = [
   {
     Icon: Analytics,
     title: 'Аналитика',
@@ -76,7 +76,7 @@ export const MENU_ADMIN: MenuItemProps[] = [
   }
 ]
 
-export const MENU_DOWN: MenuItemProps[] = [
+export const MENU_DOWN: Omit<MenuItemProps, 'isExpanded'>[] = [
   {
     Icon: Support,
     title: 'Поддержка',

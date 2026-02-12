@@ -8,7 +8,7 @@ export const MenuItem = ({ Icon, title, route, childrenItems, isExpanded }: Menu
 
   return (
     <div className="flex flex-col gap-[13px]">
-      <NavLink to={route}>
+      <NavLink to={route!}>
         {({ isActive }) => (
           <div
             className={`
@@ -53,7 +53,7 @@ export const MenuItem = ({ Icon, title, route, childrenItems, isExpanded }: Menu
       {childrenItems?.length && isOpen && (
         <div className="pl-[77px] pr-[12px] flex flex-col gap-[21.5px]">
           {childrenItems.map(item => (
-            <NavLink key={item.route} to={item.route}>
+            <NavLink key={item.route} to={item.route!}>
               {({ isActive }) => (
                 <div
                   className={`

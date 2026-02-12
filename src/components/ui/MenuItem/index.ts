@@ -1,2 +1,2 @@
 export { MenuItem } from './MenuItem'
-export { DownItem } from './DownMenuItem'
+export { DownMenuItem } from './DownMenuItem'
