@@ -1,14 +1,11 @@
 import type { ComponentProps } from 'react'
 import { Slot } from 'radix-ui'
 import { type VariantProps } from 'class-variance-authority'
-
 import { cn } from '@/lib/utils.clsx'
-import { addBoxButtonVariants } from './BoxButton.styles'
-
+import { BoxButtonVariants } from './BoxButton.styles'
 import UsersIcon from '@/assets/icons/users.svg?react'
 import Special_ProjectsIcon from '@/assets/icons/special_projects.svg?react'
 import BoxIcon from '@/assets/icons/box.svg?react'
-
 import AddIcon from '@/assets/icons/add.svg?react'
 
 const ICONS = {
@@ -28,7 +25,7 @@ function BoxButton({
   children,
   ...props
 }: ComponentProps<'button'> &
-  VariantProps<typeof addBoxButtonVariants> & {
+  VariantProps<typeof BoxButtonVariants> & {
     asChild?: boolean
     icon?: IconType
   }) {
@@ -40,7 +37,7 @@ function BoxButton({
       data-slot="button"
       data-variant={variant}
       data-size={size}
-      className={cn(addBoxButtonVariants({ variant, size, className }))}
+      className={cn(BoxButtonVariants({ variant, size, className }))}
       {...props}
     >
       <div className="flex items-center gap-3">

@@ -1,6 +1,6 @@
 import { cva } from 'class-variance-authority'
 
-export const addBoxButtonVariants = cva(
+export const BoxButtonVariants = cva(
   'group inline-flex items-center justify-between w-full rounded-lg text-button font-button transition-all outline-none focus-visible:ring-2 focus-visible:ring-yellow-accent-dark focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
   {
     variants: {
