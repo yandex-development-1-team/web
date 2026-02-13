@@ -11,10 +11,10 @@ import Users from '@/assets/icons/Users.svg?react'
 import SystemSettings from '@/assets/icons/System_Settings.svg?react'
 import Support from '@/assets/icons/Support.svg?react'
 import Exit from '@/assets/icons/Exit.svg?react'
-import type { SidebarMenuItemProps } from './SidebarMenuItem/SidebarMenuItem.types'
-import type { SidebarDownMenuItemProps } from './SidebarMenuItem/SidebarDownMenuItem.types'
+import type { ItemProps } from './ui/Item.types'
+import type { DownItemProps } from './ui/DownItem.types'
 
-export const MENU_MANAGER: Omit<SidebarMenuItemProps, 'isExpanded'>[] = [
+export const MENU_MANAGER: Omit<ItemProps, 'isExpanded'>[] = [
   {
     Icon: Home,
     title: 'Главная',
@@ -42,7 +42,7 @@ export const MENU_MANAGER: Omit<SidebarMenuItemProps, 'isExpanded'>[] = [
   }
 ]
 
-export const MENU_ADMIN: Omit<SidebarMenuItemProps, 'isExpanded'>[] = [
+export const MENU_ADMIN: Omit<ItemProps, 'isExpanded'>[] = [
   {
     Icon: Analytics,
     title: 'Аналитика',
@@ -77,7 +77,7 @@ export const MENU_ADMIN: Omit<SidebarMenuItemProps, 'isExpanded'>[] = [
   }
 ]
 
-export const MENU_DOWN: Omit<SidebarDownMenuItemProps, 'isExpanded'>[] = [
+export const MENU_DOWN: Omit<DownItemProps, 'isExpanded'>[] = [
   {
     Icon: Support,
     title: 'Поддержка',

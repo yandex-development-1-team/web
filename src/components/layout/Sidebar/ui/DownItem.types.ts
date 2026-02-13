@@ -1,6 +1,6 @@
 import type React from 'react'
 
-export interface SidebarDownMenuItemProps {
+export interface DownItemProps {
   Icon: React.FC<React.SVGProps<SVGSVGElement>>
   title: string
   route?: string

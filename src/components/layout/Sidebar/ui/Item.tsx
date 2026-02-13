@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import Arrow from '@/assets/icons/Arrow.svg?react'
-import type { SidebarMenuItemProps } from './SidebarMenuItem.types'
+import type { ItemProps } from './Item.types'
 
-export const SidebarMenuItem = ({ Icon, title, route, childrenItems, isExpanded }: SidebarMenuItemProps) => {
+export const Item = ({ Icon, title, route, childrenItems, isExpanded }: ItemProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
 
   return (

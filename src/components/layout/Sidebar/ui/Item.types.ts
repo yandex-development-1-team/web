@@ -1,9 +1,9 @@
 import type React from 'react'
 
-export interface SidebarMenuItemProps {
+export interface ItemProps {
   Icon: React.FC<React.SVGProps<SVGSVGElement>>
   title: string
   route: string
-  childrenItems?: Omit<SidebarMenuItemProps, 'Icon' | 'isExpanded'>[]
+  childrenItems?: Omit<ItemProps, 'Icon' | 'isExpanded'>[]
   isExpanded: boolean
 }

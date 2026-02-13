@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
-import type { SidebarDownMenuItemProps } from './SidebarDownMenuItem.types'
+import type { DownItemProps } from './DownItem.types'
 
-export const SidebarDownMenuItem = ({ Icon, title, route, onClick, isExpanded }: SidebarDownMenuItemProps) => {
+export const DownItem = ({ Icon, title, route, onClick, isExpanded }: DownItemProps) => {
   const [isButtonActive, setIsButtonActive] = useState(false)
   const content = (isActive: boolean = false) => (
     <div

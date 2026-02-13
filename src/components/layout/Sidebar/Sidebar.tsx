@@ -1,14 +1,14 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { SidebarDownMenuItem, SidebarMenuItem } from '@/components/layout/Sidebar/SidebarMenuItem'
+import { DownItem, Item } from '@/components/layout/Sidebar/ui'
 import Event from '@/assets/icons/Event.svg?react'
 import ArrowReturn from '@/assets/icons/Arrow_Return.svg?react'
 import Arrow from '@/assets/icons/Arrow.svg?react'
 import { ROUTES } from '@/app/router'
 import { MENU_ADMIN, MENU_DOWN, MENU_MANAGER } from './menu'
-import type { MockUserDataProps } from '@/mockData/mockData'
+import type { MockUserData } from '@/mockData/mockData'
 
-export const Sidebar = ({ user }: { user: MockUserDataProps }) => {
+export const Sidebar = ({ user }: { user: MockUserData }) => {
   const [isExpanded, setIsExpanded] = useState<boolean>(true)
   const menu = user.role === 'manager' ? MENU_MANAGER : MENU_ADMIN
 
@@ -62,7 +62,7 @@ export const Sidebar = ({ user }: { user: MockUserDataProps }) => {
           <div className="flex flex-col gap-[4px] w-[200px]">
             <span className="text-button font-display">{user.name}</span>
             <span className="text-xs font-display">
-              {user.role === 'manager' ? `Менеджер ${user.grade!} звена` : 'Администратор'}
+              {user.role === 'manager' ? `Менеджер ${user.grade} звена` : 'Администратор'}
             </span>
           </div>
         </div>
@@ -71,7 +71,7 @@ export const Sidebar = ({ user }: { user: MockUserDataProps }) => {
       <nav className="flex flex-col justify-between flex-1">
         <div className="flex flex-col transition-[gap] duration-400" style={{ gap: isExpanded ? '19.5px' : '16px' }}>
           {menu.map(item => (
-            <SidebarMenuItem
+            <Item
               key={`${item.route}-${isExpanded}`}
               Icon={item.Icon}
               title={item.title}
@@ -87,7 +87,7 @@ export const Sidebar = ({ user }: { user: MockUserDataProps }) => {
           style={{ gap: isExpanded ? '16px' : '12px' }}
         >
           {MENU_DOWN.map((item, index) => (
-            <SidebarDownMenuItem
+            <DownItem
               key={`${item.route}-${index}`}
               Icon={item.Icon}
               title={item.title}
