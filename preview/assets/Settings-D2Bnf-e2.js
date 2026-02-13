@@ -1,0 +1,1 @@
+import{j as n}from"./index-ByhI8Rqu.js";const t=()=>n.jsxs(n.Fragment,{children:[n.jsx("h1",{children:"Системные настройки"}),n.jsx("p",{children:"Страница в разработке..."})]}),s=t;export{s as Component};
