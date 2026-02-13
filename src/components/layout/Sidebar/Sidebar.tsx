@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { SidebarDownMenuItem, SidebarMenuItem } from '@/components/ui/SidebarMenuItem'
+import { SidebarDownMenuItem, SidebarMenuItem } from '@/components/layout/Sidebar/SidebarMenuItem'
 import Event from '@/assets/icons/Event.svg?react'
 import ArrowReturn from '@/assets/icons/Arrow_Return.svg?react'
 import Arrow from '@/assets/icons/Arrow.svg?react'
