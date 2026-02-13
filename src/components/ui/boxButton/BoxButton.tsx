@@ -1,9 +1,9 @@
-import * as React from 'react'
+import type { ComponentProps } from 'react'
 import { Slot } from 'radix-ui'
 import { type VariantProps } from 'class-variance-authority'
 
 import { cn } from '@/lib/utils.clsx'
-import { addBoxButtonVariants } from './AddBoxButton.styles'
+import { addBoxButtonVariants } from './BoxButton.styles'
 
 import UsersIcon from '@/assets/icons/users.svg?react'
 import Special_ProjectsIcon from '@/assets/icons/special_projects.svg?react'
@@ -19,7 +19,7 @@ const ICONS = {
 
 type IconType = keyof typeof ICONS
 
-function AddBoxButton({
+function BoxButton({
   className,
   variant = 'default',
   size = 'default',
@@ -27,7 +27,7 @@ function AddBoxButton({
   icon,
   children,
   ...props
-}: React.ComponentProps<'button'> &
+}: ComponentProps<'button'> &
   VariantProps<typeof addBoxButtonVariants> & {
     asChild?: boolean
     icon?: IconType
@@ -61,4 +61,4 @@ function AddBoxButton({
   )
 }
 
-export { AddBoxButton }
+export { BoxButton }
