@@ -1,42 +1,44 @@
+import {
+  AfishaIcon,
+  AnalyticsIcon,
+  ApplicationIcon,
+  BoxesIcon,
+  BoxIcon,
+  ExitIcon,
+  HomeIcon,
+  ScheduleIcon,
+  SpecialProjectsIcon,
+  SupportIcon,
+  SystemSettingsIcon,
+  UsersIcon
+} from '@/assets/icons'
 import { ROUTES } from '@/app/router'
-import Home from '@/assets/icons/Home.svg?react'
-import Boxes from '@/assets/icons/Boxes.svg?react'
-import SpecialProjects from '@/assets/icons/Special_Projects.svg?react'
-import Application from '@/assets/icons/Application.svg?react'
-import Afisha from '@/assets/icons/Afisha.svg?react'
-import Analytics from '@/assets/icons/Analytics.svg?react'
-import Box from '@/assets/icons/Box.svg?react'
-import Schedule from '@/assets/icons/Schedule.svg?react'
-import Users from '@/assets/icons/Users.svg?react'
-import SystemSettings from '@/assets/icons/System_Settings.svg?react'
-import Support from '@/assets/icons/Support.svg?react'
-import Exit from '@/assets/icons/Exit.svg?react'
 import type { ItemProps } from './ui/Item.types'
 import type { DownItemProps } from './ui/DownItem.types'
 
 export const MENU_MANAGER: Omit<ItemProps, 'isExpanded'>[] = [
   {
-    Icon: Home,
+    Icon: HomeIcon,
     title: 'Главная',
     route: ROUTES.home
   },
   {
-    Icon: Boxes,
+    Icon: BoxesIcon,
     title: 'Коробочные решения',
     route: ROUTES.boxSolutions
   },
   {
-    Icon: SpecialProjects,
+    Icon: SpecialProjectsIcon,
     title: 'Спецпроекты',
     route: ROUTES.specialProjects
   },
   {
-    Icon: Application,
+    Icon: ApplicationIcon,
     title: 'Заявки',
     route: ROUTES.applications
   },
   {
-    Icon: Afisha,
+    Icon: AfishaIcon,
     title: 'Ссылки и ресурсы',
     route: ROUTES.resources
   }
@@ -44,7 +46,7 @@ export const MENU_MANAGER: Omit<ItemProps, 'isExpanded'>[] = [
 
 export const MENU_ADMIN: Omit<ItemProps, 'isExpanded'>[] = [
   {
-    Icon: Analytics,
+    Icon: AnalyticsIcon,
     title: 'Аналитика',
     route: ROUTES.stats,
     childrenItems: [
@@ -56,22 +58,22 @@ export const MENU_ADMIN: Omit<ItemProps, 'isExpanded'>[] = [
     ]
   },
   {
-    Icon: Box,
+    Icon: BoxIcon,
     title: 'Управление коробками',
     route: ROUTES.manageSolutions
   },
   {
-    Icon: Schedule,
+    Icon: ScheduleIcon,
     title: 'Управление расписанием',
     route: ROUTES.schedule
   },
   {
-    Icon: Users,
+    Icon: UsersIcon,
     title: 'Управление правами и пользователями',
     route: ROUTES.employees
   },
   {
-    Icon: SystemSettings,
+    Icon: SystemSettingsIcon,
     title: 'Системные настройки',
     route: ROUTES.settings
   }
@@ -79,12 +81,12 @@ export const MENU_ADMIN: Omit<ItemProps, 'isExpanded'>[] = [
 
 export const MENU_DOWN: Omit<DownItemProps, 'isExpanded'>[] = [
   {
-    Icon: Support,
+    Icon: SupportIcon,
     title: 'Поддержка',
     route: ROUTES.login
   },
   {
-    Icon: Exit,
+    Icon: ExitIcon,
     title: 'Выход',
     route: ROUTES.login
   }

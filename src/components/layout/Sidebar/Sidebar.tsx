@@ -1,9 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { DownItem, Item } from '@/components/layout/Sidebar/ui'
-import Event from '@/assets/icons/Event.svg?react'
-import ArrowReturn from '@/assets/icons/Arrow_Return.svg?react'
-import Arrow from '@/assets/icons/Arrow.svg?react'
+import { ArrowIcon, ArrowReturnIcon, EventIcon } from '@/assets/icons'
 import { ROUTES } from '@/app/router'
 import { MENU_ADMIN, MENU_DOWN, MENU_MANAGER } from './menu'
 import type { MockUserData } from '@/mockData/mockData'
@@ -26,7 +24,7 @@ export const Sidebar = ({ user }: { user: MockUserData }) => {
           ${isExpanded ? 'w-auto' : 'w-[33px] mx-auto'}`}
         >
           <Link to={user.role === 'manager' ? ROUTES.home : ROUTES.stats}>
-            <Event />
+            <EventIcon />
           </Link>
         </div>
         {!isExpanded && <div className="h-[1px] w-full bg-grey-extra-light" />}
@@ -36,9 +34,9 @@ export const Sidebar = ({ user }: { user: MockUserData }) => {
           onClick={() => setIsExpanded(state => !state)}
         >
           {isExpanded ? (
-            <ArrowReturn className="w-[20px] h-[20px] rotate-180 text-grey-dark" />
+            <ArrowReturnIcon className="w-[20px] h-[20px] rotate-180 text-grey-dark" />
           ) : (
-            <Arrow className="w-[15px] h-[15px] -rotate-90 text-grey-dark stroke-3" />
+            <ArrowIcon className="w-[15px] h-[15px] -rotate-90 text-grey-dark stroke-3" />
           )}
         </button>
       </div>
@@ -87,13 +85,7 @@ export const Sidebar = ({ user }: { user: MockUserData }) => {
           style={{ gap: isExpanded ? '16px' : '12px' }}
         >
           {MENU_DOWN.map((item, index) => (
-            <DownItem
-              key={`${item.route}-${index}`}
-              Icon={item.Icon}
-              title={item.title}
-              route={item.route}
-              isExpanded={isExpanded}
-            />
+            <DownItem key={index} Icon={item.Icon} title={item.title} route={item.route} isExpanded={isExpanded} />
           ))}
         </div>
       </nav>

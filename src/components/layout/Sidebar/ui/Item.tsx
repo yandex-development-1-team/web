@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
-import Arrow from '@/assets/icons/Arrow.svg?react'
+import { ArrowIcon } from '@/assets/icons'
 import type { ItemProps } from './Item.types'
 
 export const Item = ({ Icon, title, route, childrenItems, isExpanded }: ItemProps) => {
@@ -38,7 +38,7 @@ export const Item = ({ Icon, title, route, childrenItems, isExpanded }: ItemProp
                   ${isExpanded ? 'w-[24px] opacity-100' : 'w-0 opacity-0'}
                 `}
               >
-                <Arrow
+                <ArrowIcon
                   className={`
                     w-[24px] h-[24px] text-text transition-transform duration-200
                     ${isOpen ? '-rotate-180' : ''}
