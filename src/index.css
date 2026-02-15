@@ -116,4 +116,21 @@
 
   /* Overlay */
   --color-overlay: rgba(53, 52, 52, 0.4);
+
+  /* Input */
+  --input-border: var(--color-grey-light);
+  --input-border-active: var(--color-grey-dark);
+  --placeholder: var(--color-grey-light);
+  --placeholder-active: var(--color-grey-dark);
+  --caret: #a6a6a6;
+
+  /* Select */
+  --select-content-border: var(--color-grey-blue-light);
+  --select-content-shadow: 4px 4px 6.3px rgba(82, 82, 82, 0.12);
+  --select-check: #000000;
+  --select-option-hover: var(--color-grey-extra-light);
+}
+
+textarea.hide-resizer::-webkit-resizer {
+  display: none;
 }
