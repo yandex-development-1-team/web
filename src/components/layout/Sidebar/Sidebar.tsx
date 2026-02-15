@@ -84,8 +84,8 @@ export const Sidebar = ({ user }: { user: MockUserData }) => {
             ${isExpanded ? 'pt-[16px]' : 'pt-[12px] items-center'}`}
           style={{ gap: isExpanded ? '16px' : '12px' }}
         >
-          {MENU_DOWN.map((item, index) => (
-            <DownItem key={index} Icon={item.Icon} title={item.title} route={item.route} isExpanded={isExpanded} />
+          {MENU_DOWN.map(item => (
+            <DownItem key={item.route} Icon={item.Icon} title={item.title} route={item.route} isExpanded={isExpanded} />
           ))}
         </div>
       </nav>
