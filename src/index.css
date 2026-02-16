@@ -1,3 +1,7 @@
+#root {
+  display: block;
+}
+
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
@@ -120,4 +124,26 @@
 
   /* Overlay */
   --color-overlay: rgba(53, 52, 52, 0.4);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-yellow-light);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-yellow-accent-light);
+}
+
+.narrow-scrollbar::-webkit-scrollbar {
+  width: 3px;
 }
