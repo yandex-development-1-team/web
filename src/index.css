@@ -1,3 +1,7 @@
+#root {
+  display: block;
+}
+
 @import 'tailwindcss';
 
 @font-face {
