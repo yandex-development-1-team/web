@@ -1,3 +1,7 @@
+#root {
+  display: block;
+}
+
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
@@ -59,6 +63,8 @@
   /* Colors */
   --color-white: #fff;
   --color-black: #353434;
+  --color-black-dark: #1e1c1c;
+  --color-black-darker: #1a1a1a;
   --color-creamy: #fffff8;
 
   /* Grey */
@@ -94,6 +100,8 @@
 
   /* Text colors */
   --color-text: var(--color-black);
+  --color-text-black-dark: var(--color-black-dark);
+  --color-text-black-darker: var(--color-black-darker);
   --color-text-grey-dark: var(--color-grey-dark);
   --color-text-grey-light: var(--color-grey-light);
   --color-text-error: var(--color-red-dark);
@@ -133,4 +141,26 @@
 
 textarea.hide-resizer::-webkit-resizer {
   display: none;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-yellow-light);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-yellow-accent-light);
+}
+
+.narrow-scrollbar::-webkit-scrollbar {
+  width: 3px;
 }

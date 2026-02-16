@@ -1,8 +1,18 @@
 import { Outlet } from 'react-router-dom'
+import { Sidebar } from '@/components/layout/Sidebar'
+import { MOCK_ADMIN } from './mockData/mockData'
 import './App.css'
 
 function App() {
-  return <Outlet />
+  return (
+    <div className="flex">
+      <Sidebar user={MOCK_ADMIN} />
+
+      <main className="p-[20px] bg-grey-extra-light min-h-screen flex-1 flex flex-col">
+        <Outlet />
+      </main>
+    </div>
+  )
 }
 
 export default App
