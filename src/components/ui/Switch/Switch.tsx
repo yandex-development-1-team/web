@@ -1,6 +1,6 @@
-import type { SwitchProps } from './types'
+import type { SwitchProps } from './Switch.types'
 
-const Switch = ({ onChange, checked = false, paleStyle = true, className }: SwitchProps) => {
+export const Switch = ({ onChange, checked = false, paleStyle = true, className }: SwitchProps) => {
   const handleChange = () => {
     onChange(!checked)
   }
@@ -66,5 +66,3 @@ const Switch = ({ onChange, checked = false, paleStyle = true, className }: Swit
     </>
   )
 }
-
-export default Switch

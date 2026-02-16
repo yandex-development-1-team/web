@@ -1,6 +1,6 @@
-import type { ButtonProps } from './types'
+import type { ButtonProps } from './Button.types'
 
-const Button = ({ label, onClick, style = 'primary', type = 'button', className, children }: ButtonProps) => {
+export const Button = ({ label, onClick, style = 'primary', type = 'button', className, children }: ButtonProps) => {
   const buttonStyleClasses =
     (style === 'primary' &&
       `
@@ -49,5 +49,3 @@ const Button = ({ label, onClick, style = 'primary', type = 'button', className,
     </button>
   )
 }
-
-export default Button

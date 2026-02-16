@@ -1,3 +1,2 @@
-export { default as Button } from './Button/Button'
-export { default as ToggleButton } from './ToggleButton/ToggleButton'
-export { default as Switch } from './Switch/Switch'
+export { ToggleButton } from './ToggleButton/ToggleButton'
+export { Switch } from './Switch/Switch'
