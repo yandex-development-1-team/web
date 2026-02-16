@@ -1,19 +1,4 @@
-interface IAccount {
-  id: number
-  name: string
-  description: string
-}
-
-interface IAccessRightsGroup {
-  id: number
-  name: string
-}
-
-interface IAccessRight {
-  id: number
-  groupId: number
-  name: string
-}
+import type { IAccount, IAccessRightsGroup, IAccessRight } from './Settings.types'
 
 export const accounts: IAccount[] = [
   { id: 0, name: 'Администратор', description: 'Высший уровень доступа' },

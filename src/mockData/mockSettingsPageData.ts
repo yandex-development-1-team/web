@@ -1,17 +1,4 @@
-interface ITextFieldValue {
-  id: number
-  value: string
-}
-
-interface IAccountAccessright {
-  accountId: number
-  accessRights: IAccessRightValue[]
-}
-
-interface IAccessRightValue {
-  id: number
-  value: boolean
-}
+import type { ITextFieldValue, IAccountAccessRight } from '@/pages/Settings/Settings.types'
 
 export const mockTextFieldsValues: ITextFieldValue[] = [
   { id: 0, value: 'Здравствуйте!' },
@@ -23,7 +10,7 @@ export const mockTextFieldsValues: ITextFieldValue[] = [
   { id: 6, value: 'Системная ошибка' }
 ]
 
-export const mockAccountAccessRights: IAccountAccessright[] = [
+export const mockAccountAccessRights: IAccountAccessRight[] = [
   {
     accountId: 0,
     accessRights: [
