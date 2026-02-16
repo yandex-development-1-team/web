@@ -35,6 +35,7 @@ export const Switch = ({ onChange, checked = false, paleStyle = true, className 
           border-1
           outline-2
           outline-offset-[-2px]
+          cursor-pointer
           ${
             checked
               ? `${switchBackgroundColorChecked} ${switchBorderColorChecked} ${switchOutlineColorChecked}`

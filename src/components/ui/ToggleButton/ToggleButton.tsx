@@ -25,6 +25,7 @@ export const ToggleButton = ({ leftLabel, rightLabel, onToggle, className }: Tog
     border-yellow-accent-light
     hover:border-yellow-light
     p-[10px_20px]
+    cursor-pointer
   `
 
   const selectedButtonClasses = `
