@@ -7,7 +7,7 @@ export const DownItem = ({ Icon, title, route, onClick, isExpanded }: DownItemPr
   const content = (isActive: boolean = false) => (
     <div
       className={`
-        pr-[8px] pl-[12px] rounded-xl flex items-center cursor-pointer gap-[8px]
+        pr-[8px] pl-[17px] rounded-xl flex items-center cursor-pointer gap-[8px]
         hover:bg-grey-extra-light group active:bg-system-background
         ${isActive ? 'bg-yellow-light' : ''}
       `}
