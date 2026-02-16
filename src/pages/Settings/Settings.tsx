@@ -1,6 +1,5 @@
 import { useRef, useState } from 'react'
-import { Switch, ToggleButton } from '@/components/ui'
-import { Button } from './components/ui/Button/Button'
+import { Switch, ToggleButton, Button } from '@/components/ui'
 import ArrowIcon from '@/assets/icons/Arrow.svg?react'
 import { accounts, accessRightsGroups, accessRights, textFields } from './settingsData'
 import { mockTextFieldsValues, mockAccountAccessRights } from '@/mockData/mockSettingsPageData'
