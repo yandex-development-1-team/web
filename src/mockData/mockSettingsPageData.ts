@@ -1,18 +1,17 @@
 interface ITextFieldValue {
-  id: number,
+  id: number
   value: string
 }
 
 interface IAccountAccessright {
-  accountId: number,
+  accountId: number
   accessRights: IAccessRightValue[]
 }
 
 interface IAccessRightValue {
-  id: number,
+  id: number
   value: boolean
 }
-
 
 export const mockTextFieldsValues: ITextFieldValue[] = [
   { id: 0, value: 'Здравствуйте!' },

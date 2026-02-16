@@ -1,20 +1,19 @@
 interface IAccount {
-  id: number,
-  name: string,
+  id: number
+  name: string
   description: string
 }
 
 interface IAccessRightsGroup {
-  id: number,
+  id: number
   name: string
 }
 
 interface IAccessRight {
-  id: number,
-  groupId: number,
+  id: number
+  groupId: number
   name: string
 }
-
 
 export const accounts: IAccount[] = [
   { id: 0, name: 'Администратор', description: 'Высший уровень доступа' },

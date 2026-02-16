@@ -5,7 +5,6 @@ import ArrowIcon from '@/assets/icons/Arrow.svg?react'
 import { accounts, accessRightsGroups, accessRights, textFields } from './settingsData'
 import { mockTextFieldsValues, mockAccountAccessRights } from '@/mockData/mockSettingsPageData'
 
-
 const Settings = () => {
   const [phase, setPhase] = useState('roleSelection')
   const [editingAccountId, setEditingAccountId] = useState(0)
@@ -183,7 +182,9 @@ const Settings = () => {
                 `}
               </style>
               <textarea
-                ref={el => {textFieldsRefs.current[field.id] = el!}}
+                ref={el => {
+                  textFieldsRefs.current[field.id] = el!
+                }}
                 placeholder="Место для текста"
                 className={`
                   h-[60px]
