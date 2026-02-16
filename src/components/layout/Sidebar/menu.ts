@@ -83,7 +83,7 @@ export const MENU_DOWN: Omit<DownItemProps, 'isExpanded'>[] = [
   {
     Icon: SupportIcon,
     title: 'Поддержка',
-    route: '*'
+    route: ROUTES.notFound
   },
   {
     Icon: ExitIcon,
