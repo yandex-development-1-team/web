@@ -96,7 +96,7 @@ const Settings = () => {
   }
 
   return (
-    <main className="bg-grey-extra-light min-h-screen w-full flex flex-col">
+    <>
       <h2 className="bg-white text-text-black-dark text-h2 m-[20px] mb-0 p-[18px_20px] rounded-md">
         Системные настройки
       </h2>
@@ -287,7 +287,7 @@ const Settings = () => {
           </>
         )}
       </div>
-    </main>
+    </>
   )
 }
 
