@@ -1,6 +1,6 @@
 export interface ButtonProps {
   label?: string
-  onClick: () => void
+  onClick?: () => void
   style?: 'primary' | 'secondary'
   type?: 'button' | 'submit' | 'reset'
   className?: string
