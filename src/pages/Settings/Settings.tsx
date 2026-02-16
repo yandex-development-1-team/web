@@ -103,7 +103,7 @@ const Settings = () => {
 
       <div
         className={`
-          ${phase !== 'accessSetup' ? 'bg-white' : 'flex flex-col'}
+          ${phase !== 'accessSetup' ? 'bg-white' : ''}
           rounded-[8px]
           h-full
           m-[20px]
@@ -111,31 +111,34 @@ const Settings = () => {
           text-text
         `}
       >
-        <nav
+        <div
           className={`
             flex
+            flex-wrap
             min-h-[46px]
+            gap-[20px]
+            justify-between
             ${phase !== 'accessSetup' && 'm-[20px]'}
           `}
         >
           <ToggleButton
-            className="w-[562px]! mr-[20px]"
+            className="w-[562px]! mr-[20px] min-w-[488px]"
             leftLabel="Настройка уровня доступа"
             rightLabel="Настройка текстов"
             onToggle={handleSettingsGroupSelect}
           />
           {phase !== 'roleSelection' && (
-            <>
+            <div>
               <Button
                 label="Отменить"
                 style="secondary"
                 onClick={handleResetValues}
-                className="w-[168px] ml-auto mr-[20px] min-h-[46px]"
+                className="w-[168px] mr-[20px] min-h-[46px]"
               />
               <Button label="Сохранить" onClick={handleSaveValues} className="w-[168px] min-h-[46px]" />
-            </>
+            </div>
           )}
-        </nav>
+        </div>
 
         {phase === 'roleSelection' && (
           <div className="mt-[32px]">
@@ -156,6 +159,7 @@ const Settings = () => {
                   items-center
                   hover:border-yellow-light
                   active:border-yellow-accent-dark
+                  cursor-pointer
                 `}
                 onClick={() => handleRoleSelect(account.id)}
               >
@@ -230,6 +234,7 @@ const Settings = () => {
                 hover:border-yellow-light
                 active:border-yellow-accent-dark
                 bg-white
+                cursor-pointer
               `}
               onClick={handleRoleDeselect}
             >
