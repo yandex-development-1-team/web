@@ -33,7 +33,7 @@ const Login = () => {
                 onClick={() => setShowPassword(show => !show)}
                 className="absolute right-[12px] top-1/2 -translate-y-1/2"
               >
-                <EyeButton className="w-[23px] text-text-grey-dark" />
+                <EyeButton />
               </button>
             </div>
 
