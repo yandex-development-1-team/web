@@ -2,7 +2,7 @@ import type { ComponentProps } from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '@/lib/utils.clsx'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/Input'
+import { Input } from '@/components/ui/input/Input'
 import { Textarea } from '@/components/ui/Textarea'
 import { buttonVariants } from '@/components/ui/button/Button.styles'
 
@@ -27,11 +27,11 @@ function InputGroup({ disabled, className, ...props }: ComponentProps<'div'> & {
         'has-[[data-slot=input-group-control]:focus-visible]:border-(--input-border-active) has-[[data-slot=input-group-control]:focus-visible]:placeholder:opacity-0',
 
         // Error state.
-        'has-[[data-slot][aria-invalid=true]]:border-(--color-system-error)',
+        'has-[[data-slot][aria-invalid=true]]:border-system-error',
 
-        `${disabled ? ' bg-(--color-grey-extra-light) opacity-40 text-(--input-border) pointer-events-none cursor-not-allowed placeholder:opacity-0' : ''}`,
+        `${disabled ? ' bg-grey-extra-light opacity-40 text-(--input-border) pointer-events-none cursor-not-allowed placeholder:opacity-0' : ''}`,
 
-        'aria-invalid:border-(--color-system-error)',
+        'aria-invalid:border-system-error',
 
         className
       )}
@@ -41,7 +41,7 @@ function InputGroup({ disabled, className, ...props }: ComponentProps<'div'> & {
 }
 
 const inputGroupAddonVariants = cva(
-  "text-(--color-text) caret-(--caret) cursor-(--input-border-active) text-h5 font-display flex h-auto items-center justify-center gap-2 py-1.5 select-none [&>svg:not([class*='size-'])]:size-6 [&>kbd]:rounded-[calc(var(--radius)-5px)] group-data-[disabled=true]/input-group:opacity-50",
+  "text-text caret-(--caret) cursor-(--input-border-active) text-h5 font-display flex h-auto items-center justify-center gap-2 py-1.5 select-none [&>svg:not([class*='size-'])]:size-6 [&>kbd]:rounded-[calc(var(--radius)-5px)] group-data-[disabled=true]/input-group:opacity-50",
   {
     variants: {
       align: {
@@ -96,11 +96,7 @@ function InputGroupButton({
       type={type}
       data-size={size}
       variant={variant}
-      className={cn(
-        buttonVariants({ size, variant }),
-        'hover:text-(--color-text) active:text-(--input-border)',
-        className
-      )}
+      className={cn(buttonVariants({ size, variant }), 'hover:text-text active:text-(--input-border)', className)}
       {...props}
     />
   )
