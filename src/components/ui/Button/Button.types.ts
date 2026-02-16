@@ -1,5 +1,5 @@
 export interface ButtonProps {
-  label: string
+  label?: string
   onClick: () => void
   style?: 'primary' | 'secondary'
   type?: 'button' | 'submit' | 'reset'
