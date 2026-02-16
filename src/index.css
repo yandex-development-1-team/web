@@ -63,6 +63,8 @@
   /* Colors */
   --color-white: #fff;
   --color-black: #353434;
+  --color-black-dark: #1e1c1c;
+  --color-black-darker: #1a1a1a;
   --color-creamy: #fffff8;
 
   /* Grey */
@@ -98,6 +100,8 @@
 
   /* Text colors */
   --color-text: var(--color-black);
+  --color-text-black-dark: var(--color-black-dark);
+  --color-text-black-darker: var(--color-black-darker);
   --color-text-grey-dark: var(--color-grey-dark);
   --color-text-grey-light: var(--color-grey-light);
   --color-text-error: var(--color-red-dark);
