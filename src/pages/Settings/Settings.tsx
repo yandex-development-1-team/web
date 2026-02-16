@@ -97,7 +97,7 @@ const Settings = () => {
 
   return (
     <>
-      <h2 className="bg-white text-text-black-dark text-h2 m-[20px] mb-0 p-[18px_20px] rounded-md">
+      <h2 className="bg-white text-text-black-dark text-h2 p-[18px_20px] rounded-md">
         Системные настройки
       </h2>
 
@@ -106,7 +106,7 @@ const Settings = () => {
           ${phase !== 'accessSetup' ? 'bg-white' : ''}
           rounded-[8px]
           h-full
-          m-[20px]
+          my-[20px]
           flex-1
           text-text
         `}

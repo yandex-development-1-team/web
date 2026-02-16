@@ -1,17 +1,5 @@
 import type { ITextFieldValue, IAccountAccessRight } from '@/pages/Settings/Settings.types'
 
-/*
-export const mockTextFieldsValues: ITextFieldValue[] = [
-  { id: 0, value: '' },
-  { id: 1, value: '' },
-  { id: 2, value: '' },
-  { id: 3, value: '' },
-  { id: 4, value: '' },
-  { id: 5, value: '' },
-  { id: 6, value: '' }
-]
-*/
-
 export const mockTextFieldsValues: ITextFieldValue[] = [
   { id: 0, value: '' },
   { id: 1, value: '' },
