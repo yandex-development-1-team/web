@@ -12,8 +12,8 @@ export const Sidebar = ({ user }: { user: MockUserData }) => {
 
   return (
     <aside
-      className={`${isExpanded ? 'w-[328px]' : 'w-[120px]'} transition-[width] duration-400 min-h-screen 
-        px-[20px] pb-[20px] flex flex-col border-r border-grey-blue-light`}
+      className={`${isExpanded ? 'w-[328px]' : 'w-[120px]'} transition-[width] duration-400 h-screen 
+        px-[20px] pb-[20px] flex flex-col border-r border-grey-blue-light sticky top-0`}
     >
       <div
         className={`flex pl-[3px] items-center border-grey-extra-light transition-[flex-direction,margin,padding] duration-400 
@@ -66,8 +66,11 @@ export const Sidebar = ({ user }: { user: MockUserData }) => {
         </div>
       </div>
 
-      <nav className="flex flex-col justify-between flex-1">
-        <div className="flex flex-col transition-[gap] duration-400" style={{ gap: isExpanded ? '19.5px' : '16px' }}>
+      <nav className="flex flex-col justify-between flex-1 overflow-hidden">
+        <div
+          className="flex flex-col transition-[gap] duration-400 overflow-y-auto narrow-scrollbar pb-[14px]"
+          style={{ gap: isExpanded ? '19.5px' : '16px' }}
+        >
           {menu.map(item => (
             <Item
               key={`${item.route}-${isExpanded}`}
@@ -80,7 +83,7 @@ export const Sidebar = ({ user }: { user: MockUserData }) => {
           ))}
         </div>
         <div
-          className={`flex flex-col border-t border-grey-extra-light transition-[gap] duration-400
+          className={`flex flex-col border-t border-grey-extra-light transition-[gap] duration-400 flex-shrink-0
             ${isExpanded ? 'pt-[16px]' : 'pt-[12px] items-center'}`}
           style={{ gap: isExpanded ? '16px' : '12px' }}
         >

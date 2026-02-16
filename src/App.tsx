@@ -8,7 +8,7 @@ function App() {
     <div className="flex">
       <Sidebar user={MOCK_ADMIN} />
 
-      <main className="p-[20px]">
+      <main className="p-[20px] bg-grey-extra-light min-h-screen flex-1 flex flex-col">
         <Outlet />
       </main>
     </div>
