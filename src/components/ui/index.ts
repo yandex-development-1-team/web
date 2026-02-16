@@ -1,3 +1,5 @@
-export { ToggleButton } from './ToggleButton'
-export { Switch } from './Switch'
+export { ToggleButton } from './toggleButton'
+export { Switch } from './switch'
 export { Button } from './button'
+export { BoxButton } from './boxButton'
+export { Input } from './input'
