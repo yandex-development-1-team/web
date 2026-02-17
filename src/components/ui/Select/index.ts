@@ -1,5 +1,6 @@
 export {
   Select,
+  SelectBase,
   SelectContent,
   SelectGroup,
   SelectItem,
@@ -9,4 +10,4 @@ export {
   SelectSeparator,
   SelectTrigger,
   SelectValue
-} from './select'
+} from './SelectComponents'
