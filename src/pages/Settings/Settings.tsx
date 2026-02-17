@@ -129,7 +129,7 @@ const Settings = () => {
             <div>
               <Button
                 label="Отменить"
-                style="secondary"
+                variant="secondary"
                 onClick={handleResetValues}
                 className="w-[168px] mr-[20px] min-h-[46px]"
               />

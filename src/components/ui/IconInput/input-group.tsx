@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input/Input'
 import { Textarea } from '@/components/ui/Textarea'
 import { buttonVariants } from '@/components/ui/button/Button.styles'
+import type { ButtonProps } from '../button/Button.types'
 
 function InputGroup({ disabled, className, ...props }: ComponentProps<'div'> & { disabled?: boolean }) {
   return (
@@ -84,13 +85,7 @@ function InputGroupAddon({
   )
 }
 
-function InputGroupButton({
-  className,
-  type = 'button',
-  variant = 'ghost',
-  size = 'icon-32',
-  ...props
-}: Omit<ComponentProps<typeof Button>, 'size'> & VariantProps<typeof buttonVariants>) {
+function InputGroupButton({ className, type = 'button', variant = 'ghost', size = 'icon-32', ...props }: ButtonProps) {
   return (
     <Button
       type={type}

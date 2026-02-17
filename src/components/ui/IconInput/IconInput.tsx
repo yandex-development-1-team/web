@@ -1,8 +1,6 @@
 import type { ComponentProps, ReactNode } from 'react'
 import { InputGroup, InputGroupInput, InputGroupAddon, InputGroupButton } from './input-group'
-import type { VariantProps } from 'class-variance-authority'
-import type { buttonVariants } from '../button/Button.styles'
-import type { Button } from '../button'
+import type { ButtonProps } from '../button/Button.types'
 
 type IconPosition = 'inline-start' | 'inline-end' | 'block-start' | 'block-end'
 
@@ -18,8 +16,8 @@ type TIconInputProps =
   | ({
       variant: 'button'
       onClick: () => void
-      buttonAriaLabel: string
-      buttonProps?: Omit<ComponentProps<typeof Button>, 'size' | 'onClick'> & VariantProps<typeof buttonVariants>
+      buttonarialabel: string
+      buttonProps?: Omit<ButtonProps, 'onClick'>
       icon: ReactNode
       iconPosition?: IconPosition
       disabled?: boolean
@@ -36,7 +34,7 @@ export function IconInput(props: TIconInputProps) {
         <InputGroupAddon align={iconPosition}>{icon}</InputGroupAddon>
       ) : (
         <InputGroupAddon align={iconPosition ?? 'inline-end'}>
-          <InputGroupButton type="button" onClick={onClick} aria-label={props.buttonAriaLabel} {...props.buttonProps}>
+          <InputGroupButton type="button" onClick={onClick} aria-label={props.buttonarialabel} {...props.buttonProps}>
             {icon}
           </InputGroupButton>
         </InputGroupAddon>

@@ -1,8 +1,8 @@
-export interface ButtonProps {
+import type { ComponentProps } from 'react'
+import type { buttonVariants } from './Button.styles'
+import type { VariantProps } from 'class-variance-authority'
+
+export interface ButtonProps extends ComponentProps<'button'>, VariantProps<typeof buttonVariants> {
   label?: string
-  onClick?: () => void
-  style?: 'primary' | 'secondary'
-  type?: 'button' | 'submit' | 'reset'
-  className?: string
-  children?: React.ReactNode
+  asChild?: boolean
 }
