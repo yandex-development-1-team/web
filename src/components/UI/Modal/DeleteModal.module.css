@@ -1,0 +1,22 @@
+.deleteContent p {
+  margin: 0;
+  color: var(--color-text);
+}
+
+.deleteBtn {
+  background-color: var(--color-red-medium);
+  color: var(--color-white);
+  border: none;
+  padding: 12px 32px;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.cancelBtn {
+  background: none;
+  border: 1px solid var(--color-yellow-accent-light);
+  padding: 12px 32px;
+  border-radius: 8px;
+  cursor: pointer;
+}
