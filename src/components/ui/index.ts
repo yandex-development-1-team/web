@@ -1,12 +1,13 @@
 export { ToggleButton } from './ToggleButton'
 export { Switch } from './Switch'
-export { Button } from './button'
+export { Button } from './Button'
 export { BoxButton } from './BoxButton'
-export { Input } from './input'
-export { IconInput } from './IconInput'
+export { Input } from './Input'
+export { InputWithIcon } from './InputWithIcon'
 export { Textarea } from './Textarea'
 export {
   Select,
+  SelectBase,
   SelectContent,
   SelectGroup,
   SelectItem,

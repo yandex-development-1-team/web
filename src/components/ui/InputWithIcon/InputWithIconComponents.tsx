@@ -1,11 +1,10 @@
 import type { ComponentProps } from 'react'
-import { cva, type VariantProps } from 'class-variance-authority'
+import { type VariantProps } from 'class-variance-authority'
 import { cn } from '@/lib/utils.clsx'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input/Input'
-import { Textarea } from '@/components/ui/Textarea'
-import { buttonVariants } from '@/components/ui/button/Button.styles'
-import type { ButtonProps } from '../button/Button.types'
+import { Button, buttonVariants } from '@/components/ui/Button'
+import type { ButtonProps } from '@/components/ui/Button'
+import { inputWithIconVariants } from './InputWithIcon.styles'
+import { Input } from '@/components/ui/Input'
 
 function InputGroup({ disabled, className, ...props }: ComponentProps<'div'> & { disabled?: boolean }) {
   return (
@@ -41,36 +40,18 @@ function InputGroup({ disabled, className, ...props }: ComponentProps<'div'> & {
   )
 }
 
-const inputGroupAddonVariants = cva(
-  "text-text caret-(--caret) cursor-(--input-border-active) text-h5 font-display flex h-auto items-center justify-center gap-2 py-1.5 select-none [&>svg:not([class*='size-'])]:size-6 [&>kbd]:rounded-[calc(var(--radius)-5px)] group-data-[disabled=true]/input-group:opacity-50",
-  {
-    variants: {
-      align: {
-        'inline-start': 'order-first pl-3 has-[>button]:ml-[-0.45rem] has-[>kbd]:ml-[-0.35rem]',
-        'inline-end': 'order-last pr-3 has-[>button]:mr-[-0.45rem] has-[>kbd]:mr-[-0.35rem]',
-        'block-start':
-          'order-first w-full justify-start px-3 pt-3 [.border-b]:pb-3 group-has-[>input]/input-group:pt-2.5',
-        'block-end': 'order-last w-full justify-start px-3 pb-3 [.border-t]:pt-3 group-has-[>input]/input-group:pb-2.5'
-      }
-    },
-    defaultVariants: {
-      align: 'inline-start'
-    }
-  }
-)
-
 function InputGroupAddon({
   className,
   align = 'inline-start',
   ...props
-}: ComponentProps<'div'> & VariantProps<typeof inputGroupAddonVariants>) {
+}: ComponentProps<'div'> & VariantProps<typeof inputWithIconVariants>) {
   return (
     <div
       role="group"
       data-slot="input-group-addon"
       data-align={align}
       className={cn(
-        inputGroupAddonVariants({ align }),
+        inputWithIconVariants({ align }),
         'text-(--input-border) transition-colors duration-200 ease-in-out',
         className
       )}
@@ -97,18 +78,6 @@ function InputGroupButton({ className, type = 'button', variant = 'ghost', size 
   )
 }
 
-function InputGroupText({ className, ...props }: ComponentProps<'span'>) {
-  return (
-    <span
-      className={cn(
-        "text-muted-foreground flex items-center gap-2 text-sm [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4",
-        className
-      )}
-      {...props}
-    />
-  )
-}
-
 function InputGroupInput({ className, ...props }: ComponentProps<'input'>) {
   return (
     <Input
@@ -122,14 +91,4 @@ function InputGroupInput({ className, ...props }: ComponentProps<'input'>) {
   )
 }
 
-function InputGroupTextarea({ className, ...props }: ComponentProps<'textarea'>) {
-  return (
-    <Textarea
-      data-slot="input-group-control"
-      className={cn('flex-1 resize-none rounded-none border-0 focus-visible:ring-0 ', className)}
-      {...props}
-    />
-  )
-}
-
-export { InputGroup, InputGroupAddon, InputGroupButton, InputGroupText, InputGroupInput, InputGroupTextarea }
+export { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput }

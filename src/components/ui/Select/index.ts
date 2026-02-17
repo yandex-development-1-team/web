@@ -10,4 +10,4 @@ export {
   SelectSeparator,
   SelectTrigger,
   SelectValue
-} from './SelectComponents'
+} from './Select'

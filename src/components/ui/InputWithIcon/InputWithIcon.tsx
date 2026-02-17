@@ -1,10 +1,10 @@
 import type { ComponentProps, ReactNode } from 'react'
-import { InputGroup, InputGroupInput, InputGroupAddon, InputGroupButton } from './input-group'
-import type { ButtonProps } from '../button/Button.types'
+import { InputGroup, InputGroupInput, InputGroupAddon, InputGroupButton } from './InputWithIconComponents'
+import type { ButtonProps } from '@/components/ui/Button'
 
 type IconPosition = 'inline-start' | 'inline-end' | 'block-start' | 'block-end'
 
-type TIconInputProps =
+type TInputWithIconProps =
   | ({
       variant: 'icon'
       icon: ReactNode
@@ -25,7 +25,7 @@ type TIconInputProps =
       className?: string
     } & Omit<ComponentProps<'input'>, 'disabled' | 'invalid'>)
 
-export function IconInput(props: TIconInputProps) {
+export function InputWithIcon(props: TInputWithIconProps) {
   const { variant, icon, iconPosition, disabled, invalid, className, onClick, ...otherProps } = props
   return (
     <InputGroup disabled={disabled} aria-invalid={invalid} className={className}>
