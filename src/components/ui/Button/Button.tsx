@@ -3,15 +3,7 @@ import { cn } from '@/lib/utils.clsx'
 import { buttonVariants } from './Button.styles'
 import type { ButtonProps } from './Button.types'
 
-function Button({
-  className,
-  variant = 'primary',
-  size = 'default',
-  asChild = false,
-  label,
-  children,
-  ...props
-}: ButtonProps) {
+function Button({ className, variant = 'primary', size, asChild = false, label, children, ...props }: ButtonProps) {
   const Comp = asChild ? Slot.Root : 'button'
 
   return (

@@ -1,10 +1,10 @@
 import type { ComponentProps } from 'react'
 import { type VariantProps } from 'class-variance-authority'
-import { cn } from '@/lib/utils.clsx'
 import { Button, buttonVariants } from '@/components/ui/Button'
+import { InputBasic } from './InputBasic'
+import { cn } from '@/lib/utils.clsx'
 import type { ButtonProps } from '@/components/ui/Button'
-import { inputWithIconVariants } from './InputWithIcon.styles'
-import { Input } from '@/components/ui/Input'
+import { inputWithIconVariants } from './Input.styles'
 
 function InputGroup({ disabled, className, ...props }: ComponentProps<'div'> & { disabled?: boolean }) {
   return (
@@ -80,7 +80,7 @@ function InputGroupButton({ className, type = 'button', variant = 'ghost', size 
 
 function InputGroupInput({ className, ...props }: ComponentProps<'input'>) {
   return (
-    <Input
+    <InputBasic
       data-slot="input-group-control"
       className={cn(
         'flex-1 rounded-none border-0 bg-transparent shadow-none focus-visible:ring-0 dark:bg-transparent',

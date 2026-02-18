@@ -1,25 +1,63 @@
-import type { ComponentProps } from 'react'
-import { cn } from '@/lib/utils.clsx'
+import type { ComponentProps, ReactNode } from 'react'
+import { InputGroup, InputGroupInput, InputGroupAddon, InputGroupButton } from './ui/InputGroup'
+import { InputBasic } from './ui/InputBasic'
+import type { ButtonProps } from '@/components/ui/Button'
 
-function Input({ className, type, ...props }: ComponentProps<'input'>) {
-  return (
-    <input
-      type={type}
-      data-slot="input"
-      className={cn(
-        `border-(--input-border) border rounded-lg h-11 w-full min-w-25 bg-transparent py-3 ps-3 pe-1
-        font-display text-h5 text-text outline-none caret-(--caret)`,
-        'transition-colors duration-200 ease-in-out',
-        'placeholder:transition-colors placeholder:duration-200 placeholder:text-(--placeholder) placeholder:text-small placeholder:italic',
-        'hover:border-(--input-border-active) hover:placeholder:text-(--placeholder-active)',
-        'focus-visible:border-(--input-border-active) focus:placeholder:opacity-0',
-        'disabled:bg-grey-extra-light disabled:opacity-40 disabled:pointer-events-none disabled:cursor-not-allowed disabled:placeholder:opacity-0',
-        'aria-invalid:border-system-error',
-        className
-      )}
-      placeholder={props.placeholder ? props.placeholder : 'Teкст'}
-      {...props}
-    />
-  )
+type IconPosition = 'inline-start' | 'inline-end' | 'block-start' | 'block-end'
+
+type BaseInputProps = Omit<ComponentProps<'input'>, 'disabled'> & {
+  disabled?: boolean
+  invalid?: boolean
+  className?: string
 }
+
+type TSimpleInputProps = BaseInputProps & {
+  variant?: 'text'
+}
+
+type TInputWithIconProps = BaseInputProps & {
+  variant: 'icon'
+  icon: ReactNode
+  iconPosition?: IconPosition
+}
+
+type TInputWithIconButtonProps = BaseInputProps & {
+  variant: 'button'
+  onClick: () => void
+  buttonarialabel: string
+  buttonProps?: Omit<ButtonProps, 'onClick'>
+  icon: ReactNode
+  iconPosition?: IconPosition
+}
+
+type TIconProps = TSimpleInputProps | TInputWithIconProps | TInputWithIconButtonProps
+
+function Input(props: TIconProps) {
+  if (props.variant === 'icon') {
+    const { icon, iconPosition, invalid, disabled, className, ...otherProps } = props
+    return (
+      <InputGroup disabled={disabled} aria-invalid={invalid} className={className}>
+        <InputGroupInput disabled={disabled} {...otherProps} />
+        <InputGroupAddon align={iconPosition}>{icon}</InputGroupAddon>
+      </InputGroup>
+    )
+  }
+
+  if (props.variant === 'button') {
+    const { icon, iconPosition, onClick, invalid, disabled, className, ...otherProps } = props
+    return (
+      <InputGroup disabled={disabled} aria-invalid={invalid} className={className}>
+        <InputGroupInput disabled={disabled} {...otherProps} />
+        <InputGroupAddon align={iconPosition ?? 'inline-end'}>
+          <InputGroupButton type="button" onClick={onClick} aria-label={props.buttonarialabel} {...props.buttonProps}>
+            {icon}
+          </InputGroupButton>
+        </InputGroupAddon>
+      </InputGroup>
+    )
+  } else {
+    return <InputBasic aria-invalid={props.invalid} />
+  }
+}
+
 export { Input }
