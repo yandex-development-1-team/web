@@ -1,4 +1,4 @@
-import{r as S,j as p,S as ve}from"./index-DsJYhStj.js";const Ue=({leftLabel:e,rightLabel:r,onToggle:t,className:o})=>{const[n,s]=S.useState("left"),a=w=>{s(w),t(w)},d=`
+import{r as S,j as p,S as ve}from"./index-Cz4HEF6n.js";const Ue=({leftLabel:e,rightLabel:r,onToggle:t,className:o})=>{const[n,s]=S.useState("left"),a=w=>{s(w),t(w)},d=`
     flex
     flex-1
     items-center
