@@ -3,14 +3,11 @@ import { Slot } from 'radix-ui'
 import { type VariantProps } from 'class-variance-authority'
 import { cn } from '@/lib/utils.clsx'
 import { BoxButtonVariants } from './BoxButton.styles'
-import UsersIcon from '@/assets/icons/users.svg?react'
-import Special_ProjectsIcon from '@/assets/icons/special_projects.svg?react'
-import BoxIcon from '@/assets/icons/box.svg?react'
-import AddIcon from '@/assets/icons/add.svg?react'
+import { AddIcon, BoxIcon, SpecialProjectsIcon, UsersIcon } from '@/assets/icons'
 
 const ICONS = {
   users: UsersIcon,
-  special_projects: Special_ProjectsIcon,
+  special_projects: SpecialProjectsIcon,
   box: BoxIcon
 } as const
 

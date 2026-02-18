@@ -97,9 +97,7 @@ const Settings = () => {
 
   return (
     <>
-      <h2 className="bg-white text-text-black-dark text-h2 p-[18px_20px] rounded-md">
-        Системные настройки
-      </h2>
+      <h2 className="bg-white text-text-black-dark text-h2 p-[18px_20px] rounded-md">Системные настройки</h2>
 
       <div
         className={`
@@ -131,7 +129,7 @@ const Settings = () => {
             <div>
               <Button
                 label="Отменить"
-                style="secondary"
+                variant="secondary"
                 onClick={handleResetValues}
                 className="w-[168px] mr-[20px] min-h-[46px]"
               />
