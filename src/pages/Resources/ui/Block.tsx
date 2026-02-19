@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useForm, type SubmitHandler } from 'react-hook-form'
-import type { BlockType, FormFields } from './Block.types'
+import { Button, Input } from '@/components/ui'
 import { CloseIcon } from '@/assets/icons'
+import type { BlockType, FormFields } from './Block.types'
 
 export const Block = ({ title }: BlockType) => {
   const { register, handleSubmit } = useForm<FormFields>()
@@ -17,30 +18,28 @@ export const Block = ({ title }: BlockType) => {
 
   return (
     <div className="p-[20px] rounded-[8px] bg-system-background flex flex-col gap-[20px]">
-      <h2 className="font-display text-h2 text-black">{title}</h2>
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-[20px]">
-        <input
-          type="text"
-          placeholder="Название"
-          className="border-2 border-slate-400 rounded-md text-black placeholder-black-50"
-          {...register('title')}
-        />
-
-        <input
-          type="url"
-          placeholder="Ссылка"
-          className="border-2 border-slate-400 rounded-md text-black placeholder-black-50"
-          {...register('url')}
-        />
-        <button type="submit">Submit</button>
+      <h2 className="font-display text-h2 text-black leading-[1.4]">{title}</h2>
+      <form onSubmit={handleSubmit(onSubmit)} className="flex gap-[20px]">
+        <div className="flex flex-col gap-[20px] grow">
+          <label className="flex flex-col gap-[3px]">
+            <span className="font-display text-xxs text-text-grey-dark">Название</span>
+            <Input type="text" variant="text" placeholder="Введите название" {...register('title')} />
+          </label>
+          <label className="flex flex-col gap-[3px]">
+            <span className="font-display text-xxs text-text-grey-dark">URL</span>
+            <Input type="url" variant="text" placeholder="Вставьте ссылку" {...register('url')} />
+          </label>
+        </div>
+        <Button type="submit" label="Загрузить" size="default" className="self-end w-[196px]" />
       </form>
 
-      <div className="flex gap-[20px] flex-wrap">
-        {linksData.length > 0 &&
-          linksData.map((link, index) => (
-            <div key={index} className="flex gap-[21px]">
+      {linksData.length > 0 && (
+        <div className="flex gap-[20px] flex-wrap">
+          {linksData.map((link, index) => (
+            <div key={index} className="flex gap-[21px] pl-[12px] pt-[10px] pb-[8px]">
               <Link
                 to={link.url}
+                target="_blank"
                 className="font-display text-button text-text pb-[2px] border-b 
                   border-yellow-accent-light 
                   hover:border-yellow-accent-dark
@@ -53,7 +52,8 @@ export const Block = ({ title }: BlockType) => {
               </button>
             </div>
           ))}
-      </div>
+        </div>
+      )}
     </div>
   )
 }
