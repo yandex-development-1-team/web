@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import type { ITabsProps } from './DataExport.types'
+import { cn } from '@/lib/utils.clsx'
 // import {} from '@/assets/icons'
 // import { v4 as UUIDv4 } from 'uuid';
 
@@ -14,7 +15,12 @@ export const PageTabs = ({ tabs, className, ...props }: ITabsProps) => {
 
   return (
     <div
-      className={`flex flex-row items-center gap-8 h-13 mt-5 border-b border-b-yellow-accent-dark w-min ${className}`}
+      className={cn(
+        'flex flex-row items-center gap-8',
+        'h-13 w-min mt-5 ',
+        'border-b border-b-yellow-light',
+        className
+      )}
       {...props}
     >
       {tabs.map(tab => {
@@ -22,13 +28,25 @@ export const PageTabs = ({ tabs, className, ...props }: ITabsProps) => {
         return (
           <div
             key={id}
-            className={`flex flex-row items-center gap-1 min-h-full hover:bg-grey-extra-light cursor-pointer border-transparent border-b-2 ${selectedTab === id && 'border-b-yellow-accent-dark'}`}
+            className={cn(
+              'flex flex-row items-center gap-1',
+              'min-h-full',
+              'cursor-pointer',
+              'hover:border-b-yellow-accent-dark',
+              'transition-[border-color] duration-300',
+              'border-transparent border-b',
+              selectedTab === id && 'border-b-2 border-b-yellow-accent-dark'
+            )}
             onClick={() => handleTabClick(id)}
           >
             <div className={`w-6 h-6 shrink-0`}>
               <Icon className={`w-full h-full`} />
             </div>
-            <h4 className={`text-xl font-display font-normal ${selectedTab !== id && 'text-grey-dark'}`}>{title}</h4>
+            <h4
+              className={`text-xl font-display font-normal  transition-colors duration-300 ${selectedTab !== id && 'text-grey-dark'}`}
+            >
+              {title}
+            </h4>
           </div>
         )
       })}
