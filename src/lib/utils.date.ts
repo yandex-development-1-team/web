@@ -29,7 +29,7 @@ export function parseToDate(value: string): Date | undefined {
 
 // Форматирует строку "dd.mm.yyyy-dd.mm.yyyy" в DateRange
 export function parseToDateRange(str: string): DateRange | undefined {
-  if (str === '') return undefined
+  if (str.trim() === '') return undefined
   const parts = str.split('-').map(s => s.trim())
 
   const startStr = parts[0] || ''
@@ -41,9 +41,4 @@ export function parseToDateRange(str: string): DateRange | undefined {
   if (to && from && to < from) return { from: to, to: from }
 
   return { from, to }
-}
-
-// Проверяет, что дата валидная
-export function isValidDate(date: Date | undefined): boolean {
-  return date instanceof Date && !isNaN(date.getTime())
 }

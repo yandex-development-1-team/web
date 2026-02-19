@@ -1,23 +1,18 @@
 import { useState } from 'react'
-import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/Popover/'
-import { Input } from '@/components/ui/input'
+import { Popover, PopoverTrigger, PopoverContent } from './Popover'
+import { Calendar, CustomCalendarDropdown } from './Calendar'
+import { Input } from '@/components/ui/Input'
+import { CalendarIcon } from '@/assets/icons'
 import { formatDate, parseToDateRange } from '@/lib/utils.date'
-import type { DateRange } from 'react-day-picker'
-import { Calendar } from '../Calendar/Calendar'
+import type { TCalendarRangeInputProps } from '../CalendarInput.types'
 
-interface CalendarRangeInputProps {
-  value?: DateRange
-  onChange?: (value: DateRange | undefined) => void // undefined - невыбранное значение; для value.from и value.to Date - если валидная дата, undefined - невалидная дата или не выбрано to
-  placeholder?: string
-  disabled?: boolean
-}
-
-export const CalendarRangeInput: React.FC<CalendarRangeInputProps> = ({
+export const CalendarRangeInput = ({
   value,
   onChange,
   placeholder = 'Выберите период',
-  disabled
-}) => {
+  disabled,
+  invalid
+}: TCalendarRangeInputProps) => {
   const [open, setOpen] = useState(false)
   const [inputValue, setInputValue] = useState(() => {
     if (value?.from && value?.to) return `${formatDate(value.from)}-${formatDate(value.to)}`
@@ -64,11 +59,14 @@ export const CalendarRangeInput: React.FC<CalendarRangeInputProps> = ({
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger>
         <Input
-          placeholder={placeholder}
+          variant="icon"
+          icon={<CalendarIcon />}
+          placeholder={open ? '' : placeholder}
           disabled={disabled}
           value={inputValue}
           onChange={e => setInputValue(formatInput(e.target.value))}
           onBlur={handleBlur}
+          aria-invalid={invalid}
         />
       </PopoverTrigger>
 
@@ -91,6 +89,7 @@ export const CalendarRangeInput: React.FC<CalendarRangeInputProps> = ({
           }}
           defaultMonth={parsedInput?.from}
           autoFocus
+          components={{ Dropdown: CustomCalendarDropdown }}
         />
       </PopoverContent>
     </Popover>

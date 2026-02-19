@@ -1,22 +1,18 @@
 import { useEffect, useState } from 'react'
-import { Input } from '@/components/ui/input'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/Popover/Popover'
+import { Input } from '@/components/ui/Input'
+import { Popover, PopoverContent, PopoverTrigger } from './Popover'
+import { Calendar, CustomCalendarDropdown } from './Calendar'
+import { CalendarIcon } from '@/assets/icons'
 import { formatDate, parseToDate } from '@/lib/utils.date'
-import { Calendar } from '../Calendar/Calendar'
+import type { TCalendarSingleInputProps } from '../CalendarInput.types'
 
-interface CalendarSingleInputProps {
-  value?: Date
-  onChange?: (date: Date | undefined) => void
-  placeholder?: string
-  disabled?: boolean
-}
-
-export const CalendarSingleInput: React.FC<CalendarSingleInputProps> = ({
+export const CalendarSingleInput = ({
   value,
   onChange,
   placeholder = 'Введите дату',
-  disabled
-}) => {
+  disabled,
+  invalid
+}: TCalendarSingleInputProps) => {
   const [open, setOpen] = useState(false)
   const [inputValue, setInputValue] = useState(formatDate(value))
 
@@ -48,9 +44,12 @@ export const CalendarSingleInput: React.FC<CalendarSingleInputProps> = ({
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger>
         <Input
-          placeholder={placeholder}
+          variant="icon"
+          icon={<CalendarIcon />}
+          placeholder={open ? '' : placeholder}
           disabled={disabled}
           value={inputValue}
+          aria-invalid={invalid}
           onChange={e => setInputValue(formatInput(e.target.value))}
           onBlur={() => {
             onChange?.(parsedInput)
@@ -74,6 +73,7 @@ export const CalendarSingleInput: React.FC<CalendarSingleInputProps> = ({
           }}
           defaultMonth={parsedInput}
           autoFocus
+          components={{ Dropdown: CustomCalendarDropdown }}
         />
       </PopoverContent>
     </Popover>

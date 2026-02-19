@@ -1,11 +1,11 @@
 import { useEffect, useRef } from 'react'
-import { ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon } from 'lucide-react'
-import { DayPicker, getDefaultClassNames, type DayButton } from 'react-day-picker'
-import { cn } from '@/lib/utils'
+import { DayPicker, getDefaultClassNames, type DayButton, type DropdownProps } from 'react-day-picker'
 import { ru } from 'date-fns/locale'
-import { Button } from '@/components/ui/Button/button'
+import { Button, buttonVariants } from '@/components/ui/Button'
+import { SelectTrigger, SelectValue, SelectContent, SelectItem, SelectBase } from '../../Select'
+import { ArrowIcon } from '@/assets/icons'
+import { cn } from '@/lib/utils.clsx'
 import { capitalizeFirstLetter } from '@/lib/utils.string'
-import { buttonVariants } from '../Button'
 
 export function Calendar({
   className,
@@ -27,8 +27,14 @@ export function Calendar({
       captionLayout="dropdown"
       weekStartsOn={1}
       locale={ru}
+      labels={{
+        labelNext: () => 'Следующий месяц',
+        labelPrevious: () => 'Предыдущий месяц',
+        labelMonthDropdown: () => 'Выберите месяц',
+        labelYearDropdown: () => 'Выберите год'
+      }}
       className={cn(
-        'bg-white group/calendar p-4 pt-[14px] [--cell-size:--spacing(10.2)] rounded-2xl border border-[var(--color-calendar-border)]',
+        'bg-white group/calendar p-4 pt-[14px] [--cell-size:--spacing(10.2)] rounded-2xl border border-calendar-border',
         String.raw`rtl:**:[.rdp-button\_next>svg]:rotate-180`,
         String.raw`rtl:**:[.rdp-button\_previous>svg]:rotate-180`,
         className
@@ -39,9 +45,9 @@ export function Calendar({
         ...formatters
       }}
       startMonth={new Date(2020, 0)}
-      endMonth={new Date(currentYear + 1, 11)}
+      endMonth={new Date(currentYear + 5, 11)}
       classNames={{
-        root: cn('w-fit text-[color:var(--calendar-text)]', defaultClassNames.root),
+        root: cn('w-fit text-calendar-text font-display', defaultClassNames.root),
         months: cn('flex gap-4 flex-col md:flex-row relative', defaultClassNames.months),
         month: cn('flex flex-col w-full gap-4', defaultClassNames.month),
         nav: cn('flex items-center gap-1 w-full absolute top-0 inset-x-0 justify-between', defaultClassNames.nav),
@@ -64,7 +70,7 @@ export function Calendar({
           defaultClassNames.dropdowns
         ),
         dropdown_root: cn(
-          'relative border border-[color:var(--color-calendar-border)] rounded-lg shadow-xs has-focus:border-ring has-focus:ring-ring/50 has-focus:ring-[3px]',
+          'relative border border-calendar-border rounded-lg has-focus:border-ring has-focus:ring-ring/50 has-focus:ring-[3px]',
           defaultClassNames.dropdown_root
         ),
         dropdown: cn('absolute bg-popover inset-0 opacity-0', defaultClassNames.dropdown),
@@ -73,7 +79,7 @@ export function Calendar({
           defaultClassNames.caption_label
         ),
         table: 'w-full border-collapse',
-        weekdays: cn('text-[color:var(--color-weekdays-label)] flex', defaultClassNames.weekdays),
+        weekdays: cn('text-weekdays-label flex', defaultClassNames.weekdays),
         weekday: cn('rounded-md flex-1 font-normal text-xxs select-none', defaultClassNames.weekday),
         week: cn('flex w-full mt-0', defaultClassNames.week),
         week_number_header: cn('select-none w-(--cell-size)', defaultClassNames.week_number_header),
@@ -88,9 +94,9 @@ export function Calendar({
         range_start: cn('rounded-l-md', defaultClassNames.range_start),
         range_middle: cn('rounded-none', defaultClassNames.range_middle),
         range_end: cn('rounded-r-md', defaultClassNames.range_end),
-        today: cn('bg-[color:var(--color-grey-extra-light)] rounded-md', defaultClassNames.today),
-        outside: cn('text-[color:var(--color-outside-days)]', defaultClassNames.outside),
-        disabled: cn('text-muted-foreground opacity-50', defaultClassNames.disabled),
+        today: cn('bg-grey-extra-light rounded-md', defaultClassNames.today),
+        outside: cn('text-outside-days', defaultClassNames.outside),
+        disabled: cn('text-calendar-text opacity-50', defaultClassNames.disabled),
         hidden: cn('invisible', defaultClassNames.hidden),
         ...classNames
       }}
@@ -100,16 +106,16 @@ export function Calendar({
         },
         Chevron: ({ className, orientation, ...props }) => {
           if (orientation === 'left') {
-            return <ChevronLeftIcon className={cn('size-5', className)} {...props} />
+            return <ArrowIcon className={cn('size-4 rotate-90 stroke-[3px]', className)} {...props} />
           }
 
           if (orientation === 'right') {
-            return <ChevronRightIcon className={cn('size-5', className)} {...props} />
+            return <ArrowIcon className={cn('size-4 -rotate-90 stroke-[3px]', className)} {...props} />
           }
 
-          return <ChevronDownIcon className={cn('size-4', className)} {...props} />
+          return <ArrowIcon className={cn('size-4', className)} {...props} />
         },
-        DayButton: CalendarDayButton,
+        DayButton: props => <CalendarDayButton {...props} />,
         WeekNumber: ({ children, ...props }) => {
           return (
             <td {...props}>
@@ -136,7 +142,6 @@ function CalendarDayButton({ className, day, modifiers, ...props }: React.Compon
     <Button
       ref={ref}
       variant="ghost"
-      size="icon"
       data-day={day.date.toLocaleDateString()}
       data-selected-single={
         modifiers.selected && !modifiers.range_start && !modifiers.range_end && !modifiers.range_middle
@@ -145,11 +150,50 @@ function CalendarDayButton({ className, day, modifiers, ...props }: React.Compon
       data-range-end={modifiers.range_end}
       data-range-middle={modifiers.range_middle}
       className={cn(
-        'text-h5 font-normal flex aspect-square size-auto w-full min-w-(--cell-size) flex-col gap-1 [:hover]:bg-[color:var(--color-yellow-light)] data-[selected-single=true]:bg-[color:var(--color-yellow-light)] data-[selected-single=true]:text-[color:var(--color-text)] group-data-[focused=true]/day:ring-[0px] data-[range-start=true]:bg-[color:var(--color-yellow-light)] data-[range-start=true]:bg-[color:var(--color-yellow-light)] data-[range-end=true]:bg-[color:var(--color-yellow-light)] data-[range-middle=true]:bg-[color:var(--color-yellow-light)] data-[range-middle=true]:rounded-none data-[range-start=true]:rounded-none data-[range-start=true]:rounded-l-md data-[range-end=true]:rounded-none data-[range-end=true]:rounded-r-md',
+        `text-h5 font-normal flex aspect-square size-auto w-full min-w-(--cell-size) flex-col gap-1 [:hover]:bg-yellow-light [:hover]:text-calendar-text data-[selected-single=true]:bg-yellow-light data-[selected-single=true]:text-calendar-text group-data-[focused=true]/day:ring-[0px] data-[range-start=true]:bg-yellow-light data-[range-end=true]:bg-yellow-light data-[range-middle=true]:bg-yellow-light data-[range-middle=true]:rounded-none data-[range-start=true]:rounded-none data-[range-start=true]:rounded-l-md data-[range-end=true]:rounded-none data-[range-end=true]:rounded-r-md`,
         defaultClassNames.day,
         className
       )}
       {...props}
     />
+  )
+}
+
+export function CustomCalendarDropdown(props: DropdownProps) {
+  const { options, value, onChange, 'aria-label': ariaLabel } = props
+
+  const handleValueChange = (newValue: string) => {
+    if (onChange) {
+      const syntheticEvent = {
+        target: {
+          value: newValue
+        }
+      } as React.ChangeEvent<HTMLSelectElement>
+
+      onChange(syntheticEvent)
+    }
+  }
+
+  return (
+    <SelectBase value={value?.toString()} onValueChange={handleValueChange}>
+      <SelectTrigger
+        aria-label={ariaLabel}
+        className="z-400 text-calendar-text min-w-22 h-7 p-1.5 text-h5 border-calendar-border [&_svg]:size-4 [&_svg]:stroke-[3px] [&_svg:not([class*='text-'])]:text-calendar-text"
+      >
+        <SelectValue />
+      </SelectTrigger>
+      <SelectContent className="z-400 text-calendar-text">
+        {options?.map(option => (
+          <SelectItem
+            key={option.value}
+            value={option.value.toString()}
+            disabled={option.disabled}
+            className="z-400 text-xs"
+          >
+            {option.label}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </SelectBase>
   )
 }

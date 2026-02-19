@@ -56,7 +56,7 @@ function Input(props: TIconProps) {
       </InputGroup>
     )
   } else {
-    return <InputBasic aria-invalid={props.invalid} />
+    return <InputBasic aria-invalid={props.invalid} {...props} />
   }
 }
 
