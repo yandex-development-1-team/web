@@ -44,7 +44,18 @@ const Resources = () => {
         <h2 className="font-display text-h2 text-black leading-[1.4]">Информация об организации</h2>
         <label className="flex flex-col gap-[3px]">
           <span className="font-display text-xxs text-text-grey-dark">Текст</span>
-          <Textarea placeholder="Введите текст..." defaultValue={data.organizationInfo} {...registerTextarea('info')} />
+          <Textarea
+            placeholder="Введите текст..."
+            defaultValue={data.organizationInfo}
+            {...registerTextarea('info')}
+            className="max-h-[244px]"
+            style={{
+              resize: 'none',
+              overflowWrap: 'anywhere',
+              wordBreak: 'break-word',
+              overflowY: 'auto'
+            }}
+          />
         </label>
         <div className="flex gap-[12px] self-end">
           <Button
