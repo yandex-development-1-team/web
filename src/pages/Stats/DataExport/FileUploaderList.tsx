@@ -9,7 +9,7 @@ export const FileUploderList = ({ files, className, ...props }: TFileUploaderPro
   return (
     <ul className={`flex flex-col gap-3 w-100 ${className}`} {...props}>
       {files.map(file => {
-        return <FileItem {...file}></FileItem>
+        return <FileItem key={file.id} {...file}></FileItem>
       })}
     </ul>
   )

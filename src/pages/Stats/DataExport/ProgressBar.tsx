@@ -1,7 +1,11 @@
-export const ProgressBar = () => {
+type TProgress = {
+  progress: number
+}
+
+export const ProgressBar = ({ progress }: TProgress) => {
   return (
-    <div>
-      <hr className="border-none bg-yellow-accent-light w-full h-0.5"></hr>
+    <div className="w-full h-1">
+      <div className={`bg-yellow-accent-dark h-full`} style={{ width: `${progress}%` }}></div>
     </div>
   )
 }

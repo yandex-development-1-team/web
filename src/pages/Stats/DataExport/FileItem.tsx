@@ -10,14 +10,18 @@ export type TFileItem = {
   id: string
   name: string
   size: number
-  status: 'idle' | 'uploading'
+  status: 'idle' | 'downloading'
 } & ComponentProps<'li'>
 
-export const FileItem = ({ name, size, key, className, status, ...props }: TFileItem) => {
+export const FileItem = ({ name, size, className, status, ...props }: TFileItem) => {
   return (
     <li
-      key={key}
-      className={cn(`flex flex-col gap-24 p-3 w-full h-20.5 border-b-2 border-grey-extra-light ${className}`)}
+      className={cn(
+        'flex flex-col gap-3',
+        'p-3 w-full min-h-20.5',
+        'border-b-2 border-grey-extra-light',
+        `${className}`
+      )}
       {...props}
     >
       <div className="flex flex-row gap-3 items-center justify-between">
@@ -25,14 +29,14 @@ export const FileItem = ({ name, size, key, className, status, ...props }: TFile
           <DownloadIcon />
         </Button>
         <div className="self-start w-76.5">
-          <p>{name}</p>
-          <p>{size}</p>
+          <span className="block">{name}</span>
+          <span className="block">{(size / 1024 / 1024).toFixed(2)} MB</span>
         </div>
-        <Button variant={'ghost'} className="w-6 h-6">
-          {status === 'uploading' ? <CloseIcon /> : <DeleteIcon />}
+        <Button variant={'ghost'} className="w-8 h-8">
+          {status === 'downloading' ? <CloseIcon /> : <DeleteIcon />}
         </Button>
       </div>
-      {status === 'uploading' && <ProgressBar></ProgressBar>}
+      {status === 'downloading' && <ProgressBar progress={35} />}
     </li>
   )
 }
