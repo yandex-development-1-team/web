@@ -1,19 +1,15 @@
-import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useForm, type SubmitHandler } from 'react-hook-form'
 import { Button, Input } from '@/components/ui'
 import { CloseIcon } from '@/assets/icons'
 import type { BlockType, FormFields } from './Block.types'
 
-export const Block = ({ title }: BlockType) => {
-  const { register, handleSubmit } = useForm<FormFields>()
+export const Block = ({ title, links, onAddLink, onRemoveLink }: BlockType) => {
+  const { register, handleSubmit, reset } = useForm<FormFields>()
 
-  const [linksData, setLinksData] = useState<FormFields[]>([])
-
-  const onSubmit: SubmitHandler<FormFields> = async data => {
-    await new Promise(resolve => setTimeout(resolve, 1000))
-    setLinksData([...linksData, data])
-    console.log(data)
+  const onSubmit: SubmitHandler<FormFields> = data => {
+    onAddLink(data)
+    reset()
   }
 
   return (
@@ -23,19 +19,24 @@ export const Block = ({ title }: BlockType) => {
         <div className="flex flex-col gap-[20px] grow">
           <label className="flex flex-col gap-[3px]">
             <span className="font-display text-xxs text-text-grey-dark">Название</span>
-            <Input type="text" variant="text" placeholder="Введите название" {...register('title')} />
+            <Input
+              type="text"
+              variant="text"
+              placeholder="Введите название"
+              {...register('title', { required: true })}
+            />
           </label>
           <label className="flex flex-col gap-[3px]">
             <span className="font-display text-xxs text-text-grey-dark">URL</span>
-            <Input type="url" variant="text" placeholder="Вставьте ссылку" {...register('url')} />
+            <Input type="url" variant="text" placeholder="Вставьте ссылку" {...register('url', { required: true })} />
           </label>
         </div>
         <Button type="submit" label="Загрузить" size="default" className="self-end w-[196px]" />
       </form>
 
-      {linksData.length > 0 && (
+      {links.length > 0 && (
         <div className="flex gap-[20px] flex-wrap">
-          {linksData.map((link, index) => (
+          {links.map((link, index) => (
             <div key={index} className="flex gap-[21px] pl-[12px] pt-[10px] pb-[8px]">
               <Link
                 to={link.url}
@@ -47,7 +48,12 @@ export const Block = ({ title }: BlockType) => {
               >
                 {link.title}
               </Link>
-              <button type="button" className="w-[24px] h-[24px] cursor-pointer">
+              <button
+                type="button"
+                onClick={() => onRemoveLink(index)}
+                aria-label="Удалить ссылку"
+                className="w-[24px] h-[24px] cursor-pointer"
+              >
                 <CloseIcon className="w-full h-full text-text" />
               </button>
             </div>
