@@ -36,7 +36,7 @@ export const FileItem = ({ name, size, className, status, ...props }: TFileItem)
           {status === 'downloading' ? <CloseIcon /> : <DeleteIcon />}
         </Button>
       </div>
-      {status === 'downloading' && <ProgressBar progress={35} />}
+      {status === 'downloading' && <ProgressBar progress={0} />}
     </li>
   )
 }
