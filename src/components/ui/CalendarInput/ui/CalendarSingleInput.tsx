@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Input } from '@/components/ui/Input'
 import { Popover, PopoverContent, PopoverTrigger } from './Popover'
 import { Calendar, CustomCalendarDropdown } from './Calendar'
@@ -15,10 +15,6 @@ export const CalendarSingleInput = ({
 }: TCalendarSingleInputProps) => {
   const [open, setOpen] = useState(false)
   const [inputValue, setInputValue] = useState(formatDate(value))
-
-  useEffect(() => {
-    setInputValue(formatDate(value))
-  }, [value])
 
   function formatInput(value: string) {
     const date = value.replace(/[^\d.]/g, '').slice(0, 10)
