@@ -2,25 +2,24 @@ import { Link } from 'react-router-dom'
 import { useForm, type SubmitHandler } from 'react-hook-form'
 import { Button, Input } from '@/components/ui'
 import { CloseIcon } from '@/assets/icons'
-import type { BlockType, FormFields } from './Block.types'
+import type { LinkFormFields, LinkFormType } from './Form.types'
 
-export const Block = ({ title, links, onAddLink, onRemoveLink }: BlockType) => {
+export const LinkForm = ({ links, onAddLink, onRemoveLink }: LinkFormType) => {
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
     clearErrors
-  } = useForm<FormFields>()
+  } = useForm<LinkFormFields>()
 
-  const onSubmit: SubmitHandler<FormFields> = data => {
+  const onSubmit: SubmitHandler<LinkFormFields> = data => {
     onAddLink(data)
     reset()
   }
 
   return (
-    <div className="p-[20px] rounded-[8px] bg-system-background flex flex-col gap-[20px]">
-      <h2 className="text-h2 text-black leading-[1.4]">{title}</h2>
+    <>
       <form
         onSubmit={handleSubmit(onSubmit)}
         onBlur={e => {
@@ -107,6 +106,6 @@ export const Block = ({ title, links, onAddLink, onRemoveLink }: BlockType) => {
           ))}
         </div>
       )}
-    </div>
+    </>
   )
 }

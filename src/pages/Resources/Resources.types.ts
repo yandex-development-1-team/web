@@ -1,10 +1,10 @@
-import type { FormFields } from './ui/Block.types'
+import type { LinkFormFields } from './ui/Form/Form.types'
 
 export type ResourcesData = {
   organizationInfo: string
-  usefulLinks: FormFields[]
-  faq: FormFields[]
-  eventSchedule: FormFields[]
+  usefulLinks: LinkFormFields[]
+  faq: LinkFormFields[]
+  eventSchedule: LinkFormFields[]
 }
 
 export type LinkBlockKey = keyof Omit<ResourcesData, 'organizationInfo'>
