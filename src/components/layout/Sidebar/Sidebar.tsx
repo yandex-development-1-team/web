@@ -58,8 +58,8 @@ export const Sidebar = ({ user }: { user: MockUserData }) => {
         </div>
         <div className={`overflow-hidden transition-[width] duration-400 ${isExpanded ? 'w-[200px]' : 'w-0'}`}>
           <div className="flex flex-col gap-[4px] w-[200px]">
-            <span className="text-button font-display">{user.name}</span>
-            <span className="text-xs font-display">
+            <span className="text-button">{user.name}</span>
+            <span className="text-xs">
               {user.role === 'manager' ? `Менеджер ${user.grade} звена` : 'Администратор'}
             </span>
           </div>

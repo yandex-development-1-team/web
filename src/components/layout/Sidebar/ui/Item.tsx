@@ -21,7 +21,7 @@ export const Item = ({ Icon, title, route, childrenItems, isExpanded }: ItemProp
               <Icon className="w-full h-full text-text group-active:text-yellow-accent-light" />
             </div>
             <div className="overflow-hidden">
-              <h5 className="text-text text-h5 font-display w-[174px]">{title}</h5>
+              <h5 className="text-text text-h5 w-[174px]">{title}</h5>
             </div>
 
             {childrenItems?.length && (
@@ -62,7 +62,7 @@ export const Item = ({ Icon, title, route, childrenItems, isExpanded }: ItemProp
               ${isActive ? 'border-yellow-accent-dark' : ''}
             `}
                 >
-                  <span className="text-text text-xs font-display">{item.title}</span>
+                  <span className="text-text text-xs">{item.title}</span>
                 </div>
               )}
             </NavLink>
