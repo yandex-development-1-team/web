@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Button, Textarea } from '@/components/ui'
 import { Block } from './ui'
-import type { ResourcesData } from './Resources.types'
+import type { LinkBlockKey, ResourcesData } from './Resources.types'
 import type { FormFields } from './ui/Block.types'
 
 const Resources = () => {
@@ -28,22 +28,20 @@ const Resources = () => {
     resetTextarea({ info: '' })
   }
 
-  const addLink =
-    (blockKey: keyof Pick<ResourcesData, 'usefulLinks' | 'faq' | 'eventSchedule'>) => (linkData: FormFields) => {
-      setData(prev => ({ ...prev, [blockKey]: [...prev[blockKey], linkData] }))
-    }
+  const addLink = (blockKey: LinkBlockKey) => (linkData: FormFields) => {
+    setData(prev => ({ ...prev, [blockKey]: [...prev[blockKey], linkData] }))
+  }
 
-  const removeLink =
-    (blockKey: keyof Pick<ResourcesData, 'usefulLinks' | 'faq' | 'eventSchedule'>) => (index: number) => {
-      setData(prev => ({ ...prev, [blockKey]: prev[blockKey].filter((_, i) => i !== index) }))
-    }
+  const removeLink = (blockKey: LinkBlockKey) => (index: number) => {
+    setData(prev => ({ ...prev, [blockKey]: prev[blockKey].filter((_, i) => i !== index) }))
+  }
 
   return (
     <div className="flex flex-col gap-[20px]">
       <form onSubmit={handleSaveInfo} className="p-[20px] rounded-[8px] bg-system-background flex flex-col gap-[20px]">
-        <h2 className="font-display text-h2 text-black leading-[1.4]">Информация об организации</h2>
+        <h2 className="text-h2 text-black leading-[1.4]">Информация об организации</h2>
         <label className="flex flex-col gap-[3px]">
-          <span className="font-display text-xxs text-text-grey-dark">Текст</span>
+          <span className="text-xxs text-text-grey-dark">Текст</span>
           <Textarea
             placeholder="Введите текст..."
             defaultValue={data.organizationInfo}

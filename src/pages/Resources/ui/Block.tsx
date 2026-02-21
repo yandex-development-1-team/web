@@ -20,7 +20,7 @@ export const Block = ({ title, links, onAddLink, onRemoveLink }: BlockType) => {
 
   return (
     <div className="p-[20px] rounded-[8px] bg-system-background flex flex-col gap-[20px]">
-      <h2 className="font-display text-h2 text-black leading-[1.4]">{title}</h2>
+      <h2 className="text-h2 text-black leading-[1.4]">{title}</h2>
       <form
         onSubmit={handleSubmit(onSubmit)}
         onBlur={e => {
@@ -33,7 +33,7 @@ export const Block = ({ title, links, onAddLink, onRemoveLink }: BlockType) => {
       >
         <div className="flex flex-col gap-[20px] grow">
           <label className="flex flex-col gap-[3px]">
-            <span className="font-display text-xxs text-text-grey-dark">Название</span>
+            <span className="text-xxs text-text-grey-dark">Название</span>
             <Input
               type="text"
               variant="text"
@@ -52,10 +52,10 @@ export const Block = ({ title, links, onAddLink, onRemoveLink }: BlockType) => {
                 }
               })}
             />
-            {errors.title && <span className="font-display text-xxs text-text-error">{errors.title.message}</span>}
+            {errors.title && <span className="text-xxs text-text-error">{errors.title.message}</span>}
           </label>
           <label className="flex flex-col gap-[3px]">
-            <span className="font-display text-xxs text-text-grey-dark">URL</span>
+            <span className="text-xxs text-text-grey-dark">URL</span>
             <Input
               type="url"
               variant="text"
@@ -74,7 +74,7 @@ export const Block = ({ title, links, onAddLink, onRemoveLink }: BlockType) => {
                 }
               })}
             />
-            {errors.url && <span className="font-display text-xxs text-text-error">{errors.url.message}</span>}
+            {errors.url && <span className="text-xxs text-text-error">{errors.url.message}</span>}
           </label>
         </div>
         <Button type="submit" label="Загрузить" size="default" className="self-end w-[196px]" />
@@ -88,7 +88,7 @@ export const Block = ({ title, links, onAddLink, onRemoveLink }: BlockType) => {
                 to={link.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-display text-button text-text pb-[2px] border-b 
+                className="text-button text-text pb-[2px] border-b 
                   border-yellow-accent-light 
                   hover:border-yellow-accent-dark
                   active:border-yellow-accent-dark active:border-b-[2px]"

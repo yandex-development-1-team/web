@@ -6,3 +6,5 @@ export type ResourcesData = {
   faq: FormFields[]
   eventSchedule: FormFields[]
 }
+
+export type LinkBlockKey = keyof Omit<ResourcesData, 'organizationInfo'>

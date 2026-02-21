@@ -1,7 +1,6 @@
 import { cva } from 'class-variance-authority'
 
 const baseStyles = `
-font-display
 inline-flex
 items-center
 justify-center
