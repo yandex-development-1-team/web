@@ -1,7 +1,7 @@
 import { useEffect, useRef, type ReactNode } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { setupInterceptors } from './interceptors'
-import { createTokenStorage } from './lib/tokenStorage'
+import { setupInterceptors } from '@/app/providers/axios/interceptors'
+import { createTokenStorage } from '@/app/providers/axios/lib/tokenStorage'
 
 interface Props {
   children: ReactNode

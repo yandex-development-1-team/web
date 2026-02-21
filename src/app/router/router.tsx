@@ -8,11 +8,11 @@ export const router = createBrowserRouter(
   [
     {
       element: (
-        <AxiosProvider>
-          <NotificationProvider>
+        <NotificationProvider>
+          <AxiosProvider>
             <Outlet />
-          </NotificationProvider>
-        </AxiosProvider>
+          </AxiosProvider>
+        </NotificationProvider>
       ),
       children: [
         {

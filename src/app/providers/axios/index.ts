@@ -1,11 +1,4 @@
-// 1. Экспортируем основной инстанс для выполнения запросов
-export { api } from './axiosInstance'
-
-// 2. Экспортируем React-провайдер для инициализации в роутере/приложении
-export { AxiosProvider } from './AxiosProvider'
-
-// 3. Экспортируем кастомные классы ошибок (чтобы проверять их в catch через instanceof)
-export { ApiError, NetworkError, CancelledRequestError } from './utils/customErrors'
-
-// 4. Экспортируем типы данных (если они понадобятся в сервисах)
-export type { ApiErrorData, TokenStorage } from './types/api'
+export { api } from '@/app/providers/axios/axiosInstance'
+export { AxiosProvider } from '@/app/providers/axios/AxiosProvider'
+export { ApiError, NetworkError, CancelledRequestError } from '@/app/providers/axios/utils/customErrors'
+export type { ApiErrorData, TokenStorage } from '@/app/providers/axios/types/api'

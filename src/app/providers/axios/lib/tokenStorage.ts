@@ -1,4 +1,4 @@
-import type { TokenStorage } from '../types/api'
+import type { TokenStorage } from '@/app/providers/axios/types/api'
 
 export const createTokenStorage = (): TokenStorage => ({
   getToken: () => localStorage.getItem('authToken'),

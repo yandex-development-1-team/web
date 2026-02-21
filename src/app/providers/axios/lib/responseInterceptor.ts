@@ -1,6 +1,6 @@
 import type { AxiosResponse } from 'axios'
-import { ErrorHandler } from './errorHandler'
-import type { ErrorHandlerConfig } from '../types/api'
+import { ErrorHandler } from '@/app/providers/axios/lib/errorHandler'
+import type { ErrorHandlerConfig } from '@/app/providers/axios/types/api'
 
 export class ResponseInterceptor {
   private errorHandler: ErrorHandler

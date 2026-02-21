@@ -1,5 +1,5 @@
 import type { InternalAxiosRequestConfig } from 'axios'
-import type { TokenStorage } from '../types/api'
+import type { TokenStorage } from '@/app/providers/axios/types/api'
 
 export class RequestInterceptor {
   private tokenStorage: TokenStorage
@@ -17,7 +17,6 @@ export class RequestInterceptor {
 
   private getValidToken(): string | null {
     const token = this.tokenStorage.getToken()
-    // Базовая валидация токена
     if (token && token.length > 10) {
       return token
     }

@@ -1,7 +1,7 @@
 import axios from 'axios'
 import type { AxiosError } from 'axios'
-import { ApiError, NetworkError, CancelledRequestError } from '../utils/customErrors'
-import type { ApiErrorResponse, ErrorHandlerConfig } from '../types/api'
+import { ApiError, NetworkError, CancelledRequestError } from '@/app/providers/axios/utils/customErrors'
+import type { ApiErrorResponse, ErrorHandlerConfig } from '@/app/providers/axios/types/api'
 
 export class ErrorHandler {
   private isHandlingError = false
@@ -13,7 +13,6 @@ export class ErrorHandler {
   }
 
   public handleError(error: unknown): ApiError {
-    // Защита от рекурсии
     if (this.isHandlingError) {
       return new ApiError(500, 'RECURSIVE_ERROR')
     }
@@ -28,14 +27,12 @@ export class ErrorHandler {
   }
 
   private processError(error: unknown): ApiError {
-    // Обработка отмененных запросов
     if (axios.isCancel(error)) {
       throw new CancelledRequestError()
     }
 
     const axiosError = error as AxiosError<ApiErrorResponse['data']>
 
-    // Обработка сетевых ошибок (без ответа от сервера)
     if (!axiosError.response) {
       this.config.onNetworkError()
       throw new NetworkError()
@@ -45,7 +42,6 @@ export class ErrorHandler {
 
     const apiError = new ApiError(status, data?.code || `HTTP_${status}`, data?.details)
 
-    // Обработка в зависимости от статуса
     this.handleByStatus(status, data.message || apiError.message)
 
     return apiError
@@ -63,7 +59,6 @@ export class ErrorHandler {
         this.config.onServerError(message)
         break
       default:
-        // Не критические ошибки логируются, но не вызывают специальных действий
         if (this.config.isCriticalError?.(status) || this.criticalStatuses.includes(status)) {
           console.warn(`Critical error ${status}:`, message)
         }
@@ -71,7 +66,6 @@ export class ErrorHandler {
   }
 
   private handleUnauthorized(): void {
-    // Очищаем токены перед вызовом колбэка
     this.config.tokenStorage.removeToken()
     this.config.onUnauthorized()
   }
