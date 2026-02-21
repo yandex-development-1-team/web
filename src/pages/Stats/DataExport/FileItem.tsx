@@ -5,6 +5,7 @@ import { DeleteIcon } from '@/assets/icons'
 import { Button } from '@/components/ui'
 import { cn } from '@/lib/utils.clsx'
 import { ProgressBar } from './ProgressBar'
+import { formatFileSize } from '@/lib/fileUtils/formatFileSize'
 
 export type TFileItem = {
   id: string
@@ -14,6 +15,7 @@ export type TFileItem = {
 } & ComponentProps<'li'>
 
 export const FileItem = ({ name, size, className, status, ...props }: TFileItem) => {
+  const parsedSize = formatFileSize(size)
   return (
     <li
       className={cn(
@@ -30,7 +32,7 @@ export const FileItem = ({ name, size, className, status, ...props }: TFileItem)
         </Button>
         <div className="self-start w-76.5">
           <span className="block">{name}</span>
-          <span className="block">{(size / 1024 / 1024).toFixed(2)} MB</span>
+          <span className="block">{parsedSize}</span>
         </div>
         <Button variant={'ghost'} className="w-8 h-8">
           {status === 'downloading' ? <CloseIcon /> : <DeleteIcon />}
