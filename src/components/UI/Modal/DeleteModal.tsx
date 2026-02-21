@@ -1,16 +1,15 @@
 import { useState } from 'react'
 import { Modal } from './Modal'
-import { deleteItemById } from './api/deleteService'
-import styles from './DeleteModal.module.css'
+import { Button } from '@/components/ui/Button'
 
 interface DeleteModalProps {
   isOpen: boolean
   onClose: () => void
-  itemId: string | number | null // получаем ID из modalData хука
-  onSuccess?: () => void // коллбэк для обновления списка после удаления
+  itemId: string | number | null
+  onDelete: (id: string | number) => Promise<void>
 }
 
-export const DeleteModal = ({ isOpen, onClose, itemId, onSuccess }: DeleteModalProps) => {
+export const DeleteModal = ({ isOpen, onClose, itemId, onDelete }: DeleteModalProps) => {
   const [isDeleting, setIsDeleting] = useState(false)
 
   const handleDelete = async () => {
@@ -18,10 +17,10 @@ export const DeleteModal = ({ isOpen, onClose, itemId, onSuccess }: DeleteModalP
 
     setIsDeleting(true)
     try {
-      await deleteItemById(itemId)
-      if (onSuccess) onSuccess()
+      await onDelete(itemId)
+      onClose()
     } catch (error) {
-      console.error('Ошибка удаления:', error)
+      console.error('Ошибка в DeleteModal:', error)
     } finally {
       setIsDeleting(false)
     }
@@ -32,20 +31,21 @@ export const DeleteModal = ({ isOpen, onClose, itemId, onSuccess }: DeleteModalP
       isOpen={isOpen}
       onClose={onClose}
       title="Удалить заявку?"
+      showBorders={false}
       footer={
         <>
-          <button className={styles.cancelBtn} onClick={onClose} disabled={isDeleting}>
+          <Button variant="secondary" size="default" onClick={onClose} disabled={isDeleting}>
             Отмена
-          </button>
-          <button className={styles.deleteBtn} onClick={handleDelete} disabled={!itemId || isDeleting}>
+          </Button>
+          <Button variant="primary" size="default" onClick={handleDelete} disabled={!itemId || isDeleting}>
             {isDeleting ? 'Удаление...' : 'Удалить'}
-          </button>
+          </Button>
         </>
       }
     >
-      <div className={styles.deleteContent}>
-        <p>Вы действительно хотите удалить эту заявку?</p>
-        <p>Действие нельзя отменить.</p>
+      <div className="flex flex-col gap-1">
+        <p className="m-0 text-black">Вы действительно хотите удалить эту заявку?</p>
+        <p className="m-0 text-black">Действие нельзя отменить.</p>
       </div>
     </Modal>
   )
