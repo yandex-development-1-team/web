@@ -5,7 +5,6 @@ import type { ApiErrorResponse, ErrorHandlerConfig } from '@/app/providers/axios
 
 export class ErrorHandler {
   private isHandlingError = false
-  private readonly criticalStatuses = [401, 403, 500]
   private config: ErrorHandlerConfig
 
   constructor(config: ErrorHandlerConfig) {
@@ -42,7 +41,7 @@ export class ErrorHandler {
 
     const apiError = new ApiError(status, data?.code || `HTTP_${status}`, data?.details)
 
-    this.handleByStatus(status, data.message || apiError.message)
+    this.handleByStatus(status, data?.message || apiError.message)
 
     return apiError
   }
@@ -59,18 +58,13 @@ export class ErrorHandler {
         this.config.onServerError(message)
         break
       default:
-        if (this.config.isCriticalError?.(status) || this.criticalStatuses.includes(status)) {
-          console.warn(`Critical error ${status}:`, message)
+        if (this.config.isCriticalError?.(status)) {
+          this.config.onCriticalError?.(status, message)
         }
     }
   }
 
   private handleUnauthorized(): void {
-    this.config.tokenStorage.removeToken()
     this.config.onUnauthorized()
-  }
-
-  public isCritical(status: number): boolean {
-    return this.criticalStatuses.includes(status)
   }
 }

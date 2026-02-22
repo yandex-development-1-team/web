@@ -23,4 +23,5 @@ export interface ErrorHandlerConfig {
   onServerError: (message: string) => void
   onNetworkError: () => void
   isCriticalError?: (status: number) => boolean
+  onCriticalError?: (status: number, message: string) => void
 }
