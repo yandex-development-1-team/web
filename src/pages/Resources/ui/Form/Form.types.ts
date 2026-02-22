@@ -3,10 +3,14 @@ export type LinkFormFields = {
   url: string
 }
 
+export type LinkWithId = LinkFormFields & {
+  id: string
+}
+
 export type LinkFormType = {
-  links: LinkFormFields[]
+  links: LinkWithId[]
   onAddLink: (data: LinkFormFields) => void
-  onRemoveLink: (index: number) => void
+  onRemoveLink: (id: string) => void
 }
 
 export type InfoFormData = {

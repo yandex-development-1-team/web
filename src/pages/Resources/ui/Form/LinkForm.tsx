@@ -81,8 +81,8 @@ export const LinkForm = ({ links, onAddLink, onRemoveLink }: LinkFormType) => {
 
       {links.length > 0 && (
         <div className="flex gap-[20px] flex-wrap">
-          {links.map((link, index) => (
-            <div key={index} className="flex gap-[21px] pl-[12px] pt-[10px] pb-[8px]">
+          {links.map(link => (
+            <div key={link.id} className="flex gap-[21px] pl-[12px] pt-[10px] pb-[8px]">
               <Link
                 to={link.url}
                 target="_blank"
@@ -96,7 +96,7 @@ export const LinkForm = ({ links, onAddLink, onRemoveLink }: LinkFormType) => {
               </Link>
               <button
                 type="button"
-                onClick={() => onRemoveLink(index)}
+                onClick={() => onRemoveLink(link.id)}
                 aria-label="Удалить ссылку"
                 className="w-[24px] h-[24px] cursor-pointer"
               >

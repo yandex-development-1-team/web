@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { v4 as uuidv4 } from 'uuid'
 import { Block, InfoForm, LinkForm } from './ui'
 import type { LinkBlockKey, ResourcesData } from './Resources.types'
 import type { InfoFormData, LinkFormFields } from './ui/Form/Form.types'
@@ -20,11 +21,12 @@ const Resources = () => {
   }
 
   const addLink = (blockKey: LinkBlockKey) => (linkData: LinkFormFields) => {
-    setData(prev => ({ ...prev, [blockKey]: [...prev[blockKey], linkData] }))
+    const linkWithId = { ...linkData, id: uuidv4() }
+    setData(prev => ({ ...prev, [blockKey]: [...prev[blockKey], linkWithId] }))
   }
 
-  const removeLink = (blockKey: LinkBlockKey) => (index: number) => {
-    setData(prev => ({ ...prev, [blockKey]: prev[blockKey].filter((_, i) => i !== index) }))
+  const removeLink = (blockKey: LinkBlockKey) => (id: string) => {
+    setData(prev => ({ ...prev, [blockKey]: prev[blockKey].filter(link => link.id !== id) }))
   }
 
   return (
