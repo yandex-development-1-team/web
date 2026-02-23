@@ -19,7 +19,7 @@ export const DownItem = ({ Icon, title, route, onClick, isExpanded }: DownItemPr
         className={`overflow-hidden transition-[width] duration-400
           ${isExpanded ? 'width-[180px]' : 'w-0'}`}
       >
-        <h5 className="text-text text-h5 font-display w-[180px]">{title}</h5>
+        <h5 className="text-text text-h5 w-[180px]">{title}</h5>
       </div>
     </div>
   )
