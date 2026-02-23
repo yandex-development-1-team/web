@@ -176,3 +176,11 @@ textarea.hide-resizer::-webkit-resizer {
 .narrow-scrollbar::-webkit-scrollbar {
   width: 3px;
 }
+
+body,
+button,
+input,
+textarea,
+select {
+  font-family: var(--font-display);
+}

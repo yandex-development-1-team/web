@@ -73,6 +73,11 @@ export const MENU_ADMIN: Omit<ItemProps, 'isExpanded'>[] = [
     route: ROUTES.employees
   },
   {
+    Icon: AfishaIcon,
+    title: 'Ссылки и ресурсы',
+    route: ROUTES.resources
+  },
+  {
     Icon: SystemSettingsIcon,
     title: 'Системные настройки',
     route: ROUTES.settings
