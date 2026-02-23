@@ -1,1 +1,0 @@
-import{j as e}from"./index-CPSnIM8F.js";const n=()=>e.jsxs(e.Fragment,{children:[e.jsx("h1",{children:"Управление пользователями и правами"}),e.jsx("p",{children:"Страница в разработке..."})]}),s=n;export{s as Component};
