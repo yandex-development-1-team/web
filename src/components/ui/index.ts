@@ -17,3 +17,4 @@ export {
   SelectTrigger,
   SelectValue
 } from './Select'
+export { CalendarInput } from './CalendarInput'
