@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import type { ReactNode } from 'react'
 import { createPortal } from 'react-dom'
 import { Button } from '@/components/ui/Button'
+import { CloseIcon } from '@/assets/icons'
 
 interface ModalProps {
   isOpen: boolean
@@ -49,7 +50,7 @@ export const Modal = ({ isOpen, onClose, title, children, footer, showBorders = 
             aria-label="Закрыть модальное окно"
             className="text-2xl text-grey-light hover:text-black"
           >
-            &times;
+            <CloseIcon />
           </Button>
         </header>
 
