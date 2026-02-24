@@ -43,7 +43,7 @@ export const DeleteModal = ({ isOpen, onClose, itemId, onDelete, title = 'Уда
             Отмена
           </Button>
           <Button
-            variant="primary"
+            variant="danger"
             size="default"
             onClick={handleDelete}
             disabled={itemId === null || itemId === undefined || isDeleting}
