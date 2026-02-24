@@ -51,7 +51,7 @@ export const LinkForm = ({ links, onAddLink, onRemoveLink }: LinkFormType) => {
                 }
               })}
             />
-            {errors.title && <span className="text-xxs text-text-error">{errors.title.message}</span>}
+            <span className="text-xxs text-text-error min-h-[16px]">{errors.title?.message || '\u00A0'}</span>
           </label>
           <label className="flex flex-col gap-[3px]">
             <span className="text-xxs text-text-grey-dark">URL</span>
@@ -73,10 +73,10 @@ export const LinkForm = ({ links, onAddLink, onRemoveLink }: LinkFormType) => {
                 }
               })}
             />
-            {errors.url && <span className="text-xxs text-text-error">{errors.url.message}</span>}
+            <span className="text-xxs text-text-error min-h-[16px]">{errors.url?.message || '\u00A0'}</span>
           </label>
         </div>
-        <Button type="submit" label="Загрузить" size="default" className="self-end w-[196px]" />
+        <Button type="submit" label="Загрузить" size="default" className="self-end w-[196px] mb-[19px]" />
       </form>
 
       {links.length > 0 && (
