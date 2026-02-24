@@ -7,20 +7,25 @@ interface DeleteModalProps {
   onClose: () => void
   itemId: string | number | null
   onDelete: (id: string | number) => Promise<void>
+  title?: string
+  children?: React.ReactNode
 }
 
-export const DeleteModal = ({ isOpen, onClose, itemId, onDelete }: DeleteModalProps) => {
+export const DeleteModal = ({ isOpen, onClose, itemId, onDelete, title = 'Удалить ?', children }: DeleteModalProps) => {
   const [isDeleting, setIsDeleting] = useState(false)
+  const [error, setError] = useState(false)
 
   const handleDelete = async () => {
     if (!itemId) return
 
+    setError(false)
     setIsDeleting(true)
     try {
       await onDelete(itemId)
       onClose()
     } catch (error) {
       console.error('Ошибка в DeleteModal:', error)
+      setError(true)
     } finally {
       setIsDeleting(false)
     }
@@ -30,7 +35,7 @@ export const DeleteModal = ({ isOpen, onClose, itemId, onDelete }: DeleteModalPr
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title="Удалить заявку?"
+      title={title}
       showBorders={false}
       footer={
         <>
@@ -44,8 +49,10 @@ export const DeleteModal = ({ isOpen, onClose, itemId, onDelete }: DeleteModalPr
       }
     >
       <div className="flex flex-col gap-1">
-        <p className="m-0 text-black">Вы действительно хотите удалить эту заявку?</p>
-        <p className="m-0 text-black">Действие нельзя отменить.</p>
+        {children}
+        {error && (
+          <p className="mt-2 text-sm text-red-dark font-medium">Произошла ошибка при удалении. Попробуйте еще раз.</p>
+        )}
       </div>
     </Modal>
   )
