@@ -1,7 +1,7 @@
 import { createBrowserRouter, Outlet } from 'react-router-dom'
 import { ROUTES } from './routes'
 import { NotificationProvider } from '@/app/providers/notification'
-import { AxiosProvider } from '@/app/providers/axios/AxiosProvider'
+import { AxiosProvider } from '@/app/providers/axios'
 import App from '@/App'
 
 export const router = createBrowserRouter(
