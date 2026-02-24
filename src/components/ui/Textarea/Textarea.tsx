@@ -8,7 +8,7 @@ function Textarea({ className, ...props }: ComponentProps<'textarea'>) {
       className={cn(
         `border-(--input-border) border rounded-lg outline-none bg-transparent
         flex field-sizing-content min-h-15 w-full py-3 ps-3 pe-2
-        font-display text-h5 text-text caret-(--caret)
+        text-h5 text-text caret-(--caret)
         transition-colors duration-200 ease-in-out
         placeholder:transition-colors placeholder:duration-200 placeholder:text-(--placeholder) placeholder:text-small placeholder:italic
         hover:border-(--input-border-active) hover:placeholder:text-(--placeholder-active)

@@ -80,6 +80,7 @@
   --color-black-natural: #000000;
   --color-black: #353434;
   --color-black-dark: #1e1c1c;
+  --color-black-medium: #1e1e1e;
   --color-black-darker: #1a1a1a;
   --color-creamy: #fffff8;
 
@@ -88,6 +89,9 @@
   --color-grey-light: #c5c6c5;
   --color-grey-extra-light: #f3f3f3;
   --color-grey-blue-light: #d5d9e2;
+  --color-grey-default-secondary: #757575;
+  --color-grey-disabled: #b3b3b3;
+  --color-grey-border: #d9d9d9;
 
   /* Yellow */
   --color-yellow-accent-light: #f4db54;
@@ -153,6 +157,13 @@
   --select-content-shadow: 4px 4px 6.3px rgba(82, 82, 82, 0.12);
   --select-check: var(--color-black-natural);
   --select-option-hover: var(--color-grey-extra-light);
+
+  /* Calendar */
+  --color-weekdays-label: var(--color-grey-default-secondary);
+  --color-outside-days: var(--color-grey-disabled);
+  --color-calendar-border: var(--color-grey-border);
+  --color-calendar-text: var(--color-black-medium);
+  --popover-shadow: 0px 4px 20px rgba(0, 0, 0, 0.25);
 }
 
 textarea.hide-resizer::-webkit-resizer {
@@ -179,4 +190,12 @@ textarea.hide-resizer::-webkit-resizer {
 
 .narrow-scrollbar::-webkit-scrollbar {
   width: 3px;
+}
+
+body,
+button,
+input,
+textarea,
+select {
+  font-family: var(--font-display);
 }
