@@ -16,7 +16,7 @@ export const DeleteModal = ({ isOpen, onClose, itemId, onDelete, title = 'Уда
   const [error, setError] = useState(false)
 
   const handleDelete = async () => {
-    if (!itemId) return
+    if (itemId === null || itemId === undefined) return
 
     setError(false)
     setIsDeleting(true)
@@ -42,7 +42,12 @@ export const DeleteModal = ({ isOpen, onClose, itemId, onDelete, title = 'Уда
           <Button variant="secondary" size="default" onClick={onClose} disabled={isDeleting}>
             Отмена
           </Button>
-          <Button variant="primary" size="default" onClick={handleDelete} disabled={!itemId || isDeleting}>
+          <Button
+            variant="primary"
+            size="default"
+            onClick={handleDelete}
+            disabled={itemId === null || itemId === undefined || isDeleting}
+          >
             {isDeleting ? 'Удаление...' : 'Удалить'}
           </Button>
         </>
