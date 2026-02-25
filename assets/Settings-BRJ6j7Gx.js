@@ -1,4 +1,4 @@
-import{r as b,j as e,S}from"./index-CGBDcjST.js";import{B as I}from"./Button-DBikR_Ff.js";const A=({leftLabel:s,rightLabel:d,onToggle:r,className:g})=>{const[o,x]=b.useState("left"),n=v=>{x(v),r(v)},h=`
+import{r as b,j as e,S}from"./index-Chx8f1Te.js";import{B as I}from"./Button-BRFZg9X_.js";const A=({leftLabel:s,rightLabel:d,onToggle:r,className:g})=>{const[o,x]=b.useState("left"),n=v=>{x(v),r(v)},h=`
     flex
     flex-1
     items-center
