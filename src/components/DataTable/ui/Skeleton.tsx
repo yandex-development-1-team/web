@@ -1,4 +1,4 @@
-import type { Column } from './DataTable.types'
+import type { Column } from '../DataTable.types'
 
 interface SkeletonRowProps<T> {
   columns: Column<T>[]

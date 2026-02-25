@@ -1,12 +1,28 @@
 import type { SortConfig } from './DataTable.types'
 
-export function sortData<T>(data: T[], sortConfig: SortConfig | null): T[] {
+export function sortData<T>(data: T[], sortConfig: SortConfig<T> | null): T[] {
   if (!sortConfig) return data
+
+  const { key, direction } = sortConfig
+
   return [...data].sort((a, b) => {
-    const valA = a[sortConfig.key as keyof T]
-    const valB = b[sortConfig.key as keyof T]
-    if (valA < valB) return sortConfig.direction === 'asc' ? -1 : 1
-    if (valA > valB) return sortConfig.direction === 'asc' ? 1 : -1
+    const valA = a[key]
+    const valB = b[key]
+
+    if (valA == null && valB == null) return 0
+    if (valA == null) return direction === 'asc' ? 1 : -1
+    if (valB == null) return direction === 'asc' ? -1 : 1
+
+    if (typeof valA === 'string' && typeof valB === 'string') {
+      return direction === 'asc' ? valA.localeCompare(valB) : valB.localeCompare(valA)
+    }
+
+    if (typeof valA === 'number' && typeof valB === 'number') {
+      return direction === 'asc' ? valA - valB : valB - valA
+    }
+
+    if (valA < valB) return direction === 'asc' ? -1 : 1
+    if (valA > valB) return direction === 'asc' ? 1 : -1
     return 0
   })
 }
@@ -24,13 +40,52 @@ export function toggleRowSelection<T>(selected: T[], row: T, idKey: keyof T): T[
 
 export function toggleAllSelection<T>(selected: T[], rows: T[], idKey: keyof T, allSelected: boolean): T[] {
   if (allSelected) {
-    return selected.filter(s => !rows.some(r => r[idKey] === s[idKey]))
+    const newSelected = [...selected]
+    rows.forEach(row => {
+      if (!newSelected.some(s => String(s[idKey]) === String(row[idKey]))) {
+        newSelected.push(row)
+      }
+    })
+    return newSelected
+  } else {
+    return selected.filter(s => !rows.some(r => String(r[idKey]) === String(s[idKey])))
   }
-  const newSelected = [...selected]
-  rows.forEach(row => {
-    if (!newSelected.some(s => s[idKey] === row[idKey])) {
-      newSelected.push(row)
-    }
-  })
-  return newSelected
+}
+
+export function PaginationLogic(currentPage: number, totalPages: number, maxWindow = 2): (number | '...')[] {
+  const pages: (number | '...')[] = []
+
+  if (totalPages <= maxWindow) {
+    for (let i = 1; i <= totalPages; i++) pages.push(i)
+    return pages
+  }
+
+  pages.push(1)
+
+  const half = Math.floor(maxWindow / 2)
+
+  let start = currentPage - half
+  let end = start + maxWindow - 1
+
+  if (start < 2) {
+    start = 2
+    end = start + maxWindow - 1
+  }
+
+  if (end > totalPages - 1) {
+    end = totalPages - 1
+    start = end - maxWindow + 1
+  }
+
+  if (start > 2) pages.push('...')
+
+  for (let i = start; i <= end; i++) {
+    pages.push(i)
+  }
+
+  if (end < totalPages - 1) pages.push('...')
+
+  pages.push(totalPages)
+
+  return pages
 }

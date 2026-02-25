@@ -1,111 +1,78 @@
-import React, { useState, useMemo, useRef } from 'react'
-import { paginateData, sortData, toggleRowSelection } from './helpers'
+import { useMemo, useRef, useState } from 'react'
 import type { DataTableProps, SortConfig } from './DataTable.types'
-import SortIcon from '@/assets/icons/Arrows_Separate_Vertical.svg?react'
-import ArrowLeft from '@/assets/icons/ArrowLeft.svg?react'
-import ArrowRigth from '@/assets/icons/ArrowRigth.svg?react'
-import Checked from '@/assets/icons/Check.svg?react'
-import { SkeletonRow } from './Skeleton'
+import { paginateData, sortData, toggleAllSelection, toggleRowSelection } from './helpers'
+import { SkeletonRow } from './ui/Skeleton'
+import { TableHeader } from './ui/TableHeade'
+import { TableBody } from './ui/TableBody'
+import { TableControls } from './ui/TableControls'
 
-const DataTable = <T extends Record<string, unknown>>({
-  columns,
-  data,
-  isLoading = false,
-  error = null,
-  enablePagination = false,
-  enableLoadMore = false,
-  enableCheckboxes = false,
-  enableRowActions = false,
-  rowActions,
-  idKey,
-  initialPageSize = 12,
-  onSort,
-  onLoadMore,
-  onSelect
-}: DataTableProps<T>) => {
-  const [sortConfig, setSortConfig] = useState<SortConfig | null>(null)
-  const [currentPage, setCurrentPage] = useState(1)
+export function DataTable<T extends Record<string, unknown>>(props: DataTableProps<T>) {
+  const {
+    data,
+    columns,
+    rowActions,
+    idKey,
+    isLoading = false,
+    error = null,
+    initialPageSize = 10,
+    enableCheckboxes = false,
+    enablePagination = false,
+    enableLoadMore = false
+  } = props
+
   const [pageSize, setPageSize] = useState(initialPageSize)
+  const [sortConfig, setSortConfig] = useState<SortConfig<T> | null>(null)
   const [selectedRows, setSelectedRows] = useState<T[]>([])
-  const [displayedData, setDisplayedData] = useState<T[]>([])
+  const [page, setPage] = useState(1)
+  const [loadMoreCount, setLoadMoreCount] = useState(initialPageSize)
   const selectAllRef = useRef<HTMLInputElement>(null)
 
-  const sortedData = useMemo(() => sortData(data, sortConfig), [data, sortConfig])
+  const sortedData = useMemo(() => (sortConfig ? sortData(data, sortConfig) : data), [data, sortConfig])
 
-  const paginatedData = useMemo(
-    () => (enablePagination ? paginateData(sortedData, currentPage, pageSize) : sortedData),
-    [sortedData, currentPage, pageSize, enablePagination]
-  )
+  const displayData = useMemo(() => {
+    if (enableLoadMore) return sortedData.slice(0, loadMoreCount)
+    return paginateData(sortedData, page, pageSize)
+  }, [sortedData, page, pageSize, enableLoadMore, loadMoreCount])
 
-  const displayData = enableLoadMore ? displayedData : paginatedData
-
-  const handleSort = (key: string) => {
-    let direction: 'asc' | 'desc' = 'asc'
-    if (sortConfig?.key === key && sortConfig.direction === 'asc') {
-      direction = 'desc'
-    }
-    const newConfig = { key, direction }
-    setSortConfig(newConfig)
-    if (onSort) onSort(newConfig)
+  const handleSort = (key: keyof T) => {
+    const direction = sortConfig?.key === key && sortConfig.direction === 'asc' ? 'desc' : 'asc'
+    setSortConfig({ key, direction })
+    setPage(1)
   }
 
-  const handlePageSizeChange = (size: number) => {
-    const num = Math.max(5, Math.min(200, size))
-    setPageSize(num)
-    setCurrentPage(1)
-  }
+  const handleSelectRow = (row: T) => setSelectedRows(prev => toggleRowSelection(prev, row, idKey))
 
-  const handleSelectRow = (row: T) => {
-    const newSelected = toggleRowSelection(selectedRows, row, idKey)
-    setSelectedRows(newSelected)
-    if (onSelect) onSelect(newSelected)
-  }
+  const handleSelectAll = (all: boolean) => setSelectedRows(prev => toggleAllSelection(prev, displayData, idKey, all))
 
-  const handleSelectAll = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const checked = e.target.checked
-    let newSelected: T[]
-    if (checked) {
-      newSelected = [...selectedRows, ...paginatedData.filter(row => !selectedRows.some(r => r[idKey] === row[idKey]))]
-    } else {
-      newSelected = selectedRows.filter(s => !paginatedData.some(r => r[idKey] === s[idKey]))
-    }
-    setSelectedRows(newSelected)
-    if (onSelect) onSelect(newSelected)
-  }
+  const handleLoadMore = () => setLoadMoreCount(prev => prev + pageSize)
 
-  const handleLoadMore = () => {
-    if (onLoadMore) onLoadMore()
-    const start = displayedData.length
-    const nextData = data.slice(start, start + pageSize)
-    setDisplayedData(prev => [...prev, ...nextData])
-  }
+  const handlePageChange = (newPage: number) => setPage(newPage)
 
-  if (error) {
-    return <div>Не удалось загрузить данные</div>
-  }
+  if (error) return <div>Не удалось загрузить данные</div>
 
   if (isLoading) {
+    const rowsToShow = Math.min(pageSize, 10)
     return (
-      <div className="min-w-[1220px] rounded-lg border border-grey-light  bg-white">
+      <div className="min-w-[1220px] rounded-lg border bg-white">
         <table className="w-full border-collapse">
           <thead>
-            <tr className="bg-grey-blue-light border-b border-grey-dark h-12">
+            <tr className="h-12 border-b bg-gray-100">
               {enableCheckboxes && <th className="w-12 p-4" />}
-              {columns.map(col => (
-                <th key={col.key as string} className="p-4 text-left f text-black">
+              {columns.map((col, index) => (
+                <th key={String(col.key ?? index)} className="p-4 text-left">
                   {col.label}
                 </th>
               ))}
-              {enableRowActions && <th className="w-24 p-4" />}
+              {rowActions && <th className="w-24 p-4" />}
             </tr>
           </thead>
           <tbody>
-            {Array.from({ length: Math.min(pageSize, 10) }).map((_, i) => (
+            {Array.from({ length: rowsToShow }).map((_, i) => (
               <SkeletonRow
                 key={i}
                 columns={columns}
                 enableCheckboxes={enableCheckboxes}
-                enableRowActions={enableRowActions}
+                enableRowActions={!!rowActions}
               />
             ))}
           </tbody>
@@ -114,151 +81,49 @@ const DataTable = <T extends Record<string, unknown>>({
     )
   }
 
-  if (displayData.length === 0) {
-    return <div>Нет данных</div>
-  }
-
-  const totalPages = Math.ceil(sortedData.length / pageSize)
+  if (!columns.length) return <div>Нет данных</div>
 
   return (
-    <div className="overflow-x-auto min-w-[1220px] rounded-lg border bg-white border-grey-light">
-      <table className="w-full ">
-        <thead>
-          <tr className="border-b border-grey-light h-12 bg-grey-extra-light">
-            {enableCheckboxes && (
-              <th className="w-12 ">
-                <label className="inline-flex cursor-pointer items-center justify-center">
-                  <input ref={selectAllRef} type="checkbox" onChange={handleSelectAll} className="peer sr-only" />
-                  <div
-                    className={`
-                      h-5 w-5 rounded border-2 border-grey-dark bg-white
-                      flex items-center justify-center text-white relative
-                      peer-checked:bg-black peer-checked:border-black
-                      peer-indeterminate:bg-black peer-indeterminate:border-black
-                     
-                    `}
-                  >
-                    <Checked className="absolute" />
-                  </div>
-                </label>
-              </th>
-            )}
-            {columns.map(col => (
-              <th
-                key={col.key as string}
-                onClick={col.sortable ? () => handleSort(col.key as string) : undefined}
-                className="p-4 text-left text-black"
-              >
-                <div className="flex items-center gap-1">
-                  <span>{col.label}</span>
-                  {col.sortable && <SortIcon className="h-4 w-4" />}
-                </div>
-              </th>
-            ))}
-            {enableRowActions && <th></th>}
-          </tr>
-        </thead>
+    <div className="overflow-x-auto min-w-[1220px] rounded-lg border border-grey-light bg-white text-color-black text-xs">
+      <table className="w-full">
+        <TableHeader
+          columns={columns}
+          enableCheckboxes={enableCheckboxes}
+          enableRowActions={!!rowActions}
+          onSort={handleSort}
+          selectAllRef={selectAllRef}
+          onSelectAll={e => handleSelectAll(e.target.checked)}
+        />
 
-        <tbody>
-          {displayData.map(row => (
-            <tr key={String(row[idKey])} className="border-b border-grey-light">
-              {enableCheckboxes && (
-                <td className="w-12 p-4  ">
-                  <label className="flex cursor-pointer items-center justify-center">
-                    <input
-                      type="checkbox"
-                      checked={selectedRows.some(r => r[idKey] === row[idKey])}
-                      onChange={() => handleSelectRow(row)}
-                      className="peer sr-only"
-                    />
-                    <div
-                      className={`
-                        h-5 w-5 rounded border-2 border-grey-dark bg-white
-                        flex items-center justify-center text-white
-                        peer-checked:bg-black peer-checked:border-black
-                        relative
-                      `}
-                    >
-                      <Checked className="absolute" />
-                    </div>
-                  </label>
-                </td>
-              )}
-              {columns.map(col => (
-                <td key={col.key as string} className={`p-4 ${col.className || ''}`}>
-                  {col.render ? col.render(row[col.key], row) : String(row[col.key] ?? '')}
-                </td>
-              ))}
-              {enableRowActions && (
-                <td className="w-24 p-4">
-                  <div className="flex justify-center gap-4 text-grey-dark">{rowActions?.(row)}</div>
-                </td>
-              )}
-            </tr>
-          ))}
-        </tbody>
+        <TableBody
+          data={displayData}
+          columns={columns}
+          idKey={idKey}
+          enableCheckboxes={enableCheckboxes}
+          enableRowActions={!!rowActions}
+          selectedRows={selectedRows}
+          onSelectRow={handleSelectRow}
+          rowActions={rowActions}
+        />
       </table>
 
-      {enablePagination && (
-        <div className="flex items-center justify-between px-6 py-4 border-t border-grey-light text-sm text-grey-dark">
-          <div className="flex items-center gap-3  text-black">
-            <span>Показывать по</span>
-            <input
-              type="text"
-              value={pageSize}
-              onChange={e => handlePageSizeChange(Number(e.target.value))}
-              className="w-10 text-center outline-none inline-flex items-center border text-black border-gray-300 rounded-[8px] py-[10px] px-[12px] bg-white"
-              min={5}
-              max={200}
-            />
-          </div>
+      {enablePagination && displayData.length > 0 && (
+        <TableControls
+          pageSize={pageSize}
+          currentPage={page}
+          totalItems={sortedData.length}
+          onPageSizeChange={size => setPageSize(size)}
+          onPageChange={handlePageChange}
+        />
+      )}
 
-          {enablePagination && (
-            <div className="flex items-center gap-1">
-              <button
-                onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
-                disabled={currentPage === 1}
-                className="p-2 rounded hover:bg-gray-100 disabled:opacity-40"
-              >
-                <ArrowLeft />
-              </button>
-
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map(p => (
-                <button
-                  key={p}
-                  onClick={() => setCurrentPage(p)}
-                  className={`
-                    w-[32px] h-8 flex items-center justify-center rounded-md text-sm  
-                    ${
-                      p === currentPage
-                        ? ' text-black border border-yellow-accent-light'
-                        : 'text-grey-light border border-transparent'
-                    }
-                  `}
-                >
-                  {p}
-                </button>
-              ))}
-
-              <button
-                onClick={() => setCurrentPage(p => p + 1)}
-                disabled={currentPage * pageSize >= sortedData.length}
-                className="p-2 rounded"
-              >
-                <ArrowRigth />
-              </button>
-            </div>
-          )}
-
-          {enableLoadMore && displayedData.length < data.length && (
-            <button onClick={handleLoadMore} className="px-5 py-2 bg-black text-white rounded-md ">
-              Показать ещё
-            </button>
-          )}
+      {enableLoadMore && displayData.length < sortedData.length && (
+        <div className="flex justify-end p-4">
+          <button onClick={handleLoadMore} className="border border-transparent text-grey-dark underline">
+            Показать больше
+          </button>
         </div>
       )}
     </div>
   )
 }
-
-export { DataTable }

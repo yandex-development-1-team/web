@@ -1,11 +1,16 @@
 import type { ReactNode } from 'react'
 
-export interface Column<T> {
-  key: keyof T
+export interface Column<T, K extends keyof T = keyof T> {
+  key: K
   label: string
   sortable?: boolean
-  render?: (value: unknown, row: T) => ReactNode
+  render?: (value: T[K], row: T) => ReactNode
   className?: string
+}
+
+export interface SortConfig<T> {
+  key: keyof T
+  direction: 'asc' | 'desc'
 }
 
 export interface DataTableProps<T extends Record<string, unknown>> {
@@ -16,16 +21,13 @@ export interface DataTableProps<T extends Record<string, unknown>> {
   enablePagination?: boolean
   enableLoadMore?: boolean
   enableCheckboxes?: boolean
-  enableRowActions?: boolean
-  rowActions?: (row: T) => React.ReactNode
+
+  rowActions?: (row: T) => ReactNode
+
   idKey: keyof T
   initialPageSize?: number
-  onSort?: (config: SortConfig) => void
+
+  onSort?: (config: SortConfig<T>) => void
   onLoadMore?: () => void
   onSelect?: (selected: T[]) => void
-}
-
-export interface SortConfig {
-  key: string
-  direction: 'asc' | 'desc'
 }
