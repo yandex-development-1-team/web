@@ -1,103 +1,58 @@
 import { DownloadIcon, ArrowsUpDownIcon } from '@/assets/icons'
 import { Button, CalendarInput } from '@/components/ui'
-import { useCallback, useEffect, useState } from 'react'
-import { MOCK_BOXES } from '@/mockData/mockBoxes'
+import { useMemo, useState } from 'react'
 import type { TBoxes } from '@/pages/Stats/Popularity/Popularity.types'
-import { useNotification } from '@/app/providers/notification'
 import { Funnel } from '@/components/Funnel'
+import { downloadBlob } from '@/lib/utils.blob'
+import { useExportAnalytics, useGetBoxes } from '@/hooks/usePopularityAnalytics'
 
 const Popularity = () => {
   const [boxes, setBoxes] = useState<TBoxes[]>([])
   const [isRatingSort, setIsRatingSort] = useState(false)
   const [dateRange, setDateRange] = useState({
-    startDate: undefined,
-    endDate: undefined
+    dateFrom: undefined,
+    dateTo: undefined
   })
-  const notification = useNotification()
-  const [isDateRangeValid, setIsDateRangeValid] = useState(false)
+
   const [canDownload, setCanDownload] = useState(false)
 
-  const handleDateChange = useCallback(
-    (field: string) => (date: Date | undefined) => {
-      setDateRange(prev => ({
-        ...prev,
-        [field]: date
-      }))
-    },
-    []
-  )
+  const exportFile = useExportAnalytics()
+  const resp = useGetBoxes()
 
-  useEffect(() => {
-    if (dateRange.endDate && dateRange.startDate) {
-      if (dateRange.startDate < dateRange.endDate) {
-        setIsDateRangeValid(true)
-      } else {
-        setIsDateRangeValid(false)
-      }
-    } else {
-      setIsDateRangeValid(false)
-    }
-    setCanDownload(false)
+  const queryParams = {
+    dateFrom: dateRange.dateFrom || '',
+    dateTo: dateRange.dateTo || ''
+  }
+
+  const isDateRangeValid = useMemo(() => {
+    const { dateFrom, dateTo } = dateRange
+    return !!(dateFrom && dateTo && dateFrom <= dateTo)
   }, [dateRange])
 
-  // TODO: Заменить моковыйе данные когда будет бэк
+  const handleDateChange = (field: string) => (date: Date | undefined) => {
+    setDateRange(prev => ({
+      ...prev,
+      [field]: date
+    }))
+    setCanDownload(false)
+  }
+
   const handleFetchData = async () => {
-    console.log(dateRange)
     try {
-      setIsDateRangeValid(false)
-      setCanDownload(false)
-
-      const result = await new Promise<TBoxes[]>(resolve => {
-        setTimeout(() => {
-          const data = [...MOCK_BOXES].sort((a, b) => b.views - a.views).slice(0, 4)
-          resolve(data)
-        }, 3000)
-      })
-
-      setBoxes(result)
-      setIsDateRangeValid(true)
+      const result = await resp.mutateAsync(queryParams)
+      setBoxes(result.data)
       setCanDownload(true)
     } catch (error) {
-      setIsDateRangeValid(true)
-      setCanDownload(false)
       setBoxes([])
-
-      const errorMessage = error instanceof Error ? error.message : 'Ошибка при загрузке данных'
-
-      notification.showNotification({
-        status: 'error',
-        message: errorMessage
-      })
+      setCanDownload(false)
+      console.error('Ошибка при загрузке данных:', error)
     }
   }
 
-  // TODO: Скачивание либо через бэк либо самим (оставить на потом)
   const handleDownload = async () => {
-    try {
-      const queryParams = new URLSearchParams({
-        type: 'boxes',
-        date_from: dateRange?.startDate || '',
-        date_to: dateRange?.endDate || ''
-      })
-      const response = await fetch(`/api/v1/analytics/export?${queryParams}`)
-
-      if (!response.ok) {
-        throw new Error('Ошибка при загрузке данных')
-      }
-
-      const blob = await response.blob()
-      const url = window.URL.createObjectURL(blob)
-      const fileName = url.split('/').pop()
-      const link = document.createElement('a')
-      link.href = url
-      link.download = `${fileName}`
-      link.click()
-      window.URL.revokeObjectURL(url)
-      notification.showNotification({ status: 'success', message: 'Файл готов' })
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Ошибка при загрузке данных'
-      notification.showNotification({ status: 'error', message: errorMessage })
-    }
+    const response = await exportFile.mutateAsync(queryParams)
+    const blob = response.blob.data
+    downloadBlob(blob)
   }
 
   return (
@@ -109,11 +64,11 @@ const Popularity = () => {
           <div className=" grid grid-cols-1 min-[1050px]:grid-cols-2 gap-3">
             <div className="flex flex-col gap-1">
               <span className="text-xxs text-[#6E6E6E]">Период с</span>
-              <CalendarInput variant="single" value={dateRange.startDate} onChange={handleDateChange('startDate')} />
+              <CalendarInput variant="single" value={dateRange.dateFrom} onChange={handleDateChange('dateFrom')} />
             </div>
             <div className="flex flex-col gap-1">
               <span className="text-xxs text-[#6E6E6E]">Период по</span>
-              <CalendarInput variant="single" value={dateRange.endDate} onChange={handleDateChange('endDate')} />
+              <CalendarInput variant="single" value={dateRange.dateTo} onChange={handleDateChange('dateTo')} />
             </div>
           </div>
           <div className="flex gap-3">
