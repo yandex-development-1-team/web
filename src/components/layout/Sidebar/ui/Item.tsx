@@ -1,16 +1,31 @@
 import { useState } from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useMatch } from 'react-router-dom'
 import { ArrowIcon } from '@/assets/icons'
 import type { ItemProps } from './Item.types'
 
 export const Item = ({ Icon, title, route, childrenItems, isExpanded }: ItemProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
 
+  const isCurrentRoute = useMatch(route)
+
+  const handleMenuItemClick = () => {
+    if ((!isOpen || isCurrentRoute) && isExpanded) {
+      setIsOpen(state => !state)
+    }
+  }
+
+  const handleButtonClick = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsOpen(state => !state)
+  }
+
   return (
     <div className="flex flex-col gap-[13px]">
       <NavLink to={route}>
         {({ isActive }) => (
           <div
+            onClick={(childrenItems?.length && handleMenuItemClick) || undefined}
             className={`
             pr-[8px] pl-[12px] rounded-[12px] flex items-center gap-[8px] cursor-pointer
             hover:bg-grey-extra-light group active:bg-system-background relative
@@ -27,15 +42,11 @@ export const Item = ({ Icon, title, route, childrenItems, isExpanded }: ItemProp
             {childrenItems?.length && (
               <button
                 type="button"
-                onClick={e => {
-                  e.preventDefault()
-                  e.stopPropagation()
-                  setIsOpen(state => !state)
-                }}
+                onClick={handleButtonClick}
                 className={`
-                  absolute inset-y-[30%] right-[12px] cursor-pointer
+                  absolute right-[4px] cursor-pointer h-[32px] top-[14px]
                   overflow-hidden transition-[width,opacity] duration-400
-                  ${isExpanded ? 'w-[24px] opacity-100' : 'w-0 opacity-0'}
+                  ${isExpanded ? 'w-[32px] opacity-100' : 'w-0 opacity-0'}
                 `}
               >
                 <ArrowIcon

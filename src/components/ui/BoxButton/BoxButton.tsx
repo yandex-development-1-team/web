@@ -38,7 +38,16 @@ function BoxButton({
       {...props}
     >
       <div className="flex items-center gap-3">
-        {IconComponent && <IconComponent className="size-6 shrink-0" />}
+        {IconComponent && (
+          <IconComponent
+            className={`
+          ${icon === 'box' && 'w-[37px] text-text-black-natural'}
+          ${icon === 'special_projects' && 'w-[31px]'}
+          ${icon === 'users' && 'w-[42px]'}
+          shrink-0
+        `}
+          />
+        )}
         {children}
       </div>
       <div
