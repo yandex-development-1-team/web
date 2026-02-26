@@ -30,8 +30,8 @@ const ManageSolutions = () => {
         <h2 className="text-h2 py-[18px_13px]">Управление коробками и спецпроектами</h2>
         <h4 className="text-h4sb pb-[14px]">Сводка дня</h4>
         <div className="flex text-text gap-[20px]">
-          {indicators.map((indicator, index) => (
-            <div className="flex-1" key={index}>
+          {indicators.map(indicator => (
+            <div className="flex-1" key={indicator.id}>
               <p className="text-xxs pb-[7px]">{indicator.name}</p>
               <div
                 className={`
@@ -53,9 +53,9 @@ const ManageSolutions = () => {
             <BoxButton className="text-button" icon={'box'} onClick={handleBoxCreate}>
               Создать коробку
             </BoxButton>
-            {mockBoxes.map((box, index) => (
+            {mockBoxes.map(box => (
               <ManageButton
-                key={index}
+                key={box.id}
                 text={box.name}
                 onClick={() => handleBoxEdit(box.id)}
                 onDelete={() => handleBoxDelete(box.id)}
@@ -67,9 +67,9 @@ const ManageSolutions = () => {
             <BoxButton className="text-button" icon={'special_projects'} onClick={handleProjectCreate}>
               Создать спецпроект
             </BoxButton>
-            {mockProjects.map((project, index) => (
+            {mockProjects.map(project => (
               <ManageButton
-                key={index}
+                key={project.id}
                 text={project.name}
                 onClick={() => handleProjectEdit(project.id)}
                 onDelete={() => handleProjectDelete(project.id)}
