@@ -1,4 +1,9 @@
+#root {
+  display: block;
+}
+
 @import 'tailwindcss';
+@import 'tw-animate-css';
 
 @font-face {
   font-family: 'Open Sans';
@@ -57,7 +62,11 @@
 
   /* Colors */
   --color-white: #fff;
+  --color-black-natural: #000000;
   --color-black: #353434;
+  --color-black-dark: #1e1c1c;
+  --color-black-medium: #1e1e1e;
+  --color-black-darker: #1a1a1a;
   --color-creamy: #fffff8;
 
   /* Grey */
@@ -65,6 +74,9 @@
   --color-grey-light: #c5c6c5;
   --color-grey-extra-light: #f3f3f3;
   --color-grey-blue-light: #d5d9e2;
+  --color-grey-default-secondary: #757575;
+  --color-grey-disabled: #b3b3b3;
+  --color-grey-border: #d9d9d9;
 
   /* Yellow */
   --color-yellow-accent-light: #f4db54;
@@ -93,6 +105,8 @@
 
   /* Text colors */
   --color-text: var(--color-black);
+  --color-text-black-dark: var(--color-black-dark);
+  --color-text-black-darker: var(--color-black-darker);
   --color-text-grey-dark: var(--color-grey-dark);
   --color-text-grey-light: var(--color-grey-light);
   --color-text-error: var(--color-red-dark);
@@ -115,4 +129,58 @@
 
   /* Overlay */
   --color-overlay: rgba(53, 52, 52, 0.4);
+
+  /* Input */
+  --input-border: var(--color-grey-light);
+  --input-border-active: var(--color-grey-dark);
+  --placeholder: var(--color-grey-light);
+  --placeholder-active: var(--color-grey-dark);
+  --caret: (--color-system-grey-dark);
+
+  /* Select */
+  --select-content-border: var(--color-grey-blue-light);
+  --select-content-shadow: 4px 4px 6.3px rgba(82, 82, 82, 0.12);
+  --select-check: var(--color-black-natural);
+  --select-option-hover: var(--color-grey-extra-light);
+
+  /* Calendar */
+  --color-weekdays-label: var(--color-grey-default-secondary);
+  --color-outside-days: var(--color-grey-disabled);
+  --color-calendar-border: var(--color-grey-border);
+  --color-calendar-text: var(--color-black-medium);
+  --popover-shadow: 0px 4px 20px rgba(0, 0, 0, 0.25);
+}
+
+textarea.hide-resizer::-webkit-resizer {
+  display: none;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-yellow-light);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-yellow-accent-light);
+}
+
+.narrow-scrollbar::-webkit-scrollbar {
+  width: 3px;
+}
+
+body,
+button,
+input,
+textarea,
+select {
+  font-family: var(--font-display);
 }

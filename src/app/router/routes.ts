@@ -24,7 +24,10 @@ export const ROUTES = {
   employeesView: '/employees/:employeeId',
   employeesEdit: '/employees/:employeeId/edit',
 
-  settings: '/settings'
+  settings: '/settings',
+
+  forbidden: '/403',
+  notFound: '/404'
 } as const
 
 type PathParams = {
