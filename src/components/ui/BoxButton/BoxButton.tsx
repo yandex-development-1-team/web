@@ -41,11 +41,11 @@ function BoxButton({
         {IconComponent && (
           <IconComponent
             className={`
-          ${icon === 'box' && 'w-[37px] text-text-black-natural'}
-          ${icon === 'special_projects' && 'w-[31px]'}
-          ${icon === 'users' && 'w-[42px]'}
-          shrink-0
-        `}
+              ${icon === 'box' && 'w-[37px] text-text-black-natural'}
+              ${icon === 'special_projects' && 'w-[31px]'}
+              ${icon === 'users' && 'w-[42px]'}
+              shrink-0
+            `}
           />
         )}
         {children}
