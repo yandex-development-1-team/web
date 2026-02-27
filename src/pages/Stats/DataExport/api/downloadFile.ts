@@ -20,10 +20,10 @@ export const downloadFile = async ({
     }
   })
 
-  return new Promise(resolve => {
+  return new Promise<Blob>(resolve => {
     setTimeout(() => {
       resolve(file.data)
-    }, 600)
+    }, 500)
   })
 
   // return file.data

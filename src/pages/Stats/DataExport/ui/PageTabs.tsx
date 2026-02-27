@@ -1,14 +1,12 @@
-import { useState } from 'react'
-import type { ITabsProps } from './DataExport.types'
+// import { useState } from 'react'
 import { cn } from '@/lib/utils.clsx'
-// import {} from '@/assets/icons'
-// import { v4 as UUIDv4 } from 'uuid';
+import type { ITabsProps } from '../DataExport.types'
 
-export const PageTabs = ({ tabs, className, ...props }: ITabsProps) => {
-  const [selectedTab, setSelectedTab] = useState<string>(tabs[0].id)
+export const PageTabs = ({ tabs, onTabClick, activeTab, className, ...props }: ITabsProps) => {
+  // const [selectedTab, setSelectedTab] = useState<string>(tabs[0].id)
 
   const handleTabClick = (id: string) => {
-    setSelectedTab(id)
+    onTabClick(id)
   }
 
   if (!tabs.length) return null
@@ -35,7 +33,7 @@ export const PageTabs = ({ tabs, className, ...props }: ITabsProps) => {
               'hover:border-b-yellow-accent-dark',
               'transition-[border-color] duration-300',
               'border-transparent border-b',
-              selectedTab === id && 'border-b-2 border-b-yellow-accent-dark'
+              activeTab === id && 'border-b-2 border-b-yellow-accent-dark'
             )}
             onClick={() => handleTabClick(id)}
           >
@@ -43,7 +41,7 @@ export const PageTabs = ({ tabs, className, ...props }: ITabsProps) => {
               <Icon className={`w-full h-full`} />
             </div>
             <h4
-              className={`text-xl font-display font-normal  transition-colors duration-300 ${selectedTab !== id && 'text-grey-dark'}`}
+              className={`text-xl font-display font-normal  transition-colors duration-300 ${activeTab !== id && 'text-grey-dark'}`}
             >
               {title}
             </h4>
