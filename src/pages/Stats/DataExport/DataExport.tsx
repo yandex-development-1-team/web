@@ -1,12 +1,13 @@
+import { useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
+import { deleteFile } from './api/deleteFile'
+import { getFiles } from './api/fetchFiles'
 import { MOCK_TABS } from '@/mockData/mockDataExportPage'
 import { PageTabs } from './ui/PageTabs'
 import { Card } from '@/components/ui/Card'
 import { FileUploderList } from './ui/FileUploaderList'
-import { useState } from 'react'
-import { DeleteModal } from './modal/DeleteMoadal'
-import { useQuery } from '@tanstack/react-query'
-import { getFiles } from './api/fetchFiles'
 import { Loader } from '@/components/ui/Loader'
+import { DeleteModal } from '@/components/ui'
 
 const DataExport = () => {
   const [fileToDelete, setFileToDelete] = useState<string | null>(null)
@@ -28,8 +29,10 @@ const DataExport = () => {
       <DeleteModal
         title="Удалить документ!"
         isOpen={!!fileToDelete}
+        onDelete={() => deleteFile(fileToDelete ?? '')}
         onClose={() => setFileToDelete(null)}
         itemId={fileToDelete}
+        queryKey={['data-export']}
       >
         <div>{'Вы действительно хотите удалить этот документ?'}</div>
       </DeleteModal>

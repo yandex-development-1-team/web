@@ -9,10 +9,19 @@ interface DeleteModalProps {
   onDelete: (id: string | number) => Promise<void>
   title?: string
   children?: React.ReactNode
+  queryKey?: string[] | undefined
 }
 
-export const DeleteModal = ({ isOpen, onClose, itemId, onDelete, title = 'Удалить ?', children }: DeleteModalProps) => {
-  const { mutate, isPending } = useDeleteItem(onDelete, onClose)
+export const DeleteModal = ({
+  isOpen,
+  onClose,
+  itemId,
+  onDelete,
+  queryKey,
+  title = 'Удалить ?',
+  children
+}: DeleteModalProps) => {
+  const { mutate, isPending } = useDeleteItem(onDelete, onClose, queryKey)
 
   const handleConfirm = () => {
     if (itemId !== null && itemId !== undefined) {
