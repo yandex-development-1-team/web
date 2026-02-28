@@ -1,6 +1,6 @@
-import { useState } from 'react'
 import { Modal } from './Modal'
 import { Button } from '@/components/ui/Button'
+import { useDeleteItem } from './useDeleteItem'
 
 interface DeleteModalProps {
   isOpen: boolean
@@ -12,22 +12,11 @@ interface DeleteModalProps {
 }
 
 export const DeleteModal = ({ isOpen, onClose, itemId, onDelete, title = 'Удалить ?', children }: DeleteModalProps) => {
-  const [isDeleting, setIsDeleting] = useState(false)
-  const [error, setError] = useState(false)
+  const { mutate, isPending } = useDeleteItem(onDelete, onClose)
 
-  const handleDelete = async () => {
-    if (itemId === null || itemId === undefined) return
-
-    setError(false)
-    setIsDeleting(true)
-    try {
-      await onDelete(itemId)
-      onClose()
-    } catch (error) {
-      console.error('Ошибка в DeleteModal:', error)
-      setError(true)
-    } finally {
-      setIsDeleting(false)
+  const handleConfirm = () => {
+    if (itemId !== null && itemId !== undefined) {
+      mutate(itemId)
     }
   }
 
@@ -39,26 +28,21 @@ export const DeleteModal = ({ isOpen, onClose, itemId, onDelete, title = 'Уда
       showBorders={false}
       footer={
         <>
-          <Button variant="secondary" size="default" onClick={onClose} disabled={isDeleting}>
+          <Button variant="secondary" size="default" onClick={onClose} disabled={isPending}>
             Отмена
           </Button>
           <Button
             variant="danger"
             size="default"
-            onClick={handleDelete}
-            disabled={itemId === null || itemId === undefined || isDeleting}
+            onClick={handleConfirm}
+            disabled={itemId === null || itemId === undefined || isPending}
           >
-            {isDeleting ? 'Удаление...' : 'Удалить'}
+            {isPending ? 'Удаление...' : 'Удалить'}
           </Button>
         </>
       }
     >
-      <div className="flex flex-col gap-1">
-        {children}
-        {error && (
-          <p className="mt-2 text-sm text-red-dark font-medium">Произошла ошибка при удалении. Попробуйте еще раз.</p>
-        )}
-      </div>
+      <div className="flex flex-col gap-1">{children}</div>
     </Modal>
   )
 }
