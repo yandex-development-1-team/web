@@ -1,20 +1,32 @@
+import { useNotification } from '@/app/providers/notification'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { toast } from 'sonner'
 
-export const useDeleteItem = (onDelete: (id: string | number) => Promise<void>, onClose: () => void) => {
+export const useDeleteItem = (
+  onDelete: (id: string | number) => Promise<void>,
+  onClose: () => void,
+  queryKey?: string[]
+) => {
   const queryClient = useQueryClient()
+  const { showNotification } = useNotification()
 
   return useMutation({
     mutationFn: (id: string | number) => onDelete(id),
 
     onSuccess: () => {
-      toast.success('Удалено успешно')
-      queryClient.invalidateQueries()
+      showNotification({
+        message: 'Удалено успешно',
+        status: 'success'
+      })
+
+      if (queryKey) queryClient.invalidateQueries({ queryKey })
       onClose()
     },
 
     onError: () => {
-      toast.error('Произошла ошибка при удалении')
+      showNotification({
+        message: 'Произошла ошибка при удалении',
+        status: 'error'
+      })
     }
   })
 }

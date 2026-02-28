@@ -18,3 +18,5 @@ export {
   SelectValue
 } from './Select'
 export { CalendarInput } from './CalendarInput'
+export { Modal } from './Modal/Modal'
+export { DeleteModal } from './Modal/DeleteModal'
