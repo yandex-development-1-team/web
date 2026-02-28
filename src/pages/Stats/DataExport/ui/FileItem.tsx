@@ -1,10 +1,10 @@
+import { cn } from '@/lib/utils.clsx'
 import { DeleteIcon, DownloadIcon, CloseIcon } from '@/assets/icons'
-import { ProgressBar } from './ProgressBar'
 import { formatFileSize } from '@/lib/fileUtils/formatFileSize'
 import type { IFileItem } from '../DataExport.types'
-import { cn } from '@/lib/utils.clsx'
 import { Button } from '@/components/ui'
 import { useDownloadFile } from '../hooks/useDownloadFile'
+import { ProgressBar } from '@/components/ui/ProgressBar'
 
 export const FileItem = ({ file, onDelete, className, ...props }: IFileItem) => {
   const { id, name, size } = file
