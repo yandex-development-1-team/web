@@ -1,6 +1,6 @@
 import { Button, Input } from '@/components/ui'
 import { useState } from 'react'
-import { Eye } from '@/assets/icons'
+import { Eye, EyeClose } from '@/assets/icons'
 
 export const LoginForm = () => {
   const [login, setLogin] = useState('')
@@ -31,8 +31,6 @@ export const LoginForm = () => {
     setPasswordError(passwordErr)
 
     if (loginErr || passwordErr) return
-
-    console.log('Форма валидна')
   }
 
   return (
@@ -68,9 +66,9 @@ export const LoginForm = () => {
         <button
           type="button"
           onClick={() => setShowPassword(s => !s)}
-          className="absolute right-3 top-1/2 -translate-y-1/2"
+          className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer"
         >
-          <Eye />
+          {showPassword ? <Eye /> : <EyeClose />}
         </button>
       </div>
       <div className="text-xs">
