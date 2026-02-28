@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 import { Switch, ToggleButton, Button } from '@/components/ui'
-import ArrowIcon from '@/assets/icons/Arrow.svg?react'
+import { ArrowIcon } from '@/assets/icons'
 import { accounts, accessRightsGroups, accessRights, textFields } from './settingsData'
 import { mockTextFieldsValues, mockAccountAccessRights } from '@/mockData/mockSettingsPageData'
 
@@ -97,14 +97,14 @@ const Settings = () => {
 
   return (
     <>
-      <h2 className="bg-white text-text-black-dark text-h2 p-[18px_20px] rounded-md">Системные настройки</h2>
+      <h2 className="bg-white text-text-black-dark text-h2 p-[18px_20px] rounded-[8px]">Системные настройки</h2>
 
       <div
         className={`
           ${phase !== 'accessSetup' ? 'bg-white' : ''}
           rounded-[8px]
           h-full
-          my-[20px]
+          mt-[20px]
           flex-1
           text-text
         `}
