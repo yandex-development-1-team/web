@@ -10,8 +10,10 @@ export const getFiles = async (tabTitle: string) => {
     return new Promise<TFile[]>(resolve => {
       setTimeout(() => {
         resolve(MOCK_FILES)
-      }, 500)
+      }, 300)
     })
+
+  if (!response.data) throw new Error(`Server Error: Failed to get files`)
 
   return response.data
 }

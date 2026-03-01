@@ -8,15 +8,24 @@ import { Card } from '@/components/ui/Card'
 import { FileUploderList } from './ui/FileUploaderList'
 import { Loader } from '@/components/ui/Loader'
 import { DeleteModal } from '@/components/ui'
+import { useNotification } from '@/app/providers/notification'
 
 const DataExport = () => {
   const [fileToDelete, setFileToDelete] = useState<string | null>(null)
   const [activeTab, setActiveTab] = useState<string>(MOCK_TABS[0].id)
+  const { showNotification } = useNotification()
 
-  const { data, isPending } = useQuery({
+  const { data, isPending, isError } = useQuery({
     queryKey: ['data-export', activeTab],
     queryFn: () => getFiles(activeTab)
   })
+
+  if (isError) {
+    showNotification({
+      message: 'Не удалось получить список файлов',
+      status: 'error'
+    })
+  }
 
   return (
     <div className={`flex flex-col gap-5`}>

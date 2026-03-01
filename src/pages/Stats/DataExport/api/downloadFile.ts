@@ -9,7 +9,7 @@ export const downloadFile = async ({
   signal: AbortSignal
   onProgress: (percent: number) => void
 }) => {
-  const file = await api.get<Blob>(`api/v1/export/${id}`, {
+  const response = await api.get<Blob>(`api/v1/export/${id}`, {
     signal,
     responseType: 'blob',
     onDownloadProgress: progressEvent => {
@@ -20,11 +20,7 @@ export const downloadFile = async ({
     }
   })
 
-  // return new Promise<Blob>(resolve => {
-  //   setTimeout(() => {
-  //     resolve(file.data)
-  //   }, 500)
-  // })
+  if (!response.data) throw new Error(`Server Error: Failed to download file ${id}`)
 
-  return file.data
+  return response.data
 }
