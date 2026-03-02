@@ -105,6 +105,18 @@ disabled:outline-transparent
 disabled:text-text-grey-dark
 `
 
+const dangerStyles = `
+  bg-system-error
+  text-white
+  text-button
+
+  hover:bg-system-error-light
+  active:bg-system-error-medium
+
+  disabled:bg-grey-extra-light
+  disabled:text-text-grey-light
+`
+
 export const buttonVariants = cva('', {
   variants: {
     variant: {
@@ -113,7 +125,8 @@ export const buttonVariants = cva('', {
       underline: `${baseStyles} ${underlineStyles}`,
       ghost: `${baseStyles} ${ghostStyles}`,
       primary: `${baseStyles} ${primaryStyles}`,
-      secondary: `${baseStyles} ${secondaryStyles}`
+      secondary: `${baseStyles} ${secondaryStyles}`,
+      danger: `${baseStyles} ${dangerStyles}`
     },
     size: {
       default: 'h-[46px] px-8 py-3',

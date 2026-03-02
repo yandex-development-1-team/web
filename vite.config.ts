@@ -24,5 +24,14 @@ export default defineConfig({
     alias: {
       '@': path.resolve(__dirname, './src')
     }
+  },
+  server: {
+    proxy: {
+      '/api': {
+        target: process.env.VITE_API_TARGET || 'http://localhost:8000',
+        changeOrigin: true,
+        secure: false
+      }
+    }
   }
 })
