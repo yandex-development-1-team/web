@@ -1,5 +1,4 @@
 export function downloadBlob(blob: Blob, fileName?: string): void {
-  console.log(blob)
   const url = window.URL.createObjectURL(blob)
   const name = fileName || url.split('/').pop()
   const link = document.createElement('a')

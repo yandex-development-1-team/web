@@ -1,59 +1,72 @@
 import { DownloadIcon, ArrowsUpDownIcon } from '@/assets/icons'
 import { Button, CalendarInput } from '@/components/ui'
-import { useMemo, useState } from 'react'
-import type { TBoxes } from '@/pages/Stats/Popularity/Popularity.types'
+import { useMemo, useState, useCallback } from 'react'
 import { Funnel } from '@/components/Funnel'
 import { downloadBlob } from '@/lib/utils.blob'
-import { useExportAnalytics, useGetBoxes } from '@/hooks/usePopularityAnalytics'
+import { useBoxesData, useExportData } from '@/hooks/usePopularityAnalytics'
+import { formatDateISO } from '@/lib/utils.date'
+import { useNotification } from '@/app/providers/notification'
+import type { IDateRangeParams } from '@/types/popularity.types'
 
 const Popularity = () => {
-  const [boxes, setBoxes] = useState<TBoxes[]>([])
+  const { showNotification } = useNotification()
   const [isRatingSort, setIsRatingSort] = useState(false)
   const [dateRange, setDateRange] = useState({
     dateFrom: undefined,
     dateTo: undefined
   })
 
-  const [canDownload, setCanDownload] = useState(false)
-
-  const exportFile = useExportAnalytics()
-  const resp = useGetBoxes()
-
-  const queryParams = {
-    dateFrom: dateRange.dateFrom || '',
-    dateTo: dateRange.dateTo || ''
-  }
+  const [queryParams, setQueryParams] = useState<IDateRangeParams | null>(null)
 
   const isDateRangeValid = useMemo(() => {
     const { dateFrom, dateTo } = dateRange
     return !!(dateFrom && dateTo && dateFrom <= dateTo)
   }, [dateRange])
 
-  const handleDateChange = (field: string) => (date: Date | undefined) => {
-    setDateRange(prev => ({
-      ...prev,
-      [field]: date
-    }))
-    setCanDownload(false)
-  }
+  const { data: boxes = [], isLoading } = useBoxesData(queryParams)
+  const { data: exportData, isLoading: isLoadingExport } = useExportData(queryParams)
 
-  const handleFetchData = async () => {
-    try {
-      const result = await resp.mutateAsync(queryParams)
-      setBoxes(result.data)
-      setCanDownload(true)
-    } catch (error) {
-      setBoxes([])
-      setCanDownload(false)
-      console.error('Ошибка при загрузке данных:', error)
+  const handleDateChange = useCallback(
+    (field: string) => (date: Date | undefined) => {
+      setDateRange(prev => ({
+        ...prev,
+        [field]: date
+      }))
+      setQueryParams(null)
+    },
+    []
+  )
+
+  const handleFetchData = useCallback(() => {
+    if (isDateRangeValid && dateRange.dateFrom && dateRange.dateTo) {
+      setQueryParams({
+        dateFrom: formatDateISO(dateRange.dateFrom),
+        dateTo: formatDateISO(dateRange.dateTo)
+      })
     }
-  }
+  }, [isDateRangeValid, dateRange])
 
-  const handleDownload = async () => {
-    const response = await exportFile.mutateAsync(queryParams)
-    const blob = response.blob.data
-    downloadBlob(blob)
-  }
+  const handleDownload = useCallback(() => {
+    if (!exportData) {
+      showNotification({
+        status: 'error',
+        message: 'Нет данных для скачивания'
+      })
+      return
+    }
+    try {
+      downloadBlob(exportData)
+      showNotification({
+        status: 'success',
+        message: 'Скачивание файла'
+      })
+    } catch {
+      showNotification({
+        status: 'error',
+        message: 'Ошибка скачивания'
+      })
+    }
+  }, [exportData, showNotification])
 
   return (
     <>
@@ -72,11 +85,11 @@ const Popularity = () => {
             </div>
           </div>
           <div className="flex gap-3">
-            <Button disabled={!isDateRangeValid} className="w-41 h-11.5" onClick={handleFetchData}>
+            <Button disabled={!isDateRangeValid || isLoading} className="w-41 h-11.5" onClick={handleFetchData}>
               Показать
             </Button>
             <Button
-              disabled={!canDownload}
+              disabled={isLoadingExport || !exportData || isLoading}
               variant="secondary"
               className="size-11.5 border-grey-light"
               onClick={handleDownload}
