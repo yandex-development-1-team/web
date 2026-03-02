@@ -2,9 +2,10 @@ import { useMemo, useRef, useState } from 'react'
 import type { DataTableProps, SortConfig } from './DataTable.types'
 import { paginateData, sortData, toggleAllSelection, toggleRowSelection } from './helpers'
 import { SkeletonRow } from './ui/Skeleton'
-import { TableHeader } from './ui/TableHeade'
+
 import { TableBody } from './ui/TableBody'
 import { TableControls } from './ui/TableControls'
+import { TableHeader } from './ui/TableHeader'
 
 export function DataTable<T extends Record<string, unknown>>(props: DataTableProps<T>) {
   const {
