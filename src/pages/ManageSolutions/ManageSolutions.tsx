@@ -6,23 +6,15 @@ import { ManageButton } from './ui/ManageButton'
 const ManageSolutions = () => {
   const handleBoxCreate = () => {}
 
-  const handleBoxEdit = (id: number) => {
-    console.log(id)
-  }
+  const handleBoxEdit = (id: number) => void id
 
-  const handleBoxDelete = (id: number) => {
-    console.log(id)
-  }
+  const handleBoxDelete = (id: number) =>  void id
 
   const handleProjectCreate = () => {}
 
-  const handleProjectEdit = (id: number) => {
-    console.log(id)
-  }
+  const handleProjectEdit = (id: number) =>  void id
 
-  const handleProjectDelete = (id: number) => {
-    console.log(id)
-  }
+  const handleProjectDelete = (id: number) =>  void id
 
   return (
     <>
