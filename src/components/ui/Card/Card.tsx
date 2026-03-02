@@ -6,7 +6,7 @@ type TCardProps = {
 
 export const Card = ({ children, className, ...props }: TCardProps) => {
   return (
-    <div className={`bg-white p-[18px_20px] rounded-md ${className}`} {...props}>
+    <div className={`bg-white p-[18px_20px] rounded-lg ${className}`} {...props}>
       {children}
     </div>
   )

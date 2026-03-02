@@ -3,7 +3,7 @@ import { FileItem } from './FileItem'
 
 export const FileUploderList = ({ files, onDelete, className, ...props }: TFileUploaderProps) => {
   if (!Array.isArray(files) || !files.length)
-    return <div className="p-4 text-center text-grey-dark">Список файлов пуст</div>
+    return <div className="p-4 text-center text-text-grey-dark">Список файлов пуст</div>
 
   return (
     <ul className={`flex flex-col gap-3 w-100 ${className}`} {...props}>
