@@ -108,7 +108,7 @@ export function DataTable<T extends Record<string, unknown>>(props: DataTablePro
         />
       </table>
 
-      {enablePagination && displayData.length > 0 && (
+      {enablePagination && (
         <TableControls
           pageSize={pageSize}
           currentPage={page}
