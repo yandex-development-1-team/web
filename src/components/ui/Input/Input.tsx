@@ -30,9 +30,9 @@ type TInputWithIconButtonProps = BaseInputProps & {
   iconPosition?: IconPosition
 }
 
-type TIconProps = TSimpleInputProps | TInputWithIconProps | TInputWithIconButtonProps
+type TInputProps = TSimpleInputProps | TInputWithIconProps | TInputWithIconButtonProps
 
-function Input(props: TIconProps) {
+function Input(props: TInputProps) {
   if (props.variant === 'icon') {
     const { icon, iconPosition, invalid, disabled, className, ...otherProps } = props
     return (

@@ -26,6 +26,7 @@ export const ROUTES = {
 
   settings: '/settings',
 
+  forbidden: '/403',
   notFound: '/404'
 } as const
 

@@ -17,3 +17,6 @@ export {
   SelectTrigger,
   SelectValue
 } from './Select'
+export { CalendarInput } from './CalendarInput'
+export { Modal } from './Modal'
+export { DeleteModal } from './Modal'

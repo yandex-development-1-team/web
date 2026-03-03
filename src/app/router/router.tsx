@@ -1,15 +1,21 @@
 import { createBrowserRouter, Outlet } from 'react-router-dom'
 import { ROUTES } from './routes'
 import { NotificationProvider } from '@/app/providers/notification'
+import { AxiosProvider } from '@/app/providers/axios'
 import App from '@/App'
+import { QueryProvider } from '@/app/providers/tanstack-query'
 
 export const router = createBrowserRouter(
   [
     {
       element: (
-        <NotificationProvider>
-          <Outlet />
-        </NotificationProvider>
+        <QueryProvider>
+          <NotificationProvider>
+            <AxiosProvider>
+              <Outlet />
+            </AxiosProvider>
+          </NotificationProvider>
+        </QueryProvider>
       ),
       children: [
         {
