@@ -11,7 +11,7 @@ export default function PageSizeSelector({ pageSize, onPageSizeChange, min = 3, 
       <span className="text-xxs">Показывать по</span>
 
       <input
-        type="number"
+        type="text"
         value={pageSize}
         min={min}
         max={max}
