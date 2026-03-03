@@ -71,7 +71,7 @@ export const EMPLOYEES: IEmployee[] = [
       city: 'Находка'
     },
     access_level: 'Полный доступ',
-    status: 'active',
+    status: 'Активный',
     created_at: '2023-01-10T08:00:00Z',
     updated_at: '2024-01-15T12:30:00Z'
   },
@@ -109,7 +109,7 @@ export const EMPLOYEES: IEmployee[] = [
       city: 'Находка'
     },
     access_level: 'Ограниченный доступ',
-    status: 'active',
+    status: 'Активный',
     created_at: '2023-06-20T10:15:00Z',
     updated_at: '2023-12-01T09:00:00Z'
   },
@@ -147,7 +147,7 @@ export const EMPLOYEES: IEmployee[] = [
       city: 'Воронеж'
     },
     access_level: 'Ограниченный доступ',
-    status: 'probation',
+    status: 'Не активный',
     created_at: '2024-02-01T09:00:00Z',
     updated_at: '2024-02-01T09:00:00Z'
   }
