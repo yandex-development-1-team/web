@@ -1,10 +1,7 @@
-// import { useState } from 'react'
 import { cn } from '@/lib/utils.clsx'
 import type { ITabsProps, TPath } from '../DataExport.types'
 
-export const PageTabs = ({ tabs, onTabClick, activeTab, className, ...props }: ITabsProps) => {
-  // const [selectedTab, setSelectedTab] = useState<string>(tabs[0].id)
-
+export const Tabs = ({ tabs, onTabClick, activeTab, className, ...props }: ITabsProps) => {
   const handleTabClick = (path: TPath) => {
     onTabClick(path)
   }

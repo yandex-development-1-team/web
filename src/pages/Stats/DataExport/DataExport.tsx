@@ -8,7 +8,7 @@ import { useState } from 'react'
 import { deleteFile } from './api/deleteFile'
 import { getFiles } from './api/fetchFiles'
 import { FileUploderList } from './ui/FileUploaderList'
-import { PageTabs } from './ui/PageTabs'
+import { Tabs } from './ui/Tabs'
 
 const DataExport = () => {
   const [fileToDelete, setFileToDelete] = useState<string | null>(null)
@@ -31,7 +31,7 @@ const DataExport = () => {
     <div className={`flex flex-col gap-5`}>
       <Card>
         <h1 className=" text-text-black-dark text-h2">Экспортированные файлы</h1>
-        <PageTabs tabs={TABS} onTabClick={setActiveTab} activeTab={activeTab} className="" />
+        <Tabs tabs={TABS} onTabClick={setActiveTab} activeTab={activeTab} className="" />
       </Card>
       <Card>{isPending ? <Loader /> : <FileUploderList files={data} onDelete={setFileToDelete} />}</Card>
 
