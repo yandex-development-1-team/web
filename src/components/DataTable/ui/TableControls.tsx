@@ -16,14 +16,13 @@ export const TableControls = ({
   onPageSizeChange,
   onPageChange
 }: TableControlsProps) => {
-  const totalPages = Math.ceil(totalItems / pageSize)
-  if (totalPages <= 1) return null
+  const totalPages = pageSize === 0 ? 0 : Math.ceil(totalItems / pageSize)
 
   return (
     <div className="flex justify-between items-center p-4 ">
       <PageSizeSelector pageSize={pageSize} onPageSizeChange={onPageSizeChange} />
 
-      <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={onPageChange} />
+      {totalPages > 0 && <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={onPageChange} />}
     </div>
   )
 }
