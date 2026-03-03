@@ -11,11 +11,14 @@ export default function PageSizeSelector({ pageSize, onPageSizeChange, min = 3, 
       <span className="text-xxs">Показывать по</span>
 
       <input
-        type="numeric"
+        type="number"
         value={pageSize}
         min={min}
         max={max}
-        onChange={e => onPageSizeChange(Number(e.target.value))}
+        onChange={e => {
+          const val = e.target.value.replace(/\D/g, '')
+          onPageSizeChange(Number(val))
+        }}
         className="w-[36px] h-[36px] text-center outline-none border text-xxs border-gray-300 rounded-[8px]  bg-white"
       />
     </div>
