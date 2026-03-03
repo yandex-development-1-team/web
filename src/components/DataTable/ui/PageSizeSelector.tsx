@@ -19,6 +19,9 @@ export default function PageSizeSelector({ pageSize, onPageSizeChange, min = 3, 
           const val = e.target.value.replace(/\D/g, '')
           onPageSizeChange(Number(val))
         }}
+        onBlur={() => {
+          if (pageSize < min) onPageSizeChange(min)
+        }}
         className="w-[36px] h-[36px] text-center outline-none border text-xxs border-gray-300 rounded-[8px]  bg-white"
       />
     </div>
