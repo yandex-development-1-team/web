@@ -28,4 +28,3 @@ export const Avatar = ({ src, width = 100, height = 100, alt = 'Фото пол�
     </div>
   )
 }
-// ${isExpanded ? 'w-[48px]' : 'w-[48px] mx-auto'
