@@ -36,38 +36,6 @@ export const MOCK_ACTIONS: TContactAction[] = [
   }
 ] as const
 
-// export interface IEmployee {
-//   id: number
-//   avatar: string
-//   personal_info: {
-//     last_name: string
-//     first_name: string
-//     middle_name: string
-//   }
-//   passport: {
-//     citizenship: string
-//     birthday: string
-//     gender: 'male' | 'female'
-//     series: string
-//     number: string
-//   }
-//   contacts: {
-//     phone: string
-//     email: string
-//     telegram_nick?: string
-//   }
-//   job_info: {
-//     department: string
-//     position: string
-//     role: 'admin' | 'manager_1' | 'manager_2' | 'manager_3'
-//   }
-//   access_level: 'full' | 'limited'
-//   status: string
-//   created_at: string
-//   updated_at: string
-//   telegram_nick: string
-// }
-
 export const EMPLOYEES: IEmployee[] = [
   {
     id: 1,
@@ -102,7 +70,7 @@ export const EMPLOYEES: IEmployee[] = [
     additional: {
       city: 'Находка'
     },
-    access_level: 'full',
+    access_level: 'Полный доступ',
     status: 'active',
     created_at: '2023-01-10T08:00:00Z',
     updated_at: '2024-01-15T12:30:00Z'
@@ -130,7 +98,7 @@ export const EMPLOYEES: IEmployee[] = [
     job_info: {
       department: 'Отдел продаж',
       position: 'Руководитель группы',
-      role: 'manager_2',
+      role: 'Менеджер 2 звена',
       chief: {
         first_name: 'Сергей',
         last_name: 'Гаврилов',
@@ -140,7 +108,7 @@ export const EMPLOYEES: IEmployee[] = [
     additional: {
       city: 'Находка'
     },
-    access_level: 'limited',
+    access_level: 'Ограниченный доступ',
     status: 'active',
     created_at: '2023-06-20T10:15:00Z',
     updated_at: '2023-12-01T09:00:00Z'
@@ -168,7 +136,7 @@ export const EMPLOYEES: IEmployee[] = [
     job_info: {
       department: 'Клиентский сервис',
       position: 'Младший менеджер',
-      role: 'manager_1',
+      role: 'Менеджер 1 звена',
       chief: {
         first_name: 'Сергей',
         last_name: 'Гаврилов',
@@ -178,7 +146,7 @@ export const EMPLOYEES: IEmployee[] = [
     additional: {
       city: 'Воронеж'
     },
-    access_level: 'limited',
+    access_level: 'Ограниченный доступ',
     status: 'probation',
     created_at: '2024-02-01T09:00:00Z',
     updated_at: '2024-02-01T09:00:00Z'
