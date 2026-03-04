@@ -4,7 +4,7 @@ import { MOCK_FILES } from '@/mockData/mockFileUploaderList'
 import type { TFile, TPath } from '../DataExport.types'
 
 export const getFiles = async (path: TPath) => {
-  const response = await api.get<TFile[]>(`/api/v1/export/${path}`)
+  const response = await api.get<TFile[]>(`/export/${path}`)
 
   if (!Array.isArray(response.data))
     return new Promise<TFile[]>(resolve => {

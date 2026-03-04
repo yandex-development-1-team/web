@@ -33,7 +33,7 @@ export const Modal = ({ isOpen, onClose, title, children, footer, showBorders = 
   if (!isOpen) return null
 
   return createPortal(
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-zinc-700/40 p-4" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4" onClick={onClose}>
       <div
         className="flex max-h-[90vh] w-full max-w-157 flex-col rounded-xl bg-white font-display shadow-lg"
         onClick={e => e.stopPropagation()}

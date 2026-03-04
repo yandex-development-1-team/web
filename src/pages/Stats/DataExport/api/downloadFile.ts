@@ -9,7 +9,7 @@ export const downloadFile = async ({
   signal: AbortSignal
   onProgress: (percent: number) => void
 }) => {
-  const response = await api.get<Blob>(`api/v1/export/${id}`, {
+  const response = await api.get<Blob>(`/export/${id}`, {
     signal,
     responseType: 'blob',
     onDownloadProgress: progressEvent => {
