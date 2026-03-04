@@ -20,7 +20,7 @@ export const TableControls = ({
 
   return (
     <div className="flex justify-between items-center p-4 ">
-      <PageSizeSelector pageSize={pageSize} onPageSizeChange={onPageSizeChange} />
+      <PageSizeSelector pageSize={pageSize} onPageSizeChange={onPageSizeChange} max={totalItems} />
 
       {totalPages > 0 && <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={onPageChange} />}
     </div>
