@@ -1,7 +1,7 @@
 import { UserIcon } from '@/assets/icons'
+import { Card } from '@/components/ui/Card'
 import { getFullName } from '@/lib/utils.fullName'
 import type { IEmployee } from '@/pages/Employees/employees.types'
-import { Card } from '../ViewEmployees'
 
 type TEmployeeProfileProps = {
   profile: Pick<IEmployee, 'personal_info' | 'passport' | 'contacts' | 'job_info' | 'additional'>

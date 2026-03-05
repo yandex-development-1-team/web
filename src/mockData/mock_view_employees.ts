@@ -7,6 +7,7 @@ import type { IEmployee } from '@/pages/Employees/employees.types'
 type TContactAction = {
   id: string
   label: string
+  link: string
   variant: 'primary' | 'outline' | 'ghost'
   Icon: FC<SVGProps<SVGSVGElement>>
   onClick?: () => void
@@ -15,6 +16,7 @@ type TContactAction = {
 export const MOCK_ACTIONS: TContactAction[] = [
   {
     id: 'msg',
+    link: 'https://t.me',
     label: 'Написать сообщение',
     variant: 'primary',
     Icon: MessageIcon,
@@ -22,6 +24,7 @@ export const MOCK_ACTIONS: TContactAction[] = [
   },
   {
     id: 'call',
+    link: 'tel:+79991234567',
     label: 'Позвонить',
     variant: 'outline',
     Icon: PhoneIcon,
@@ -29,14 +32,14 @@ export const MOCK_ACTIONS: TContactAction[] = [
   },
   {
     id: 'video',
+    link: '',
     label: 'Видеозвонок',
     variant: 'outline',
     Icon: VideoIcon,
     onClick: () => console.log('Video')
   }
 ] as const
-// { id: 1, status: "Активен", desc: "При отключении сотрудник потеряет доступ к системе" },
-// { id: 2, status: "В отпуске", desc: "Доступ сохранится до конца периода" },
+
 export const EMPLOYEES: IEmployee[] = [
   {
     id: 0,

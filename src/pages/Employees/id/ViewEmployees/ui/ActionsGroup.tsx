@@ -5,7 +5,8 @@ import type { ComponentProps, FC, SVGProps } from 'react'
 type TContactAction = {
   id: string
   label: string
-  variant: 'primary' | 'outline' | 'ghost' // соответствуют вашему ButtonProps
+  link: string
+  variant: 'primary' | 'outline' | 'ghost'
   Icon: FC<SVGProps<SVGSVGElement>>
   onClick?: () => void
 }
@@ -25,10 +26,17 @@ export const Actions = ({ actions, className, ...rest }: TActionProps) => {
             variant={action.variant}
             size={'default'}
             onClick={action.onClick}
-            className="flex items-center gap-2 p-1"
+            className={cn(
+              'p-2',
+              'ring-0 shadow-[1px_2px_3px_rgba(0,0,0,0.3)]',
+              'transition-all duration-300 ease-in-out',
+              'hover:shadow-[1px_4px_5px_rgba(0,0,0,0.3)]'
+            )}
           >
-            <Icon style={{ width: 'auto', height: '100%' }} />
-            {action.label}
+            <a href={action.link} className="flex items-center gap-2 h-full" target="_blank" rel="noopener noreferrer">
+              <Icon style={{ width: 'auto', height: '100%' }} />
+              {action.label}
+            </a>
           </Button>
         )
       })}
