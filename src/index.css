@@ -5,6 +5,21 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
+@layer utilities {
+  .animate-slow-slide {
+    animation: slide 2s infinite ease-in-out;
+  }
+
+  @keyframes slide {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(200%);
+    }
+  }
+}
+
 @font-face {
   font-family: 'Open Sans';
   src: url('../src/assets/fonts/OpenSans-Bold.ttf') format('truetype');
