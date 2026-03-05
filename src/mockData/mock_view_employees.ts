@@ -7,7 +7,7 @@ import type { IEmployee } from '@/pages/Employees/employees.types'
 type TContactAction = {
   id: string
   label: string
-  variant: 'primary' | 'outline' | 'ghost' // соответствуют вашему ButtonProps
+  variant: 'primary' | 'outline' | 'ghost'
   Icon: FC<SVGProps<SVGSVGElement>>
   onClick?: () => void
 }
@@ -35,10 +35,11 @@ export const MOCK_ACTIONS: TContactAction[] = [
     onClick: () => console.log('Video')
   }
 ] as const
-
+// { id: 1, status: "Активен", desc: "При отключении сотрудник потеряет доступ к системе" },
+// { id: 2, status: "В отпуске", desc: "Доступ сохранится до конца периода" },
 export const EMPLOYEES: IEmployee[] = [
   {
-    id: 1,
+    id: 0,
     avatar: mockPhoto,
     personal_info: {
       last_name: 'Иванов',
@@ -71,12 +72,12 @@ export const EMPLOYEES: IEmployee[] = [
       city: 'Находка'
     },
     access_level: 'Полный доступ',
-    status: 'Активный',
+    status: 'active',
     created_at: '2023-01-10T08:00:00Z',
     updated_at: '2024-01-15T12:30:00Z'
   },
   {
-    id: 2,
+    id: 1,
     avatar: mockPhoto,
     personal_info: {
       last_name: 'Кузнецова',
@@ -109,12 +110,12 @@ export const EMPLOYEES: IEmployee[] = [
       city: 'Находка'
     },
     access_level: 'Ограниченный доступ',
-    status: 'Активный',
+    status: 'inactive',
     created_at: '2023-06-20T10:15:00Z',
     updated_at: '2023-12-01T09:00:00Z'
   },
   {
-    id: 3,
+    id: 2,
     avatar: mockPhoto,
     personal_info: {
       last_name: 'Лебедев',
@@ -147,7 +148,7 @@ export const EMPLOYEES: IEmployee[] = [
       city: 'Воронеж'
     },
     access_level: 'Ограниченный доступ',
-    status: 'Не активный',
+    status: 'inactive',
     created_at: '2024-02-01T09:00:00Z',
     updated_at: '2024-02-01T09:00:00Z'
   }

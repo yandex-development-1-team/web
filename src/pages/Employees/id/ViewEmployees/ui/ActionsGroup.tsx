@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui'
-import type { ComponentProps, FC, SVGProps } from 'react'
 import { cn } from '@/lib/utils.clsx'
+import type { ComponentProps, FC, SVGProps } from 'react'
 
 type TContactAction = {
   id: string
@@ -14,7 +14,7 @@ type TActionProps = {
   actions: TContactAction[]
 } & ComponentProps<'div'>
 
-export const ActionsGroup = ({ actions, className, ...rest }: TActionProps) => {
+export const Actions = ({ actions, className, ...rest }: TActionProps) => {
   return (
     <div className={cn('flex flex-col gap-3 w-full', className)} {...rest}>
       {actions.map(action => {

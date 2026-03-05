@@ -1,13 +1,15 @@
-import { UserIcon } from '@/assets/icons'
-import { Button, Switch } from '@/components/ui'
+import { Button } from '@/components/ui'
 import { cn } from '@/lib/utils.clsx'
-import { EMPLOYEES, MOCK_ACTIONS } from '@/mockData/mock_view_employees'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import type { ComponentProps, ReactNode } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { ActionsGroup } from './ui/ActionsGroup'
-import { Avatar } from './ui/Avatar'
+import { getEmployeeById } from '../../api/getEmployeeById'
+import { updateEmployeeStatus } from '../../api/updateEmployeeStatus'
+import type { StatusType } from '../../employees.types'
 import { Content } from './ui/Content'
+import { EmployeeActions } from './ui/EmployeeActions'
 import { EmployeeDetails } from './ui/EmployeeDetails'
+// import { Loader } from '@/components/ui/Loader'
 
 type TCardProps = {
   type?: 'solid' | 'transparent'
@@ -26,45 +28,63 @@ export const Card = ({ children, className, type = 'solid', ...props }: TCardPro
 }
 
 const ViewEmployees = () => {
-  const { employeeId } = useParams<{ employeeId: string }>()
+  const { employeeId = '' } = useParams<{ employeeId: string }>()
   const navigate = useNavigate()
 
-  const employee = EMPLOYEES[0]
-  const { avatar, status } = employee
+  const { data, isPending, isError } = useQuery({
+    queryKey: ['employee', employeeId],
+    queryFn: () => {
+      if (!employeeId) throw new Error('ID is required')
+      return getEmployeeById(employeeId)
+    }
+  })
+
+  const queryClient = useQueryClient()
+  const mutation = useMutation({
+    mutationFn: (status: StatusType) => {
+      if (!employeeId) throw new Error('ID is required')
+      return updateEmployeeStatus({ employeeId, status })
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['employee', employeeId] })
+    },
+    onError: () => {}
+  })
+
+  if (isError) return <div>Ошибка при получении данных</div>
+
+  if (!data) return <div>Сотрудник не найден</div>
+
+  const { avatar, status, ...restData } = data
 
   return (
     <>
       <Card>
         <h1 className=" text-text-black-dark text-h2">Карточка сотрудника</h1>
       </Card>
-      <Content className="mt-5 grid grid-cols-[380px_1fr] gap-5 max-h-max">
-        <section className="flex flex-col gap-5 ">
-          <Card className="flex justify-center items-center h-60">
-            <Avatar src={avatar} width={146} height={146} shadow />
-          </Card>
-          <ActionsGroup actions={MOCK_ACTIONS} />
-          <Card>
-            <div className="flex items-center gap-3 h-8.25">
-              <UserIcon style={{ height: '100%' }} />
-              <h3 className="text-h3">Статус</h3>
-            </div>
-            <div className="flex flex-row justify-between gap-2 mt-3">
-              <p className="text-sm">{status}</p>
-              <Switch onChange={() => {}} checked />
-            </div>
-          </Card>
-          <Card>Установлен Битрикс.24.Диск 30.11.2025, объем - 56.49 КБ</Card>
-        </section>
-        <EmployeeDetails profile={employee} />
-      </Content>
-      <Button
-        variant={'default'}
-        size={'default'}
-        className="w-46 self-end mt-5"
-        onClick={() => navigate(`/employees/${employeeId}/edit`)}
-      >
-        Редактировать
-      </Button>
+
+      {isPending ? (
+        <div></div>
+      ) : (
+        <>
+          <Content className="mt-5 grid grid-cols-[380px_1fr] gap-5 max-h-max">
+            <EmployeeActions
+              avatar={avatar}
+              status={status}
+              onStatusChange={() => mutation.mutate(status === 'active' ? 'inactive' : 'active')}
+            />
+            <EmployeeDetails profile={restData} />
+          </Content>
+          <Button
+            variant={'default'}
+            size={'default'}
+            className="w-46 self-end mt-5"
+            onClick={() => navigate(`/employees/${employeeId}/edit`)}
+          >
+            Редактировать
+          </Button>
+        </>
+      )}
     </>
   )
 }

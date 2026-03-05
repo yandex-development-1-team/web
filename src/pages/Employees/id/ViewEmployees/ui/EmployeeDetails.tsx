@@ -11,7 +11,7 @@ export const EmployeeDetails = ({ profile }: TEmployeeProfileProps) => {
   const { personal_info, passport, contacts, job_info, additional } = profile
 
   return (
-    <Card className="flex flex-col gap-3 w-full h-full text-text">
+    <Card className="text-text">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3 h-8.25">
           <UserIcon style={{ height: '100%' }} />

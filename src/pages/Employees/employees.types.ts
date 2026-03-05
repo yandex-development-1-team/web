@@ -4,6 +4,8 @@ interface IPersonalInfo {
   middle_name?: string
 }
 
+export type StatusType = 'active' | 'inactive'
+
 export interface IUser {
   id: number
   avatar: string
@@ -33,7 +35,7 @@ export interface IEmployee extends IUser {
     city: string
   }
   access_level: string
-  status: string
+  status: StatusType
   created_at: string
   updated_at: string
 }
