@@ -76,11 +76,11 @@ const Popularity = () => {
         <div className=" grid grid-cols-1 min-[1050px]:grid-cols-[1fr_222px] gap-5 items-end mt-8">
           <div className=" grid grid-cols-1 min-[1050px]:grid-cols-2 gap-3">
             <div className="flex flex-col gap-1">
-              <span className="text-xxs text-grey-medium">Период с</span>
+              <span className="text-xxs text-text-grey-medium">Период с</span>
               <CalendarInput variant="single" value={dateRange.dateFrom} onChange={handleDateChange('dateFrom')} />
             </div>
             <div className="flex flex-col gap-1">
-              <span className="text-xxs text-grey-medium">Период по</span>
+              <span className="text-xxs text-text-grey-medium">Период по</span>
               <CalendarInput variant="single" value={dateRange.dateTo} onChange={handleDateChange('dateTo')} />
             </div>
           </div>
