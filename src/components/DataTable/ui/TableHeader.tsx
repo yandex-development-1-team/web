@@ -1,6 +1,6 @@
 import { ArrowsSeparateVerticalIcon } from '@/assets/icons'
 import { Check } from '@/assets/icons'
-import type { ChangeEvent, RefObject } from 'react'
+import type { ChangeEvent } from 'react'
 import type { Column } from '../DataTable.types'
 
 type Props<T> = {
@@ -8,25 +8,17 @@ type Props<T> = {
   enableCheckboxes?: boolean
   enableRowActions?: boolean
   onSort?: (key: keyof T) => void
-  selectAllRef?: RefObject<HTMLInputElement | null>
   onSelectAll?: (e: ChangeEvent<HTMLInputElement>) => void
 }
 
-export function TableHeader<T>({
-  columns,
-  enableCheckboxes,
-  enableRowActions,
-  onSort,
-  selectAllRef,
-  onSelectAll
-}: Props<T>) {
+export function TableHeader<T>({ columns, enableCheckboxes, enableRowActions, onSort, onSelectAll }: Props<T>) {
   return (
     <thead>
       <tr className="border-b border-grey-light h-12 bg-grey-extra-light text-color-black">
         {enableCheckboxes && (
           <th className="w-12">
             <label className="inline-flex cursor-pointer items-center justify-center">
-              <input ref={selectAllRef} type="checkbox" onChange={onSelectAll} className="peer sr-only" />
+              <input type="checkbox" onChange={onSelectAll} className="peer sr-only" />
 
               <div
                 className="
