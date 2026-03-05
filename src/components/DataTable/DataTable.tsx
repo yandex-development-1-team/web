@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react'
+import { useState } from 'react'
 import type { DataTableProps, SortConfig } from './DataTable.types'
 import { paginateData, sortData, toggleAllSelection, toggleRowSelection } from './helpers'
 import { SkeletonRow } from './ui/Skeleton'
@@ -18,7 +18,8 @@ export function DataTable<T extends Record<string, unknown>>(props: DataTablePro
     initialPageSize = 10,
     enableCheckboxes = false,
     enablePagination = false,
-    enableLoadMore = false
+    enableLoadMore = false,
+    onSelect
   } = props
 
   const [pageSize, setPageSize] = useState(initialPageSize)
@@ -26,14 +27,13 @@ export function DataTable<T extends Record<string, unknown>>(props: DataTablePro
   const [selectedRows, setSelectedRows] = useState<T[]>([])
   const [page, setPage] = useState(1)
   const [loadMoreCount, setLoadMoreCount] = useState(initialPageSize)
-  const selectAllRef = useRef<HTMLInputElement>(null)
 
-  const sortedData = useMemo(() => (sortConfig ? sortData(data, sortConfig) : data), [data, sortConfig])
+  const sortedData = sortConfig ? sortData(data, sortConfig) : data
 
-  const displayData = useMemo(() => {
+  const displayData = () => {
     if (enableLoadMore) return sortedData.slice(0, loadMoreCount)
     return paginateData(sortedData, page, pageSize)
-  }, [sortedData, page, pageSize, enableLoadMore, loadMoreCount])
+  }
 
   const handleSort = (key: keyof T) => {
     const direction = sortConfig?.key === key && sortConfig.direction === 'asc' ? 'desc' : 'asc'
@@ -41,9 +41,21 @@ export function DataTable<T extends Record<string, unknown>>(props: DataTablePro
     setPage(1)
   }
 
-  const handleSelectRow = (row: T) => setSelectedRows(prev => toggleRowSelection(prev, row, idKey))
+  const handleSelectRow = (row: T) => {
+    setSelectedRows(prev => {
+      const newSelected = toggleRowSelection(prev, row, idKey)
+      if (onSelect) onSelect(newSelected)
+      return newSelected
+    })
+  }
 
-  const handleSelectAll = (all: boolean) => setSelectedRows(prev => toggleAllSelection(prev, displayData, idKey, all))
+  const handleSelectAll = (all: boolean) => {
+    setSelectedRows(prev => {
+      const newSelected = toggleAllSelection(prev, displayData(), idKey, all)
+      if (onSelect) onSelect(newSelected)
+      return newSelected
+    })
+  }
 
   const handleLoadMore = () => setLoadMoreCount(prev => prev + pageSize)
 
@@ -85,46 +97,49 @@ export function DataTable<T extends Record<string, unknown>>(props: DataTablePro
   if (!columns.length) return <div>Нет данных</div>
 
   return (
-    <div className="overflow-x-auto min-w-[1220px] rounded-lg border border-grey-light bg-white text-color-black text-xs">
-      <table className="w-full">
-        <TableHeader
-          columns={columns}
-          enableCheckboxes={enableCheckboxes}
-          enableRowActions={!!rowActions}
-          onSort={handleSort}
-          selectAllRef={selectAllRef}
-          onSelectAll={e => handleSelectAll(e.target.checked)}
-        />
+    <>
+      <div className="overflow-x-auto min-w-[1220px] rounded-lg border border-grey-light bg-white text-color-black text-xs mb-[8px]">
+        <table className="w-full">
+          <TableHeader
+            columns={columns}
+            enableCheckboxes={enableCheckboxes}
+            enableRowActions={!!rowActions}
+            onSort={handleSort}
+            onSelectAll={e => handleSelectAll(e.target.checked)}
+          />
 
-        <TableBody
-          data={displayData}
-          columns={columns}
-          idKey={idKey}
-          enableCheckboxes={enableCheckboxes}
-          enableRowActions={!!rowActions}
-          selectedRows={selectedRows}
-          onSelectRow={handleSelectRow}
-          rowActions={rowActions}
-        />
-      </table>
+          <TableBody
+            data={displayData()}
+            columns={columns}
+            idKey={idKey}
+            enableCheckboxes={enableCheckboxes}
+            enableRowActions={!!rowActions}
+            selectedRows={selectedRows}
+            onSelectRow={handleSelectRow}
+            rowActions={rowActions}
+          />
+        </table>
 
-      {enablePagination && (
-        <TableControls
-          pageSize={pageSize}
-          currentPage={page}
-          totalItems={sortedData.length}
-          onPageSizeChange={size => setPageSize(size)}
-          onPageChange={handlePageChange}
-        />
-      )}
+        {enablePagination && (
+          <TableControls
+            pageSize={pageSize}
+            currentPage={page}
+            totalItems={sortedData.length}
+            onPageSizeChange={size => setPageSize(size)}
+            onPageChange={handlePageChange}
+          />
+        )}
+      </div>
 
-      {enableLoadMore && displayData.length < sortedData.length && (
-        <div className="flex justify-end p-4">
-          <button onClick={handleLoadMore} className="border border-transparent text-grey-dark underline">
-            Показать больше
-          </button>
-        </div>
-      )}
-    </div>
+      <div>
+        {enableLoadMore && displayData().length < sortedData.length && (
+          <div className="flex justify-end">
+            <button onClick={handleLoadMore} className="border border-transparent text-grey-dark ">
+              Показать больше
+            </button>
+          </div>
+        )}
+      </div>
+    </>
   )
 }
