@@ -18,7 +18,8 @@ export function DataTable<T extends Record<string, unknown>>(props: DataTablePro
     initialPageSize = 10,
     enableCheckboxes = false,
     enablePagination = false,
-    enableLoadMore = false
+    enableLoadMore = false,
+    onSelect
   } = props
 
   const [pageSize, setPageSize] = useState(initialPageSize)
@@ -40,9 +41,21 @@ export function DataTable<T extends Record<string, unknown>>(props: DataTablePro
     setPage(1)
   }
 
-  const handleSelectRow = (row: T) => setSelectedRows(prev => toggleRowSelection(prev, row, idKey))
+  const handleSelectRow = (row: T) => {
+    setSelectedRows(prev => {
+      const newSelected = toggleRowSelection(prev, row, idKey)
+      if (onSelect) onSelect(newSelected)
+      return newSelected
+    })
+  }
 
-  const handleSelectAll = (all: boolean) => setSelectedRows(prev => toggleAllSelection(prev, displayData(), idKey, all))
+  const handleSelectAll = (all: boolean) => {
+    setSelectedRows(prev => {
+      const newSelected = toggleAllSelection(prev, displayData(), idKey, all)
+      if (onSelect) onSelect(newSelected)
+      return newSelected
+    })
+  }
 
   const handleLoadMore = () => setLoadMoreCount(prev => prev + pageSize)
 
