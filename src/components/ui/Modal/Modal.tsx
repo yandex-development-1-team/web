@@ -1,8 +1,8 @@
-import { useEffect } from 'react'
-import type { ReactNode } from 'react'
-import { createPortal } from 'react-dom'
-import { Button } from '@/components/ui/Button'
 import { CloseIcon } from '@/assets/icons'
+import { Button } from '@/components/ui/Button'
+import type { ReactNode } from 'react'
+import { useEffect } from 'react'
+import { createPortal } from 'react-dom'
 
 interface ModalProps {
   isOpen: boolean
@@ -33,7 +33,7 @@ export const Modal = ({ isOpen, onClose, title, children, footer, showBorders = 
   if (!isOpen) return null
 
   return createPortal(
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-zinc-700/40 p-4" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4" onClick={onClose}>
       <div
         className="flex max-h-[90vh] w-full max-w-157 flex-col rounded-xl bg-white font-display shadow-lg"
         onClick={e => e.stopPropagation()}
@@ -41,14 +41,14 @@ export const Modal = ({ isOpen, onClose, title, children, footer, showBorders = 
         <header
           className={`flex items-center justify-between px-6 py-5 ${showBorders ? 'border-b border-grey-blue-light' : ''}`}
         >
-          {title && <h3 className="m-0 text-h3 font-bold text-text">{title}</h3>}
+          {title && <h3 className="m-0 text-h3 text-text">{title}</h3>}
 
           <Button
             variant="ghost"
             size="icon-32"
             onClick={onClose}
             aria-label="Закрыть модальное окно"
-            className="text-2xl text-grey-light hover:text-black"
+            className="text-2xl text-text-grey-light hover:text-text"
           >
             <CloseIcon />
           </Button>
