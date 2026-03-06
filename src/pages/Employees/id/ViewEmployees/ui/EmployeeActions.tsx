@@ -28,7 +28,7 @@ type EmployeeActionType = {
 
 export const EmployeeActions = ({ avatar, status, queryKey, employeeId }: EmployeeActionType) => {
   const { checked, label, description } = STATUS_MAP[status]
-  const { toggleStatus } = useStatusChange({ employeeId, queryKey, status })
+  const { toggleStatus, isStatusUpdating } = useStatusChange({ employeeId, queryKey, status })
 
   return (
     <section className="flex flex-col gap-5 text-text">
@@ -42,7 +42,12 @@ export const EmployeeActions = ({ avatar, status, queryKey, employeeId }: Employ
           <p className="text-h5">{label}</p>
           <p className="text-text-grey-dark text-xxs">{description}</p>
         </div>
-        <Switch onChange={toggleStatus} checked={checked} className="self-center ml-auto min-w-13" />
+        <Switch
+          onChange={toggleStatus}
+          checked={checked}
+          className="self-center ml-auto min-w-13"
+          disabled={isStatusUpdating}
+        />
       </Card>
       <Card>Установлен Битрикс.24.Диск 30.11.2025, объем - 56.49 КБ</Card>
     </section>
