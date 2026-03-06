@@ -1,8 +1,7 @@
+import { type ReactNode, useEffect, useState, useLayoutEffect } from 'react'
+import { createPortal } from 'react-dom'
 import { CloseIcon } from '@/assets/icons'
 import { Button } from '@/components/ui/Button'
-import type { ReactNode } from 'react'
-import { useEffect } from 'react'
-import { createPortal } from 'react-dom'
 
 interface ModalProps {
   isOpen: boolean
@@ -14,6 +13,9 @@ interface ModalProps {
 }
 
 export const Modal = ({ isOpen, onClose, title, children, footer, showBorders = true }: ModalProps) => {
+  const [shouldRender, setShouldRender] = useState(false)
+  const [isAnimated, setIsAnimated] = useState(false)
+
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose()
@@ -30,12 +32,43 @@ export const Modal = ({ isOpen, onClose, title, children, footer, showBorders = 
     }
   }, [isOpen, onClose])
 
-  if (!isOpen) return null
+  useEffect(() => {
+    if (isOpen) {
+      // eslint-disable-next-line
+      setShouldRender(true)
+    } else {
+      setIsAnimated(false)
+      const timer = setTimeout(() => setShouldRender(false), 300)
+      return () => clearTimeout(timer)
+    }
+  }, [isOpen])
+
+  useLayoutEffect(() => {
+    if (shouldRender && isOpen) {
+      const frame = requestAnimationFrame(() => {
+        setIsAnimated(true)
+      })
+      return () => cancelAnimationFrame(frame)
+    }
+  }, [shouldRender, isOpen])
+
+  if (!shouldRender) return null
 
   return createPortal(
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4" onClick={onClose}>
+    <div
+      className={`
+        fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4
+        transition-opacity duration-300 ease-in-out
+        ${isAnimated ? 'opacity-100' : 'opacity-0 pointer-events-none'}
+      `}
+      onClick={onClose}
+    >
       <div
-        className="flex max-h-[90vh] w-full max-w-157 flex-col rounded-xl bg-white font-display shadow-lg"
+        className={`
+          flex max-h-[90vh] w-full max-w-157 flex-col rounded-xl bg-white font-display shadow-lg
+          transition-[opacity,scale] duration-300 ease-in-out
+          ${isAnimated ? 'opacity-100 scale-100' : 'opacity-0 scale-0 pointer-events-none'}
+        `}
         onClick={e => e.stopPropagation()}
       >
         <header
