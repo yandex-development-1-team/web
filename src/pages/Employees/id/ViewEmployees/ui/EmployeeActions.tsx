@@ -1,9 +1,10 @@
 import { Switch } from '@/components/ui'
+import { Card } from '@/components/ui/Card'
 import { MOCK_ACTIONS } from '@/mockData/mock_view_employees'
 import type { StatusType } from '@/pages/Employees/employees.types'
+import { useStatusChange } from '../hooks/useStatusChange'
 import { Actions } from './ActionsGroup'
 import { Avatar } from './Avatar'
-import { Card } from '@/components/ui/Card'
 
 const STATUS_MAP: Record<StatusType, { checked: boolean; label: string; description: string }> = {
   active: {
@@ -21,11 +22,13 @@ const STATUS_MAP: Record<StatusType, { checked: boolean; label: string; descript
 type EmployeeActionType = {
   avatar: string
   status: StatusType
-  onStatusChange: (checked: boolean) => void
+  employeeId: string
+  queryKey: unknown[]
 }
 
-export const EmployeeActions = ({ avatar, status, onStatusChange }: EmployeeActionType) => {
+export const EmployeeActions = ({ avatar, status, queryKey, employeeId }: EmployeeActionType) => {
   const { checked, label, description } = STATUS_MAP[status]
+  const { toggleStatus } = useStatusChange({ employeeId, queryKey, status })
 
   return (
     <section className="flex flex-col gap-5 text-text">
@@ -39,7 +42,7 @@ export const EmployeeActions = ({ avatar, status, onStatusChange }: EmployeeActi
           <p className="text-h5">{label}</p>
           <p className="text-text-grey-dark text-xxs">{description}</p>
         </div>
-        <Switch onChange={() => onStatusChange(!checked)} checked={checked} className="self-center ml-auto min-w-13" />
+        <Switch onChange={toggleStatus} checked={checked} className="self-center ml-auto min-w-13" />
       </Card>
       <Card>Установлен Битрикс.24.Диск 30.11.2025, объем - 56.49 КБ</Card>
     </section>

@@ -8,8 +8,9 @@ import { EmployeeActions } from './ui/EmployeeActions'
 import { EmployeeDetails } from './ui/EmployeeDetails'
 
 const ViewEmployees = () => {
-  const { employeeId = '' } = useParams<{ employeeId: string }>()
-  const { employee, isPending, error, toggleStatus } = useEmployee(employeeId)
+  const { employeeId } = useParams<{ employeeId: string }>() as { employeeId: string }
+  const queryKey = ['employee', employeeId]
+  const { employee, isPending, error } = useEmployee(employeeId, queryKey)
 
   if (error) return <div className="text-h4 text-text-grey-dark">Ошибка при получении данных</div>
   if (isPending) return <Loader />
@@ -23,8 +24,7 @@ const ViewEmployees = () => {
         <h1 className=" text-text-black-dark text-h2">Карточка сотрудника</h1>
       </Card>
       <Content className="mt-5 grid grid-cols-[380px_1fr] gap-5 max-h-max">
-        <EmployeeActions avatar={avatar} status={status} onStatusChange={toggleStatus} /> //TODO: прокинуть
-        isUpdatingStatus для блокировки кнопки
+        <EmployeeActions avatar={avatar} status={status} employeeId={employeeId} queryKey={queryKey} />{' '}
         <EmployeeDetails profile={restData} />
       </Content>
       <Link
