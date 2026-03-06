@@ -23,7 +23,7 @@ const ViewEmployees = () => {
       <Card>
         <h1 className=" text-text-black-dark text-h2">Карточка сотрудника</h1>
       </Card>
-      <Content className="mt-5 grid grid-cols-[380px_1fr] gap-5 max-h-max">
+      <Content>
         <EmployeeActions avatar={avatar} status={status} employeeId={employeeId} queryKey={queryKey} />{' '}
         <EmployeeDetails profile={restData} />
       </Content>

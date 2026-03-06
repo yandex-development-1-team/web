@@ -6,7 +6,7 @@ type TContentProps = {
 
 export const Content = ({ children, className, ...props }: TContentProps) => {
   return (
-    <div className={`w-full h-auto ${className}`} {...props}>
+    <div className={`w-full h-auto mt-5 grid grid-cols-[380px_1fr] gap-5 max-h-max ${className}`} {...props}>
       {children}
     </div>
   )
