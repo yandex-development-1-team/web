@@ -3,7 +3,7 @@ import { Card } from '@/components/ui/Card'
 import { MOCK_ACTIONS } from '@/mockData/mock_view_employees'
 import type { StatusType } from '@/pages/Employees/employees.types'
 import { useStatusChange } from '../hooks/useStatusChange'
-import { Actions } from './ActionsGroup'
+import { Actions } from './Actions'
 import { Avatar } from './Avatar'
 
 const STATUS_MAP: Record<StatusType, { checked: boolean; label: string; description: string }> = {
@@ -19,14 +19,14 @@ const STATUS_MAP: Record<StatusType, { checked: boolean; label: string; descript
   }
 }
 
-type EmployeeActionType = {
+type EmployeeSidebarType = {
   avatar: string
   status: StatusType
   employeeId: string
   queryKey: unknown[]
 }
 
-export const EmployeeActions = ({ avatar, status, queryKey, employeeId }: EmployeeActionType) => {
+export const EmployeeSidebar = ({ avatar, status, queryKey, employeeId }: EmployeeSidebarType) => {
   const { checked, label, description } = STATUS_MAP[status]
   const { toggleStatus, isStatusUpdating } = useStatusChange({ employeeId, queryKey, status })
 

@@ -4,8 +4,8 @@ import { cn } from '@/lib/utils.clsx'
 import { href, Link, useParams } from 'react-router-dom'
 import { useEmployee } from './hooks/useEmployee'
 import { Content } from './ui/Content'
-import { EmployeeActions } from './ui/EmployeeActions'
 import { EmployeeDetails } from './ui/EmployeeDetails'
+import { EmployeeSidebar } from './ui/EmployeeSidebar'
 
 const ViewEmployees = () => {
   const { employeeId } = useParams<{ employeeId: string }>() as { employeeId: string }
@@ -16,16 +16,19 @@ const ViewEmployees = () => {
   if (isPending) return <Loader />
   if (!employee) return <div className="text-h4 text-text-grey-dark">Сотрудник не найден</div>
 
-  const { avatar, status, ...restData } = employee
-
   return (
     <>
       <Card>
         <h1 className=" text-text-black-dark text-h2">Карточка сотрудника</h1>
       </Card>
       <Content>
-        <EmployeeActions avatar={avatar} status={status} employeeId={employeeId} queryKey={queryKey} />{' '}
-        <EmployeeDetails profile={restData} />
+        <EmployeeSidebar
+          avatar={employee.avatar}
+          status={employee.status}
+          employeeId={employeeId}
+          queryKey={queryKey}
+        />
+        <EmployeeDetails employee={employee} />
       </Content>
       <Link
         className={cn(

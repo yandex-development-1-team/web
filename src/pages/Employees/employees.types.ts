@@ -12,7 +12,7 @@ type PasportType = {
   number: string
 }
 
-type ContactsType = {
+export type ContactsType = {
   phone: string
   email: string
   telegram_nick?: string
