@@ -5,5 +5,7 @@ export type RecoveryModalProps = {
   onClose: () => void
   login: string
   setLogin: Dispatch<SetStateAction<string>>
+  loginError: string
+  setLoginError: Dispatch<SetStateAction<string>>
   validateLogin: (value: string) => string
 }

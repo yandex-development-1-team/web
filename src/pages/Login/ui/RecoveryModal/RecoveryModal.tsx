@@ -1,10 +1,15 @@
-import { useState } from 'react'
 import { Button, Input, Modal } from '@/components/ui'
 import type { RecoveryModalProps } from './RecoveryModal.types'
 
-export const RecoveryModal = ({ isOpen, onClose, login, setLogin, validateLogin }: RecoveryModalProps) => {
-  const [loginError, setLoginError] = useState('')
-
+export const RecoveryModal = ({
+  isOpen,
+  onClose,
+  login,
+  setLogin,
+  loginError,
+  setLoginError,
+  validateLogin
+}: RecoveryModalProps) => {
   const handleSubmit = (e: React.SubmitEvent) => {
     e.preventDefault()
     const loginErr = validateLogin(login)

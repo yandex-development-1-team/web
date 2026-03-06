@@ -105,6 +105,8 @@ export const LoginForm = () => {
         login={login}
         setLogin={setLogin}
         validateLogin={validateLogin}
+        loginError={loginError}
+        setLoginError={setLoginError}
       />
     </>
   )
