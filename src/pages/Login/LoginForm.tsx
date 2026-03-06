@@ -50,7 +50,7 @@ export const LoginForm = () => {
             className={`min-h-[46px] ${loginError ? 'border-red-dark focus:ring-red-dark' : ''}`}
           />
           <div className="min-h-[18px] text-xs">
-            <p className={`${loginError ? 'text-red-dark opacity-100' : 'opacity-0'} transition-opacity`}>
+            <p className={`${loginError ? 'text-text-red-dark opacity-100' : 'opacity-0'} transition-opacity`}>
               {loginError}
             </p>
           </div>
@@ -78,7 +78,7 @@ export const LoginForm = () => {
           </button>
         </div>
         <div className="text-xs">
-          <p className={`${passwordError ? 'text-red-dark opacity-100' : 'opacity-0'} transition-opacity`}>
+          <p className={`${passwordError ? 'text-text-red-dark opacity-100' : 'opacity-0'} transition-opacity`}>
             {passwordError}
           </p>
         </div>
