@@ -61,7 +61,7 @@ export const Modal = ({ isOpen, onClose, title, children, footer, showBorders = 
         transition-opacity duration-300 ease-in-out
         ${isAnimated ? 'opacity-100' : 'opacity-0 pointer-events-none'}
       `}
-      onClick={onClose}
+      onMouseDown={onClose}
     >
       <div
         className={`
@@ -69,7 +69,7 @@ export const Modal = ({ isOpen, onClose, title, children, footer, showBorders = 
           transition-[opacity,scale] duration-300 ease-in-out
           ${isAnimated ? 'opacity-100 scale-100' : 'opacity-0 scale-0 pointer-events-none'}
         `}
-        onClick={e => e.stopPropagation()}
+        onMouseDown={e => e.stopPropagation()}
       >
         <header
           className={`flex items-center justify-between px-6 py-5 ${showBorders ? 'border-b border-grey-blue-light' : ''}`}
