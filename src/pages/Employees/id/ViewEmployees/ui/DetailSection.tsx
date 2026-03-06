@@ -17,9 +17,9 @@ export const DetailSection = ({ className, items, title }: DetailSectionType) =>
       <div className="flex flex-col justify-center gap-2 mt-3">
         {items.map((item, index) => {
           return (
-            <div className="flex" key={index}>
-              <p className="text-sm w-45">{item.label}</p>
-              <p className="text-sm">{item.value}</p>
+            <div className="flex gap-5" key={index}>
+              <p className="w-46">{item.label}</p>
+              <p>{item.value}</p>
             </div>
           )
         })}
