@@ -3,11 +3,13 @@ import type { IBox } from './BoxSolutions.types'
 import { Box } from './ui/Box'
 
 const BoxSolutions = () => {
-  const box = MOCK_BOXES[0] as IBox
+  const boxes = MOCK_BOXES as IBox[]
   return (
     <>
-      <div className="grid">
-        <Box box={box}></Box>
+      <div className="grid grid-cols-[repeat(auto-fill,344px)] gap-5">
+        {boxes.map(box => {
+          return <Box box={box} key={box.id}></Box>
+        })}
       </div>
     </>
   )
