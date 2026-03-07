@@ -4,7 +4,7 @@ type PersonalInfoType = {
   middle_name?: string
 }
 
-type PasportType = {
+type PassportType = {
   citizenship: string
   birthday: string
   gender: string
@@ -35,7 +35,7 @@ export interface IUser {
   id: number
   avatar: string
   personal_info: PersonalInfoType
-  passport: PasportType
+  passport: PassportType
   contacts: ContactsType
 }
 

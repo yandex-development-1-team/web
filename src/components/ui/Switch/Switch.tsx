@@ -26,7 +26,7 @@ export const Switch = ({ onChange, disabled = false, checked = false, paleStyle 
 
   return (
     <>
-      <input type="checkbox" checked={checked} className="hidden" onChange={() => {}} disabled />
+      <input type="checkbox" checked={checked} className="hidden" onChange={() => {}} disabled={disabled} />
       <div
         className={`
           w-[52px]
@@ -39,7 +39,6 @@ export const Switch = ({ onChange, disabled = false, checked = false, paleStyle 
           border-1
           outline-2
           outline-offset-[-2px]
-          cursor-pointer
           ${disabled ? `${disabledBg} ${disabledBorder} ${disabledCursor}` : 'cursor-pointer'}
           ${
             !disabled &&

@@ -68,7 +68,7 @@ export const EMPLOYEES: IEmployee[] = [
       chief: {
         first_name: 'Сергей',
         last_name: 'Гаврилов',
-        middle_name: 'Михайлоывич'
+        middle_name: 'Михайлович'
       }
     },
     additional: {
@@ -106,7 +106,7 @@ export const EMPLOYEES: IEmployee[] = [
       chief: {
         first_name: 'Сергей',
         last_name: 'Гаврилов',
-        middle_name: 'Михайлоывич'
+        middle_name: 'Михайлович'
       }
     },
     additional: {
@@ -144,7 +144,7 @@ export const EMPLOYEES: IEmployee[] = [
       chief: {
         first_name: 'Сергей',
         last_name: 'Гаврилов',
-        middle_name: 'Михайлоывич'
+        middle_name: 'Михайлович'
       }
     },
     additional: {

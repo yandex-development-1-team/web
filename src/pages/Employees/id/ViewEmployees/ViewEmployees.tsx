@@ -33,8 +33,8 @@ const ViewEmployees = () => {
       <Link
         className={cn(
           'w-46 self-end mt-5',
-          'bg-yellow-accent-light text-black text-button',
-          'hover:bg-yellow-light active:bg-yellow-accent-dark aria-invalid:bg-red-medium aria-invalid:text-white',
+          'bg-yellow-accent-light text-text text-button',
+          'hover:bg-yellow-light active:bg-yellow-accent-dark',
           'h-11.5 px-8 py-3 rounded-lg transition-colors duration-300 ease-in-out'
         )}
         to={href(ROUTES.employeesEdit, { employeeId })}
