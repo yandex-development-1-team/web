@@ -1,4 +1,4 @@
-export type BoxStatus = 'active' | 'hidden' | 'draft' | 'processed'
+export type BoxStatus = 'active' | 'inactive'
 
 export interface IBox {
   id: number

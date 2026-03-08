@@ -1,9 +1,6 @@
 import box_image from '@/mockData/box_image.jpg'
 import type { IBox } from '@/types/solutions'
 
-// Предположим, что BoxStatus — это enum или union тип
-type BoxStatus = 'active' | 'pending' | 'closed'
-
 export const MOCK_BOXES: IBox[] = Array.from({ length: 30 }, (_, index) => {
   const id = index + 1
 
@@ -18,7 +15,7 @@ export const MOCK_BOXES: IBox[] = Array.from({ length: 30 }, (_, index) => {
     location: 'Москва, ул. Примерная, д. 10',
     price: Math.floor(Math.random() * (5000 - 500 + 1)) + 500, // Случайная цена от 500 до 5000
     image: box_image,
-    status: 'active' as BoxStatus,
+    status: index % 2 === 0 ? 'active' : 'inactive',
     organizer: 'Secret Events Team',
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
