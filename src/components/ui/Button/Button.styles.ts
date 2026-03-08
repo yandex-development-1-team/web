@@ -130,7 +130,7 @@ export const buttonVariants = cva('', {
     },
     size: {
       default: 'h-[46px] px-8 py-3',
-      'icon-40': 'size-10 p-2 rounded-lg ',
+      'icon-40': 'size-12 p-2 rounded-lg ',
       'icon-32': 'size-8 p-1.5 rounded-lg ',
       normal: 'w-[168px] min-h-[46px] px-3 py-3'
     }

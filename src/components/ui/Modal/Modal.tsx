@@ -49,32 +49,32 @@ export const Modal = ({ isOpen, onClose, title, children, footer, showBorders = 
     >
       <div
         className={`
-          flex max-h-[90vh] w-full max-w-157 flex-col rounded-xl bg-white font-display shadow-lg
+          flex max-h-[90vh] w-full max-w-[651px] flex-col rounded-xl bg-white font-display shadow-lg
           ${isOpen ? 'animate-modal-in' : 'animate-modal-out pointer-events-none'}
         `}
         onMouseDown={e => e.stopPropagation()}
       >
         <header
-          className={`flex items-center justify-between px-6 py-5 ${showBorders ? 'border-b border-grey-blue-light' : ''}`}
+          className={`flex items-center justify-between pl-[24px] pr-[15px] py-[12px] ${showBorders ? 'border-b border-grey-blue-light' : ''}`}
         >
           {title && <h3 className="m-0 text-h3 text-text">{title}</h3>}
 
           <Button
             variant="ghost"
-            size="icon-32"
+            size="icon-40"
             onClick={onClose}
             aria-label="Закрыть модальное окно"
             className="text-2xl text-text-grey-light hover:text-text"
           >
-            <CloseIcon />
+            <CloseIcon className="size-full" />
           </Button>
         </header>
 
-        <div className="flex-1 overflow-y-auto p-6 text-text">{children}</div>
+        <div className="flex-1 overflow-y-auto px-[24px] py-[19px] text-text">{children}</div>
 
         {footer && (
           <footer
-            className={`flex items-center justify-end gap-3 p-6 ${showBorders ? 'border-t border-grey-blue-light' : ''}`}
+            className={`flex items-center justify-end gap-3 px-[24px] py-[20px] ${showBorders ? 'border-t border-grey-blue-light' : ''}`}
           >
             {footer}
           </footer>

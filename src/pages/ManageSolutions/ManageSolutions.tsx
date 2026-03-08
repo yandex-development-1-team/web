@@ -1,12 +1,26 @@
+import { useState } from 'react'
 import { BoxButton } from '@/components/ui'
+import { ManageButton } from './ui/ManageButton'
+import { BoxSolutionModal } from '../../components/BoxSolutionModal'
+import { useModal } from '@/components/ui/Modal/useModal'
+import { type ModalAction } from '@/components/BoxSolutionModal/BoxSolutionModal.type'
 import { indicators } from './solutionsData'
 import { mockIndicatorsValues, mockBoxes, mockProjects } from '@/mockData/mockManageSolutionsPageData'
-import { ManageButton } from './ui/ManageButton'
 
 const ManageSolutions = () => {
-  const handleBoxCreate = () => {}
+  const [modalAction, setModalAction] = useState<ModalAction>('create')
+  const { isOpen, open, close } = useModal()
 
-  const handleBoxEdit = (id: number) => void id
+  const handleBoxCreate = () => {
+    setModalAction('create')
+    open()
+  }
+
+  const handleBoxEdit = (id: number) => {
+    setModalAction('edit')
+    open()
+    console.log(id)
+  }
 
   const handleBoxDelete = (id: number) => void id
 
@@ -70,6 +84,8 @@ const ManageSolutions = () => {
           </div>
         </div>
       </div>
+
+      <BoxSolutionModal isOpen={isOpen} onClose={close} action={modalAction} index={13} />
     </>
   )
 }
