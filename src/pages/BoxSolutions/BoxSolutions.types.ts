@@ -6,8 +6,8 @@ export interface IBox {
   slug: string
   description: string
   rules: string
-  date: string // Базовая дата (DDMMYYYY)
-  time: string // Базовое время начала (HH:MM)
+  date: string // DDMMYYYY
+  time: string // HH:MM
   location: string
   price: number
   image: string

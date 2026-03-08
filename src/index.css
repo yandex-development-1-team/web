@@ -145,6 +145,7 @@
   --color-labels-blue-light: var(--color-blue-light);
   --color-labels-green-dark: var(--color-green-dark);
   --color-labels-green-light: var(--color-green-light);
+  --color-labels-grey-light: var(--color-grey-light);
 
   /* Overlay */
   --color-overlay: rgba(53, 52, 52, 0.4);
