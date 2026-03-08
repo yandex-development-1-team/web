@@ -42,6 +42,7 @@ export const CalendarSingleInput = ({
         <Input
           variant="icon"
           icon={<CalendarIcon />}
+          iconPosition="inline-end"
           placeholder={open ? '' : placeholder}
           disabled={disabled}
           value={inputValue}
