@@ -1,10 +1,9 @@
 import { useState, useRef } from 'react'
 import { useForm, useWatch, Controller, type SubmitHandler } from 'react-hook-form'
-import { toast } from 'sonner'
+import { useNotification } from '@/app/providers/notification'
 import { useNavigate } from 'react-router-dom'
 import { cn } from '@/lib/utils.clsx'
 import type { IEmployeeFormData } from './CreateEmployees.types'
-import mockPhoto from '@/mockData/mock_photo.jpg'
 import { DownloadIcon, UserCreateIcon } from '@/assets/icons'
 import { departments, roles, genderOptions, citizenshipOptions } from './createEmployeesData'
 import { Input, Select, Button, Switch, CalendarInput } from '@/components/ui'
@@ -59,17 +58,19 @@ export const CreateEmployees = () => {
     name: 'accessLevel.roleId'
   })
 
+  const { showNotification } = useNotification()
+
   const handlePhoto = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
 
     if (!ALLOWED_TYPES.includes(file.type)) {
-      toast.error('Только PNG или JPG')
+      showNotification({ message: 'Только PNG или JPG', status: 'error' })
       return
     }
 
     if (file.size > MAX_FILE_SIZE) {
-      toast.error('Максимум 5MB')
+      showNotification({ message: 'Максимум 5MB', status: 'error' })
       return
     }
 
@@ -81,12 +82,11 @@ export const CreateEmployees = () => {
   }
 
   const onSubmit: SubmitHandler<IEmployeeFormData> = data => {
-    if (!data.roleId) {
-      toast.error('Выберите уровень доступа')
+    if (!data.accessLevel?.roleId) {
+      showNotification({ message: 'Выберите уровень доступа', status: 'error' })
       return
     }
 
-    console.log(data)
     navigate('/employee-card')
   }
 
@@ -100,20 +100,12 @@ export const CreateEmployees = () => {
             <div className="bg-white p-[20px] rounded-md flex flex-col items-center justify-center">
               <div
                 onClick={() => fileRef.current?.click()}
-                className="w-[146px] h-[146px] rounded-full border border-yellow-accent-light flex items-center justify-center cursor-pointer overflow-hidden mx-auto relative"
+                className="w-[146px] h-[146px] rounded-full border border-yellow-accent-light flex items-center justify-center cursor-pointer overflow-hidden mx-auto relative bg-white"
               >
                 {preview ? (
-                  <img src={preview} className="w-full h-full object-cover" />
+                  <img src={preview} className="object-cover object-center w-[132px] h-[132px] rounded-full" />
                 ) : (
-                  <>
-                    <img
-                      src={mockPhoto}
-                      className="object-cover object-center w-[132px] h-[132px] rounded-full brightness-50"
-                    />
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <DownloadIcon className="w-8 h-8 text-white" />
-                    </div>
-                  </>
+                  <DownloadIcon className="w-8 h-8 text-text-grey-dark" />
                 )}
               </div>
 
@@ -137,13 +129,13 @@ export const CreateEmployees = () => {
                   <Input
                     type="text"
                     variant="text"
-                    placeholder="Фамиля"
+                    placeholder="Фамилия"
                     aria-invalid={!!errors.personalInfo?.surname}
                     {...register('personalInfo.surname', {
                       required: 'Введите фамилию',
                       minLength: {
                         value: 2,
-                        message: 'Фамилия должно быть введена'
+                        message: 'Фамилия должна быть введена'
                       },
                       pattern: {
                         value: /^[А-Яа-яЁё]+$/u,
@@ -445,7 +437,7 @@ export const CreateEmployees = () => {
                 />
 
                 <Controller
-                  name="roleId"
+                  name="accessLevel.roleId"
                   control={control}
                   rules={{ required: 'Выберите должность' }}
                   render={({ field: { onChange, value }, fieldState: { error } }) => (
@@ -489,8 +481,8 @@ export const CreateEmployees = () => {
                     <Switch
                       checked={roleId === role.id}
                       onChange={() => {
-                        setValue('roleId', role.id)
-                        clearErrors('roleId')
+                        setValue('accessLevel.roleId', role.id)
+                        clearErrors('accessLevel.roleId')
                       }}
                     />
                   </div>
