@@ -15,7 +15,7 @@ export const MOCK_BOXES: IBox[] = Array.from({ length: 35 }, (_, index) => {
     time: '18:00',
     location: 'Москва, ул. Примерная, д. 10',
     price: Math.floor(Math.random() * (5000 - 500 + 1)) + 500,
-    image: box_image,
+    image: index % 5 === 0 ? '' : box_image,
     status: index % 3 === 0 ? 'active' : ('inactive' as BoxStatus),
     organizer: 'Secret Events Team',
     created_at: new Date().toISOString(),
