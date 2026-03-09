@@ -20,3 +20,4 @@ export {
 export { CalendarInput } from './CalendarInput'
 export { Modal } from './Modal'
 export { DeleteModal } from './Modal'
+export { TimeRangeInput } from './TimeRangeInput'

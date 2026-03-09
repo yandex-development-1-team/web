@@ -85,7 +85,7 @@ const ManageSolutions = () => {
         </div>
       </div>
 
-      <BoxSolutionModal isOpen={isOpen} onClose={close} action={modalAction} index={13} />
+      <BoxSolutionModal isOpen={isOpen} onClose={close} action={modalAction} />
     </>
   )
 }

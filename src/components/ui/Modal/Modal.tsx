@@ -45,7 +45,7 @@ export const Modal = ({ isOpen, onClose, title, children, footer, showBorders = 
 
           <Button
             variant="ghost"
-            size="icon-40"
+            size="icon-48"
             onClick={onClose}
             aria-label="Закрыть модальное окно"
             className="text-2xl text-text-grey-light hover:text-text"
