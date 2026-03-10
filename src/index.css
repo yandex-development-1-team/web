@@ -129,6 +129,7 @@
   --color-text-grey-dark: var(--color-grey-dark);
   --color-text-grey-light: var(--color-grey-light);
   --color-text-grey-medium: var(--color-grey-medium);
+  --color-text-red-dark: var(--color-red-dark);
   --color-text-error: var(--color-red-dark);
 
   /* System colors */
