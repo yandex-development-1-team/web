@@ -2,8 +2,8 @@ import { DeleteIcon, EditIcon } from '@/assets/icons'
 import { Button } from '@/components/ui'
 
 type BoxActionsPropsType = {
-  onEdit: () => void
   onDelete: () => void
+  onEdit: () => void
 }
 
 export const BoxActions = ({ onEdit, onDelete }: BoxActionsPropsType) => {

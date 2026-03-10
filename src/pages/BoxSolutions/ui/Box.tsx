@@ -4,7 +4,13 @@ import type { IBox } from '../BoxSolutions.types'
 import { BoxActions } from './BoxActions'
 import { StatusLabel } from './StatusLabel'
 
-export const Box = ({ box }: { box: IBox }) => {
+type BoxPropsType = {
+  box: IBox
+  onDelete: () => void
+  onEdit: () => void
+}
+
+export const Box = ({ box, onDelete, onEdit }: BoxPropsType) => {
   return (
     <>
       <Card className="max-w-86 relative">
@@ -17,7 +23,7 @@ export const Box = ({ box }: { box: IBox }) => {
           <p className="text-text text-xs">{box.description}</p>
         </div>
         <hr className="my-5 border-t border-grey-extra-light" />
-        <BoxActions onDelete={() => {}} onEdit={() => {}} />
+        <BoxActions onDelete={onDelete} onEdit={onEdit} />
       </Card>
     </>
   )

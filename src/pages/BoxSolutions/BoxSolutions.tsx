@@ -1,15 +1,20 @@
 import { AddIcon, BoxIcon } from '@/assets/icons'
 import { Pagination } from '@/components/Pagination/Pagination'
-import { Button } from '@/components/ui'
+import { Button, DeleteModal } from '@/components/ui'
 import { Loader } from '@/components/ui/Loader'
+import { useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
+import { deleteBoxById } from './api/deleteBoxById'
 import { useBoxSolutions } from './hooks/useBoxSolutions'
 import { Box } from './ui/Box'
 
 const BoxSolutions = () => {
+  const [boxToDelete, setBoxToDelete] = useState<number | string>('')
+  const [boxToEdit, setBoxToEdit] = useState<number | string>('')
+
   const [searchParams] = useSearchParams()
   const currentPage = Number(searchParams.get('page')) || 1
-  const { boxes, isError, isPending } = useBoxSolutions(currentPage)
+  const { boxes, isError, isPending, queryKey } = useBoxSolutions(currentPage)
 
   const totalPages = 12
 
@@ -32,12 +37,30 @@ const BoxSolutions = () => {
         <div className="flex flex-col gap-10">
           <div className="grid grid-cols-[repeat(auto-fill,344px)] gap-5">
             {boxes?.map(box => {
-              return <Box box={box} key={box.id} />
+              return (
+                <Box
+                  box={box}
+                  key={box.id}
+                  onDelete={() => setBoxToDelete(box.id)}
+                  onEdit={() => setBoxToEdit(box.id)}
+                />
+              )
             })}
           </div>
           <Pagination currentPage={currentPage} totalPages={totalPages} className="ml-auto" />
         </div>
       )}
+      <DeleteModal
+        title="Удалить коробку!"
+        isOpen={!!boxToDelete}
+        onDelete={() => deleteBoxById(Number(boxToDelete))}
+        onClose={() => setBoxToDelete(0)}
+        itemId={boxToDelete}
+        queryKey={queryKey}
+      >
+        <div>{'Вы действительно хотите удалить эту коробку?'}</div>
+      </DeleteModal>
+      {boxToEdit}
     </div>
   )
 }

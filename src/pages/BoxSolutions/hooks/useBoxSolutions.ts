@@ -15,6 +15,7 @@ export const useBoxSolutions = (page: number) => {
   return {
     boxes,
     isPending,
-    isError
+    isError,
+    queryKey: ['boxSolutions']
   }
 }
