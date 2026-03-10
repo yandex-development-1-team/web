@@ -1,4 +1,4 @@
-import { type ReactNode, useEffect, useState, useLayoutEffect } from 'react'
+import { type ReactNode, useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { CloseIcon } from '@/assets/icons'
 import { Button } from '@/components/ui/Button'
@@ -13,8 +13,8 @@ interface ModalProps {
 }
 
 export const Modal = ({ isOpen, onClose, title, children, footer, showBorders = true }: ModalProps) => {
-  const [shouldRender, setShouldRender] = useState(false)
-  const [isAnimated, setIsAnimated] = useState(false)
+  const [isMounted, setIsMounted] = useState(false)
+  if (isOpen && !isMounted) setIsMounted(true)
 
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
@@ -32,42 +32,25 @@ export const Modal = ({ isOpen, onClose, title, children, footer, showBorders = 
     }
   }, [isOpen, onClose])
 
-  useEffect(() => {
-    if (isOpen) {
-      // eslint-disable-next-line
-      setShouldRender(true)
-    } else {
-      setIsAnimated(false)
-      const timer = setTimeout(() => setShouldRender(false), 300)
-      return () => clearTimeout(timer)
-    }
-  }, [isOpen])
-
-  useLayoutEffect(() => {
-    if (shouldRender && isOpen) {
-      const frame = requestAnimationFrame(() => {
-        setIsAnimated(true)
-      })
-      return () => cancelAnimationFrame(frame)
-    }
-  }, [shouldRender, isOpen])
-
-  if (!shouldRender) return null
+  if (!isMounted) return null
 
   return createPortal(
     <div
       className={`
         fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4
-        transition-opacity duration-300 ease-in-out
-        ${isAnimated ? 'opacity-100' : 'opacity-0 pointer-events-none'}
+        ${isOpen ? 'animate-fade-in' : 'animate-fade-out pointer-events-none'}
       `}
       onMouseDown={onClose}
+      onAnimationEnd={e => {
+        if (e.target === e.currentTarget && e.animationName === 'fade-out' && !isOpen) {
+          setIsMounted(false)
+        }
+      }}
     >
       <div
         className={`
           flex max-h-[90vh] w-full max-w-157 flex-col rounded-xl bg-white font-display shadow-lg
-          transition-[opacity,scale] duration-300 ease-in-out
-          ${isAnimated ? 'opacity-100 scale-100' : 'opacity-0 scale-0 pointer-events-none'}
+          ${isOpen ? 'animate-modal-in' : 'animate-modal-out pointer-events-none'}
         `}
         onMouseDown={e => e.stopPropagation()}
       >
