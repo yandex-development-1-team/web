@@ -221,7 +221,7 @@ export const CreateEmployees = () => {
                 </div>
                 <div className="bg-white flex flex-col">
                   <Controller
-                    name="citizenship"
+                    name="passportData.citizenship"
                     control={control}
                     rules={{ required: 'Выберите гражданство' }}
                     render={({ field: { onChange, value }, fieldState: { error } }) => (
@@ -274,7 +274,7 @@ export const CreateEmployees = () => {
                       />
                     </label>
                     <Controller
-                      name="gender"
+                      name="passportData.gender"
                       control={control}
                       rules={{ required: 'Выберите пол' }}
                       render={({ field: { onChange, value }, fieldState: { error } }) => (
@@ -414,7 +414,7 @@ export const CreateEmployees = () => {
               </div>
               <div className="flex flex-col mt-[8px] gap-[12px]">
                 <Controller
-                  name="departmentId"
+                  name="jobInfo.departmentId"
                   control={control}
                   rules={{ required: 'Выберите отдел' }}
                   render={({ field: { onChange, value }, fieldState: { error } }) => (
