@@ -11,6 +11,7 @@ const Employees = () => {
   const navigate = useNavigate()
   const [search, setSearch] = useState('')
   const [filter, setFilter] = useState(false)
+  const [select, setSelect] = useState<Employee[]>([])
   const [sortConfig, setSortConfig] = useState<{
     key: keyof Employee
     direction: 'asc' | 'desc'
@@ -32,9 +33,17 @@ const Employees = () => {
     )
   }
 
+  const handleDownload = () => {
+    console.log('выбрано:', select)
+  }
+
   const filtered = employees.filter(e => e.name.toLowerCase().includes(search.toLowerCase()))
 
   const sorted = sortData(filtered, sortConfig)
+
+  const addEmployees = () => {
+    navigate('/employees/create')
+  }
 
   const columns: Column<Employee>[] = [
     { key: 'id', label: 'ID' },
@@ -82,7 +91,9 @@ const Employees = () => {
       <div className="p-5  bg-white rounded-[8px] mb-[20px]">
         <h2 className="mb-8 text-h2">Управление пользователями и правами</h2>
         <div className="flex items-center gap-5 h-[48px]">
-          <Button className="py-[12px] px-[32px] min-w-[241px]">Добавить сотрудника</Button>
+          <Button onClick={addEmployees} className="py-[12px] px-[32px] min-w-[241px]">
+            Добавить сотрудника
+          </Button>
           <Input
             variant="icon"
             icon={<SearchIcon />}
@@ -115,7 +126,7 @@ const Employees = () => {
                 </div>
               )}
             </div>
-            <Button className="p-4 bg-transparent  border-grey-border">
+            <Button onClick={handleDownload} className="p-4 bg-transparent  border-grey-border">
               <DownloadIcon />
             </Button>
           </div>
@@ -123,11 +134,7 @@ const Employees = () => {
       </div>
 
       <div className="mb-[8px]">
-        <DataTable idKey="id" columns={columns} data={sorted} enableCheckboxes enableLoadMore />
-      </div>
-      <div className="flex gap-[12px] justify-end h-[46px] ">
-        <Button className="py-[12px] px-[32px] bg-white">Отмена</Button>
-        <Button className="min-w-[247px] py-[12px] px-[32px] h-full">Сохранить изменения</Button>
+        <DataTable idKey="id" columns={columns} data={sorted} enableCheckboxes enableLoadMore onSelect={setSelect} />
       </div>
     </>
   )
