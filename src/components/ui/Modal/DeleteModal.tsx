@@ -23,7 +23,6 @@ export const DeleteModal = ({
 }: DeleteModalProps) => {
   const { mutate, isPending } = useDeleteItem(onDelete, onClose, queryKey)
 
-
   const handleConfirm = () => {
     if (itemId !== null && itemId !== undefined) {
       mutate(itemId)
