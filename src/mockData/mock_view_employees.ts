@@ -49,13 +49,6 @@ export const EMPLOYEES: IEmployee[] = [
       first_name: 'Петр',
       middle_name: 'Сергеевич'
     },
-    passport: {
-      citizenship: 'РФ',
-      birthday: '1985-04-12',
-      gender: 'М',
-      series: '4510',
-      number: '112233'
-    },
     contacts: {
       phone: '+7 (900) 111-22-33',
       email: 'admin@company.ru',
@@ -71,9 +64,6 @@ export const EMPLOYEES: IEmployee[] = [
         middle_name: 'Михайлович'
       }
     },
-    additional: {
-      city: 'Находка'
-    },
     access_level: 'Полный доступ',
     status: 'active',
     created_at: '2023-01-10T08:00:00Z',
@@ -86,13 +76,6 @@ export const EMPLOYEES: IEmployee[] = [
       last_name: 'Кузнецова',
       first_name: 'Елена',
       middle_name: 'Викторовна'
-    },
-    passport: {
-      citizenship: 'РФ',
-      birthday: '1992-08-24',
-      gender: 'Ж',
-      series: 'BM',
-      number: '776655'
     },
     contacts: {
       phone: '+7 (999) 444-55-66',
@@ -109,9 +92,6 @@ export const EMPLOYEES: IEmployee[] = [
         middle_name: 'Михайлович'
       }
     },
-    additional: {
-      city: 'Находка'
-    },
     access_level: 'Ограниченный доступ',
     status: 'inactive',
     created_at: '2023-06-20T10:15:00Z',
@@ -124,13 +104,6 @@ export const EMPLOYEES: IEmployee[] = [
       last_name: 'Лебедев',
       first_name: 'Дмитрий',
       middle_name: 'Александрович'
-    },
-    passport: {
-      citizenship: 'РФ',
-      birthday: '1998-11-30',
-      gender: 'М',
-      series: '4615',
-      number: '445566'
     },
     contacts: {
       phone: '+7 (911) 000-88-99',
@@ -146,9 +119,6 @@ export const EMPLOYEES: IEmployee[] = [
         last_name: 'Гаврилов',
         middle_name: 'Михайлович'
       }
-    },
-    additional: {
-      city: 'Воронеж'
     },
     access_level: 'Ограниченный доступ',
     status: 'inactive',
