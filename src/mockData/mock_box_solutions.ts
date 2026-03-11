@@ -2,7 +2,7 @@ import box_image from '@/mockData/box_image.jpg'
 import type { BoxStatus } from '@/pages/BoxSolutions/BoxSolutions.types'
 import type { IBox } from '@/types/solutions'
 
-export const MOCK_BOXES: IBox[] = Array.from({ length: 6 }, (_, index) => {
+export const MOCK_BOXES: IBox[] = Array.from({ length: 72 }, (_, index) => {
   const id = index + 1
 
   return {

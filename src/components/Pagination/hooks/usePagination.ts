@@ -1,26 +1,32 @@
+import type { IPagination } from '@/pages/BoxSolutions/BoxSolutions.types'
 import { useMemo } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { generatePagesRange } from '../helpers/generatePagesRange'
+import { getPageHref } from '../helpers/getPageHref'
 
-const getPageHref = (page: number | string, searchParams: URLSearchParams) => {
-  const params = new URLSearchParams(searchParams)
-  params.set('page', page.toString())
-  return `?${params.toString()}`
-}
+export const usePagination = (pagination?: IPagination) => {
+  const limit = pagination?.limit || 1
+  const offset = pagination?.offset || 0
+  const total = pagination?.total || 0
 
-export const usePagination = (currentPage: number, totalPages: number) => {
   const [searchParams] = useSearchParams()
 
-  const pagesRange = useMemo(() => generatePagesRange(currentPage, totalPages || 1), [currentPage, totalPages])
-  const prevPage = currentPage > 1 ? getPageHref(currentPage - 1, searchParams) : '#'
-  const nextPage = currentPage < totalPages ? getPageHref(currentPage + 1, searchParams) : '#'
-  const selectedPage = (page: string | number) => getPageHref(page, searchParams)
+  const currentPage = Math.floor(offset / limit) + 1
+  const totalPages = Math.ceil(total / limit)
+
+  const pages = useMemo(() => generatePagesRange(currentPage, totalPages || 1), [currentPage, totalPages])
+
+  const prevPageLink = currentPage > 1 ? getPageHref(currentPage - 1, searchParams) : '#'
+  const nextPageLink = currentPage < totalPages ? getPageHref(currentPage + 1, searchParams) : '#'
+  const selectedPageLink = (page: string | number) => getPageHref(page, searchParams)
 
   return {
-    prevPage,
-    nextPage,
+    prevPageLink,
+    nextPageLink,
+    selectedPageLink,
     searchParams,
-    pagesRange,
-    selectedPage
+    pages,
+    currentPage,
+    totalPages
   }
 }

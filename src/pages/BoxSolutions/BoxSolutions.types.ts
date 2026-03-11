@@ -17,3 +17,9 @@ export interface IBox {
   updated_at: string
   created_by: number // ID менеджера/админа
 }
+
+export interface IPagination {
+  limit: number
+  offset: number
+  total: number
+}
