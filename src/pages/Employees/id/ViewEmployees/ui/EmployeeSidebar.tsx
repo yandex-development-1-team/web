@@ -49,7 +49,6 @@ export const EmployeeSidebar = ({ avatar, status, queryKey, employeeId }: Employ
           disabled={isStatusUpdating}
         />
       </Card>
-      <Card>Установлен Битрикс.24.Диск 30.11.2025, объем - 56.49 КБ</Card>
     </section>
   )
 }

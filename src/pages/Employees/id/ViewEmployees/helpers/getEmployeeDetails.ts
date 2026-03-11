@@ -11,23 +11,11 @@ export const getEmployeeDetails = (employee: IEmployee) => [
     ]
   },
   {
-    title: 'Персональная информация',
-    items: [
-      { label: 'Гражданство', value: employee.passport.citizenship },
-      { label: 'Пол', value: employee.passport.gender },
-      { label: 'Серия, номер паспорта', value: `${employee.passport.series} ${employee.passport.number}` }
-    ]
-  },
-  {
     title: 'Должностная информация',
     items: [
       { label: 'Отдел', value: employee.job_info.department },
       { label: 'Должность', value: employee.job_info.position },
       { label: 'Начальник', value: getFullName(employee.job_info.chief) }
     ]
-  },
-  {
-    title: 'Дополнительная информация',
-    items: [{ label: 'Город', value: employee.additional.city }]
   }
 ]
