@@ -99,15 +99,7 @@ export const LoginForm = () => {
         </Button>
       </form>
 
-      <RecoveryModal
-        isOpen={isOpenRecoveryModal}
-        onClose={closeRecoveryModal}
-        login={login}
-        setLogin={setLogin}
-        validateLogin={validateLogin}
-        loginError={loginError}
-        setLoginError={setLoginError}
-      />
+      <RecoveryModal isOpen={isOpenRecoveryModal} onClose={closeRecoveryModal} validateLogin={validateLogin} />
     </>
   )
 }
