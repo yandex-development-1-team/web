@@ -1,4 +1,5 @@
-import { useState } from 'react'
+/* eslint-disable react-hooks/set-state-in-effect */
+import { useEffect, useState } from 'react'
 import { Popover, PopoverTrigger, PopoverContent } from '../CalendarInput/ui/Popover'
 import { Input } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
@@ -25,6 +26,21 @@ export const TimeRangeInput = ({
   const [fromTime, setFromTime] = useState(value?.from || '')
   const [toTime, setToTime] = useState(value?.to || '')
 
+  useEffect(() => {
+    if (value?.from && value?.to) {
+      setInputValue(formatTimeRange(value.from, value.to))
+    } else if (value?.from) {
+      setInputValue(value.from)
+    } else if (value?.to) {
+      setInputValue(value.to)
+    } else {
+      setInputValue('')
+    }
+
+    setFromTime(value?.from || '')
+    setToTime(value?.to || '')
+  }, [value])
+
   function handleTimeChange(type: 'from' | 'to', newValue: string) {
     const formatted = formatTimeInput(newValue)
 
@@ -39,7 +55,7 @@ export const TimeRangeInput = ({
         setInputValue(toTime ? formatTimeRange(formatted, toTime) : formatted)
       } else if (!formatted) {
         setInputValue(toTime || '')
-        if (!toTime) onChange?.(undefined)
+        onChange?.({ from: undefined, to: toTime || undefined })
       }
     } else {
       setToTime(formatted)
@@ -52,7 +68,7 @@ export const TimeRangeInput = ({
         setInputValue(fromTime ? formatTimeRange(fromTime, formatted) : formatted)
       } else if (!formatted) {
         setInputValue(fromTime || '')
-        if (!fromTime) onChange?.(undefined)
+        onChange?.({ from: fromTime || undefined, to: undefined })
       }
     }
   }
@@ -80,16 +96,8 @@ export const TimeRangeInput = ({
     }
   }
 
-  function handleOpenChange(isOpen: boolean) {
-    setOpen(isOpen)
-    if (isOpen && value) {
-      setFromTime(value.from || '')
-      setToTime(value.to || '')
-    }
-  }
-
   return (
-    <Popover open={open} onOpenChange={handleOpenChange}>
+    <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger>
         <Input
           variant="icon"

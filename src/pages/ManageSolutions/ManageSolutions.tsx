@@ -4,25 +4,54 @@ import { ManageButton } from './ui/ManageButton'
 import { BoxSolutionModal } from '../../components/BoxSolutionModal'
 import { useModal } from '@/components/ui/Modal/useModal'
 import { type ModalAction } from '@/components/BoxSolutionModal/BoxSolutionModal.type'
+import type { BoxData } from '@/types/solutions'
 import { indicators } from './solutionsData'
-import { mockIndicatorsValues, mockBoxes, mockProjects } from '@/mockData/mockManageSolutionsPageData'
+import {
+  mockIndicatorsValues,
+  mockBoxes as initialMockBoxes,
+  mockProjects
+} from '@/mockData/mockManageSolutionsPageData'
 
 const ManageSolutions = () => {
+  const [boxes, setBoxes] = useState<BoxData[]>(initialMockBoxes)
   const [modalAction, setModalAction] = useState<ModalAction>('create')
+  const [selectedBoxId, setSelectedBoxId] = useState<number | null>(null)
   const { isOpen, open, close } = useModal()
+
+  const selectedBox = boxes.find(b => b.id === selectedBoxId)
 
   const handleBoxCreate = () => {
     setModalAction('create')
+    setSelectedBoxId(null)
     open()
   }
 
   const handleBoxEdit = (id: number) => {
     setModalAction('edit')
+    setSelectedBoxId(id)
     open()
-    console.log(id)
   }
 
-  const handleBoxDelete = (id: number) => void id
+  const handleBoxSave = (data: Omit<BoxData, 'id'>) => {
+    if (modalAction === 'create') {
+      const newBox: BoxData = {
+        id: Math.max(...boxes.map(b => b.id), 0) + 1,
+        ...data
+      }
+
+      setBoxes(prev => [...prev, newBox])
+    } else if (modalAction === 'edit' && selectedBox) {
+      const updatedBox: BoxData = { ...selectedBox, ...data }
+
+      setBoxes(prev => prev.map(box => (box.id === selectedBox.id ? updatedBox : box)))
+    }
+
+    close()
+  }
+
+  const handleBoxDelete = (id: number) => {
+    setBoxes(boxes.filter(box => box.id !== id))
+  }
 
   const handleProjectCreate = () => {}
 
@@ -59,7 +88,7 @@ const ManageSolutions = () => {
             <BoxButton className="text-button" icon={'box'} onClick={handleBoxCreate}>
               Создать коробку
             </BoxButton>
-            {mockBoxes.map(box => (
+            {boxes.map(box => (
               <ManageButton
                 key={box.id}
                 text={box.name}
@@ -85,7 +114,14 @@ const ManageSolutions = () => {
         </div>
       </div>
 
-      <BoxSolutionModal isOpen={isOpen} onClose={close} action={modalAction} />
+      <BoxSolutionModal
+        key={`${modalAction}-${selectedBox?.id || 'new'}`}
+        isOpen={isOpen}
+        onClose={close}
+        action={modalAction}
+        boxData={selectedBox}
+        onSave={handleBoxSave}
+      />
     </>
   )
 }

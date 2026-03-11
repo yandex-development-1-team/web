@@ -1,4 +1,5 @@
-import { useState } from 'react'
+/* eslint-disable react-hooks/set-state-in-effect */
+import { useEffect, useRef, useState } from 'react'
 import { Input } from '@/components/ui/Input'
 import { Popover, PopoverContent, PopoverTrigger } from './Popover'
 import { Calendar, CustomCalendarDropdown } from './Calendar'
@@ -15,6 +16,14 @@ export const CalendarSingleInput = ({
 }: TCalendarSingleInputProps) => {
   const [open, setOpen] = useState(false)
   const [inputValue, setInputValue] = useState(formatDate(value))
+  const isInternalChange = useRef(false)
+
+  useEffect(() => {
+    if (!isInternalChange.current && !open) {
+      setInputValue(formatDate(value))
+    }
+    isInternalChange.current = false
+  }, [value, open])
 
   function formatInput(value: string) {
     const date = value.replace(/[^\d.]/g, '').slice(0, 10)
@@ -49,6 +58,7 @@ export const CalendarSingleInput = ({
           aria-invalid={invalid}
           onChange={e => setInputValue(formatInput(e.target.value))}
           onBlur={() => {
+            isInternalChange.current = true
             onChange?.(parsedInput)
             setInputValue(formatDate(parsedInput) ?? inputValue)
           }}
@@ -64,6 +74,7 @@ export const CalendarSingleInput = ({
           mode="single"
           selected={parsedInput}
           onSelect={date => {
+            isInternalChange.current = true
             onChange?.(date)
             setInputValue(formatDate(date))
             setOpen(false)
