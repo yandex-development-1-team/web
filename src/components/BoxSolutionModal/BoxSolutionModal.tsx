@@ -23,7 +23,7 @@ export const BoxSolutionModal = ({ isOpen, onClose, action, boxData, onSave }: B
                 to: boxData.endTime
               }
             : undefined,
-        location: boxData.location || '',
+        location: boxData.location || mockSelectOptions[0]?.value || '',
         description: boxData.description || '',
         rules: boxData.rules || '',
         cost: boxData.cost || '',
@@ -36,7 +36,7 @@ export const BoxSolutionModal = ({ isOpen, onClose, action, boxData, onSave }: B
       isActive: false,
       date: undefined,
       timeRange: undefined,
-      location: '',
+      location: mockSelectOptions[0]?.value || '',
       description: '',
       rules: '',
       cost: '',
@@ -134,20 +134,56 @@ export const BoxSolutionModal = ({ isOpen, onClose, action, boxData, onSave }: B
           <Controller
             name="date"
             control={control}
+            rules={{
+              required: 'Выберите дату'
+            }}
             render={({ field }) => (
-              <CalendarInput
-                key={`date-${isOpen}`}
-                variant="single"
-                value={field.value}
-                placeholder="Выберите дату"
-                onChange={field.onChange}
-              />
+              <div className="flex flex-col gap-[3px]">
+                <CalendarInput
+                  key={`date-${isOpen}`}
+                  variant="single"
+                  value={field.value}
+                  placeholder="Выберите дату"
+                  onChange={date => {
+                    field.onChange(date)
+                    if (errors.date) {
+                      clearErrors('date')
+                    }
+                  }}
+                  invalid={!!errors.date}
+                />
+                <span className="text-xxs text-text-error">{errors.date?.message}</span>
+              </div>
             )}
           />
           <Controller
             name="timeRange"
             control={control}
-            render={({ field }) => <TimeRangeInput value={field.value} onChange={field.onChange} className="flex-1" />}
+            rules={{
+              required: 'Выберите время',
+              validate: value => {
+                if (!value?.from || !value?.to) {
+                  return 'Укажите время начала и окончания'
+                }
+                return true
+              }
+            }}
+            render={({ field }) => (
+              <div className="flex flex-col gap-[3px]">
+                <TimeRangeInput
+                  value={field.value}
+                  onChange={time => {
+                    field.onChange(time)
+                    if (errors.timeRange) {
+                      clearErrors('timeRange')
+                    }
+                  }}
+                  className="flex-1"
+                  invalid={!!errors.timeRange}
+                />
+                <span className="text-xxs text-text-error">{errors.timeRange?.message}</span>
+              </div>
+            )}
           />
         </div>
 
@@ -170,7 +206,20 @@ export const BoxSolutionModal = ({ isOpen, onClose, action, boxData, onSave }: B
 
         <label className="flex flex-col gap-[3px]">
           <span className="text-xxs text-text-grey-dark">Описание</span>
-          <Input type="text" variant="text" {...register('description')} />
+          <Input
+            type="text"
+            variant="text"
+            aria-invalid={!!errors.description}
+            {...register('description', {
+              required: 'Введите описание',
+              onChange: () => {
+                if (errors.name) {
+                  clearErrors('description')
+                }
+              }
+            })}
+          />
+          <span className="text-xxs text-text-error">{errors.description?.message}</span>
         </label>
 
         <label className="flex flex-col gap-[3px]">
@@ -181,7 +230,20 @@ export const BoxSolutionModal = ({ isOpen, onClose, action, boxData, onSave }: B
         <div className="flex gap-[12px]">
           <label className="flex flex-col gap-[3px] flex-1">
             <span className="text-xxs text-text-grey-dark">Стоимость</span>
-            <Input type="text" variant="text" {...register('cost')} />
+            <Input
+              type="text"
+              variant="text"
+              aria-invalid={!!errors.cost}
+              {...register('cost', {
+                required: 'Введите стоимость',
+                onChange: () => {
+                  if (errors.cost) {
+                    clearErrors('cost')
+                  }
+                }
+              })}
+            />
+            <span className="text-xxs text-text-error">{errors.cost?.message}</span>
           </label>
           <label className="flex flex-col gap-[3px] flex-1">
             <span className="text-xxs text-text-grey-dark">Организатор</span>
