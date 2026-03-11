@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { Button, CalendarInput, Input, Modal, Select, Switch, TimeRangeInput } from '@/components/ui'
 import { AddIcon } from '@/assets/icons'
+import { cn } from '@/lib/utils.clsx'
 import type { BoxSolutionFormData, BoxSolutionModalType, ModalAction } from './BoxSolutionModal.type'
 import type { BoxData } from '@/types/solutions'
 import { mockSelectOptions } from '@/mockData/mockSelectOptions'
@@ -16,18 +17,16 @@ export const BoxSolutionModal = ({ isOpen, onClose, action, boxData, onSave }: B
         name: boxData.name,
         isActive: boxData.isActive,
         date: formattedDate ? parseToDate(formattedDate) : undefined,
-        timeRange:
-          boxData.startTime && boxData.endTime
-            ? {
-                from: boxData.startTime,
-                to: boxData.endTime
-              }
-            : undefined,
+        timeRange: {
+          from: boxData.startTime,
+          to: boxData.endTime
+        },
         location: boxData.location || mockSelectOptions[0]?.value || '',
         description: boxData.description || '',
         rules: boxData.rules || '',
         cost: boxData.cost || '',
-        organizer: boxData.organizer || ''
+        organizer: boxData.organizer || '',
+        image: null
       }
     }
 
@@ -40,7 +39,8 @@ export const BoxSolutionModal = ({ isOpen, onClose, action, boxData, onSave }: B
       description: '',
       rules: '',
       cost: '',
-      organizer: ''
+      organizer: '',
+      image: null
     }
   }
 
@@ -50,17 +50,36 @@ export const BoxSolutionModal = ({ isOpen, onClose, action, boxData, onSave }: B
     register,
     reset,
     formState: { errors },
-    clearErrors
+    clearErrors,
+    watch
   } = useForm<BoxSolutionFormData>({
     defaultValues: getFormValues(action, boxData)
   })
+
+  const imageFileList = watch('image')
+
+  const imagePreviewUrl =
+    imageFileList && imageFileList.length > 0 ? URL.createObjectURL(imageFileList[0]) : boxData?.image
 
   useEffect(() => {
     const values = getFormValues(action, boxData)
     reset(values, { keepDefaultValues: false })
   }, [isOpen, action, boxData, reset])
 
-  const onSubmit = (data: BoxSolutionFormData) => {
+  const onSubmit = async (data: BoxSolutionFormData) => {
+    let imageBase64: string | undefined = undefined
+
+    if (data.image && data.image.length > 0) {
+      const file = data.image[0]
+      imageBase64 = await new Promise<string>(resolve => {
+        const reader = new FileReader()
+        reader.onloadend = () => resolve(reader.result as string)
+        reader.readAsDataURL(file)
+      })
+    } else if (boxData?.image) {
+      imageBase64 = boxData.image
+    }
+
     const formattedData: Omit<BoxData, 'id'> = {
       name: data.name,
       isActive: data.isActive,
@@ -71,7 +90,8 @@ export const BoxSolutionModal = ({ isOpen, onClose, action, boxData, onSave }: B
       description: data.description,
       rules: data.rules,
       cost: data.cost,
-      organizer: data.organizer
+      organizer: data.organizer,
+      image: imageBase64
     }
 
     onSave(formattedData)
@@ -251,14 +271,24 @@ export const BoxSolutionModal = ({ isOpen, onClose, action, boxData, onSave }: B
           </label>
         </div>
 
-        <div
-          className="flex gap-[12px] justify-center items-center py-[23px] 
-          bg-grey-extra-light border border-grey-light rounded-[8px] text-xs"
-        >
-          <Button size="icon-48">
-            <AddIcon className="size-full" />
-          </Button>
-          <span className="text-xs">Загрузить изображение</span>
+        <div>
+          <input type="file" id="image-upload" accept="image/*" className="hidden" {...register('image')} />
+          <div
+            className={cn(
+              'flex gap-[12px] items-center',
+              !imagePreviewUrl && `justify-center py-[23px] bg-grey-extra-light border border-grey-light rounded-[8px]`
+            )}
+          >
+            {imagePreviewUrl && (
+              <img src={imagePreviewUrl} alt="Preview" className="w-[296px] h-[141px] object-cover rounded-[8px]" />
+            )}
+            <div className="flex gap-[20px] items-center">
+              <Button size="icon-48" type="button" onClick={() => document.getElementById('image-upload')?.click()}>
+                <AddIcon className="size-full" />
+              </Button>
+              <span className="text-xs">Загрузить изображение</span>
+            </div>
+          </div>
         </div>
       </form>
     </Modal>

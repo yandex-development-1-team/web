@@ -14,12 +14,12 @@ export type BoxSolutionModalType = {
 export type BoxSolutionFormData = {
   name: string
   isActive: boolean
-  date?: Date
-  timeRange?: TimeRange
+  date: Date | undefined
+  timeRange: TimeRange | undefined
   location: string
   description: string
   rules: string
   cost: string
   organizer: string
-  image?: File
+  image: FileList | null
 }
