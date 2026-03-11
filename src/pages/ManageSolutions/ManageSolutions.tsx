@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { BoxButton } from '@/components/ui'
+import { BoxButton, DeleteModal } from '@/components/ui'
 import { ManageButton } from './ui/ManageButton'
 import { BoxSolutionModal } from '../../components/BoxSolutionModal'
 import { useModal } from '@/components/ui/Modal/useModal'
@@ -16,20 +16,22 @@ const ManageSolutions = () => {
   const [boxes, setBoxes] = useState<BoxData[]>(initialMockBoxes)
   const [modalAction, setModalAction] = useState<ModalAction>('create')
   const [selectedBoxId, setSelectedBoxId] = useState<number | null>(null)
-  const { isOpen, open, close } = useModal()
+  const [deleteBoxId, setDeleteBoxId] = useState<number | null>(null)
+  const { isOpen: isCreateEditModalOpen, open: openCreateEditModal, close: closeCreateEditModal } = useModal()
+  const { isOpen: isDeleteModalOpen, open: openDeleteModal, close: closeDeleteModal } = useModal()
 
   const selectedBox = boxes.find(b => b.id === selectedBoxId)
 
   const handleBoxCreate = () => {
     setModalAction('create')
     setSelectedBoxId(null)
-    open()
+    openCreateEditModal()
   }
 
   const handleBoxEdit = (id: number) => {
     setModalAction('edit')
     setSelectedBoxId(id)
-    open()
+    openCreateEditModal()
   }
 
   const handleBoxSave = (data: Omit<BoxData, 'id'>) => {
@@ -46,11 +48,16 @@ const ManageSolutions = () => {
       setBoxes(prev => prev.map(box => (box.id === selectedBox.id ? updatedBox : box)))
     }
 
-    close()
+    closeCreateEditModal()
   }
 
-  const handleBoxDelete = (id: number) => {
-    setBoxes(boxes.filter(box => box.id !== id))
+  const handleBoxDeleteClick = (id: number) => {
+    setDeleteBoxId(id)
+    openDeleteModal()
+  }
+
+  const handleBoxDeleteConfirm = async (id: string | number) => {
+    setBoxes(prev => prev.filter(box => box.id !== id))
   }
 
   const handleProjectCreate = () => {}
@@ -93,7 +100,7 @@ const ManageSolutions = () => {
                 key={box.id}
                 text={box.name}
                 onClick={() => handleBoxEdit(box.id)}
-                onDelete={() => handleBoxDelete(box.id)}
+                onDelete={() => handleBoxDeleteClick(box.id)}
               />
             ))}
           </div>
@@ -116,12 +123,22 @@ const ManageSolutions = () => {
 
       <BoxSolutionModal
         key={`${modalAction}-${selectedBox?.id || 'new'}`}
-        isOpen={isOpen}
-        onClose={close}
+        isOpen={isCreateEditModalOpen}
+        onClose={closeCreateEditModal}
         action={modalAction}
         boxData={selectedBox}
         onSave={handleBoxSave}
       />
+
+      <DeleteModal
+        isOpen={isDeleteModalOpen}
+        onClose={closeDeleteModal}
+        itemId={deleteBoxId}
+        onDelete={handleBoxDeleteConfirm}
+        title="Удалить коробку?"
+      >
+        Вы действительно хотите удалить эту корбку? Действие нельзя отменить.
+      </DeleteModal>
     </>
   )
 }
