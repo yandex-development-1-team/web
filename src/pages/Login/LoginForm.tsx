@@ -102,11 +102,7 @@ export const LoginForm = () => {
       <RecoveryModal
         isOpen={isOpenRecoveryModal}
         onClose={closeRecoveryModal}
-        login={login}
-        setLogin={setLogin}
         validateLogin={validateLogin}
-        loginError={loginError}
-        setLoginError={setLoginError}
       />
     </>
   )
