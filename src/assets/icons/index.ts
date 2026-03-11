@@ -44,4 +44,3 @@ export { default as ViewingIcon } from './Viewing.svg?react'
 export { default as Check } from './Check.svg?react'
 export { default as Eye } from './Eye.svg?react'
 export { default as EyeClose } from './EyeClose.svg?react'
-
