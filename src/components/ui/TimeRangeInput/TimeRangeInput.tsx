@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/set-state-in-effect */
 import { useEffect, useState } from 'react'
 import { Popover, PopoverTrigger, PopoverContent } from '../CalendarInput/ui/Popover'
 import { Input } from '@/components/ui/Input'
@@ -27,18 +26,17 @@ export const TimeRangeInput = ({
   const [toTime, setToTime] = useState(value?.to || '')
 
   useEffect(() => {
-    if (value?.from && value?.to) {
-      setInputValue(formatTimeRange(value.from, value.to))
-    } else if (value?.from) {
-      setInputValue(value.from)
-    } else if (value?.to) {
-      setInputValue(value.to)
-    } else {
-      setInputValue('')
-    }
+    const from = value?.from ?? ''
+    const to = value?.to ?? ''
 
-    setFromTime(value?.from || '')
-    setToTime(value?.to || '')
+    const newInputValue = from && to ? formatTimeRange(from, to) : from || to || ''
+
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setInputValue(newInputValue)
+
+    setFromTime(from)
+
+    setToTime(to)
   }, [value])
 
   function handleTimeChange(type: 'from' | 'to', newValue: string) {
