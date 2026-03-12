@@ -1,4 +1,4 @@
-export type BoxStatus = 'active' | 'inactive'
+export type BoxStatus = 'active' | 'disable'
 
 export interface IBox {
   id: number
@@ -6,8 +6,8 @@ export interface IBox {
   slug: string
   description: string
   rules: string
-  date: string // DDMMYYYY
-  time: string // HH:MM
+  date: string
+  time: string
   location: string
   price: number
   image: string
@@ -15,7 +15,7 @@ export interface IBox {
   organizer: string
   created_at: string
   updated_at: string
-  created_by: number // ID менеджера/админа
+  created_by: number
 }
 
 export interface IPagination {

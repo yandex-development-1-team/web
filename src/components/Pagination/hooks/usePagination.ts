@@ -9,24 +9,32 @@ export const usePagination = (pagination?: IPagination) => {
   const offset = pagination?.offset || 0
   const total = pagination?.total || 0
 
-  const [searchParams] = useSearchParams()
+  const [searchParams, setSearchParams] = useSearchParams()
 
-  const currentPage = Math.floor(offset / limit) + 1
+  const selectedPage = Math.floor(offset / limit) + 1
   const totalPages = Math.ceil(total / limit)
 
-  const pages = useMemo(() => generatePagesRange(currentPage, totalPages || 1), [currentPage, totalPages])
+  const pagesRange = useMemo(() => generatePagesRange(selectedPage, totalPages || 1), [selectedPage, totalPages])
 
-  const prevPageLink = currentPage > 1 ? getPageHref(currentPage - 1, searchParams) : '#'
-  const nextPageLink = currentPage < totalPages ? getPageHref(currentPage + 1, searchParams) : '#'
-  const selectedPageLink = (page: string | number) => getPageHref(page, searchParams)
+  const changeLimit = (newLimit: number | undefined) => {
+    if (!newLimit) return
+    const params = new URLSearchParams(searchParams)
+    params.set('limit', newLimit.toString())
+    params.set('offset', '0')
+    setSearchParams(params)
+  }
+
+  const prevLink = selectedPage > 1 ? getPageHref(offset - limit, limit, searchParams) : '#'
+  const nextLink = selectedPage < totalPages ? getPageHref(offset + limit, limit, searchParams) : '#'
+  const selectedLink = (page: string | number) => getPageHref((Number(page) - 1) * limit, limit, searchParams)
 
   return {
-    prevPageLink,
-    nextPageLink,
-    selectedPageLink,
-    searchParams,
-    pages,
-    currentPage,
-    totalPages
+    prevLink,
+    nextLink,
+    selectedLink,
+    pagesRange,
+    selectedPage,
+    totalPages,
+    changeLimit
   }
 }

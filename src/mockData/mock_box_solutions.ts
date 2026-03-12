@@ -1,6 +1,5 @@
 import box_image from '@/mockData/box_image.jpg'
-import type { BoxStatus } from '@/pages/BoxSolutions/BoxSolutions.types'
-import type { IBox } from '@/types/solutions'
+import type { BoxStatus, IBox } from '@/pages/BoxSolutions/BoxSolutions.types'
 
 export const MOCK_BOXES: IBox[] = Array.from({ length: 72 }, (_, index) => {
   const id = index + 1
@@ -16,7 +15,7 @@ export const MOCK_BOXES: IBox[] = Array.from({ length: 72 }, (_, index) => {
     location: 'Москва, ул. Примерная, д. 10',
     price: Math.floor(Math.random() * (5000 - 500 + 1)) + 500,
     image: index % 5 === 0 ? '' : box_image,
-    status: index % 3 === 0 ? 'active' : ('inactive' as BoxStatus),
+    status: (index % 3 === 0 ? 'active' : 'disable') as BoxStatus,
     organizer: 'Secret Events Team',
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),

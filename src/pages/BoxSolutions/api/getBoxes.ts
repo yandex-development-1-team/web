@@ -1,4 +1,5 @@
 import { api } from '@/app/providers/axios'
+import type { IParams } from '@/components/Pagination/Pagination.types'
 import { MOCK_BOXES } from '@/mockData/mock_box_solutions'
 import type { IBox, IPagination } from '../BoxSolutions.types'
 
@@ -7,23 +8,24 @@ type BoxesPesponseType = {
   paginaton: IPagination
 }
 
-export const getBoxes = async (page: number) => {
-  const result = await api.get<BoxesPesponseType>(`/boxes?page=${page}`)
+export const getBoxes = async (params: IParams) => {
+  const result = await api.get<BoxesPesponseType>(`/boxes`, { params })
   if (!result.data) throw new Error('Faild to get box solutions')
-  //   return result.data
 
   //Имитация пагинации на беке
-  const limit = 6
-  const total = 72
-  const offset = (Math.max(1, page) - 1) * limit
-  const items = MOCK_BOXES.slice(offset, offset + limit) as IBox[]
+  const limit = Number(params.limit)
+  const offset = Number(params.offset)
+  const total = MOCK_BOXES.length
+
+  const boxes = MOCK_BOXES.slice(offset, offset + limit) as IBox[]
 
   return {
-    items: items,
+    items: boxes,
     pagination: {
       limit,
       offset,
       total
     }
   }
+  //   return result.data
 }

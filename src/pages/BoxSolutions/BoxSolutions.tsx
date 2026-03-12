@@ -3,18 +3,14 @@ import { Pagination } from '@/components/Pagination/Pagination'
 import { Button, DeleteModal } from '@/components/ui'
 import { Loader } from '@/components/ui/Loader'
 import { useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
 import { deleteBoxById } from './api/deleteBoxById'
 import { useBoxes } from './hooks/useBoxes'
 import { Box } from './ui/Box'
 
 const BoxSolutions = () => {
-  const [searchParams] = useSearchParams()
   const [boxToDelete, setBoxToDelete] = useState<number | string>('')
   const [boxToEdit, setBoxToEdit] = useState<number | string>('')
-
-  const currentPage = Number(searchParams.get('page')) || 1
-  const { boxes, pagination, isError, isPending, queryKey } = useBoxes(currentPage)
+  const { boxes, pagination, isError, isPending, queryKey } = useBoxes()
 
   if (isError) return <div className="text-text">Ошибка при получении данных</div>
   if (!boxes?.length && !isPending) return <div className="text-text">Нет сохраненных коробок</div>
@@ -45,7 +41,7 @@ const BoxSolutions = () => {
               )
             })}
           </div>
-          <Pagination pagination={pagination} className="ml-auto" />
+          <Pagination pagination={pagination} />
         </div>
       )}
       <DeleteModal
