@@ -7,7 +7,7 @@ const STATUS_MAP: Record<BoxStatus, { title: string; styles: string }> = {
     title: 'Активен в боте',
     styles: 'bg-labels-yellow-light'
   },
-  inactive: {
+  disable: {
     title: 'Не активен в боте',
     styles: 'bg-labels-grey-light'
   }
