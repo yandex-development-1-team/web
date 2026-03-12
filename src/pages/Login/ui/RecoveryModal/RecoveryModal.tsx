@@ -14,8 +14,10 @@ export const RecoveryModal = ({ isOpen, onClose, validateLogin }: RecoveryModalP
   const handleSubmit = (e: React.SubmitEvent) => {
     e.preventDefault()
     const loginErr = validateLogin(login)
-    setLoginError(loginErr)
-    if (loginErr) return
+    if (loginErr) {
+      setLoginError(loginErr)
+      return
+    }
     handleClose()
   }
 
