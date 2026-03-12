@@ -1,8 +1,7 @@
+import { type ReactNode, useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { CloseIcon } from '@/assets/icons'
 import { Button } from '@/components/ui/Button'
-import type { ReactNode } from 'react'
-import { useEffect } from 'react'
-import { createPortal } from 'react-dom'
 
 interface ModalProps {
   isOpen: boolean
@@ -14,6 +13,9 @@ interface ModalProps {
 }
 
 export const Modal = ({ isOpen, onClose, title, children, footer, showBorders = true }: ModalProps) => {
+  const [isMounted, setIsMounted] = useState(false)
+  if (isOpen && !isMounted) setIsMounted(true)
+
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose()
@@ -30,13 +32,27 @@ export const Modal = ({ isOpen, onClose, title, children, footer, showBorders = 
     }
   }, [isOpen, onClose])
 
-  if (!isOpen) return null
+  if (!isMounted) return null
 
   return createPortal(
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4" onClick={onClose}>
+    <div
+      className={`
+        fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4
+        ${isOpen ? 'animate-fade-in' : 'animate-fade-out pointer-events-none'}
+      `}
+      onMouseDown={onClose}
+      onAnimationEnd={e => {
+        if (e.target === e.currentTarget && e.animationName === 'fade-out' && !isOpen) {
+          setIsMounted(false)
+        }
+      }}
+    >
       <div
-        className="flex max-h-[90vh] w-full max-w-157 flex-col rounded-xl bg-white font-display shadow-lg"
-        onClick={e => e.stopPropagation()}
+        className={`
+          flex max-h-[90vh] w-full max-w-157 flex-col rounded-xl bg-white font-display shadow-lg
+          ${isOpen ? 'animate-modal-in' : 'animate-modal-out pointer-events-none'}
+        `}
+        onMouseDown={e => e.stopPropagation()}
       >
         <header
           className={`flex items-center justify-between px-6 py-5 ${showBorders ? 'border-b border-grey-blue-light' : ''}`}
