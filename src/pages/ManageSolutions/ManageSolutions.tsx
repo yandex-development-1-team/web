@@ -8,13 +8,13 @@ const ManageSolutions = () => {
 
   const handleBoxEdit = (id: number) => void id
 
-  const handleBoxDelete = (id: number) =>  void id
+  const handleBoxDelete = (id: number) => void id
 
   const handleProjectCreate = () => {}
 
-  const handleProjectEdit = (id: number) =>  void id
+  const handleProjectEdit = (id: number) => void id
 
-  const handleProjectDelete = (id: number) =>  void id
+  const handleProjectDelete = (id: number) => void id
 
   return (
     <>
