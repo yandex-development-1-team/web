@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/set-state-in-effect */
 import { useEffect, useRef, useState } from 'react'
 import { Input } from '@/components/ui/Input'
 import { Popover, PopoverContent, PopoverTrigger } from './Popover'
@@ -20,6 +19,7 @@ export const CalendarSingleInput = ({
 
   useEffect(() => {
     if (!isInternalChange.current && !open) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setInputValue(formatDate(value))
     }
     isInternalChange.current = false
