@@ -6,6 +6,7 @@ import { employees, type Employee } from './mockData'
 import { useNavigate } from 'react-router-dom'
 import type { Column } from '@/components/DataTable/DataTable.types'
 import { sortData } from '@/components/DataTable/helpers'
+import { ROUTES } from '@/app/router'
 
 const Employees = () => {
   const navigate = useNavigate()
@@ -33,16 +34,14 @@ const Employees = () => {
     )
   }
 
-  const handleDownload = () => {
-    console.log('выбрано:', select)
-  }
+  const handleDownload = () => void select
 
   const filtered = employees.filter(e => e.name.toLowerCase().includes(search.toLowerCase()))
 
   const sorted = sortData(filtered, sortConfig)
 
   const addEmployees = () => {
-    navigate('/employees/create')
+    navigate(ROUTES.employeesCreate)
   }
 
   const columns: Column<Employee>[] = [
