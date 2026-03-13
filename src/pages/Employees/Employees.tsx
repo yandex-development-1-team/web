@@ -59,7 +59,7 @@ const Employees = () => {
     {
       key: 'department',
       label: 'Отдел, руководитель',
-      render: (value, row) => (
+      render: (_, row) => (
         <div className="flex flex-col">
           <div>{row.department}</div>
           <div className="text-grey-dark text-sm">{row.manager ?? '—'}</div>
@@ -70,10 +70,13 @@ const Employees = () => {
     {
       key: 'level',
       label: 'Уровень',
-      render: (value, row) => (
+      render: (_, row) => (
         <div className="flex items-center gap-3">
           <span>{row.level}</span>
-          <Button className="bg-transparent border border-grey-dark p-[8px] w-[40px] h-[40px]">
+          <Button
+            onClick={() => handleSort('level')}
+            className="bg-transparent border border-grey-dark p-[8px] w-[40px] h-[40px]"
+          >
             <div className="w-[24px] flex items-center justify-center">
               <SortByNumbersIcon />
             </div>
