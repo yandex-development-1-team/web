@@ -10,7 +10,7 @@ export const PaginationNav = ({
   prevLink,
   nextLink,
   selectedLink,
-  selectedPage,
+  selectedPage: activePage,
   pagesRange,
   totalPages,
   className,
@@ -18,8 +18,8 @@ export const PaginationNav = ({
 }: PaginationProps) => {
   return (
     <div className={cn('flex items-center gap-1', className)} {...props}>
-      <Link to={prevLink} className={`p-2 ${selectedPage <= 1 ? 'opacity-40 pointer-events-none' : 'text-text'}`}>
-        <ArrowIcon className="rotate-90 w-4 h-4" />
+      <Link to={prevLink} className={`p-2 ${activePage <= 1 ? 'opacity-40 pointer-events-none' : 'text-text'}`}>
+        <ArrowIcon className="rotate-90 w-5 h-5" />
       </Link>
 
       {pagesRange.map((page, index) =>
@@ -31,8 +31,8 @@ export const PaginationNav = ({
           <Link
             key={`page-${page}`}
             to={selectedLink(page)}
-            className={`w-8 h-8 flex items-center justify-center rounded-md 
-            ${page === selectedPage ? 'border border-yellow-accent-light bg-white text-text pointer-events-none' : 'text-grey-light'}`}
+            className={`w-10 h-10 flex items-center justify-center rounded-md 
+            ${page === activePage ? 'border border-yellow-accent-light bg-white text-text pointer-events-none' : 'text-grey-light'}`}
           >
             {page}
           </Link>
@@ -41,9 +41,9 @@ export const PaginationNav = ({
 
       <Link
         to={nextLink}
-        className={`p-2 ${selectedPage >= totalPages ? 'opacity-40 pointer-events-none' : 'text-text'}`}
+        className={`p-2 ${activePage >= totalPages ? 'opacity-40 pointer-events-none' : 'text-text'}`}
       >
-        <ArrowIcon className="rotate-270 w-4 h-4" />
+        <ArrowIcon className="rotate-270 w-5 h-5" />
       </Link>
     </div>
   )

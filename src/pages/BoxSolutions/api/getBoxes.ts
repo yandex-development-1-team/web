@@ -5,7 +5,7 @@ import type { IBox, IPagination } from '../BoxSolutions.types'
 
 type BoxesPesponseType = {
   items: IBox[]
-  paginaton: IPagination
+  pagination: IPagination
 }
 
 export const getBoxes = async (params: IParams) => {
@@ -26,6 +26,6 @@ export const getBoxes = async (params: IParams) => {
       offset,
       total
     }
-  }
+  } as BoxesPesponseType
   //   return result.data
 }

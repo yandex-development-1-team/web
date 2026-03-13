@@ -27,7 +27,13 @@ export const PaginationLimit = ({ limit, onLimitChange, className, ...props }: P
         defaultValue={limit}
         onKeyDown={e => e.key === 'Enter' && handleChangeLimit(e)}
         onBlur={handleChangeLimit}
-        className="w-12 h-12 text-center outline-none border text-xxs border-gray-300 rounded-lg bg-white [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+        className={cn(
+          'w-10 h-10',
+          'text-center text-xxs',
+          'outline-none border border-gray-300 rounded-lg bg-white',
+          '[appearance:textfield]',
+          '[&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none'
+        )}
       />
     </div>
   )

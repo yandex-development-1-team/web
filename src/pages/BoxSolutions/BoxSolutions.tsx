@@ -1,6 +1,5 @@
-import { AddIcon, BoxIcon } from '@/assets/icons'
 import { Pagination } from '@/components/Pagination/Pagination'
-import { Button, DeleteModal } from '@/components/ui'
+import { BoxButton, DeleteModal } from '@/components/ui'
 import { Loader } from '@/components/ui/Loader'
 import { useState } from 'react'
 import { deleteBoxById } from './api/deleteBoxById'
@@ -19,11 +18,9 @@ const BoxSolutions = () => {
     <div className="max-w-268">
       <div className="flex justify-between h-18 mb-5">
         <h1 className="text-h2 text-text">Коробочные решения</h1>
-        <Button variant={'default'} className="text-text p-5 w-85 ">
-          <BoxIcon style={{ width: 'auto', height: '100%' }} />
-          <p className="mr-auto">Создать коробку</p>
-          <AddIcon style={{ width: 'auto', height: '100%' }} className="border border-white bg-white rounded-lg" />
-        </Button>
+        <BoxButton size={'small'} icon="box" className="text-text p-5 w-85" onClick={() => {}}>
+          Создать коробку
+        </BoxButton>
       </div>
       {isPending ? (
         <Loader />
