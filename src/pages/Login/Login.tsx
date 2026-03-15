@@ -1,4 +1,4 @@
-import loginImage from '@/assets/images/Login_Image.png'
+import loginImage from '@/assets/images/Login_Image.jpg'
 import { EventIcon } from '@/assets/icons'
 import { LoginForm } from './LoginForm'
 

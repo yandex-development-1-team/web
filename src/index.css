@@ -90,6 +90,7 @@
   /* Grey */
   --color-grey-dark: #8b8c8b;
   --color-grey-light: #c5c6c5;
+  --color-grey-medium: #6e6e6e;
   --color-grey-extra-light: #f3f3f3;
   --color-grey-blue-light: #d5d9e2;
   --color-grey-default-secondary: #757575;
@@ -128,7 +129,9 @@
   --color-text-black-natural: var(--color-black-natural);
   --color-text-grey-dark: var(--color-grey-dark);
   --color-text-grey-light: var(--color-grey-light);
+  --color-text-grey-medium: var(--color-grey-medium);
   --color-text-error: var(--color-red-dark);
+  --color-text-red-dark: var(--color-red-dark);
 
   /* System colors */
   --color-system-grey-light: var(--color-grey-light);
@@ -171,6 +174,52 @@
   --color-calendar-border: var(--color-grey-border);
   --color-calendar-text: var(--color-black-medium);
   --popover-shadow: 0px 4px 20px rgba(0, 0, 0, 0.25);
+
+  /* Modal Animation */
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes fade-out {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+
+  @keyframes modal-in {
+    from {
+      opacity: 0;
+      transform: scale(0);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes modal-out {
+    from {
+      opacity: 1;
+      transform: scale(1);
+    }
+    to {
+      opacity: 0;
+      transform: scale(0);
+    }
+  }
+
+  --animate-fade-in: fade-in 300ms ease-in-out forwards;
+  --animate-fade-out: fade-out 300ms ease-in-out forwards;
+  --animate-modal-in: modal-in 300ms ease-in-out forwards;
+  --animate-modal-out: modal-out 300ms ease-in-out forwards;
 }
 
 textarea.hide-resizer::-webkit-resizer {
