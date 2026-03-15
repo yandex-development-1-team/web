@@ -31,9 +31,9 @@ export const EmployeeSidebar = ({ avatar, status, queryKey, employeeId }: Employ
   const { toggleStatus, isStatusUpdating } = useStatusChange({ employeeId, queryKey, status })
 
   return (
-    <section className="flex flex-col gap-5 text-text">
+    <section className="flex flex-col gap-5 text-text w-full">
       <Card className="flex justify-center items-center h-60">
-        <Avatar src={avatar} width={146} height={146} shadow />
+        <Avatar src={avatar} width={146} height={146} />
       </Card>
       <Actions actions={MOCK_ACTIONS} />
       <Card className="flex flex-row">
