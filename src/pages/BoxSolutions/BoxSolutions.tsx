@@ -15,7 +15,7 @@ const BoxSolutions = () => {
   if (!boxes?.length && !isPending) return <div className="text-text">Нет сохраненных коробок</div>
 
   return (
-    <div className="max-w-268">
+    <div className="min-w-180">
       <div className="flex justify-between h-18 mb-5">
         <h1 className="text-h2 text-text">Коробочные решения</h1>
         <BoxButton size={'small'} icon="box" className="text-text p-5 w-85" onClick={() => {}}>
