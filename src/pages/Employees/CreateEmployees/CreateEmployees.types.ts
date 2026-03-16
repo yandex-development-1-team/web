@@ -18,11 +18,13 @@ export interface IEmployeeFormData {
   contactInfo: {
     phone: string
     email: string
+    city: string
   }
 
   jobInfo: {
     departmentId: number | null
     position: string
+    chief: string
   }
 
   accessLevel: {
