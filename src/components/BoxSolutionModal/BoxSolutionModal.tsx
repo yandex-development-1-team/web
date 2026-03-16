@@ -1,62 +1,29 @@
 import { useEffect } from 'react'
-import { Controller, useForm } from 'react-hook-form'
+import { Controller, useForm, useWatch } from 'react-hook-form'
 import { Button, CalendarInput, Input, Modal, Select, Switch, TimeRangeInput } from '@/components/ui'
 import { AddIcon } from '@/assets/icons'
 import { cn } from '@/lib/utils.clsx'
-import type { BoxSolutionFormData, BoxSolutionModalType, ModalAction } from './BoxSolutionModal.type'
-import type { BoxData } from '@/types/solutions'
+import type { BoxSolutionFormData, BoxSolutionModalType } from './BoxSolutionModal.type'
 import { mockSelectOptions } from '@/mockData/mockSelectOptions'
-import { formatDateToISO, parseToDate } from '@/lib/utils.date'
+import { getFormValues, mapFormDataToBoxData } from './helpers'
+import { fileToBase64 } from '@/lib/fileUtils/fileToBase64'
 
 export const BoxSolutionModal = ({ isOpen, onClose, action, boxData, onSave }: BoxSolutionModalType) => {
-  const getFormValues = (action: ModalAction, boxData?: BoxData): BoxSolutionFormData => {
-    if (action === 'edit' && boxData) {
-      const formattedDate = boxData.date ? boxData.date.split('-').reverse().join('.') : undefined
-
-      return {
-        name: boxData.name,
-        isActive: boxData.isActive,
-        date: formattedDate ? parseToDate(formattedDate) : undefined,
-        timeRange: {
-          from: boxData.startTime,
-          to: boxData.endTime
-        },
-        location: boxData.location || mockSelectOptions[0]?.value || '',
-        description: boxData.description || '',
-        rules: boxData.rules || '',
-        cost: boxData.cost || '',
-        organizer: boxData.organizer || '',
-        image: null
-      }
-    }
-
-    return {
-      name: '',
-      isActive: false,
-      date: undefined,
-      timeRange: undefined,
-      location: mockSelectOptions[0]?.value || '',
-      description: '',
-      rules: '',
-      cost: '',
-      organizer: '',
-      image: null
-    }
-  }
-
   const {
     control,
     handleSubmit,
     register,
     reset,
     formState: { errors },
-    clearErrors,
-    watch
+    clearErrors
   } = useForm<BoxSolutionFormData>({
     defaultValues: getFormValues(action, boxData)
   })
 
-  const imageFileList = watch('image')
+  const imageFileList = useWatch({
+    control,
+    name: 'image'
+  })
 
   const imagePreviewUrl =
     imageFileList && imageFileList.length > 0 ? URL.createObjectURL(imageFileList[0]) : boxData?.image
@@ -70,30 +37,12 @@ export const BoxSolutionModal = ({ isOpen, onClose, action, boxData, onSave }: B
     let imageBase64: string | undefined = undefined
 
     if (data.image && data.image.length > 0) {
-      const file = data.image[0]
-      imageBase64 = await new Promise<string>(resolve => {
-        const reader = new FileReader()
-        reader.onloadend = () => resolve(reader.result as string)
-        reader.readAsDataURL(file)
-      })
+      imageBase64 = await fileToBase64(data.image[0])
     } else if (boxData?.image) {
       imageBase64 = boxData.image
     }
 
-    const formattedData: Omit<BoxData, 'id'> = {
-      name: data.name,
-      isActive: data.isActive,
-      date: formatDateToISO(data.date),
-      startTime: data.timeRange?.from,
-      endTime: data.timeRange?.to,
-      location: data.location,
-      description: data.description,
-      rules: data.rules,
-      cost: data.cost,
-      organizer: data.organizer,
-      image: imageBase64
-    }
-
+    const formattedData = mapFormDataToBoxData(data, imageBase64)
     onSave(formattedData)
   }
 
@@ -109,16 +58,7 @@ export const BoxSolutionModal = ({ isOpen, onClose, action, boxData, onSave }: B
         </div>
       }
     >
-      <form
-        className="flex flex-col gap-[16px]"
-        onSubmit={handleSubmit(onSubmit)}
-        onBlur={e => {
-          if (!e.currentTarget.contains(e.relatedTarget)) {
-            clearErrors()
-          }
-        }}
-        noValidate
-      >
+      <form className="flex flex-col gap-[16px]" onSubmit={handleSubmit(onSubmit)} noValidate>
         <div className="grid grid-cols-2 gap-y-[16px] gap-x-[12px]">
           <label className="flex flex-col gap-[3px]">
             <span className="text-xxs text-text-grey-dark">Название</span>
@@ -183,7 +123,7 @@ export const BoxSolutionModal = ({ isOpen, onClose, action, boxData, onSave }: B
               required: 'Выберите время',
               validate: value => {
                 if (!value?.from || !value?.to) {
-                  return 'Укажите время начала и окончания'
+                  return 'Укажите корректное время начала и окончания'
                 }
                 return true
               }
@@ -233,7 +173,7 @@ export const BoxSolutionModal = ({ isOpen, onClose, action, boxData, onSave }: B
             {...register('description', {
               required: 'Введите описание',
               onChange: () => {
-                if (errors.name) {
+                if (errors.description) {
                   clearErrors('description')
                 }
               }
@@ -272,7 +212,25 @@ export const BoxSolutionModal = ({ isOpen, onClose, action, boxData, onSave }: B
         </div>
 
         <div>
-          <input type="file" id="image-upload" accept="image/*" className="hidden" {...register('image')} />
+          <Controller
+            name="image"
+            control={control}
+            render={({ field: { onChange, ...field } }) => (
+              <input
+                type="file"
+                id="image-upload"
+                accept="image/*"
+                className="hidden"
+                onChange={e => {
+                  if (e.target.files && e.target.files.length > 0) {
+                    onChange(e.target.files)
+                  }
+                }}
+                {...field}
+                value={undefined}
+              />
+            )}
+          />
           <div
             className={cn(
               'flex gap-[12px] items-center',
@@ -280,7 +238,7 @@ export const BoxSolutionModal = ({ isOpen, onClose, action, boxData, onSave }: B
             )}
           >
             {imagePreviewUrl && (
-              <img src={imagePreviewUrl} alt="Preview" className="w-[296px] h-[141px] object-cover rounded-[8px]" />
+              <img src={imagePreviewUrl} alt="Preview" className="w-[296px] h-[141px] object-contain rounded-[8px]" />
             )}
             <div className="flex gap-[20px] items-center">
               <Button size="icon-48" type="button" onClick={() => document.getElementById('image-upload')?.click()}>
