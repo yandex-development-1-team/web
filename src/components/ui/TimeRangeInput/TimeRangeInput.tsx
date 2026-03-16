@@ -16,82 +16,52 @@ export const TimeRangeInput = ({
   className
 }: TimeRangeInputType) => {
   const [open, setOpen] = useState(false)
-  const [inputValue, setInputValue] = useState(() => {
-    if (value?.from && value?.to) return formatTimeRange(value.from, value.to)
-    if (value?.from) return value.from
-    return ''
+
+  const inputValue = value?.from && value?.to ? formatTimeRange(value.from, value.to) : ''
+
+  const [timeRange, setTimeRange] = useState({
+    from: value?.from ?? '',
+    to: value?.to ?? ''
   })
 
-  const [fromTime, setFromTime] = useState(value?.from || '')
-  const [toTime, setToTime] = useState(value?.to || '')
-
   useEffect(() => {
-    const from = value?.from ?? ''
-    const to = value?.to ?? ''
-
-    const newInputValue = from && to ? formatTimeRange(from, to) : from || to || ''
-
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    setInputValue(newInputValue)
-
-    setFromTime(from)
-
-    setToTime(to)
+    setTimeRange({
+      from: value?.from ?? '',
+      to: value?.to ?? ''
+    })
   }, [value])
 
-  function handleTimeChange(type: 'from' | 'to', newValue: string) {
+  const handleTimeChange = (field: 'from' | 'to', newValue: string) => {
     const formatted = formatTimeInput(newValue)
 
-    if (type === 'from') {
-      setFromTime(formatted)
-      if (formatted.length === 5 && parseTime(formatted)) {
-        const newValue = {
-          from: formatted,
-          to: toTime || undefined
-        }
-        onChange?.(newValue)
-        setInputValue(toTime ? formatTimeRange(formatted, toTime) : formatted)
-      } else if (!formatted) {
-        setInputValue(toTime || '')
-        onChange?.({ from: undefined, to: toTime || undefined })
-      }
-    } else {
-      setToTime(formatted)
-      if (formatted.length === 5 && parseTime(formatted)) {
-        const newValue = {
-          from: fromTime || undefined,
-          to: formatted
-        }
-        onChange?.(newValue)
-        setInputValue(fromTime ? formatTimeRange(fromTime, formatted) : formatted)
-      } else if (!formatted) {
-        setInputValue(fromTime || '')
-        onChange?.({ from: fromTime || undefined, to: undefined })
-      }
+    setTimeRange(prev => ({ ...prev, [field]: formatted }))
+
+    if (formatted.length === 5 && parseTime(formatted)) {
+      onChange?.({
+        ...value,
+        [field]: formatted
+      })
+    } else if (!formatted) {
+      onChange?.({
+        ...value,
+        [field]: undefined
+      })
     }
   }
 
-  function handleIncrement(type: 'from' | 'to', minutes: number) {
-    const currentTime = type === 'from' ? fromTime : toTime
-    if (!currentTime || parseTime(currentTime) === undefined) return
+  const handleIncrement = (field: 'from' | 'to', minutes: number) => {
+    const currentTime = timeRange[field]
+    if (!currentTime || !parseTime(currentTime)) return
 
     const newTime = incrementTime(currentTime, minutes)
 
-    if (type === 'from') {
-      setFromTime(newTime)
-      onChange?.({
-        from: newTime,
-        to: toTime || undefined
-      })
-      setInputValue(toTime ? formatTimeRange(newTime, toTime) : newTime)
-    } else {
-      setToTime(newTime)
-      onChange?.({
-        from: fromTime || undefined,
-        to: newTime
-      })
-      setInputValue(fromTime ? formatTimeRange(fromTime, newTime) : newTime)
-    }
+    setTimeRange(prev => ({ ...prev, [field]: newTime }))
+
+    onChange?.({
+      ...value,
+      [field]: newTime
+    })
   }
 
   return (
@@ -119,13 +89,13 @@ export const TimeRangeInput = ({
         <div className="flex flex-col gap-[8px]">
           <TimeInput
             label="с"
-            value={fromTime}
+            value={timeRange.from}
             onChange={value => handleTimeChange('from', value)}
             onIncrement={minutes => handleIncrement('from', minutes)}
           />
           <TimeInput
             label="до"
-            value={toTime}
+            value={timeRange.to}
             onChange={value => handleTimeChange('to', value)}
             onIncrement={minutes => handleIncrement('to', minutes)}
           />
@@ -157,20 +127,20 @@ function TimeInput({ label, value, onChange, onIncrement }: TimeInputProps) {
         <Button
           variant="ghost"
           className="text-text-grey-light hover:text-text h-[15px] w-[15px]"
-          onClick={() => onIncrement(15)}
+          onClick={() => onIncrement(60)}
           aria-label="Увеличить время"
           type="button"
         >
-          <ArrowIcon className="size-full rotate-180" />
+          <ArrowIcon className="size-full rotate-180 stroke-3" />
         </Button>
         <Button
           variant="ghost"
           className="text-text-grey-light hover:text-text h-[15px] w-[15px]"
-          onClick={() => onIncrement(-15)}
+          onClick={() => onIncrement(-60)}
           aria-label="Уменьшить время"
           type="button"
         >
-          <ArrowIcon className="size-full" />
+          <ArrowIcon className="size-full stroke-3" />
         </Button>
       </div>
     </div>
