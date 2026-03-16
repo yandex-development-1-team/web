@@ -30,4 +30,5 @@ export interface DataTableProps<T extends Record<string, unknown>> {
   onSort?: (config: SortConfig<T>) => void
   onLoadMore?: () => void
   onSelect?: (selected: T[]) => void
+  perPage?: number
 }
