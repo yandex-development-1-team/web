@@ -7,9 +7,9 @@ export const useBoxes = () => {
   const [searchParams] = useSearchParams()
   const params = getParams(searchParams)
 
-  const { data, isPending, isError } = useQuery({
+  const { data, isPending, isError, isLoading } = useQuery({
     queryKey: ['boxSolutions', params],
-    queryFn: () => getBoxes(params),
+    queryFn: meta => getBoxes({ params }, meta),
     placeholderData: prev => prev
   })
 
@@ -17,6 +17,7 @@ export const useBoxes = () => {
     boxes: data?.items,
     pagination: data?.pagination,
     isPending,
+    isLoading,
     isError,
     queryKey: ['boxSolutions']
   }

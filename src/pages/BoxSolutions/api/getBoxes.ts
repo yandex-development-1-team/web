@@ -8,8 +8,8 @@ type BoxesPesponseType = {
   pagination: IPagination
 }
 
-export const getBoxes = async (params: IParams) => {
-  const result = await api.get<BoxesPesponseType>(`/boxes`, { params })
+export const getBoxes = async ({ params }: { params: IParams }, { signal }: { signal: AbortSignal }) => {
+  const result = await api.get<BoxesPesponseType>(`/boxes`, { params, signal })
   if (!result.data) throw new Error('Faild to get box solutions')
 
   //Имитация пагинации на беке

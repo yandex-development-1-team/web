@@ -23,3 +23,5 @@ export interface IPagination {
   offset: number
   total: number
 }
+
+export type ModalState = { type: 'delete' | 'edit'; id: number } | { type: 'create'; id: null } | null
