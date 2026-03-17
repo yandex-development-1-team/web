@@ -33,10 +33,10 @@ const Home = () => {
     <div className="flex flex-col gap-[20px] flex-1 w-full max-w-full">
       <h2 className="text-h2">Главная страница</h2>
 
-      <div className="flex gap-[20px]">
+      <div className="flex gap-[20px] ">
         {stats.map((stat, index) => (
           <div key={stat.title} className="flex flex-col flex-1 ">
-            <span className="text-h5 text-grey-dark">{stat.title}</span>
+            <span className="text-h5 mb-[8px] text-grey-dark">{stat.title}</span>
 
             <Button
               className={`min-w-[308px] h-[92px] text-[48px] font-bold ${
@@ -48,12 +48,9 @@ const Home = () => {
           </div>
         ))}
 
-        <div className="flex flex-col">
-          <span className="text-h5 text-grey-dark">Создание</span>
-          <BoxButton onClick={handleBoxCreate} icon="box" className="min-w-[407px] max-w-[412px] ">
-            Создать коробку
-          </BoxButton>
-        </div>
+        <BoxButton onClick={handleBoxCreate} icon="box" className="min-w-[407px] max-w-[412px] mt-[30px]">
+          Создать коробку
+        </BoxButton>
       </div>
 
       <div className="flex gap-[20px] h-[92px] ">
