@@ -8,16 +8,16 @@ export const mockIndicatorsValues: IIndicatorValues[] = [
   { id: 3, value: 4 }
 ]
 
-export const mockBoxes: IBox[] = [
-  { id: 0, name: 'Название коробки' },
-  { id: 1, name: 'Название коробки' },
-  { id: 2, name: 'Название коробки' },
-  { id: 3, name: 'Название коробки' }
+export const mockBoxes: Pick<IBox, 'id' | 'title'>[] = [
+  { id: 0, title: 'Название коробки' },
+  { id: 1, title: 'Название коробки' },
+  { id: 2, title: 'Название коробки' },
+  { id: 3, title: 'Название коробки' }
 ]
 
-export const mockProjects: IProject[] = [
-  { id: 0, name: 'Название спецпроекта' },
-  { id: 1, name: 'Название спецпроекта' },
-  { id: 2, name: 'Название спецпроекта' },
-  { id: 3, name: 'Название спецпроекта' }
+export const mockProjects: Pick<IProject, 'id' | 'title'>[] = [
+  { id: 0, title: 'Название спецпроекта' },
+  { id: 1, title: 'Название спецпроекта' },
+  { id: 2, title: 'Название спецпроекта' },
+  { id: 3, title: 'Название спецпроекта' }
 ]
