@@ -1,5 +1,6 @@
-import type { TimeRange } from '@/lib/utils.time'
+import type z from 'zod'
 import type { BoxData } from '@/types/solutions'
+import type { boxSolutionSchema } from './schema'
 
 export type ModalAction = 'create' | 'edit'
 
@@ -11,15 +12,4 @@ export type BoxSolutionModalType = {
   onSave: (data: Omit<BoxData, 'id'>) => void
 }
 
-export type BoxSolutionFormData = {
-  name: string
-  isActive: boolean
-  date: Date | undefined
-  timeRange: TimeRange | undefined
-  location: string
-  description: string
-  rules: string
-  cost: string
-  organizer: string
-  image: FileList | null
-}
+export type BoxSolutionFormData = z.infer<typeof boxSolutionSchema>
