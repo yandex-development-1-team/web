@@ -8,7 +8,7 @@ export interface BoxData {
   location: string
   description: string
   rules: string
-  cost: string
+  cost: number
   organizer: string
   image?: string
 }
