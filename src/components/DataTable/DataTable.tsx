@@ -43,7 +43,7 @@ export function DataTable<T extends Record<string, unknown>>(props: DataTablePro
   if (error) return <div>Не удалось загрузить данные</div>
 
   if (isLoading || !sortedData) {
-    const rowsToShow = Math.min(10)
+    const rowsToShow = 10
     return (
       <div className="rounded-lg border bg-white">
         <table className="w-full border-collapse">
