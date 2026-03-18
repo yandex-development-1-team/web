@@ -20,4 +20,5 @@ export {
 export { CalendarInput } from './CalendarInput'
 export { Modal } from './Modal'
 export { DeleteModal } from './Modal'
+export { DataTable } from './DataTable'
 export { Dropzone } from './Dropzone'
