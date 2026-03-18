@@ -21,3 +21,5 @@ export {
 export { Switch } from './Switch'
 export { Textarea } from './Textarea'
 export { ToggleButton } from './ToggleButton'
+export { TimeRangeInput } from './TimeRangeInput'
+export { DataTable } from './DataTable'
