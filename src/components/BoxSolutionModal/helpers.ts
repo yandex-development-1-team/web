@@ -18,7 +18,7 @@ export const getFormValues = (action: ModalAction, boxData?: BoxData): BoxSoluti
       location: boxData.location || mockSelectOptions[0]?.value || '',
       description: boxData.description || '',
       rules: boxData.rules || '',
-      cost: boxData.cost || '',
+      cost: boxData.cost ? String(boxData.cost) : '',
       organizer: boxData.organizer || '',
       image: null
     }
@@ -48,7 +48,7 @@ export const mapFormDataToBoxData = (data: BoxSolutionFormData, imageBase64?: st
     location: data.location,
     description: data.description,
     rules: data.rules,
-    cost: data.cost,
+    cost: Number(data.cost),
     organizer: data.organizer,
     image: imageBase64
   }

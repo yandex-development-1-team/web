@@ -1,12 +1,14 @@
 import { useEffect } from 'react'
 import { Controller, useForm, useWatch } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { Button, CalendarInput, Input, Modal, Select, Switch, TimeRangeInput } from '@/components/ui'
 import { AddIcon } from '@/assets/icons'
 import { cn } from '@/lib/utils.clsx'
+import { fileToBase64 } from '@/lib/fileUtils/fileToBase64'
+import { getFormValues, mapFormDataToBoxData } from './helpers'
+import { boxSolutionSchema } from './schema'
 import type { BoxSolutionFormData, BoxSolutionModalType } from './BoxSolutionModal.type'
 import { mockSelectOptions } from '@/mockData/mockSelectOptions'
-import { getFormValues, mapFormDataToBoxData } from './helpers'
-import { fileToBase64 } from '@/lib/fileUtils/fileToBase64'
 
 export const BoxSolutionModal = ({ isOpen, onClose, action, boxData, onSave }: BoxSolutionModalType) => {
   const {
@@ -14,10 +16,10 @@ export const BoxSolutionModal = ({ isOpen, onClose, action, boxData, onSave }: B
     handleSubmit,
     register,
     reset,
-    formState: { errors },
-    clearErrors
+    formState: { errors }
   } = useForm<BoxSolutionFormData>({
-    defaultValues: getFormValues(action, boxData)
+    defaultValues: getFormValues(action, boxData),
+    resolver: zodResolver(boxSolutionSchema)
   })
 
   const imageFileList = useWatch({
@@ -62,23 +64,7 @@ export const BoxSolutionModal = ({ isOpen, onClose, action, boxData, onSave }: B
         <div className="grid grid-cols-2 gap-y-[16px] gap-x-[12px]">
           <label className="flex flex-col gap-[3px]">
             <span className="text-xxs text-text-grey-dark">Название</span>
-            <Input
-              type="text"
-              variant="text"
-              aria-invalid={!!errors.name}
-              {...register('name', {
-                required: 'Введите название',
-                minLength: {
-                  value: 2,
-                  message: 'Название должно содержать минимум 2 символа'
-                },
-                onChange: () => {
-                  if (errors.name) {
-                    clearErrors('name')
-                  }
-                }
-              })}
-            />
+            <Input type="text" variant="text" aria-invalid={!!errors.name} {...register('name')} />
             <span className="text-xxs text-text-error">{errors.name?.message}</span>
           </label>
 
@@ -94,9 +80,6 @@ export const BoxSolutionModal = ({ isOpen, onClose, action, boxData, onSave }: B
           <Controller
             name="date"
             control={control}
-            rules={{
-              required: 'Выберите дату'
-            }}
             render={({ field }) => (
               <div className="flex flex-col gap-[3px]">
                 <CalendarInput
@@ -104,12 +87,7 @@ export const BoxSolutionModal = ({ isOpen, onClose, action, boxData, onSave }: B
                   variant="single"
                   value={field.value}
                   placeholder="Выберите дату"
-                  onChange={date => {
-                    field.onChange(date)
-                    if (errors.date) {
-                      clearErrors('date')
-                    }
-                  }}
+                  onChange={field.onChange}
                   invalid={!!errors.date}
                 />
                 <span className="text-xxs text-text-error">{errors.date?.message}</span>
@@ -119,25 +97,11 @@ export const BoxSolutionModal = ({ isOpen, onClose, action, boxData, onSave }: B
           <Controller
             name="timeRange"
             control={control}
-            rules={{
-              required: 'Выберите время',
-              validate: value => {
-                if (!value?.from || !value?.to) {
-                  return 'Укажите корректное время начала и окончания'
-                }
-                return true
-              }
-            }}
             render={({ field }) => (
               <div className="flex flex-col gap-[3px]">
                 <TimeRangeInput
                   value={field.value}
-                  onChange={time => {
-                    field.onChange(time)
-                    if (errors.timeRange) {
-                      clearErrors('timeRange')
-                    }
-                  }}
+                  onChange={field.onChange}
                   className="flex-1"
                   invalid={!!errors.timeRange}
                 />
@@ -166,19 +130,7 @@ export const BoxSolutionModal = ({ isOpen, onClose, action, boxData, onSave }: B
 
         <label className="flex flex-col gap-[3px]">
           <span className="text-xxs text-text-grey-dark">Описание</span>
-          <Input
-            type="text"
-            variant="text"
-            aria-invalid={!!errors.description}
-            {...register('description', {
-              required: 'Введите описание',
-              onChange: () => {
-                if (errors.description) {
-                  clearErrors('description')
-                }
-              }
-            })}
-          />
+          <Input type="text" variant="text" aria-invalid={!!errors.description} {...register('description')} />
           <span className="text-xxs text-text-error">{errors.description?.message}</span>
         </label>
 
@@ -189,25 +141,14 @@ export const BoxSolutionModal = ({ isOpen, onClose, action, boxData, onSave }: B
 
         <div className="flex gap-[12px]">
           <label className="flex flex-col gap-[3px] flex-1">
-            <span className="text-xxs text-text-grey-dark">Стоимость</span>
-            <Input
-              type="text"
-              variant="text"
-              aria-invalid={!!errors.cost}
-              {...register('cost', {
-                required: 'Введите стоимость',
-                onChange: () => {
-                  if (errors.cost) {
-                    clearErrors('cost')
-                  }
-                }
-              })}
-            />
+            <span className="text-xxs text-text-grey-dark">{'Стоимость (руб.)'}</span>
+            <Input type="text" variant="text" aria-invalid={!!errors.cost} {...register('cost')} />
             <span className="text-xxs text-text-error">{errors.cost?.message}</span>
           </label>
           <label className="flex flex-col gap-[3px] flex-1">
             <span className="text-xxs text-text-grey-dark">Организатор</span>
-            <Input type="text" variant="text" {...register('organizer')} />
+            <Input type="text" variant="text" aria-invalid={!!errors.organizer} {...register('organizer')} />
+            <span className="text-xxs text-text-error">{errors.organizer?.message}</span>
           </label>
         </div>
 
