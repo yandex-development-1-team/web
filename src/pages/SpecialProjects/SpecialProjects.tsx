@@ -3,7 +3,7 @@ import { BoxButton, Input, Dropzone, DeleteModal } from '@/components/ui'
 import { mockProjects } from '@/mockData/mockSpecialProjectsPageData'
 import { Envelope } from '@/assets/icons'
 import { ProjectCard } from '@/components/ProjectCard'
-import { TableControls } from '@/components/DataTable/ui/TableControls'
+import { TableControls } from '@/components/ui/DataTable/ui/TableControls'
 import { type IProject } from '@/types/solutions'
 
 const SpecialProjects = () => {
