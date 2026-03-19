@@ -25,7 +25,7 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({ className, onChange }) 
       </select>
 
       <div className="pointer-events-none absolute right-[8px] top-1/2 -translate-y-1/2 z-10">
-        <ArrowIcon width={32} height={32} color="text-grey-light" />
+        <ArrowIcon width={32} height={32} color="text-text-grey-light" />
       </div>
     </div>
   )

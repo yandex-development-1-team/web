@@ -1,15 +1,10 @@
 import { ArrowIcon } from '@/assets/icons'
-
-type StatusType = 'queue' | 'progress' | 'done'
-
-export interface StatusProps {
-  status: StatusType
-}
+import type { StatusProps } from '../types'
 
 const statusStyles = {
-  queue: 'bg-yellow-light text-yellow-dark',
-  progress: 'bg-green-light text-green-dark',
-  done: 'bg-blue-light text-blue-dark'
+  queue: 'bg-status-queue-bg text-status-queue-text',
+  progress: 'bg-status-progress-bg text-status-progress-text',
+  done: 'bg-status-done-bg text-status-done-text'
 }
 
 const statusLabels = {

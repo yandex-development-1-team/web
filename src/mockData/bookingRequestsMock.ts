@@ -1,37 +1,15 @@
-import type { Column } from '@/components/DataTable/DataTable.types'
-import { InlineStatus } from './ui/EditableStatus'
-import type { BookingRequest, StatusType } from './types'
+export type StatusType = 'queue' | 'progress' | 'done'
 
-export const headerTableData = (onStatusChange: (id: number, status: StatusType) => void): Column<BookingRequest>[] => [
-  {
-    key: 'date',
-    label: 'Дата заявки',
-    sortable: true
-  },
-  {
-    key: 'account',
-    label: 'Tg-аккаунт'
-  },
-  {
-    key: 'clientName',
-    label: 'Имя клиента'
-  },
-  {
-    key: 'service',
-    label: 'Услуга'
-  },
-  {
-    key: 'projectName',
-    label: 'Название проекта'
-  },
-  {
-    key: 'status',
-    label: 'Статус',
-    render: (_, row) => (
-      <InlineStatus initialStatus={row.status} onChange={newStatus => onStatusChange(row.id, newStatus)} />
-    )
-  }
-]
+export interface BookingRequest {
+  id: number
+  date: string
+  account: string
+  clientName: string
+  service: string
+  projectName: string
+  status: StatusType
+  [key: string]: string | number
+}
 
 export const bookingRequestsMock: BookingRequest[] = [
   {

@@ -1,10 +1,11 @@
 import { DataTable } from '@/components/DataTable'
 import { BoxButton, Button } from '@/components/ui'
-import { bookingRequestsMock, headerTableData } from './mockData'
 import { Application2 } from '@/assets/icons'
 import { useState } from 'react'
 import FilterDropdown from './ui/FilterDropdown'
 import type { StatusType } from './types'
+import { headerTableData } from './homePageData'
+import { bookingRequestsMock } from '@/mockData/bookingRequestsMock'
 
 const Home = () => {
   const [statusFilter, setStatusFilter] = useState('all')
@@ -36,7 +37,7 @@ const Home = () => {
       <div className="flex gap-[20px] ">
         {stats.map((stat, index) => (
           <div key={stat.title} className="flex flex-col flex-1 ">
-            <span className="text-h5 mb-[8px] text-grey-dark">{stat.title}</span>
+            <span className="text-h5 mb-[8px] text-text-grey-dark">{stat.title}</span>
 
             <Button
               className={`min-w-[308px] h-[92px] text-[48px] font-bold ${
@@ -61,12 +62,12 @@ const Home = () => {
           </div>
 
           <div className="flex gap-[20px] ">
-            <div className="flex flex-col justify-center items-center p-[20px] gap-[4px] text-grey-dark w-[185px]">
+            <div className="flex flex-col justify-center items-center p-[20px] gap-[4px] text-text-grey-dark w-[185px]">
               <span className="text-h5 ">В работе: </span>
               <span className="text-h3 font-bold">{countInProgress}</span>
             </div>
 
-            <div className="flex flex-col justify-center items-center gap-[4px] text-grey-dark w-[185px]">
+            <div className="flex flex-col justify-center items-center gap-[4px] text-text-grey-dark w-[185px]">
               <span className="text-h5 ">Обработаны: </span>
               <span className="text-h3 font-bold">{countDone}</span>
             </div>
@@ -83,10 +84,10 @@ const Home = () => {
 
         <div className="min-w-[320px]">
           <div className="flex flex-col gap-[4px] mb-[19px]">
-            <span className="text-xxs text-grey-dark">Фильтр</span>
+            <span className="text-xxs text-text-grey-dark">Фильтр</span>
             <FilterDropdown
               onChange={setStatusFilter}
-              className="text-grey-light text-small italic  px-[6px]  py-[12px] border border-grey-light rounded-[8px] pl-[12px]   min-w-[320px] max-w-[494px] bg-white"
+              className="text-text-grey-light text-small italic  px-[6px]  py-[12px] border border-grey-light rounded-[8px] pl-[12px]   min-w-[320px] max-w-[494px] bg-white"
             />
           </div>
           <DataTable idKey="id" data={filteredData} enableLoadMore columns={headerTableData(handleStatusChange)} />
