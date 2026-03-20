@@ -1,11 +1,11 @@
 import { BoxFilter, DownloadIcon, SearchIcon, SortByNumbersIcon } from '@/assets/icons'
-import { DataTable } from '@/components/DataTable'
+import { DataTable } from '@/components/ui/DataTable'
 import { Button, Input } from '@/components/ui'
 import { useState } from 'react'
 import { employees, type Employee } from './mockData'
 import { useNavigate } from 'react-router-dom'
-import type { Column } from '@/components/DataTable/DataTable.types'
-import { sortData } from '@/components/DataTable/helpers'
+import type { Column } from '@/components/ui/DataTable/DataTable.types'
+import { sortData } from '@/components/ui/DataTable/helpers'
 import { ROUTES } from '@/app/router'
 
 const Employees = () => {
