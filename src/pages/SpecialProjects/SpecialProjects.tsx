@@ -20,22 +20,41 @@ const SpecialProjects = () => {
 
   const [projectToDelete, setProjectToDelete] = useState<number | null>(null)
 
+  const [urlError, setUrlError] = useState(false)
+
   const handleFileAccept = (file: File) => {
     setPresentationFile(file)
   }
 
+  const updateUrl = () => void url
+
   const handleUrlInput = () => {
     validateUrl()
+    if (!urlError) {
+      updateUrl()
+    }
+  }
+
+  const isValidUrl = (url: string) => {
+    try {
+      new URL(url);
+      return true;
+    } catch (_) {
+      return false;  
+    }
   }
 
   const validateUrl = () => {
-    const isSimpleUrl = url.includes('.') && !url.startsWith('.')
+    const isSimpleUrl = url.includes('.') && !url.startsWith('.') && !url.endsWith('.')
     if (!isSimpleUrl) {
-      setUrl('')
+      setUrlError(true)
       return
     }
     const finalUrl = url.includes('://') ? url : `https://${url}`
-    setUrl(finalUrl)
+    if (isValidUrl(finalUrl)) {
+      setUrl(finalUrl)
+      setUrlError(false)
+    }
   }
 
   const filterUrl = (url: string) => {
@@ -72,7 +91,7 @@ const SpecialProjects = () => {
     <>
       <h2 className="text-h2 text-text py-[38px_38px]">Управление спецпроектами</h2>
       <div className="grid grid-cols-2 gap-[19px] text-text py-[19px_59px]">
-        <div>
+        <div className='relative'>
           <h3 className="text-h3 pb-[10px]">Яндекс-форма для заявок</h3>
           <Input
             placeholder="URL"
@@ -84,7 +103,11 @@ const SpecialProjects = () => {
             value={url}
             onChange={handleUrlChange}
             onBlur={handleUrlBlur}
+            invalid={urlError}
           />
+          {urlError && 
+            <p className='absolute mt-[3px] text-xxs text-text-error'>Некорректный URL</p>
+          }
         </div>
         <div>
           <h3 className="text-h3 pb-[10px]">Презентация</h3>
