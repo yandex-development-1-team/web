@@ -1,14 +1,17 @@
 import { useState, type ChangeEvent } from 'react'
+import { useSearchParams } from 'react-router-dom';
 import { BoxButton, Input, Dropzone, DeleteModal } from '@/components/ui'
 import { mockProjects } from '@/mockData/mockSpecialProjectsPageData'
 import { EnvelopeIcon } from '@/assets/icons'
 import { ProjectCard } from '@/components/layout/ProjectCard'
-import { TableControls } from '@/components/ui/DataTable/ui/TableControls'
+import { Pagination } from '@/components/ui/Paginator'
 import { type IProject } from '@/types/solutions'
 
 const SpecialProjects = () => {
   const pageSize = 3
-  const [page, setPage] = useState(1)
+
+  const [searchParams] = useSearchParams();
+  const offset = Number(searchParams.get('offset')) || 0
 
   const [projects, setProjects] = useState<IProject[]>(mockProjects)
 
@@ -117,30 +120,43 @@ const SpecialProjects = () => {
         </BoxButton>
       </div>
 
-      <div className="mt-[30px] flex gap-[20px] justify-between">
-        {projects.slice((page - 1) * pageSize, page * pageSize).map(project => (
-          <ProjectCard
-            key={project.id}
-            title={project.title}
-            description={project.description}
-            image={project.image}
-            status={project.status}
-            onClick={() => handleProjectEdit(project.id)}
-            onDelete={() => handleProjectDelete(project.id)}
-          />
-        ))}
+      <div
+        className="mt-[30px] grid gap-[20px]"
+        style={{ gridTemplateColumns: `repeat(${pageSize}, minmax(0, 1fr))` }}
+      >
+        {projects.slice(offset, offset + pageSize).map((project, index) => {
+          const sliceLength = projects.slice(offset, offset + pageSize).length
+          let alignmentClass = "justify-self-center"
+          if (index === 0) {
+            alignmentClass = "justify-self-start"
+          } else if (index === sliceLength - 1 && sliceLength === pageSize) {
+            alignmentClass = "justify-self-end"
+          }
+          return (
+            <ProjectCard
+              className={alignmentClass}
+              key={project.id}
+              title={project.title}
+              description={project.description}
+              image={project.image}
+              status={project.status}
+              onClick={() => handleProjectEdit(project.id)}
+              onDelete={() => handleProjectDelete(project.id)}
+            />
+        )})}
       </div>
-      {projects.length > pageSize && (
-        <div className="[&>*:first-child>*:first-child]:hidden flex justify-end mt-[26px] -mr-[16px] -mb-[16px]">
-          <TableControls
-            pageSize={pageSize}
-            currentPage={page}
-            totalItems={projects.length}
-            onPageChange={page => setPage(page)}
-            onPageSizeChange={() => {}}
-          ></TableControls>
-        </div>
-      )}
+
+      <Pagination
+        className='mt-[26px]'
+        limit={false}
+        pagination = {{
+          limit: pageSize,
+          offset: offset,
+          total: projects.length
+        }}
+        
+      />
+
       <DeleteModal
         title="Удалить спецпроект?"
         isOpen={!!projectToDelete || projectToDelete === 0}
