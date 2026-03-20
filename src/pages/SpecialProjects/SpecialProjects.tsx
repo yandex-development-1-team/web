@@ -1,5 +1,5 @@
 import { useState, type ChangeEvent } from 'react'
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom'
 import { BoxButton, Input, Dropzone, DeleteModal } from '@/components/ui'
 import { mockProjects } from '@/mockData/mockSpecialProjectsPageData'
 import { EnvelopeIcon } from '@/assets/icons'
@@ -10,7 +10,7 @@ import { type IProject } from '@/types/solutions'
 const SpecialProjects = () => {
   const pageSize = 3
 
-  const [searchParams] = useSearchParams();
+  const [searchParams] = useSearchParams()
   const offset = Number(searchParams.get('offset')) || 0
 
   const [projects, setProjects] = useState<IProject[]>(mockProjects)
@@ -35,12 +35,12 @@ const SpecialProjects = () => {
     }
   }
 
-  const isValidUrl = (url: string) => {
+  const isValidUrl = (urlString: string) => {
     try {
-      new URL(url);
-      return true;
-    } catch (_) {
-      return false;  
+      const url = new URL(urlString)
+      return url.protocol === 'http:' || url.protocol === 'https:'
+    } catch {
+      return false
     }
   }
 
@@ -91,7 +91,7 @@ const SpecialProjects = () => {
     <>
       <h2 className="text-h2 text-text py-[38px_38px]">Управление спецпроектами</h2>
       <div className="grid grid-cols-2 gap-[19px] text-text py-[19px_59px]">
-        <div className='relative'>
+        <div className="relative">
           <h3 className="text-h3 pb-[10px]">Яндекс-форма для заявок</h3>
           <Input
             placeholder="URL"
@@ -105,14 +105,12 @@ const SpecialProjects = () => {
             onBlur={handleUrlBlur}
             invalid={urlError}
           />
-          {urlError && 
-            <p className='absolute mt-[3px] text-xxs text-text-error'>Некорректный URL</p>
-          }
+          {urlError && <p className="absolute mt-[3px] text-xxs text-text-error">Некорректный URL</p>}
         </div>
         <div>
           <h3 className="text-h3 pb-[10px]">Презентация</h3>
           <Dropzone
-            className="flex flex-col items-center h-[145px]"
+            className="flex flex-col items-center h-[145px] outline-0"
             accept={{ 'application/pdf': ['.pdf'] }}
             onFileAccepted={handleFileAccept}
           >
@@ -143,17 +141,14 @@ const SpecialProjects = () => {
         </BoxButton>
       </div>
 
-      <div
-        className="mt-[30px] grid gap-[20px]"
-        style={{ gridTemplateColumns: `repeat(${pageSize}, minmax(0, 1fr))` }}
-      >
+      <div className="mt-[30px] grid gap-[20px]" style={{ gridTemplateColumns: `repeat(${pageSize}, minmax(0, 1fr))` }}>
         {projects.slice(offset, offset + pageSize).map((project, index) => {
           const sliceLength = projects.slice(offset, offset + pageSize).length
-          let alignmentClass = "justify-self-center"
+          let alignmentClass = 'justify-self-center'
           if (index === 0) {
-            alignmentClass = "justify-self-start"
+            alignmentClass = 'justify-self-start'
           } else if (index === sliceLength - 1 && sliceLength === pageSize) {
-            alignmentClass = "justify-self-end"
+            alignmentClass = 'justify-self-end'
           }
           return (
             <ProjectCard
@@ -166,18 +161,18 @@ const SpecialProjects = () => {
               onClick={() => handleProjectEdit(project.id)}
               onDelete={() => handleProjectDelete(project.id)}
             />
-        )})}
+          )
+        })}
       </div>
 
       <Pagination
-        className='mt-[26px]'
+        className="mt-[26px]"
         limit={false}
-        pagination = {{
+        pagination={{
           limit: pageSize,
           offset: offset,
           total: projects.length
         }}
-        
       />
 
       <DeleteModal
