@@ -25,6 +25,7 @@ export const ManageButton = ({ onClick, onEdit, onDelete, text, className }: Man
 
   return (
     <button
+      type="button"
       onClick={onClick}
       className={`
         h-[92px] w-full px-[19px_15px] flex items-center text-text-grey-dark cursor-pointer

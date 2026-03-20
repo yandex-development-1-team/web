@@ -19,12 +19,14 @@ function BoxButton({
   size = 'default',
   asChild = false,
   icon,
+  smallIcon = false,
   children,
   ...props
 }: ComponentProps<'button'> &
   VariantProps<typeof BoxButtonVariants> & {
     asChild?: boolean
     icon?: IconType
+    smallIcon?: boolean
   }) {
   const Comp = asChild ? Slot.Root : 'button'
   const IconComponent = icon ? ICONS[icon] : null
@@ -42,7 +44,7 @@ function BoxButton({
           <IconComponent
             className={`
               ${icon === 'box' && 'w-[37px] text-text-black-natural'}
-              ${icon === 'special_projects' && 'w-[31px]'}
+              ${icon === 'special_projects' && (smallIcon ? 'w-[31px]' : 'w-[42px] mx-[-10px]')}
               ${icon === 'users' && 'w-[42px]'}
               shrink-0
             `}

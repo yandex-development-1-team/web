@@ -1,9 +1,11 @@
-export interface IBox {
-  id: number
-  name: string
-}
-
 export interface IProject {
   id: number
-  name: string
+  title: string
+  description: string
+  image: string
+  status: boolean
+}
+
+export interface IBox extends IProject {
+  rules: string
 }
