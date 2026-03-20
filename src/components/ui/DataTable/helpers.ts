@@ -52,7 +52,7 @@ export function toggleAllSelection<T>(selected: T[], rows: T[], idKey: keyof T, 
   }
 }
 
-export function PaginationLogicOriginal(currentPage: number, totalPages: number, maxWindow = 2): (number | '...')[] {
+export function PaginationLogic(currentPage: number, totalPages: number, maxWindow = 2): (number | '...')[] {
   const pages: (number | '...')[] = []
 
   if (totalPages <= maxWindow) {
@@ -87,38 +87,5 @@ export function PaginationLogicOriginal(currentPage: number, totalPages: number,
 
   pages.push(totalPages)
 
-  return pages
-}
-
-export function PaginationLogic(currentPage: number, totalPages: number, maxWindow = 3): (number | '...')[] {
-  if (totalPages <= 1) return [1]
-
-  const pages: (number | '...')[] = [1]
-
-  const radius = Math.floor(maxWindow / 2)
-
-  let start = Math.max(2, currentPage - radius)
-  let end = Math.min(totalPages - 1, currentPage + radius)
-
-  if (currentPage <= 2) {
-    end = Math.min(totalPages - 1, 1 + radius * 2)
-  }
-  if (currentPage >= totalPages - 1) {
-    start = Math.max(2, totalPages - radius * 2)
-  }
-
-  if (start > 2) {
-    pages.push(start === 3 ? 2 : '...')
-  }
-
-  for (let i = start; i <= end; i++) {
-    pages.push(i)
-  }
-
-  if (end < totalPages - 1) {
-    pages.push(end === totalPages - 2 ? totalPages - 1 : '...')
-  }
-
-  pages.push(totalPages)
   return pages
 }

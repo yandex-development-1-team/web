@@ -12,7 +12,7 @@ export default function Pagination({ currentPage, totalPages, onPageChange }: Pr
       <button
         disabled={currentPage === 1}
         onClick={() => onPageChange(Math.max(1, currentPage - 1))}
-        className={`p-2 ${currentPage === 1 ? 'opacity-40' : 'cursor-pointer'}`}
+        className={`p-2 ${currentPage === 1 ? 'opacity-40 cursor-not-allowed' : ''}`}
       >
         <ArrowIcon className="rotate-90 w-4 h-4" />
       </button>
@@ -24,15 +24,12 @@ export default function Pagination({ currentPage, totalPages, onPageChange }: Pr
           onClick={() => {
             if (item !== '...') onPageChange(item as number)
           }}
-          className={`
-            w-[32px] h-8 flex items-center justify-center rounded-md text-xxs
-            ${item !== '...' && item !== currentPage && 'cursor-pointer'}
-            ${
-              item === currentPage
-                ? 'text-text border border-yellow-accent-light bg-white'
-                : 'text-text-grey-dark border border-transparent'
-            }
-          `}
+          className={`w-[32px] h-8 flex items-center justify-center rounded-md text-xxs
+      ${
+        item === currentPage
+          ? 'text-black border border-yellow-accent-light'
+          : 'text-grey-light border border-transparent'
+      }`}
         >
           {item}
         </button>
@@ -41,7 +38,7 @@ export default function Pagination({ currentPage, totalPages, onPageChange }: Pr
       <button
         disabled={currentPage === totalPages}
         onClick={() => onPageChange(Math.min(totalPages, currentPage + 1))}
-        className={`p-2 ${currentPage === totalPages ? 'opacity-40' : 'cursor-pointer'}`}
+        className={`p-2 ${currentPage === totalPages ? 'opacity-40 cursor-not-allowed' : ''}`}
       >
         <ArrowIcon className="rotate-270 w-4 h-4" />
       </button>

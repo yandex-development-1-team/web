@@ -1,4 +1,4 @@
-import { CheckIcon } from '@/assets/icons'
+import { Check } from '@/assets/icons'
 import type { Column } from '../DataTable.types'
 
 type Props<T> = {
@@ -46,7 +46,7 @@ export function TableBody<T>({
                       relative
                     "
                   >
-                    <CheckIcon className="absolute" />
+                    <Check className="absolute" />
                   </div>
                 </label>
               </td>

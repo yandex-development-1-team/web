@@ -1,5 +1,5 @@
 import { ArrowsSeparateVerticalIcon } from '@/assets/icons'
-import { CheckIcon } from '@/assets/icons'
+import { Check } from '@/assets/icons'
 import type { ChangeEvent } from 'react'
 import type { Column } from '../DataTable.types'
 
@@ -28,7 +28,7 @@ export function TableHeader<T>({ columns, enableCheckboxes, enableRowActions, on
                   peer-indeterminate:bg-black peer-indeterminate:border-black
                 "
               >
-                <CheckIcon className="absolute" />
+                <Check className="absolute" />
               </div>
             </label>
           </th>
