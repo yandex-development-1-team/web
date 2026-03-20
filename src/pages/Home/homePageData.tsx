@@ -1,4 +1,4 @@
-import type { Column } from '@/components/DataTable/DataTable.types'
+import type { Column } from '@/components/ui/DataTable/DataTable.types'
 import type { BookingRequest, StatusType } from './types'
 import { InlineStatus } from './ui/EditableStatus'
 

@@ -1,4 +1,4 @@
-import { DataTable } from '@/components/DataTable'
+import { DataTable } from '@/components/ui/DataTable'
 import { BoxButton, Button } from '@/components/ui'
 import { Application2 } from '@/assets/icons'
 import { useState } from 'react'
