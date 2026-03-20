@@ -1,7 +1,7 @@
 import { useState, type ChangeEvent } from 'react'
 import { BoxButton, Input, Dropzone, DeleteModal } from '@/components/ui'
 import { mockProjects } from '@/mockData/mockSpecialProjectsPageData'
-import { Envelope } from '@/assets/icons'
+import { EnvelopeIcon } from '@/assets/icons'
 import { ProjectCard } from '@/components/layout/ProjectCard'
 import { TableControls } from '@/components/ui/DataTable/ui/TableControls'
 import { type IProject } from '@/types/solutions'
@@ -21,10 +21,26 @@ const SpecialProjects = () => {
     setPresentationFile(file)
   }
 
-  const handleUrlInput = () => void url
+  const handleUrlInput = () => {
+    validateUrl()
+  }
+
+  const validateUrl = () => {
+    const isSimpleUrl = url.includes('.') && !url.startsWith('.')
+    if (!isSimpleUrl) {
+      setUrl('')
+      return
+    }
+    const finalUrl = url.includes('://') ? url : `https://${url}`
+    setUrl(finalUrl)
+  }
+
+  const filterUrl = (url: string) => {
+    return url.replace(/[^a-zA-Z0-9-._~:/?#[\]@!$&'()*+,;=%]/g, '')
+  }
 
   const handleUrlChange = (e: ChangeEvent<HTMLInputElement, HTMLInputElement>) => {
-    setUrl(e.target.value)
+    setUrl(filterUrl(e.target.value))
   }
 
   const handleUrlBlur = () => {
@@ -75,7 +91,7 @@ const SpecialProjects = () => {
             onFileAccepted={handleFileAccept}
           >
             <div className="h-[48px] w-[48px] flex items-center justify-center my-[15px_19px]">
-              <Envelope className="text-text" />
+              <EnvelopeIcon className="text-text" />
             </div>
             {presentationFile ? (
               <p className="text-h5 text-text">{presentationFile.name}</p>
@@ -115,7 +131,7 @@ const SpecialProjects = () => {
         ))}
       </div>
       {projects.length > pageSize && (
-        <div className="[&>*:first-child>*:first-child]:hidden flex justify-end mt-[26px] mr-[-16px] mb-[-16px]">
+        <div className="[&>*:first-child>*:first-child]:hidden flex justify-end mt-[26px] -mr-[16px] -mb-[16px]">
           <TableControls
             pageSize={pageSize}
             currentPage={page}
@@ -134,7 +150,8 @@ const SpecialProjects = () => {
         onClose={() => setProjectToDelete(null)}
         itemId={projectToDelete}
       >
-        <div>{'Вы действительно хотите удалить этот спецпроект?\nДействие нельзя отменить.'}</div>
+        <p>Вы действительно хотите удалить этот спецпроект?</p>
+        <p>Действие нельзя отменить</p>
       </DeleteModal>
     </>
   )
