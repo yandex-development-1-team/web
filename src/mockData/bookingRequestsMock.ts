@@ -1,15 +1,4 @@
-export type StatusType = 'queue' | 'progress' | 'done'
-
-export interface BookingRequest {
-  id: number
-  date: string
-  account: string
-  clientName: string
-  service: string
-  projectName: string
-  status: StatusType
-  [key: string]: string | number
-}
+import type { BookingRequest } from '@/pages/Home/types'
 
 export const bookingRequestsMock: BookingRequest[] = [
   {

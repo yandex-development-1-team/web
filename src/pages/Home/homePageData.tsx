@@ -1,7 +1,6 @@
 import type { Column } from '@/components/DataTable/DataTable.types'
-import type { StatusType } from './types'
+import type { BookingRequest, StatusType } from './types'
 import { InlineStatus } from './ui/EditableStatus'
-import type { BookingRequest } from '@/mockData/bookingRequestsMock'
 
 export const headerTableData = (onStatusChange: (id: number, status: StatusType) => void): Column<BookingRequest>[] => [
   {

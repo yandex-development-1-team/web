@@ -1,10 +1,6 @@
 import { useState } from 'react'
 import { ArrowIcon } from '@/assets/icons'
-
-interface FilterDropdownProps {
-  className?: string
-  onChange: (value: string) => void
-}
+import type { FilterDropdownProps } from '../types'
 
 const FilterDropdown: React.FC<FilterDropdownProps> = ({ className, onChange }) => {
   const [status, setStatus] = useState('all')

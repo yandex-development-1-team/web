@@ -73,8 +73,7 @@
   --text-button: 16px;
   --text-button--font-weight: 600;
 
-  --text-small: 14px;
-  /* использовать вместе с italic */
+  --text-small: 14px; /* использовать вместе с italic */
 
   --text-xs: 14px;
 
