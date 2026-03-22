@@ -7,15 +7,14 @@ import { usePaginationNav } from '../hooks/usePaginationNav'
 type PaginationNavProps = ReturnType<typeof usePaginationNav> & ComponentProps<'div'>
 
 export const PaginationNav = ({
-  prev,
-  next,
-  current,
+  nav,
   selectedPage: activePage,
   pagesRange,
   totalPages,
   className,
   ...props
 }: PaginationNavProps) => {
+  const { prev, current, next } = nav
   return (
     <div className={cn('flex items-center gap-1', className)} {...props}>
       <Link to={prev} className={`p-2 ${activePage <= 1 ? 'opacity-40 pointer-events-none' : 'text-text'}`}>

@@ -1,9 +1,11 @@
 import { paramsSchema, type IParams } from '../Pagination.types'
 
-export const getParams = (searchParams: URLSearchParams): IParams => {
+export const parseQueryParams = (searchParams: URLSearchParams): IParams => {
   const rawParams = Object.fromEntries(searchParams.entries())
 
   const result = paramsSchema.safeParse(rawParams)
 
-  return result.success ? result.data : paramsSchema.parse({})
+  if (!result.success) return paramsSchema.parse({})
+
+  return result.data
 }
