@@ -1,10 +1,9 @@
 import { useState } from 'react'
 import type { DataTableProps, SortConfig } from './DataTable.types'
-import { paginateData, sortData, toggleAllSelection, toggleRowSelection } from './helpers'
+import { sortData, toggleAllSelection, toggleRowSelection } from './helpers'
 import { SkeletonRow } from './ui/Skeleton'
 
 import { TableBody } from './ui/TableBody'
-import { TableControls } from './ui/TableControls'
 import { TableHeader } from './ui/TableHeader'
 
 export function DataTable<T extends Record<string, unknown>>(props: DataTableProps<T>) {
@@ -15,58 +14,39 @@ export function DataTable<T extends Record<string, unknown>>(props: DataTablePro
     idKey,
     isLoading = false,
     error = null,
-    initialPageSize = 10,
     enableCheckboxes = false,
-    enablePagination = false,
-    enableLoadMore = false,
-    onSelect
+    onSelect,
+    pagination
   } = props
 
-  const [pageSize, setPageSize] = useState(initialPageSize)
   const [sortConfig, setSortConfig] = useState<SortConfig<T> | null>(null)
   const [selectedRows, setSelectedRows] = useState<T[]>([])
-  const [page, setPage] = useState(1)
-  const [loadMoreCount, setLoadMoreCount] = useState(initialPageSize)
 
   const sortedData = sortConfig ? sortData(data, sortConfig) : data
-
-  const displayData = () => {
-    if (enableLoadMore) return sortedData.slice(0, loadMoreCount)
-    return paginateData(sortedData, page, pageSize)
-  }
 
   const handleSort = (key: keyof T) => {
     const direction = sortConfig?.key === key && sortConfig.direction === 'asc' ? 'desc' : 'asc'
     setSortConfig({ key, direction })
-    setPage(1)
   }
 
   const handleSelectRow = (row: T) => {
-    setSelectedRows(prev => {
-      const newSelected = toggleRowSelection(prev, row, idKey)
-      if (onSelect) onSelect(newSelected)
-      return newSelected
-    })
+    const newSelected = toggleRowSelection(selectedRows, row, idKey)
+    setSelectedRows(newSelected)
+    onSelect?.(newSelected)
   }
 
   const handleSelectAll = (all: boolean) => {
-    setSelectedRows(prev => {
-      const newSelected = toggleAllSelection(prev, displayData(), idKey, all)
-      if (onSelect) onSelect(newSelected)
-      return newSelected
-    })
+    const newSelected = toggleAllSelection(selectedRows, sortedData, idKey, all)
+    setSelectedRows(newSelected)
+    onSelect?.(newSelected)
   }
-
-  const handleLoadMore = () => setLoadMoreCount(prev => prev + pageSize)
-
-  const handlePageChange = (newPage: number) => setPage(newPage)
 
   if (error) return <div>Не удалось загрузить данные</div>
 
-  if (isLoading) {
-    const rowsToShow = Math.min(pageSize, 10)
+  if (isLoading || !sortedData) {
+    const rowsToShow = 10
     return (
-      <div className="min-w-[1220px] rounded-lg border bg-white">
+      <div className="rounded-lg border bg-white">
         <table className="w-full border-collapse">
           <thead>
             <tr className="h-12 border-b bg-gray-100">
@@ -98,7 +78,7 @@ export function DataTable<T extends Record<string, unknown>>(props: DataTablePro
 
   return (
     <>
-      <div className="overflow-x-auto min-w-[1220px] rounded-lg border border-grey-light bg-white text-color-black text-xs mb-[8px]">
+      <div className="overflow-x-auto rounded-lg border border-grey-light bg-white text-color-black text-xs mb-2">
         <table className="w-full">
           <TableHeader
             columns={columns}
@@ -109,7 +89,7 @@ export function DataTable<T extends Record<string, unknown>>(props: DataTablePro
           />
 
           <TableBody
-            data={displayData()}
+            data={sortedData}
             columns={columns}
             idKey={idKey}
             enableCheckboxes={enableCheckboxes}
@@ -119,26 +99,7 @@ export function DataTable<T extends Record<string, unknown>>(props: DataTablePro
             rowActions={rowActions}
           />
         </table>
-
-        {enablePagination && (
-          <TableControls
-            pageSize={pageSize}
-            currentPage={page}
-            totalItems={sortedData.length}
-            onPageSizeChange={size => setPageSize(size)}
-            onPageChange={handlePageChange}
-          />
-        )}
-      </div>
-
-      <div>
-        {enableLoadMore && displayData().length < sortedData.length && (
-          <div className="flex justify-end">
-            <button onClick={handleLoadMore} className="border border-transparent text-grey-dark ">
-              Показать больше
-            </button>
-          </div>
-        )}
+        {pagination}
       </div>
     </>
   )
