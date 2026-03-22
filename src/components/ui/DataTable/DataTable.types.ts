@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import type { PaginationProps } from '../Pagination/Pagination.types'
 
 export interface Column<T, K extends keyof T = keyof T> {
   key: K
@@ -21,6 +22,7 @@ export interface DataTableProps<T extends Record<string, unknown>> {
   enablePagination?: boolean
   enableLoadMore?: boolean
   enableCheckboxes?: boolean
+  pagination?: React.ReactElement<PaginationProps>
 
   rowActions?: (row: T) => ReactNode
 
