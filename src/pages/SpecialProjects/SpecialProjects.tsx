@@ -1,7 +1,7 @@
 import { useState, type ChangeEvent } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { BoxButton, Input, Dropzone, DeleteModal } from '@/components/ui'
-import { mockProjects } from '@/mockData/mockSpecialProjectsPageData'
+import { mockProjects, mockUrl } from '@/mockData/mockSpecialProjectsPageData'
 import { EnvelopeIcon } from '@/assets/icons'
 import { ProjectCard } from '@/components/layout/ProjectCard'
 import { Pagination } from '@/components/ui/Paginator'
@@ -15,7 +15,7 @@ const SpecialProjects = () => {
 
   const [projects, setProjects] = useState<IProject[]>(mockProjects)
 
-  const [url, setUrl] = useState('')
+  const [url, setUrl] = useState(mockUrl)
   const [presentationFile, setPresentationFile] = useState<File | null>(null)
 
   const [projectToDelete, setProjectToDelete] = useState<number | null>(null)
@@ -54,6 +54,8 @@ const SpecialProjects = () => {
     if (isValidUrl(finalUrl)) {
       setUrl(finalUrl)
       setUrlError(false)
+    } else {
+      setUrlError(true)
     }
   }
 
