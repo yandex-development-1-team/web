@@ -169,7 +169,7 @@ const SpecialProjects = () => {
 
       <Pagination
         className="mt-[26px]"
-        variant='nav'
+        variant="nav"
         pagination={{
           limit: pageSize,
           offset: offset,
