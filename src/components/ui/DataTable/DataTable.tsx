@@ -15,7 +15,8 @@ export function DataTable<T extends Record<string, unknown>>(props: DataTablePro
     isLoading = false,
     error = null,
     enableCheckboxes = false,
-    onSelect
+    onSelect,
+    pagination
   } = props
 
   const [sortConfig, setSortConfig] = useState<SortConfig<T> | null>(null)
@@ -98,6 +99,7 @@ export function DataTable<T extends Record<string, unknown>>(props: DataTablePro
             rowActions={rowActions}
           />
         </table>
+        {pagination}
       </div>
     </>
   )

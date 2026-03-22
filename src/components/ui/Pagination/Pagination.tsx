@@ -1,15 +1,9 @@
 import { cn } from '@/lib/utils.clsx'
-import type { ComponentProps } from 'react'
 import { usePaginationLimit } from './hooks/usePaginationLimit'
 import { usePaginationNav } from './hooks/usePaginationNav'
-import type { IPagination } from './Pagination.types'
+import type { PaginationProps } from './Pagination.types'
 import { PaginationLimit } from './ui/PaginationLimit'
 import { PaginationNav } from './ui/PaginationNav'
-
-type PaginationProps = {
-  pagination?: IPagination | undefined
-  variant?: 'default' | 'limit' | 'nav'
-} & ComponentProps<'div'>
 
 export const Pagination = ({ pagination, variant = 'default', className, ...props }: PaginationProps) => {
   const { nav, pagesRange, selectedPage, totalPages } = usePaginationNav(pagination)

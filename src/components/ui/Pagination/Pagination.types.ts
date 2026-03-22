@@ -1,3 +1,4 @@
+import type { ComponentProps } from 'react'
 import z from 'zod'
 
 export const boxStatusField = ['active', 'disable'] as const
@@ -22,3 +23,8 @@ export interface IPagination {
   offset: number
   total: number
 }
+
+export type PaginationProps = {
+  pagination?: IPagination | undefined
+  variant?: 'default' | 'limit' | 'nav'
+} & ComponentProps<'div'>
