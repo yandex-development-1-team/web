@@ -4,7 +4,7 @@ import { BoxButton, Input, Dropzone, DeleteModal } from '@/components/ui'
 import { mockProjects } from '@/mockData/mockSpecialProjectsPageData'
 import { EnvelopeIcon } from '@/assets/icons'
 import { ProjectCard } from '@/components/layout/ProjectCard'
-import { Pagination } from '@/components/ui/Paginator'
+import { Pagination } from '@/components/ui/Pagination'
 import { type IProject } from '@/types/solutions'
 
 const SpecialProjects = () => {
@@ -167,7 +167,7 @@ const SpecialProjects = () => {
 
       <Pagination
         className="mt-[26px]"
-        limit={false}
+        variant='nav'
         pagination={{
           limit: pageSize,
           offset: offset,
