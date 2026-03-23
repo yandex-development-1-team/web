@@ -24,7 +24,7 @@ const UsersStats = () => {
         </div>
       </div>
       <div className="grid grid-cols gap-[20px] bg-white text-text-black-dark px-[20px] pb-[20px] mt-[20px] rounded-[8px]">
-        <div></div>
+        <div className=" grid grid-cols-1 min-[1050px]:grid-cols-[1fr_222px] gap-5 items-end mt-8"></div>
         <div></div>
       </div>
     </>
