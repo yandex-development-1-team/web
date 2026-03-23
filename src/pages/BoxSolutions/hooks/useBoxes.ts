@@ -1,11 +1,11 @@
-import { getParams } from '@/components/Pagination/helpers/getParams'
+import { parseQueryParams } from '@/components/ui/Pagination'
 import { useQuery } from '@tanstack/react-query'
 import { useSearchParams } from 'react-router-dom'
 import { getBoxes } from '../api/getBoxes'
 
 export const useBoxes = () => {
   const [searchParams] = useSearchParams()
-  const params = getParams(searchParams)
+  const params = parseQueryParams(searchParams)
 
   const { data, isPending, isError, isLoading } = useQuery({
     queryKey: ['boxSolutions', params],

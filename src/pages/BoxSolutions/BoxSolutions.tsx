@@ -1,11 +1,11 @@
-import { Pagination } from '@/components/Pagination/Pagination'
 import { BoxButton, DeleteModal } from '@/components/ui'
 import { Loader } from '@/components/ui/Loader'
+import { Pagination } from '@/components/ui/Pagination'
 import { useState } from 'react'
 import { deleteBoxById } from './api/deleteBoxById'
 import type { ModalState } from './BoxSolutions.types'
 import { useBoxes } from './hooks/useBoxes'
-import { Box } from './ui/Box'
+import { Boxes } from './ui/Boxes'
 
 const BoxSolutions = () => {
   const [modal, setModal] = useState<ModalState>(null)
@@ -32,21 +32,12 @@ const BoxSolutions = () => {
       {isLoading ? (
         <Loader />
       ) : (
-        <div className="flex flex-col gap-10">
-          <div className="grid grid-cols-[repeat(auto-fill,344px)] gap-5">
-            {boxes?.map(box => {
-              return (
-                <Box
-                  box={box}
-                  key={box.id}
-                  onDelete={() => setModal({ type: 'delete', id: box.id })}
-                  onEdit={() => setModal({ type: 'edit', id: box.id })}
-                />
-              )
-            })}
-          </div>
-          <Pagination pagination={pagination} />
-        </div>
+        <Boxes
+          boxesList={boxes}
+          onDelete={(id: number) => setModal({ type: 'delete', id })}
+          onEdit={(id: number) => setModal({ type: 'edit', id })}
+          pagination={<Pagination pagination={pagination} />}
+        />
       )}
       <DeleteModal
         title="Удалить коробку!"
@@ -56,9 +47,8 @@ const BoxSolutions = () => {
         itemId={Number(modal?.id)}
         queryKey={queryKey}
       >
-        <div>{'Вы действительно хотите удалить эту коробку?'}</div>
+        {'Вы действительно хотите удалить эту коробку?'}
       </DeleteModal>
-      {modal?.type}
     </div>
   )
 }

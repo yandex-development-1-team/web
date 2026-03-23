@@ -1,5 +1,5 @@
 import { api } from '@/app/providers/axios'
-import type { IParams } from '@/components/Pagination/Pagination.types'
+import type { IParams } from '@/components/ui/Pagination/Pagination.types'
 import { MOCK_BOXES } from '@/mockData/mock_box_solutions'
 import type { IBox, IPagination } from '../BoxSolutions.types'
 
