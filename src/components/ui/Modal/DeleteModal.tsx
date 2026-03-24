@@ -31,8 +31,8 @@ export const DeleteModal = ({
 
   return (
     <Modal
-      className='max-w-[412px]'
-      overlayClassName='z-51'
+      className="max-w-[412px]"
+      overlayClassName="z-51"
       isOpen={isOpen}
       onClose={onClose}
       title={title}

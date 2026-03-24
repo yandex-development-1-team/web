@@ -144,7 +144,7 @@ export const buttonVariants = cva('', {
       primary: `${baseStyles} ${primaryStyles}`,
       secondary: `${baseStyles} ${secondaryStyles}`,
       danger: `${baseStyles} ${dangerStyles}`,
-      secondaryDanger: `${baseStyles} ${secondaryDangerStyles}`,
+      secondaryDanger: `${baseStyles} ${secondaryDangerStyles}`
     },
     size: {
       default: 'h-[46px] px-8 py-3',

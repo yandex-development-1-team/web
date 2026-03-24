@@ -1,4 +1,4 @@
-import type { IBoxApplication, TApplicationStatus } from "@/types/applications"
+import type { IBoxApplication, TApplicationStatus } from '@/types/applications'
 
 export type BoxApplicationModalProps = {
   isOpen: boolean

@@ -1,4 +1,4 @@
-import type { IBoxApplication } from "@/types/applications"
+import type { IBoxApplication } from '@/types/applications'
 import mockPhoto from './mock_photo.jpg'
 
 export const mockBoxApplicationData: IBoxApplication = {
