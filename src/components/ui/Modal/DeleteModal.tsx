@@ -31,6 +31,8 @@ export const DeleteModal = ({
 
   return (
     <Modal
+      className='max-w-[412px]'
+      overlayClassName='z-51'
       isOpen={isOpen}
       onClose={onClose}
       title={title}
@@ -46,7 +48,7 @@ export const DeleteModal = ({
             onClick={handleConfirm}
             disabled={itemId === null || itemId === undefined || isPending}
           >
-            {isPending ? 'Удаление...' : 'Удалить'}
+            Удалить
           </Button>
         </>
       }

@@ -42,7 +42,7 @@ const ManageSolutions = () => {
         <h4 className="text-h4sb text-text-black-dark pb-[18px]">Список коробок и спецпроектов</h4>
         <div className="grid grid-cols-2 gap-[20px]">
           <div className="flex flex-col gap-[20px]">
-            <BoxButton className="text-button" icon={'box'} onClick={handleBoxCreate}>
+            <BoxButton className="button-text" icon={'box'} onClick={handleBoxCreate}>
               Создать коробку
             </BoxButton>
             {mockBoxes.map(box => (
@@ -56,7 +56,7 @@ const ManageSolutions = () => {
           </div>
 
           <div className="flex flex-col gap-[20px]">
-            <BoxButton className="text-button" icon={'special_projects'} onClick={handleProjectCreate}>
+            <BoxButton className="button-text" icon={'special_projects'} onClick={handleProjectCreate}>
               Создать спецпроект
             </BoxButton>
             {mockProjects.map(project => (

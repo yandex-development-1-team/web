@@ -19,7 +19,7 @@ export const ToggleButton = ({ leftLabel, rightLabel, onToggle, className }: Tog
     ease-in-out
     relative
     text-text
-    text-button
+    button-text
     bg-white
     border-1
     border-yellow-accent-light
