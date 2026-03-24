@@ -7,7 +7,7 @@ export function InputBasic({ className, type, ...props }: ComponentProps<'input'
       type={type}
       data-slot="input"
       className={cn(
-        `border-(--input-border) border rounded-lg h-11 w-full min-w-25 bg-transparent py-3 ps-3 pe-1
+        `border-(--input-border) border rounded-lg h-11 w-full min-w-18 bg-transparent py-3 ps-3 pe-1
         text-h5 text-text outline-none caret-(--caret)`,
         'transition-colors duration-200 ease-in-out',
         'placeholder:transition-colors placeholder:duration-200 placeholder:text-(--placeholder) placeholder:text-small placeholder:italic',
