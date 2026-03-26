@@ -1,5 +1,5 @@
-import { Slot } from 'radix-ui'
 import { cn } from '@/lib/utils.clsx'
+import { Slot } from 'radix-ui'
 import { buttonVariants } from './Button.styles'
 import type { ButtonProps } from './Button.types'
 
