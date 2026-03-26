@@ -1,42 +1,59 @@
 import { useRef } from 'react'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { api } from '@/app/providers/axios'
 import { Modal } from '@/components/ui/Modal'
 import { ProjectForm, type ProjectFormValues } from './ProjectForm'
 import { Button } from '@/components/ui/Button'
-import { toast } from 'sonner'
+import { useNotification } from '@/app/providers/notification'
 
 interface ProjectModalProps {
   isOpen: boolean
   onClose: () => void
   project?: ProjectFormValues & { id?: string | number }
-  isPending?: boolean
 }
 
-export const ProjectModal = ({ isOpen, onClose, project, isPending = false }: ProjectModalProps) => {
+export const ProjectModal = ({ isOpen, onClose, project }: ProjectModalProps) => {
   const formRef = useRef<HTMLFormElement>(null)
+  const queryClient = useQueryClient()
+  const { showNotification } = useNotification()
 
-  const handleSubmit = async (data: ProjectFormValues) => {
-    const formData = new FormData()
-    formData.append('title', data.title)
-    formData.append('description', data.description)
-    formData.append('isActive', String(data.isActive))
+  const { mutate, isPending } = useMutation({
+    mutationFn: async (data: ProjectFormValues) => {
+      const formData = new FormData()
+      formData.append('title', data.title)
+      formData.append('description', data.description)
+      formData.append('isActive', String(data.isActive))
 
-    if (data.image instanceof File) {
-      formData.append('image', data.image)
-    }
-
-    try {
-      if (project?.id) {
-        await api.put(`/special-projects/${project.id}`, formData)
-        toast.success('Спецпроект успешно обновлен')
-      } else {
-        await api.post('/special-projects', formData)
-        toast.success('Спецпроект успешно создан')
+      if (data.image instanceof File) {
+        formData.append('image', data.image)
       }
+
+      if (project?.id) {
+        return api.put(`/special-projects/${project.id}`, formData)
+      }
+      return api.post('/special-projects', formData)
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['special-projects'] })
+
+      showNotification({
+        status: 'success',
+        message: project ? 'Спецпроект успешно обновлен' : 'Спецпроект успешно создан'
+      })
+
       onClose()
-    } catch (error) {
+    },
+    onError: error => {
       console.error(error)
+      showNotification({
+        status: 'error',
+        message: 'Произошла ошибка при сохранении'
+      })
     }
+  })
+
+  const handleSubmit = (data: ProjectFormValues) => {
+    mutate(data)
   }
 
   return (

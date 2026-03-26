@@ -1,8 +1,7 @@
-import { forwardRef, useRef, useState } from 'react'
+import { forwardRef, useState } from 'react'
 import { useForm, Controller } from 'react-hook-form'
 import { Input } from '@/components/ui/Input'
 import { Switch } from '@/components/ui/Switch'
-import { Button } from '@/components/ui/Button'
 import { AddIcon } from '@/assets/icons'
 
 export interface ProjectFormValues {
@@ -12,14 +11,19 @@ export interface ProjectFormValues {
   image: File | string | null
 }
 
+const DEFAULT_FORM_VALUES: ProjectFormValues = {
+  title: '',
+  isActive: true,
+  description: '',
+  image: null
+}
+
 interface Props {
-  initialData?: ProjectFormValues
+  initialData?: Partial<ProjectFormValues>
   onSubmit: (data: ProjectFormValues) => void
 }
 
 export const ProjectForm = forwardRef<HTMLFormElement, Props>(({ initialData, onSubmit }, ref) => {
-  const fileInputRef = useRef<HTMLInputElement>(null)
-
   const [preview, setPreview] = useState<string | null>(
     typeof initialData?.image === 'string' ? initialData.image : null
   )
@@ -31,12 +35,7 @@ export const ProjectForm = forwardRef<HTMLFormElement, Props>(({ initialData, on
     setValue,
     formState: { errors }
   } = useForm<ProjectFormValues>({
-    defaultValues: initialData || {
-      title: '',
-      isActive: true,
-      description: '',
-      image: null
-    }
+    defaultValues: { ...DEFAULT_FORM_VALUES, ...initialData }
   })
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -81,21 +80,34 @@ export const ProjectForm = forwardRef<HTMLFormElement, Props>(({ initialData, on
       </div>
 
       <div>
-        <div className="relative w-full h-[94px] rounded-xl border border-grey-blue-light bg-grey-extra-light flex flex-col items-center justify-center gap-2">
+        <label
+          htmlFor="project-image-upload"
+          className="
+            relative w-full h-[94px] rounded-xl border border-grey-blue-light
+            bg-grey-extra-light flex flex-col items-center justify-center
+            gap-2 cursor-pointer overflow-hidden hover:bg-grey-light
+            transition-colors
+          "
+        >
           {preview && (
             <img src={preview} alt="Preview" className="absolute inset-0 w-full h-full object-cover opacity-40" />
           )}
 
           <div className="relative z-10 flex flex-col items-center gap-3">
-            <span className="text-xs text-black font-normal leading-none ">Загрузить изображение</span>
-
-            <Button type="button" variant="primary" size="icon-48" onClick={() => fileInputRef.current?.click()}>
-              <AddIcon className=" size-8 text-black" />
-            </Button>
+            <span className="text-xs text-black font-normal leading-none">Загрузить изображение</span>
+            <div className="flex items-center justify-center w-12 h-12 rounded-full bg-primary">
+              <AddIcon className="size-8 text-black" />
+            </div>
           </div>
-        </div>
+        </label>
 
-        <input type="file" ref={fileInputRef} className="hidden" accept="image/*" onChange={handleFileChange} />
+        <input
+          id="project-image-upload" // 4. Тот самый ID для связи с label
+          type="file"
+          className="hidden"
+          accept="image/*"
+          onChange={handleFileChange}
+        />
       </div>
     </form>
   )
