@@ -9,8 +9,8 @@ type BoxesPesponseType = {
 }
 
 export const getBoxes = async ({ params }: { params: IParams }, { signal }: { signal: AbortSignal }) => {
-  const result = await api.get<BoxesPesponseType>(`/boxes`, { params, signal })
-  if (!result.data) throw new Error('Faild to get box solutions')
+  const response = await api.get<BoxesPesponseType>(`/boxes`, { params, signal })
+  if (!response.data) throw new Error('Faild to get box solutions')
 
   //Имитация пагинации на беке
   const limit = Number(params.limit)
