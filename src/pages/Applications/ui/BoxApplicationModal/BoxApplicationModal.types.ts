@@ -3,7 +3,7 @@ import type { IBoxApplication, TApplicationStatus } from '@/types/applications'
 export type BoxApplicationModalProps = {
   isOpen: boolean
   onClose: () => void
-  onDelete: (id: string | number) => void
-  onEdit: (id: string | number, newStatus: TApplicationStatus) => void
+  onDelete: (id: string | number) => Promise<void>
+  onEdit: (id: string | number, newStatus: TApplicationStatus) => Promise<void>
   data: IBoxApplication
 }

@@ -11,9 +11,9 @@ const Applications = () => {
     close: closeBoxApplicationModal
   } = useModal()
 
-  const handleDelete = (id: string | number) => void id
+  const handleDelete = async (id: string | number) => void id
 
-  const handleEdit = (id: string | number, status: TApplicationStatus) => void { id, status }
+  const handleEdit = async (id: string | number, status: TApplicationStatus) => void { id, status }
 
   return (
     <>
