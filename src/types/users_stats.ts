@@ -5,4 +5,12 @@ export interface IUsersStats {
   visitFrequency: number
   boxes: string
   cancellations: number
+  [key: string]: string | number
 }
+
+export interface IDateRangeParams {
+  dateFrom: string
+  dateTo: string
+}
+
+export type ExportData = Blob

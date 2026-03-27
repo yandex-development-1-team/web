@@ -71,5 +71,53 @@ export const mockUsersStats: IUsersStats[] = [
     visitFrequency: 2,
     boxes: 'Русский музей',
     cancellations: 1
+  },
+  {
+    id: 8,
+    name: '@dfxfsah',
+    recordsCount: 3,
+    visitFrequency: 2,
+    boxes: 'Русский музей',
+    cancellations: 1
+  },
+  {
+    id: 9,
+    name: '@dfxfsah',
+    recordsCount: 3,
+    visitFrequency: 2,
+    boxes: 'Русский музей',
+    cancellations: 1
+  },
+  {
+    id: 10,
+    name: '@dfxfsah',
+    recordsCount: 3,
+    visitFrequency: 2,
+    boxes: 'Русский музей',
+    cancellations: 1
+  },
+  {
+    id: 11,
+    name: '@dfxfsah',
+    recordsCount: 3,
+    visitFrequency: 2,
+    boxes: 'Русский музей',
+    cancellations: 1
+  },
+  {
+    id: 12,
+    name: '@dfxfsah',
+    recordsCount: 3,
+    visitFrequency: 2,
+    boxes: 'Русский музей',
+    cancellations: 1
+  },
+  {
+    id: 13,
+    name: '@dfxfsah',
+    recordsCount: 3,
+    visitFrequency: 2,
+    boxes: 'Русский музей',
+    cancellations: 1
   }
 ]
