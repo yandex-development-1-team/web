@@ -13,7 +13,10 @@ const Applications = () => {
 
   const handleDelete = async (id: string | number) => void id
 
-  const handleEdit = async (id: string | number, status: TApplicationStatus) => void { id, status }
+  const handleEdit = async (id: string | number, status: TApplicationStatus) => {
+    mockBoxApplicationData.processing.status = status
+    return void { id, status }
+  }
 
   return (
     <>

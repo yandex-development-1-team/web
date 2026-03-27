@@ -14,7 +14,6 @@ export const BoxApplicationModal = ({ isOpen, onClose, onDelete, onEdit, data }:
 
   const handleSubmit = (e: React.SubmitEvent) => {
     e.preventDefault()
-    data.processing.status = status
     onEdit(data.id, status)
     onClose()
   }
