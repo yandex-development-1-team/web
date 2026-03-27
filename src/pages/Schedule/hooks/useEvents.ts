@@ -11,17 +11,12 @@ export const eventKeys = {
   detail: (id: number) => [...eventKeys.details(), id]
 }
 
-export const useEvents = (params: Omit<IEventsParams, 'offset'> = {}) => {
-  const limit = params.limit || 10
-  const date_from = params.date_from || new Date().toISOString().split('T')[0]
-
+export const useEvents = (params: IEventsParams) => {
   return useInfiniteQuery({
     queryKey: eventKeys.list(params),
-    queryFn: async ({ pageParam = 0 }) => {
+    queryFn: async ({ pageParam }) => {
       const response = await scheduleApi.getEvents({
         ...params,
-        date_from,
-        limit,
         offset: pageParam
       })
       return response

@@ -1,39 +1,37 @@
 import { useCallback, useMemo, useState } from 'react'
 import type { ButtonState } from '@/components/ui/ToggleButton/ToggleButton.types'
-import type { Column } from '@/components/DataTable/DataTable.types'
 import { COLUMN_CALENDAR_CONFIG, COLUMN_TABLE_CONFIG } from '@/pages/Schedule/config'
-import type { TEvent } from '@/types/schedule.types'
-import type { IParams } from '@/services/schedule.service'
-import { formatDateISO } from '@/lib/utils.date'
+import type { TTableEvent, TEvent } from '@/types/schedule.types'
 import { useEvents } from '@/pages/Schedule/hooks/useEvents'
-
-const initialParams: Omit<IParams, 'offset'> = {
-  date_from: formatDateISO(new Date()),
-  limit: 5
-}
+import type { Column } from '@/components/ui/DataTable/DataTable.types'
+import { useEventParams } from '@/pages/Schedule/hooks/useEventParams'
 
 export const useSchedule = () => {
   const [toggle, setToggle] = useState<ButtonState>('left')
-  const [columnTable, setColumnTable] = useState<Column<TEvent>[]>(COLUMN_TABLE_CONFIG)
-  const [columnCalendar, setColumnCalendar] = useState<Column<TEvent>[]>(COLUMN_CALENDAR_CONFIG)
-  const [params, setParams] = useState<Omit<IParams, 'offset'>>(initialParams)
+  const [columnTable, setColumnTable] = useState<Column<TTableEvent>[]>(COLUMN_TABLE_CONFIG)
+  const [columnCalendar, setColumnCalendar] = useState<Column<TTableEvent>[]>(COLUMN_CALENDAR_CONFIG)
+
   const [selectedEvents, setSelectedEvents] = useState<TEvent[]>([])
 
-  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } = useEvents(params)
+  const { params, setDate } = useEventParams()
 
+  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } = useEvents(params)
   const events = useMemo(() => data?.pages.flatMap(page => page.items) ?? [], [data])
-  const totalEvents = data?.pages[0]?.pagination.total ?? 0
+  const pagination = data?.pages[data.pages.length - 1].pagination
 
   const handleToggle = useCallback((side: ButtonState) => {
     setToggle(side)
   }, [])
 
-  const handlePickDate = useCallback((date: Date) => {
-    setParams(prev => ({ ...prev, date_from: formatDateISO(date) }))
-  }, [])
+  const handlePickDate = useCallback(
+    (date: Date) => {
+      setDate(date)
+    },
+    [setDate]
+  )
 
   const handleSort = useCallback((key: string) => {
-    const updateSortable = (item: Column<TEvent>) => ({
+    const updateSortable = (item: Column<TTableEvent>) => ({
       ...item,
       sortable: item.key === key || (item.key === 'date' && key === 'time')
     })
@@ -42,36 +40,36 @@ export const useSchedule = () => {
     setColumnCalendar(prev => prev.map(updateSortable))
   }, [])
 
-  const handlePerPage = useCallback((num: number) => {
-    setParams(prev => ({ ...prev, limit: num }))
-  }, [])
-
   const handleLoadMore = useCallback(() => {
     if (hasNextPage && !isFetchingNextPage) {
       fetchNextPage()
     }
   }, [fetchNextPage, hasNextPage, isFetchingNextPage])
 
-  const handleSelect = useCallback((select: TEvent[]) => {
-    setSelectedEvents(select)
-  }, [])
+  const handleSelect = useCallback(
+    (select: TTableEvent[]) => {
+      const selectedIds = select.map(item => item.id)
+      const data = events.filter(event => selectedIds.includes(event.id))
+      setSelectedEvents(data)
+    },
+    [events]
+  )
 
   return {
     toggle,
     columnTable,
     columnCalendar,
-    params,
     events,
-    totalEvents,
+    params,
     isLoading,
     isFetchingNextPage,
     hasNextPage,
     handleToggle,
     handlePickDate,
     handleSort,
-    handlePerPage,
     handleLoadMore,
     selectedEvents,
-    handleSelect
+    handleSelect,
+    pagination
   }
 }

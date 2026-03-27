@@ -1,21 +1,18 @@
-import { Input } from '@/components/ui'
+import { DataTable, Input } from '@/components/ui'
 import { Calendar } from '@/components/ui/CalendarInput/ui/Calendar'
 import type { TScheduleCalendar } from './ScheduleCalendar.type'
 import { useEffect, useState, type ChangeEvent } from 'react'
 import { SearchIcon } from '@/assets/icons'
 import { formatDate, parseToDate } from '@/lib/utils.date'
-import { DataTable } from '@/components/DataTable'
 import useDebounce from '@/hooks/useDebounce'
 import { Button } from '@/components/ui/Button'
-import { PageSize } from '@/components/ui/PageSize'
+import { Pagination } from '@/components/ui/Pagination'
 
 export const ScheduleCalendar = (props: TScheduleCalendar) => {
-  const { date, onSelect, events, optionColums, pageSize, setPerPage, onLoadMore, hasMore, isLoadingMore, isLoading } =
-    props
-  const formattDate = new Date(date)
+  const { onSelect, events, params, optionColums, onLoadMore, hasMore, isLoadingMore, isLoading, pagination } = props
 
-  const [inputValue, setInputValue] = useState(formatDate(formattDate))
-  const [calendarMonth, setCalendarMonth] = useState<Date>(formattDate)
+  const [inputValue, setInputValue] = useState(formatDate(new Date(params.date_from)))
+  const [calendarMonth, setCalendarMonth] = useState<Date>(new Date(params.date_from))
   const [isValidInput, setIsValidInput] = useState(true)
   const [inputSearch, setInputSearch] = useState('')
   const [dataItem, setDataItem] = useState(events)
@@ -66,6 +63,10 @@ export const ScheduleCalendar = (props: TScheduleCalendar) => {
   const handleMonthChange = (month: Date) => {
     setCalendarMonth(month)
   }
+  const transformedData = dataItem.map(event => ({
+    ...event,
+    time: event.time?.from || ''
+  }))
 
   return (
     <div className="flex felx-col gap-5 flex-wrap">
@@ -84,7 +85,7 @@ export const ScheduleCalendar = (props: TScheduleCalendar) => {
         <div className="flex gap-2">
           <Input
             variant="text"
-            className="basis-0 p-2"
+            className=" min-w-25 flex-1 p-2"
             aria-invalid={!isValidInput}
             value={inputValue}
             onChange={handleChange}
@@ -103,16 +104,15 @@ export const ScheduleCalendar = (props: TScheduleCalendar) => {
 
         <DataTable
           columns={optionColums}
-          data={dataItem}
+          data={transformedData}
           idKey="id"
-          initialPageSize={pageSize}
+          initialPageSize={params.limit}
           enableLoadMore={true}
-          perPage={pageSize}
           isLoading={isLoading}
         />
 
         <div className="flex items-center justify-between">
-          <PageSize pageSize={pageSize} onPageSizeChange={setPerPage} />
+          <Pagination variant="limit" pagination={pagination} />
 
           <div className="flex justify-end">
             {hasMore && (

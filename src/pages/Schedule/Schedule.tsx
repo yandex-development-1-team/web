@@ -9,16 +9,15 @@ const Schedule = () => {
     columnCalendar,
     params,
     events,
-    totalEvents,
     isLoading,
     isFetchingNextPage,
     hasNextPage,
     handleToggle,
     handlePickDate,
     handleSort,
-    handlePerPage,
     handleLoadMore,
-    handleSelect
+    handleSelect,
+    pagination
   } = useSchedule()
 
   return (
@@ -35,7 +34,6 @@ const Schedule = () => {
             <ScheduleTable
               optionColums={columnTable}
               events={events}
-              totalEvents={totalEvents}
               loadedCount={events.length}
               onSelect={handleSelect}
               onLoadMore={handleLoadMore}
@@ -47,10 +45,9 @@ const Schedule = () => {
             <ScheduleCalendar
               optionColums={columnCalendar}
               events={events}
+              params={params}
+              pagination={pagination}
               onSelect={handlePickDate}
-              date={params.date_from}
-              setPerPage={handlePerPage}
-              pageSize={params.limit}
               onLoadMore={handleLoadMore}
               hasMore={hasNextPage}
               isLoading={isLoading}

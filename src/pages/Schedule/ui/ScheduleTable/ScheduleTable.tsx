@@ -1,11 +1,11 @@
 import { EditIcon, DeleteIcon, DownloadIcon } from '@/assets/icons'
-import { DataTable } from '@/components/DataTable'
+
 import { Button } from '@/components/ui/Button'
 import type { TScheduleTable } from './ScheduleTable.type'
-import type { TEvent } from '@/types/schedule.types'
+import type { TTableEvent, TEvent } from '@/types/schedule.types'
 import { useState } from 'react'
 import { eventKeys, useUpdateEvent, useDeleteEvent } from '@/pages/Schedule/hooks/useEvents'
-import { DeleteModal } from '@/components/ui'
+import { DataTable, DeleteModal } from '@/components/ui'
 import { EditEventModal } from '@/pages/Schedule/ui'
 
 export const ScheduleTable = (props: TScheduleTable) => {
@@ -14,14 +14,15 @@ export const ScheduleTable = (props: TScheduleTable) => {
   const [editItem, setEditItem] = useState<TEvent | null>(null)
   const [isOpenEdit, setIsOpenEdit] = useState(false)
 
-  const hendelEdit = (row: TEvent) => {
-    setEditItem(row)
+  const hendelEdit = (row: TTableEvent) => {
+    const item = events.find(item => item.id === row.id)
+    if (item) setEditItem(item)
     setIsOpenEdit(true)
   }
   const [deleteItemId, setDeleteItemId] = useState<number | null>(null)
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
 
-  const handleDeleteClick = (row: TEvent) => {
+  const handleDeleteClick = (row: TTableEvent) => {
     setDeleteItemId(row.id)
     setIsDeleteModalOpen(true)
   }
@@ -43,7 +44,7 @@ export const ScheduleTable = (props: TScheduleTable) => {
     setEditItem(null)
   }
 
-  const renderRowActions = (row: TEvent) => (
+  const renderRowActions = (row: TTableEvent) => (
     <div className="flex gap-2">
       <Button variant="ghost" className="size-11.5 border-grey-light" onClick={() => hendelEdit(row)}>
         <EditIcon className="size-6" color="var(--color-black)" />
@@ -57,11 +58,16 @@ export const ScheduleTable = (props: TScheduleTable) => {
     </div>
   )
 
+  const transformedData = events.map(event => ({
+    ...event,
+    time: event.time?.from || ''
+  }))
+
   return (
     <div className="space-y-4">
       <DataTable
         columns={optionColums}
-        data={events}
+        data={transformedData}
         rowActions={renderRowActions}
         idKey="id"
         enableCheckboxes={true}

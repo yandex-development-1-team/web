@@ -6,7 +6,10 @@ export const events: TEvent[] = [
     box_id: 1,
     box_name: 'Концерт "Вечер джаза"',
     date: '15.01.2024',
-    time: '18:30',
+    time: {
+      from: '18:30',
+      to: '20:00'
+    },
     total_slots: 100,
     occupied_slots: 75,
     available_slots: 25,
@@ -18,7 +21,10 @@ export const events: TEvent[] = [
     box_id: 2,
     box_name: 'Лекция "История искусств"',
     date: '15.01.2024',
-    time: '19:00',
+    time: {
+      from: '19:00',
+      to: '21:00'
+    },
     total_slots: 50,
     occupied_slots: 28,
     available_slots: 22,
@@ -30,7 +36,10 @@ export const events: TEvent[] = [
     box_id: 1,
     box_name: 'Кинопоказ: "Сталкер"',
     date: '15.01.2024',
-    time: '20:00',
+    time: {
+      from: '20:00',
+      to: '22:30'
+    },
     total_slots: 80,
     occupied_slots: 45,
     available_slots: 35,
@@ -42,7 +51,10 @@ export const events: TEvent[] = [
     box_id: 3,
     box_name: 'Мастер-класс для детей',
     date: '15.01.2024',
-    time: '17:00',
+    time: {
+      from: '17:00',
+      to: '18:30'
+    },
     total_slots: 20,
     occupied_slots: 12,
     available_slots: 8,
@@ -54,7 +66,10 @@ export const events: TEvent[] = [
     box_id: 4,
     box_name: 'Stand-up вечер',
     date: '15.01.2024',
-    time: '21:30',
+    time: {
+      from: '21:30',
+      to: '23:00'
+    },
     total_slots: 60,
     occupied_slots: 60,
     available_slots: 0,
@@ -66,7 +81,10 @@ export const events: TEvent[] = [
     box_id: 5,
     box_name: 'Утренняя йога',
     date: '16.01.2024',
-    time: '10:00',
+    time: {
+      from: '10:00',
+      to: '11:30'
+    },
     total_slots: 25,
     occupied_slots: 8,
     available_slots: 17,
@@ -78,7 +96,10 @@ export const events: TEvent[] = [
     box_id: 6,
     box_name: 'Экскурсия по городу',
     date: '16.01.2024',
-    time: '14:00',
+    time: {
+      from: '14:00',
+      to: '16:00'
+    },
     total_slots: 15,
     occupied_slots: 15,
     available_slots: 0,
@@ -90,7 +111,10 @@ export const events: TEvent[] = [
     box_id: 7,
     box_name: 'Кулинарный мастер-класс',
     date: '16.01.2024',
-    time: '16:30',
+    time: {
+      from: '16:30',
+      to: '18:30'
+    },
     total_slots: 12,
     occupied_slots: 9,
     available_slots: 3,
@@ -102,7 +126,10 @@ export const events: TEvent[] = [
     box_id: 8,
     box_name: 'Поэтический вечер',
     date: '16.01.2024',
-    time: '18:00',
+    time: {
+      from: '18:00',
+      to: '20:00'
+    },
     total_slots: 40,
     occupied_slots: 22,
     available_slots: 18,
@@ -114,7 +141,10 @@ export const events: TEvent[] = [
     box_id: 9,
     box_name: 'Спектакль "Гроза"',
     date: '16.01.2024',
-    time: '19:30',
+    time: {
+      from: '19:30',
+      to: '22:00'
+    },
     total_slots: 150,
     occupied_slots: 98,
     available_slots: 52,
@@ -126,7 +156,10 @@ export const events: TEvent[] = [
     box_id: 10,
     box_name: 'Рок-концерт',
     date: '16.01.2024',
-    time: '20:00',
+    time: {
+      from: '20:00',
+      to: '23:00'
+    },
     total_slots: 300,
     occupied_slots: 245,
     available_slots: 55,
@@ -138,7 +171,10 @@ export const events: TEvent[] = [
     box_id: 11,
     box_name: 'Ночная дискотека',
     date: '16.01.2024',
-    time: '22:00',
+    time: {
+      from: '22:00',
+      to: '03:00'
+    },
     total_slots: 200,
     occupied_slots: 178,
     available_slots: 22,
@@ -150,7 +186,10 @@ export const events: TEvent[] = [
     box_id: 12,
     box_name: 'Мастер-класс по фотографии',
     date: '17.01.2024',
-    time: '11:00',
+    time: {
+      from: '11:00',
+      to: '13:30'
+    },
     total_slots: 30,
     occupied_slots: 30,
     available_slots: 0,
@@ -162,7 +201,10 @@ export const events: TEvent[] = [
     box_id: 13,
     box_name: 'Лекция по психологии',
     date: '17.01.2024',
-    time: '15:00',
+    time: {
+      from: '15:00',
+      to: '17:00'
+    },
     total_slots: 45,
     occupied_slots: 17,
     available_slots: 28,
@@ -174,7 +216,10 @@ export const events: TEvent[] = [
     box_id: 14,
     box_name: 'Детский спектакль',
     date: '17.01.2024',
-    time: '17:30',
+    time: {
+      from: '17:30',
+      to: '19:00'
+    },
     total_slots: 80,
     occupied_slots: 65,
     available_slots: 15,
@@ -186,7 +231,10 @@ export const events: TEvent[] = [
     box_id: 15,
     box_name: 'Джазовый концерт',
     date: '17.01.2024',
-    time: '20:00',
+    time: {
+      from: '20:00',
+      to: '22:00'
+    },
     total_slots: 120,
     occupied_slots: 89,
     available_slots: 31,
@@ -198,7 +246,10 @@ export const events: TEvent[] = [
     box_id: 16,
     box_name: 'Занятие по рисованию',
     date: '18.01.2024',
-    time: '10:30',
+    time: {
+      from: '10:30',
+      to: '12:30'
+    },
     total_slots: 15,
     occupied_slots: 6,
     available_slots: 9,
@@ -210,7 +261,10 @@ export const events: TEvent[] = [
     box_id: 17,
     box_name: 'Обед с шеф-поваром',
     date: '18.01.2024',
-    time: '13:00',
+    time: {
+      from: '13:00',
+      to: '15:00'
+    },
     total_slots: 20,
     occupied_slots: 20,
     available_slots: 0,
@@ -222,7 +276,10 @@ export const events: TEvent[] = [
     box_id: 18,
     box_name: 'Турнир по шахматам',
     date: '18.01.2024',
-    time: '15:00',
+    time: {
+      from: '15:00',
+      to: '18:00'
+    },
     total_slots: 32,
     occupied_slots: 28,
     available_slots: 4,
@@ -234,7 +291,10 @@ export const events: TEvent[] = [
     box_id: 19,
     box_name: 'Презентация книги',
     date: '18.01.2024',
-    time: '17:00',
+    time: {
+      from: '17:00',
+      to: '18:30'
+    },
     total_slots: 50,
     occupied_slots: 31,
     available_slots: 19,
@@ -246,7 +306,10 @@ export const events: TEvent[] = [
     box_id: 20,
     box_name: 'Спектакль "Три сестры"',
     date: '18.01.2024',
-    time: '18:30',
+    time: {
+      from: '18:30',
+      to: '21:30'
+    },
     total_slots: 200,
     occupied_slots: 187,
     available_slots: 13,
@@ -258,7 +321,10 @@ export const events: TEvent[] = [
     box_id: 21,
     box_name: 'Хоровой концерт',
     date: '18.01.2024',
-    time: '19:00',
+    time: {
+      from: '19:00',
+      to: '21:00'
+    },
     total_slots: 150,
     occupied_slots: 102,
     available_slots: 48,
@@ -270,7 +336,10 @@ export const events: TEvent[] = [
     box_id: 22,
     box_name: 'Вечер юмора',
     date: '18.01.2024',
-    time: '20:00',
+    time: {
+      from: '20:00',
+      to: '22:00'
+    },
     total_slots: 90,
     occupied_slots: 74,
     available_slots: 16,
@@ -282,7 +351,10 @@ export const events: TEvent[] = [
     box_id: 23,
     box_name: 'Караоке-баттл',
     date: '18.01.2024',
-    time: '21:00',
+    time: {
+      from: '21:00',
+      to: '23:30'
+    },
     total_slots: 40,
     occupied_slots: 25,
     available_slots: 15,
@@ -294,7 +366,10 @@ export const events: TEvent[] = [
     box_id: 24,
     box_name: 'Забег с препятствиями',
     date: '19.01.2024',
-    time: '09:00',
+    time: {
+      from: '09:00',
+      to: '12:00'
+    },
     total_slots: 100,
     occupied_slots: 62,
     available_slots: 38,
@@ -306,7 +381,10 @@ export const events: TEvent[] = [
     box_id: 25,
     box_name: 'Выставка кошек',
     date: '19.01.2024',
-    time: '11:00',
+    time: {
+      from: '11:00',
+      to: '18:00'
+    },
     total_slots: 200,
     occupied_slots: 156,
     available_slots: 44,
@@ -318,7 +396,10 @@ export const events: TEvent[] = [
     box_id: 26,
     box_name: 'Бранч',
     date: '19.01.2024',
-    time: '12:00',
+    time: {
+      from: '12:00',
+      to: '14:00'
+    },
     total_slots: 35,
     occupied_slots: 28,
     available_slots: 7,
@@ -330,7 +411,10 @@ export const events: TEvent[] = [
     box_id: 27,
     box_name: 'Лекция о космосе',
     date: '19.01.2024',
-    time: '14:00',
+    time: {
+      from: '14:00',
+      to: '16:00'
+    },
     total_slots: 60,
     occupied_slots: 41,
     available_slots: 19,
@@ -342,7 +426,10 @@ export const events: TEvent[] = [
     box_id: 28,
     box_name: 'Гончарный мастер-класс',
     date: '19.01.2024',
-    time: '15:30',
+    time: {
+      from: '15:30',
+      to: '17:30'
+    },
     total_slots: 12,
     occupied_slots: 12,
     available_slots: 0,
@@ -354,7 +441,10 @@ export const events: TEvent[] = [
     box_id: 29,
     box_name: 'Джазовый концерт',
     date: '19.01.2024',
-    time: '17:00',
+    time: {
+      from: '17:00',
+      to: '19:00'
+    },
     total_slots: 80,
     occupied_slots: 67,
     available_slots: 13,
@@ -366,7 +456,10 @@ export const events: TEvent[] = [
     box_id: 30,
     box_name: 'Балет "Лебединое озеро"',
     date: '19.01.2024',
-    time: '18:30',
+    time: {
+      from: '18:30',
+      to: '21:00'
+    },
     total_slots: 250,
     occupied_slots: 243,
     available_slots: 7,
@@ -378,7 +471,10 @@ export const events: TEvent[] = [
     box_id: 31,
     box_name: 'Иммерсивный спектакль',
     date: '19.01.2024',
-    time: '19:30',
+    time: {
+      from: '19:30',
+      to: '21:30'
+    },
     total_slots: 30,
     occupied_slots: 19,
     available_slots: 11,
@@ -390,7 +486,10 @@ export const events: TEvent[] = [
     box_id: 32,
     box_name: 'Вечеринка 90-е',
     date: '19.01.2024',
-    time: '22:00',
+    time: {
+      from: '22:00',
+      to: '04:00'
+    },
     total_slots: 150,
     occupied_slots: 134,
     available_slots: 16,
@@ -402,7 +501,10 @@ export const events: TEvent[] = [
     box_id: 33,
     box_name: 'Фитнес-марафон',
     date: '20.01.2024',
-    time: '10:00',
+    time: {
+      from: '10:00',
+      to: '12:00'
+    },
     total_slots: 50,
     occupied_slots: 37,
     available_slots: 13,
@@ -414,7 +516,10 @@ export const events: TEvent[] = [
     box_id: 34,
     box_name: 'Квест для детей',
     date: '20.01.2024',
-    time: '11:30',
+    time: {
+      from: '11:30',
+      to: '13:00'
+    },
     total_slots: 24,
     occupied_slots: 24,
     available_slots: 0,
@@ -426,7 +531,10 @@ export const events: TEvent[] = [
     box_id: 35,
     box_name: 'Фестиваль еды',
     date: '20.01.2024',
-    time: '12:00',
+    time: {
+      from: '12:00',
+      to: '20:00'
+    },
     total_slots: 300,
     occupied_slots: 215,
     available_slots: 85,
@@ -438,7 +546,10 @@ export const events: TEvent[] = [
     box_id: 36,
     box_name: 'Мастер-класс по танцам',
     date: '20.01.2024',
-    time: '13:30',
+    time: {
+      from: '13:30',
+      to: '15:30'
+    },
     total_slots: 20,
     occupied_slots: 14,
     available_slots: 6,
@@ -450,7 +561,10 @@ export const events: TEvent[] = [
     box_id: 37,
     box_name: 'Кино под открытым небом',
     date: '20.01.2024',
-    time: '15:00',
+    time: {
+      from: '15:00',
+      to: '17:30'
+    },
     total_slots: 150,
     occupied_slots: 98,
     available_slots: 52,
@@ -462,7 +576,10 @@ export const events: TEvent[] = [
     box_id: 38,
     box_name: 'Встреча с блогером',
     date: '20.01.2024',
-    time: '16:00',
+    time: {
+      from: '16:00',
+      to: '18:00'
+    },
     total_slots: 45,
     occupied_slots: 43,
     available_slots: 2,
@@ -474,7 +591,10 @@ export const events: TEvent[] = [
     box_id: 39,
     box_name: 'Рок-опера',
     date: '20.01.2024',
-    time: '17:30',
+    time: {
+      from: '17:30',
+      to: '20:30'
+    },
     total_slots: 400,
     occupied_slots: 356,
     available_slots: 44,
@@ -486,7 +606,10 @@ export const events: TEvent[] = [
     box_id: 40,
     box_name: 'Дегустация вин',
     date: '20.01.2024',
-    time: '18:00',
+    time: {
+      from: '18:00',
+      to: '20:00'
+    },
     total_slots: 25,
     occupied_slots: 25,
     available_slots: 0,
@@ -498,7 +621,10 @@ export const events: TEvent[] = [
     box_id: 41,
     box_name: 'Симфонический концерт',
     date: '20.01.2024',
-    time: '19:00',
+    time: {
+      from: '19:00',
+      to: '21:30'
+    },
     total_slots: 180,
     occupied_slots: 147,
     available_slots: 33,
@@ -510,7 +636,10 @@ export const events: TEvent[] = [
     box_id: 42,
     box_name: 'Стендап',
     date: '20.01.2024',
-    time: '20:30',
+    time: {
+      from: '20:30',
+      to: '22:30'
+    },
     total_slots: 70,
     occupied_slots: 70,
     available_slots: 0,
@@ -522,7 +651,10 @@ export const events: TEvent[] = [
     box_id: 43,
     box_name: 'Завтрак с психологом',
     date: '21.01.2024',
-    time: '09:30',
+    time: {
+      from: '09:30',
+      to: '11:00'
+    },
     total_slots: 18,
     occupied_slots: 9,
     available_slots: 9,
@@ -534,7 +666,10 @@ export const events: TEvent[] = [
     box_id: 44,
     box_name: 'Выставка картин',
     date: '21.01.2024',
-    time: '12:00',
+    time: {
+      from: '12:00',
+      to: '18:00'
+    },
     total_slots: 60,
     occupied_slots: 32,
     available_slots: 28,
@@ -546,7 +681,10 @@ export const events: TEvent[] = [
     box_id: 45,
     box_name: 'Лекция по инвестициям',
     date: '21.01.2024',
-    time: '14:30',
+    time: {
+      from: '14:30',
+      to: '16:30'
+    },
     total_slots: 40,
     occupied_slots: 27,
     available_slots: 13,
@@ -558,7 +696,10 @@ export const events: TEvent[] = [
     box_id: 46,
     box_name: 'Детский мюзикл',
     date: '21.01.2024',
-    time: '16:00',
+    time: {
+      from: '16:00',
+      to: '18:00'
+    },
     total_slots: 120,
     occupied_slots: 105,
     available_slots: 15,
@@ -570,7 +711,10 @@ export const events: TEvent[] = [
     box_id: 47,
     box_name: 'Вечер фортепианной музыки',
     date: '21.01.2024',
-    time: '18:00',
+    time: {
+      from: '18:00',
+      to: '20:00'
+    },
     total_slots: 70,
     occupied_slots: 51,
     available_slots: 19,
@@ -582,7 +726,10 @@ export const events: TEvent[] = [
     box_id: 48,
     box_name: 'Спектакль "На дне"',
     date: '21.01.2024',
-    time: '19:30',
+    time: {
+      from: '19:30',
+      to: '22:00'
+    },
     total_slots: 150,
     occupied_slots: 132,
     available_slots: 18,
@@ -594,7 +741,10 @@ export const events: TEvent[] = [
     box_id: 49,
     box_name: 'Ночной джаз',
     date: '21.01.2024',
-    time: '21:00',
+    time: {
+      from: '21:00',
+      to: '23:30'
+    },
     total_slots: 50,
     occupied_slots: 38,
     available_slots: 12,

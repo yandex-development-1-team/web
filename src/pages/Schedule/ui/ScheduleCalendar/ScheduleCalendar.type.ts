@@ -1,15 +1,14 @@
-import type { Column } from '@/components/DataTable/DataTable.types'
-import type { TEvent } from '@/types/schedule.types'
+import type { Column } from '@/components/ui/DataTable/DataTable.types'
+import type { IEventsParams, IPagination, TTableEvent, TEvent } from '@/types/schedule.types'
 
 export type TScheduleCalendar = {
-  date: string
   onSelect: (date: Date) => void
   events: TEvent[]
-  optionColums: Column<TEvent>[]
-  pageSize: number
-  setPerPage: (num: number) => void
+  params: IEventsParams
+  optionColums: Column<TTableEvent>[]
   onLoadMore: () => void
   hasMore?: boolean
   isLoadingMore?: boolean
   isLoading?: boolean
+  pagination?: IPagination
 }

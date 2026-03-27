@@ -1,12 +1,11 @@
-import type { Column } from '@/components/DataTable/DataTable.types'
-import type { TEvent } from '@/types/schedule.types'
+import type { Column } from '@/components/ui/DataTable/DataTable.types'
+import type { TTableEvent, TEvent } from '@/types/schedule.types'
 
 export type TScheduleTable = {
-  optionColums: Column<TEvent>[]
+  optionColums: Column<TTableEvent>[]
   events: TEvent[]
-  totalEvents: number
   loadedCount: number
-  onSelect: (select: TEvent[]) => void
+  onSelect: (select: TTableEvent[]) => void
   onLoadMore: () => void
   hasMore?: boolean
   isLoadingMore?: boolean

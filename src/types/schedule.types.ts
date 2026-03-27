@@ -1,4 +1,4 @@
-export type TEvent = {
+export type TTableEvent = {
   id: number
   box_id: number
   box_name: string
@@ -11,13 +11,27 @@ export type TEvent = {
   status: string
 }
 
+export type TEvent = {
+  id: number
+  box_id: number
+  box_name: string
+  date: string
+  time: TimeRange
+  total_slots: number
+  occupied_slots: number
+  available_slots: number
+  location: string
+  status: string
+}
+
+export interface TimeRange {
+  from?: string
+  to?: string
+}
+
 export interface IEventsParams {
-  box_id?: number
-  date_from?: string
-  date_to?: string
-  status?: string
-  limit?: number
-  offset?: number
+  date_from: string
+  limit: number
 }
 
 export interface IPagination {

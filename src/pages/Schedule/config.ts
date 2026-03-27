@@ -1,13 +1,13 @@
-import type { Column } from '@/components/DataTable/DataTable.types'
-import type { TEvent } from '@/types/schedule.types'
+import type { Column } from '@/components/ui/DataTable/DataTable.types'
+import type { TTableEvent } from '@/types/schedule.types'
 
-export const COLUMN_CALENDAR_CONFIG: Column<TEvent>[] = [
+export const COLUMN_CALENDAR_CONFIG: Column<TTableEvent>[] = [
   { key: 'box_name', label: 'Название', sortable: true },
   { key: 'time', label: 'Время', sortable: false },
   { key: 'location', label: 'Место', sortable: false }
 ]
 
-export const COLUMN_TABLE_CONFIG: Column<TEvent>[] = [
+export const COLUMN_TABLE_CONFIG: Column<TTableEvent>[] = [
   { key: 'date', label: 'Дата', sortable: false },
   { key: 'time', label: 'Время', sortable: false },
   { key: 'box_name', label: 'Название', sortable: true },
