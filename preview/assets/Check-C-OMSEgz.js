@@ -1,0 +1,1 @@
+import{r as e}from"./index-RKrQrmCX.js";const a=({title:r,titleId:o,...t})=>e.createElement("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 24 24",fill:"none","aria-labelledby":o,...t},r?e.createElement("title",{id:o},r):null,e.createElement("path",{stroke:"currentColor",strokeLinecap:"round",strokeLinejoin:"round",d:"m5 13 4 4L19 7"}));export{a as S};
