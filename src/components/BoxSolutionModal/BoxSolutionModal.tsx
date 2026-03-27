@@ -9,6 +9,7 @@ import { fileToBase64 } from '@/lib/fileUtils/fileToBase64'
 import { getFormValues, mapFormDataToBoxData } from './helpers'
 import { boxSolutionSchema } from './schema'
 import type { BoxSolutionFormData, BoxSolutionModalType } from './BoxSolutionModal.type'
+import type { BoxData } from '@/types/solutions'
 
 export const BoxSolutionModal = ({ isOpen, onClose, action, boxData, onSave }: BoxSolutionModalType) => {
   const {
@@ -16,7 +17,7 @@ export const BoxSolutionModal = ({ isOpen, onClose, action, boxData, onSave }: B
     handleSubmit,
     register,
     reset,
-    formState: { errors }
+    formState: { errors, dirtyFields }
   } = useForm<BoxSolutionFormData>({
     defaultValues: getFormValues(action, boxData),
     resolver: zodResolver(boxSolutionSchema)
@@ -49,8 +50,25 @@ export const BoxSolutionModal = ({ isOpen, onClose, action, boxData, onSave }: B
       imageBase64 = boxData.image
     }
 
-    const formattedData = mapFormDataToBoxData(data, imageBase64)
-    onSave(formattedData)
+    const fullData: Omit<BoxData, 'id'> = mapFormDataToBoxData(data, imageBase64)
+
+    if (action === 'create') {
+      onSave(fullData)
+    } else if (action === 'edit') {
+      const changed: Partial<Omit<BoxData, 'id'>> = {}
+
+      if (dirtyFields.name) changed.name = fullData.name
+      if (dirtyFields.isActive) changed.is_active_in_bot = fullData.is_active_in_bot
+      if (dirtyFields.timeSlots) changed.time_slots = fullData.time_slots
+      if (dirtyFields.location) changed.location = fullData.location
+      if (dirtyFields.description) changed.description = fullData.description
+      if (dirtyFields.rules) changed.rules = fullData.rules
+      if (dirtyFields.cost) changed.cost = fullData.cost
+      if (dirtyFields.organizer) changed.organizer = fullData.organizer
+      if (dirtyFields.image && imageBase64) changed.image = imageBase64
+
+      onSave(changed)
+    }
   }
 
   const handleAddTimeSlot = () => {
@@ -94,74 +112,76 @@ export const BoxSolutionModal = ({ isOpen, onClose, action, boxData, onSave }: B
         </div>
 
         <div className="flex flex-col gap-[10px]">
-          {displayFields.map((field, index) => {
-            const dateLabel = hasMultipleSlots ? `День ${index + 1}` : 'Дата'
-            const timeLabel = hasMultipleSlots ? `Время ${index + 1}` : 'Время'
+          <div className="flex flex-col gap-[4px]">
+            {displayFields.map((field, index) => {
+              const dateLabel = hasMultipleSlots ? `Дата ${index + 1}` : 'Дата'
+              const timeLabel = hasMultipleSlots ? `Время ${index + 1}` : 'Время'
 
-            return (
-              <div key={field.id} className="flex items-start gap-y-[16px] gap-x-[12px]">
-                <FormInput
-                  label={dateLabel}
-                  labelClassName="flex-1"
-                  input={
-                    <Controller
-                      name={`timeSlots.${index}.date`}
-                      control={control}
-                      render={({ field }) => (
-                        <div className="flex flex-col gap-[3px]">
-                          <CalendarInput
-                            key={`date-${index}-${isOpen}`}
-                            variant="single"
-                            value={field.value}
-                            placeholder="Выберите дату"
-                            onChange={field.onChange}
-                            invalid={!!errors.timeSlots?.[index]?.date}
-                          />
-                          <span className="text-xxs text-text-error">{errors.timeSlots?.[index]?.date?.message}</span>
-                        </div>
-                      )}
-                    />
-                  }
-                />
+              return (
+                <div key={field.id} className="flex items-start gap-y-[16px] gap-x-[12px]">
+                  <FormInput
+                    label={dateLabel}
+                    labelClassName="flex-1"
+                    input={
+                      <Controller
+                        name={`timeSlots.${index}.date`}
+                        control={control}
+                        render={({ field }) => (
+                          <div className="flex flex-col gap-[3px]">
+                            <CalendarInput
+                              key={`date-${index}-${isOpen}`}
+                              variant="single"
+                              value={field.value}
+                              placeholder="Выберите дату"
+                              onChange={field.onChange}
+                              invalid={!!errors.timeSlots?.[index]?.date}
+                            />
+                            <span className="text-xxs text-text-error">{errors.timeSlots?.[index]?.date?.message}</span>
+                          </div>
+                        )}
+                      />
+                    }
+                  />
 
-                <FormInput
-                  label={timeLabel}
-                  labelClassName="flex-1"
-                  input={
-                    <Controller
-                      name={`timeSlots.${index}.timeRange`}
-                      control={control}
-                      render={({ field }) => (
-                        <div className="flex flex-col gap-[3px]">
-                          <TimeRangeInput
-                            value={field.value}
-                            onChange={field.onChange}
-                            className="flex-1"
-                            invalid={!!errors.timeSlots?.[index]?.timeRange}
-                          />
-                          <span className="text-xxs text-text-error">
-                            {errors.timeSlots?.[index]?.timeRange?.message}
-                          </span>
-                        </div>
-                      )}
-                    />
-                  }
-                />
+                  <FormInput
+                    label={timeLabel}
+                    labelClassName="flex-1"
+                    input={
+                      <Controller
+                        name={`timeSlots.${index}.timeRange`}
+                        control={control}
+                        render={({ field }) => (
+                          <div className="flex flex-col gap-[3px]">
+                            <TimeRangeInput
+                              value={field.value}
+                              onChange={field.onChange}
+                              className="flex-1"
+                              invalid={!!errors.timeSlots?.[index]?.timeRange}
+                            />
+                            <span className="text-xxs text-text-error">
+                              {errors.timeSlots?.[index]?.timeRange?.message}
+                            </span>
+                          </div>
+                        )}
+                      />
+                    }
+                  />
 
-                {hasMultipleSlots && (
-                  <Button
-                    size="icon-44"
-                    type="button"
-                    variant="secondary"
-                    onClick={() => remove(index)}
-                    className="mt-[21px] border-(--input-border) hover:border-(--input-border-active)"
-                  >
-                    <div className="w-[16px] h-[1px] bg-black" />
-                  </Button>
-                )}
-              </div>
-            )
-          })}
+                  {hasMultipleSlots && (
+                    <Button
+                      size="icon-44"
+                      type="button"
+                      variant="secondary"
+                      onClick={() => remove(index)}
+                      className="mt-[21px] border-(--input-border) hover:border-(--input-border-active)"
+                    >
+                      <div className="w-[16px] h-[1px] bg-black" />
+                    </Button>
+                  )}
+                </div>
+              )
+            })}
+          </div>
 
           <Button
             type="button"

@@ -9,7 +9,7 @@ export type BoxSolutionModalType = {
   onClose: () => void
   action: ModalAction
   boxData?: BoxData
-  onSave: (data: Omit<BoxData, 'id'>) => void
+  onSave: (data: Partial<Omit<BoxData, 'id'>>) => void
 }
 
 export type BoxSolutionFormData = z.infer<typeof boxSolutionSchema>

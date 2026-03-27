@@ -34,11 +34,11 @@ const ManageSolutions = () => {
     openCreateEditModal()
   }
 
-  const handleBoxSave = (data: Omit<BoxData, 'id'>) => {
+  const handleBoxSave = (data: Partial<Omit<BoxData, 'id'>>) => {
     if (modalAction === 'create') {
       const newBox: BoxData = {
         id: Math.max(...boxes.map(b => b.id), 0) + 1,
-        ...data
+        ...(data as Omit<BoxData, 'id'>)
       }
 
       setBoxes(prev => [...prev, newBox])
