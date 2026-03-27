@@ -73,7 +73,7 @@ export const ProjectModal = ({ isOpen, onClose, project }: ProjectModalProps) =>
             onClick={() => formRef.current?.requestSubmit()}
             disabled={isPending}
           >
-            {isPending ? 'Сохранение...' : 'Сохранить'}
+            Сохранить
           </Button>
         </>
       }

@@ -90,7 +90,7 @@ export const ProjectForm = forwardRef<HTMLFormElement, Props>(({ initialData, on
           "
         >
           {preview && (
-            <img src={preview} alt="Preview" className="absolute inset-0 w-full h-full object-cover opacity-40" />
+            <img src={preview} alt="Preview" className="absolute inset-0 w-full h-full object-contain opacity-40" />
           )}
 
           <div className="relative z-10 flex flex-col items-center gap-3">
