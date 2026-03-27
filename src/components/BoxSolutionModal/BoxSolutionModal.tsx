@@ -1,14 +1,14 @@
 import { useEffect } from 'react'
 import { Controller, useForm, useWatch } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Button, CalendarInput, Input, Modal, Select, Switch, TimeRangeInput } from '@/components/ui'
+import { Button, CalendarInput, Input, Modal, Switch, TimeRangeInput } from '@/components/ui'
+import { FormInput } from './ui'
 import { AddIcon } from '@/assets/icons'
 import { cn } from '@/lib/utils.clsx'
 import { fileToBase64 } from '@/lib/fileUtils/fileToBase64'
 import { getFormValues, mapFormDataToBoxData } from './helpers'
 import { boxSolutionSchema } from './schema'
 import type { BoxSolutionFormData, BoxSolutionModalType } from './BoxSolutionModal.type'
-import { mockSelectOptions } from '@/mockData/mockSelectOptions'
 
 export const BoxSolutionModal = ({ isOpen, onClose, action, boxData, onSave }: BoxSolutionModalType) => {
   const {
@@ -60,15 +60,9 @@ export const BoxSolutionModal = ({ isOpen, onClose, action, boxData, onSave }: B
         </div>
       }
     >
-      <form className="flex flex-col gap-[16px]" onSubmit={handleSubmit(onSubmit)} noValidate>
-        <div className="grid grid-cols-2 gap-y-[16px] gap-x-[12px]">
-          <label className="flex flex-col gap-[3px]">
-            <span className="text-xxs text-text-grey-dark">Название</span>
-            <Input type="text" variant="text" aria-invalid={!!errors.name} {...register('name')} />
-            <span className="text-xxs text-text-error">{errors.name?.message}</span>
-          </label>
-
-          <div className="flex gap-[12px] items-center pt-[4px] pr-[22px] justify-self-end self-start">
+      <form className="flex flex-col gap-[14px]" onSubmit={handleSubmit(onSubmit)} noValidate>
+        <div>
+          <div className="flex gap-[12px] items-center py-[4px] justify-self-end self-start">
             <span className="text-h5">Активно</span>
             <Controller
               name="isActive"
@@ -77,79 +71,124 @@ export const BoxSolutionModal = ({ isOpen, onClose, action, boxData, onSave }: B
             />
           </div>
 
-          <Controller
-            name="date"
-            control={control}
-            render={({ field }) => (
-              <div className="flex flex-col gap-[3px]">
-                <CalendarInput
-                  key={`date-${isOpen}`}
-                  variant="single"
-                  value={field.value}
-                  placeholder="Выберите дату"
-                  onChange={field.onChange}
-                  invalid={!!errors.date}
-                />
-                <span className="text-xxs text-text-error">{errors.date?.message}</span>
-              </div>
-            )}
-          />
-          <Controller
-            name="timeRange"
-            control={control}
-            render={({ field }) => (
-              <div className="flex flex-col gap-[3px]">
-                <TimeRangeInput
-                  value={field.value}
-                  onChange={field.onChange}
-                  className="flex-1"
-                  invalid={!!errors.timeRange}
-                />
-                <span className="text-xxs text-text-error">{errors.timeRange?.message}</span>
-              </div>
-            )}
+          <FormInput
+            label="Название"
+            errorMessage={errors.name?.message}
+            input={<Input type="text" variant="text" aria-invalid={!!errors.name} {...register('name')} />}
           />
         </div>
 
-        <label className="flex flex-col gap-[3px]">
-          <span className="text-xxs text-text-grey-dark">Место</span>
-          <Controller
-            name="location"
-            control={control}
-            render={({ field }) => (
-              <Select
-                options={mockSelectOptions}
-                placeholder="Выберите место"
-                classNames={{ trigger: 'w-full' }}
-                value={field.value}
-                onValueChange={field.onChange}
-              />
+        <div className="flex flex-col gap-[10px]">
+          <div className="flex items-start gap-y-[16px] gap-x-[12px]">
+            <FormInput
+              label="Дата"
+              labelClassName="flex-1"
+              input={
+                <Controller
+                  name="date"
+                  control={control}
+                  render={({ field }) => (
+                    <div className="flex flex-col gap-[3px]">
+                      <CalendarInput
+                        key={`date-${isOpen}`}
+                        variant="single"
+                        value={field.value}
+                        placeholder="Выберите дату"
+                        onChange={field.onChange}
+                        invalid={!!errors.date}
+                      />
+                      <span className="text-xxs text-text-error">{errors.date?.message}</span>
+                    </div>
+                  )}
+                />
+              }
+            />
+
+            <FormInput
+              label="Время"
+              labelClassName="flex-1"
+              input={
+                <Controller
+                  name="timeRange"
+                  control={control}
+                  render={({ field }) => (
+                    <div className="flex flex-col gap-[3px]">
+                      <TimeRangeInput
+                        value={field.value}
+                        onChange={field.onChange}
+                        className="flex-1"
+                        invalid={!!errors.timeRange}
+                      />
+                      <span className="text-xxs text-text-error">{errors.timeRange?.message}</span>
+                    </div>
+                  )}
+                />
+              }
+            />
+
+            <Button
+              size="icon-44"
+              type="button"
+              variant="secondary"
+              onClick={() => {}}
+              className="mt-[21px] border-(--input-border) hover:border-(--input-border-active)"
+            >
+              <div className="w-[16px] h-[1px] bg-black" />
+            </Button>
+          </div>
+
+          <Button
+            type="button"
+            onClick={() => {}}
+            variant="secondary"
+            size="default"
+            className={cn(
+              'self-start px-[12px] border-none',
+              'shadow-[0px_1px_3px_0px_rgba(0,0,0,0.15),0px_1px_2px_0px_rgba(0,0,0,0.30)]',
+              'hover:shadow-[0px_6px_12px_0px_rgba(0,0,0,0.18),0px_3px_6px_0px_rgba(0,0,0,0.33)]',
+              'hover:-translate-y-px',
+              'active:shadow-[0px_1px_2px_0px_rgba(0,0,0,0.20),inset_0px_1px_2px_0px_rgba(0,0,0,0.15)]',
+              'active:translate-y-0',
+              'transition-all duration-200 ease-in-out'
             )}
+          >
+            <AddIcon className="size-[24px] mr-[4px]" />
+            Добавить дату и время
+          </Button>
+        </div>
+
+        <div className="flex flex-col gap-[7px]">
+          <FormInput
+            label="Место"
+            errorMessage={errors.location?.message}
+            input={<Input type="text" variant="text" aria-invalid={!!errors.location} {...register('location')} />}
           />
-        </label>
 
-        <label className="flex flex-col gap-[3px]">
-          <span className="text-xxs text-text-grey-dark">Описание</span>
-          <Input type="text" variant="text" aria-invalid={!!errors.description} {...register('description')} />
-          <span className="text-xxs text-text-error">{errors.description?.message}</span>
-        </label>
+          <FormInput
+            label="Описание"
+            errorMessage={errors.description?.message}
+            input={
+              <Input type="text" variant="text" aria-invalid={!!errors.description} {...register('description')} />
+            }
+          />
 
-        <label className="flex flex-col gap-[3px]">
-          <span className="text-xxs text-text-grey-dark">Правила</span>
-          <Input type="text" variant="text" {...register('rules')} />
-        </label>
+          <FormInput label="Правила" input={<Input type="text" variant="text" {...register('rules')} />} />
 
-        <div className="flex gap-[12px]">
-          <label className="flex flex-col gap-[3px] flex-1">
-            <span className="text-xxs text-text-grey-dark">{'Стоимость (руб.)'}</span>
-            <Input type="text" variant="text" aria-invalid={!!errors.cost} {...register('cost')} />
-            <span className="text-xxs text-text-error">{errors.cost?.message}</span>
-          </label>
-          <label className="flex flex-col gap-[3px] flex-1">
-            <span className="text-xxs text-text-grey-dark">Организатор</span>
-            <Input type="text" variant="text" aria-invalid={!!errors.organizer} {...register('organizer')} />
-            <span className="text-xxs text-text-error">{errors.organizer?.message}</span>
-          </label>
+          <div className="flex gap-[12px]">
+            <FormInput
+              label="Стоимость (руб.)"
+              labelClassName="flex-1"
+              errorMessage={errors.cost?.message}
+              input={<Input type="text" variant="text" aria-invalid={!!errors.cost} {...register('cost')} />}
+            />
+
+            <FormInput
+              label="Организатор"
+              labelClassName="flex-1"
+              errorMessage={errors.organizer?.message}
+              input={<Input type="text" variant="text" aria-invalid={!!errors.organizer} {...register('organizer')} />}
+            />
+          </div>
         </div>
 
         <div>
