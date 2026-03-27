@@ -1,19 +1,26 @@
 import { formatDateISO, parseToDate } from '@/lib/utils.date'
-import type { BoxData } from '@/types/solutions'
+import type { BoxData, TimeSlot } from '@/types/solutions'
 import type { BoxSolutionFormData, ModalAction } from './BoxSolutionModal.type'
 
 export const getFormValues = (action: ModalAction, boxData?: BoxData): BoxSolutionFormData => {
   if (action === 'edit' && boxData) {
-    const formattedDate = boxData.date?.split('-').reverse().join('.')
+    const timeSlots = boxData.time_slots
+      .filter(slot => slot.date && slot.time_from && slot.time_to)
+      .map(slot => {
+        const formattedDate = slot.date.split('-').reverse().join('.')
+        return {
+          date: parseToDate(formattedDate)!,
+          timeRange: {
+            from: slot.time_from,
+            to: slot.time_to
+          }
+        }
+      })
 
     return {
       name: boxData.name,
-      isActive: boxData.isActive,
-      date: formattedDate ? parseToDate(formattedDate) : undefined,
-      timeRange: {
-        from: boxData.startTime,
-        to: boxData.endTime
-      },
+      isActive: boxData.is_active_in_bot,
+      timeSlots: timeSlots.length > 0 ? timeSlots : [],
       location: boxData.location || '',
       description: boxData.description || '',
       rules: boxData.rules || '',
@@ -26,8 +33,12 @@ export const getFormValues = (action: ModalAction, boxData?: BoxData): BoxSoluti
   return {
     name: '',
     isActive: false,
-    date: undefined,
-    timeRange: undefined,
+    timeSlots: [
+      {
+        date: undefined,
+        timeRange: undefined
+      }
+    ],
     location: '',
     description: '',
     rules: '',
@@ -38,12 +49,18 @@ export const getFormValues = (action: ModalAction, boxData?: BoxData): BoxSoluti
 }
 
 export const mapFormDataToBoxData = (data: BoxSolutionFormData, imageBase64?: string): Omit<BoxData, 'id'> => {
+  const time_slots: TimeSlot[] = data.timeSlots
+    .filter(slot => slot.date && slot.timeRange?.from && slot.timeRange?.to)
+    .map(slot => ({
+      date: formatDateISO(slot.date) || '',
+      time_from: slot.timeRange?.from || '',
+      time_to: slot.timeRange?.to || ''
+    }))
+
   return {
     name: data.name,
-    isActive: data.isActive,
-    date: formatDateISO(data.date),
-    startTime: data.timeRange?.from,
-    endTime: data.timeRange?.to,
+    is_active_in_bot: data.isActive,
+    time_slots,
     location: data.location,
     description: data.description,
     rules: data.rules,
