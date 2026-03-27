@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { Controller, useForm, useWatch } from 'react-hook-form'
+import { Controller, useFieldArray, useForm, useWatch } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button, CalendarInput, Input, Modal, Switch, TimeRangeInput } from '@/components/ui'
 import { FormInput } from './ui'
@@ -20,6 +20,11 @@ export const BoxSolutionModal = ({ isOpen, onClose, action, boxData, onSave }: B
   } = useForm<BoxSolutionFormData>({
     defaultValues: getFormValues(action, boxData),
     resolver: zodResolver(boxSolutionSchema)
+  })
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'timeSlots'
   })
 
   const imageFileList = useWatch({
@@ -47,6 +52,16 @@ export const BoxSolutionModal = ({ isOpen, onClose, action, boxData, onSave }: B
     const formattedData = mapFormDataToBoxData(data, imageBase64)
     onSave(formattedData)
   }
+
+  const handleAddTimeSlot = () => {
+    append({
+      date: undefined,
+      timeRange: undefined
+    })
+  }
+
+  const displayFields = fields.length > 0 ? fields : [{ id: 'empty' }]
+  const hasMultipleSlots = fields.length > 1
 
   return (
     <Modal
@@ -79,67 +94,78 @@ export const BoxSolutionModal = ({ isOpen, onClose, action, boxData, onSave }: B
         </div>
 
         <div className="flex flex-col gap-[10px]">
-          <div className="flex items-start gap-y-[16px] gap-x-[12px]">
-            <FormInput
-              label="Дата"
-              labelClassName="flex-1"
-              input={
-                <Controller
-                  name="date"
-                  control={control}
-                  render={({ field }) => (
-                    <div className="flex flex-col gap-[3px]">
-                      <CalendarInput
-                        key={`date-${isOpen}`}
-                        variant="single"
-                        value={field.value}
-                        placeholder="Выберите дату"
-                        onChange={field.onChange}
-                        invalid={!!errors.date}
-                      />
-                      <span className="text-xxs text-text-error">{errors.date?.message}</span>
-                    </div>
-                  )}
-                />
-              }
-            />
+          {displayFields.map((field, index) => {
+            const dateLabel = hasMultipleSlots ? `День ${index + 1}` : 'Дата'
+            const timeLabel = hasMultipleSlots ? `Время ${index + 1}` : 'Время'
 
-            <FormInput
-              label="Время"
-              labelClassName="flex-1"
-              input={
-                <Controller
-                  name="timeRange"
-                  control={control}
-                  render={({ field }) => (
-                    <div className="flex flex-col gap-[3px]">
-                      <TimeRangeInput
-                        value={field.value}
-                        onChange={field.onChange}
-                        className="flex-1"
-                        invalid={!!errors.timeRange}
-                      />
-                      <span className="text-xxs text-text-error">{errors.timeRange?.message}</span>
-                    </div>
-                  )}
+            return (
+              <div key={field.id} className="flex items-start gap-y-[16px] gap-x-[12px]">
+                <FormInput
+                  label={dateLabel}
+                  labelClassName="flex-1"
+                  input={
+                    <Controller
+                      name={`timeSlots.${index}.date`}
+                      control={control}
+                      render={({ field }) => (
+                        <div className="flex flex-col gap-[3px]">
+                          <CalendarInput
+                            key={`date-${index}-${isOpen}`}
+                            variant="single"
+                            value={field.value}
+                            placeholder="Выберите дату"
+                            onChange={field.onChange}
+                            invalid={!!errors.timeSlots?.[index]?.date}
+                          />
+                          <span className="text-xxs text-text-error">{errors.timeSlots?.[index]?.date?.message}</span>
+                        </div>
+                      )}
+                    />
+                  }
                 />
-              }
-            />
 
-            <Button
-              size="icon-44"
-              type="button"
-              variant="secondary"
-              onClick={() => {}}
-              className="mt-[21px] border-(--input-border) hover:border-(--input-border-active)"
-            >
-              <div className="w-[16px] h-[1px] bg-black" />
-            </Button>
-          </div>
+                <FormInput
+                  label={timeLabel}
+                  labelClassName="flex-1"
+                  input={
+                    <Controller
+                      name={`timeSlots.${index}.timeRange`}
+                      control={control}
+                      render={({ field }) => (
+                        <div className="flex flex-col gap-[3px]">
+                          <TimeRangeInput
+                            value={field.value}
+                            onChange={field.onChange}
+                            className="flex-1"
+                            invalid={!!errors.timeSlots?.[index]?.timeRange}
+                          />
+                          <span className="text-xxs text-text-error">
+                            {errors.timeSlots?.[index]?.timeRange?.message}
+                          </span>
+                        </div>
+                      )}
+                    />
+                  }
+                />
+
+                {hasMultipleSlots && (
+                  <Button
+                    size="icon-44"
+                    type="button"
+                    variant="secondary"
+                    onClick={() => remove(index)}
+                    className="mt-[21px] border-(--input-border) hover:border-(--input-border-active)"
+                  >
+                    <div className="w-[16px] h-[1px] bg-black" />
+                  </Button>
+                )}
+              </div>
+            )
+          })}
 
           <Button
             type="button"
-            onClick={() => {}}
+            onClick={handleAddTimeSlot}
             variant="secondary"
             size="default"
             className={cn(

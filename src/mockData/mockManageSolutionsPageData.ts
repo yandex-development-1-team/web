@@ -12,10 +12,24 @@ export const mockBoxes: BoxData[] = [
   {
     id: 0,
     name: 'Экскурсия по русской живописи',
-    isActive: true,
-    date: '2024-03-15',
-    startTime: '10:00',
-    endTime: '12:00',
+    is_active_in_bot: true,
+    time_slots: [
+      {
+        date: '2024-03-15',
+        time_from: '10:00',
+        time_to: '12:00'
+      },
+      {
+        date: '2024-03-16',
+        time_from: '10:00',
+        time_to: '12:00'
+      },
+      {
+        date: '2024-03-17',
+        time_from: '10:00',
+        time_to: '12:00'
+      }
+    ],
     location: 'Государственная Третьяковская галерея (Лаврушинский переулок, дом 10)',
     description: 'Обзорная экскурсия по залам русской живописи XIX-XX веков',
     rules: 'Не трогать экспонаты, фотосъемка без вспышки',
@@ -25,10 +39,14 @@ export const mockBoxes: BoxData[] = [
   {
     id: 1,
     name: 'Искусство Древнего Египта',
-    isActive: true,
-    date: '2024-03-16',
-    startTime: '14:00',
-    endTime: '15:30',
+    is_active_in_bot: true,
+    time_slots: [
+      {
+        date: '2024-03-16',
+        time_from: '14:00',
+        time_to: '15:30'
+      }
+    ],
     location: 'Пушкинский музей (улица Волхонка, дом 12)',
     description: 'Знакомство с коллекцией древнеегипетского искусства',
     rules: 'Верхнюю одежду сдать в гардероб, большие сумки запрещены',
@@ -38,10 +56,14 @@ export const mockBoxes: BoxData[] = [
   {
     id: 2,
     name: 'Научное шоу "Чудеса физики"',
-    isActive: false,
-    date: '2024-03-17',
-    startTime: '11:00',
-    endTime: '12:30',
+    is_active_in_bot: false,
+    time_slots: [
+      {
+        date: '2024-03-17',
+        time_from: '11:00',
+        time_to: '12:30'
+      }
+    ],
     location: 'Экспериментаниум (Ленинградский проспект, дом 80, корпус 11)',
     description: 'Интерактивное научное шоу с экспериментами',
     rules: 'Дети до 12 лет только в сопровождении взрослых',
@@ -51,10 +73,19 @@ export const mockBoxes: BoxData[] = [
   {
     id: 3,
     name: 'Мастер-класс по керамике',
-    isActive: true,
-    date: '2024-03-18',
-    startTime: '16:00',
-    endTime: '18:00',
+    is_active_in_bot: true,
+    time_slots: [
+      {
+        date: '2024-03-18',
+        time_from: '16:00',
+        time_to: '18:00'
+      },
+      {
+        date: '2024-03-19',
+        time_from: '12:00',
+        time_to: '14:00'
+      }
+    ],
     location: 'Пушкинский музей (улица Волхонка, дом 12)',
     description: 'Создание керамических изделий своими руками',
     rules: 'Необходима предварительная запись, количество мест ограничено',

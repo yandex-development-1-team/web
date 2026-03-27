@@ -16,6 +16,11 @@ const isValidNumber = (val: string) => {
   return !isNaN(num) && trimmed !== '' && num >= 0
 }
 
+const timeSlotSchema = z.object({
+  date: z.date().optional(),
+  timeRange: z.custom<TimeRange>().optional()
+})
+
 export const boxSolutionSchema = z.object({
   name: trimmedString.refine(hasLetter, 'Должна быть хотя бы одна буква').refine(val => val.length >= 2, {
     message: 'Минимум 2 символа'
@@ -23,22 +28,30 @@ export const boxSolutionSchema = z.object({
 
   isActive: z.boolean(),
 
-  date: z
-    .date()
-    .optional()
-    .refine(val => val !== undefined, {
-      message: 'Выберите дату'
-    }),
+  timeSlots: z.array(timeSlotSchema).superRefine((slots, ctx) => {
+    slots.forEach((slot, index) => {
+      const hasDate = !!slot.date
+      const hasTime = !!slot.timeRange?.from || !!slot.timeRange?.to
 
-  timeRange: z
-    .custom<TimeRange>()
-    .optional()
-    .refine(val => val !== undefined, {
-      message: 'Выберите время'
+      if (!hasDate && !hasTime) return
+
+      if (!hasDate) {
+        ctx.addIssue({
+          code: 'custom',
+          message: 'Выберите дату',
+          path: [index, 'date']
+        })
+      }
+
+      if (!slot.timeRange?.from || !slot.timeRange?.to) {
+        ctx.addIssue({
+          code: 'custom',
+          message: 'Укажите время начала и окончания',
+          path: [index, 'timeRange']
+        })
+      }
     })
-    .refine(val => val?.from && val?.to, {
-      message: 'Укажите корректное время начала и окончания'
-    }),
+  }),
 
   location: trimmedString,
 
