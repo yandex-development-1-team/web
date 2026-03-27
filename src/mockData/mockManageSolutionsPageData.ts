@@ -16,10 +16,10 @@ export const mockBoxes: BoxData[] = [
     date: '2024-03-15',
     startTime: '10:00',
     endTime: '12:00',
-    location: 'gallery',
+    location: 'Государственная Третьяковская галерея (Лаврушинский переулок, дом 10)',
     description: 'Обзорная экскурсия по залам русской живописи XIX-XX веков',
     rules: 'Не трогать экспонаты, фотосъемка без вспышки',
-    cost: '800',
+    cost: 800,
     organizer: 'Екатерина Волкова'
   },
   {
@@ -29,10 +29,10 @@ export const mockBoxes: BoxData[] = [
     date: '2024-03-16',
     startTime: '14:00',
     endTime: '15:30',
-    location: 'museum',
+    location: 'Пушкинский музей (улица Волхонка, дом 12)',
     description: 'Знакомство с коллекцией древнеегипетского искусства',
     rules: 'Верхнюю одежду сдать в гардероб, большие сумки запрещены',
-    cost: '600',
+    cost: 600,
     organizer: 'Александр Соколов'
   },
   {
@@ -42,10 +42,10 @@ export const mockBoxes: BoxData[] = [
     date: '2024-03-17',
     startTime: '11:00',
     endTime: '12:30',
-    location: 'experiment',
+    location: 'Экспериментаниум (Ленинградский проспект, дом 80, корпус 11)',
     description: 'Интерактивное научное шоу с экспериментами',
     rules: 'Дети до 12 лет только в сопровождении взрослых',
-    cost: '1200',
+    cost: 1200,
     organizer: 'Дмитрий Новиков'
   },
   {
@@ -55,10 +55,10 @@ export const mockBoxes: BoxData[] = [
     date: '2024-03-18',
     startTime: '16:00',
     endTime: '18:00',
-    location: 'museum',
+    location: 'Пушкинский музей (улица Волхонка, дом 12)',
     description: 'Создание керамических изделий своими руками',
     rules: 'Необходима предварительная запись, количество мест ограничено',
-    cost: '1500',
+    cost: 1500,
     organizer: 'Ольга Морозова'
   }
 ]

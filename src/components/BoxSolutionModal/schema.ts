@@ -40,7 +40,7 @@ export const boxSolutionSchema = z.object({
       message: 'Укажите корректное время начала и окончания'
     }),
 
-  location: z.string(),
+  location: trimmedString,
 
   description: trimmedString,
 
