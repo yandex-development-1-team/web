@@ -18,7 +18,6 @@ export const Status: React.FC<StatusProps> = ({ status }) => {
       <p className={` px-[12px] py-[6px] rounded-[4px] max-w-[113px] text-xs font-medium ${statusStyles[status]}`}>
         {statusLabels[status]}
       </p>
-      <div></div>
     </div>
   )
 }
