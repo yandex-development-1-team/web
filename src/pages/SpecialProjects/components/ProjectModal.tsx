@@ -12,6 +12,19 @@ interface ProjectModalProps {
   project?: ProjectFormValues & { id?: string | number }
 }
 
+const prepareProjectFormData = (data: ProjectFormValues): FormData => {
+  const formData = new FormData()
+  formData.append('title', data.title)
+  formData.append('description', data.description)
+  formData.append('isActive', String(data.isActive))
+
+  if (data.image instanceof File) {
+    formData.append('image', data.image)
+  }
+
+  return formData
+}
+
 export const ProjectModal = ({ isOpen, onClose, project }: ProjectModalProps) => {
   const formRef = useRef<HTMLFormElement>(null)
   const queryClient = useQueryClient()
@@ -19,14 +32,7 @@ export const ProjectModal = ({ isOpen, onClose, project }: ProjectModalProps) =>
 
   const { mutate, isPending } = useMutation({
     mutationFn: async (data: ProjectFormValues) => {
-      const formData = new FormData()
-      formData.append('title', data.title)
-      formData.append('description', data.description)
-      formData.append('isActive', String(data.isActive))
-
-      if (data.image instanceof File) {
-        formData.append('image', data.image)
-      }
+      const formData = prepareProjectFormData(data)
 
       if (project?.id) {
         return api.put(`/special-projects/${project.id}`, formData)
