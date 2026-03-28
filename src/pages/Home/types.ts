@@ -22,6 +22,7 @@ export interface BookingRequest {
 }
 
 export interface FilterDropdownProps {
+  value: string
   className?: string
   onChange: (value: string) => void
 }

@@ -9,18 +9,16 @@ const options = [
   { value: 'done', label: 'Готово' }
 ]
 
-const FilterDropdown: React.FC<FilterDropdownProps> = ({ className, onChange }) => {
-  const [status, setStatus] = useState('all')
+const FilterDropdown: React.FC<FilterDropdownProps> = ({ className, onChange, value }) => {
   const [open, setOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
 
-  const handleSelect = (value: string) => {
-    setStatus(value)
-    onChange(value)
+  const selected = options.find(option => option.value === value)
+
+  const handleSelect = (val: string) => {
+    onChange(val)
     setOpen(false)
   }
-
-  const selected = options.find(option => option.value === status)
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {

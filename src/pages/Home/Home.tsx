@@ -78,6 +78,7 @@ const Home = () => {
           <div className="flex flex-col gap-[4px] mb-[19px]">
             <span className="text-xxs text-text-grey-dark">Фильтр</span>
             <FilterDropdown
+              value={statusFilter}
               onChange={setStatusFilter}
               className="text-text-grey-light text-small italic px-[6px] py-[12px] border border-grey-light rounded-[8px] pl-[12px] xl:min-w-[494px]  md:min-w-[320px] bg-white"
             />
