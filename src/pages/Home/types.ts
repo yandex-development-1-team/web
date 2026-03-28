@@ -8,7 +8,6 @@ export interface StatusProps {
 
 export interface InlineStatusProps {
   initialStatus: StatusType
-  onChange: (status: StatusType) => void
 }
 
 export interface BookingRequest {
@@ -23,6 +22,7 @@ export interface BookingRequest {
 }
 
 export interface FilterDropdownProps {
+  value: string
   className?: string
   onChange: (value: string) => void
 }
