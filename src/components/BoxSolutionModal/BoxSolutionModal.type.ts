@@ -7,7 +7,6 @@ export type ModalAction = 'create' | 'edit'
 export type BoxSolutionModalType = {
   isOpen: boolean
   onClose: () => void
-  action: ModalAction
   boxData?: BoxData
   onSave: (data: Partial<Omit<BoxData, 'id'>>) => void
 }

@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import { Controller, useFieldArray, useForm, useWatch } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button, CalendarInput, Input, Modal, Switch, TimeRangeInput } from '@/components/ui'
@@ -11,15 +10,14 @@ import { boxSolutionSchema } from './schema'
 import type { BoxSolutionFormData, BoxSolutionModalType } from './BoxSolutionModal.type'
 import type { BoxData } from '@/types/solutions'
 
-export const BoxSolutionModal = ({ isOpen, onClose, action, boxData, onSave }: BoxSolutionModalType) => {
+export const BoxSolutionModal = ({ isOpen, onClose, boxData, onSave }: BoxSolutionModalType) => {
   const {
     control,
     handleSubmit,
     register,
-    reset,
     formState: { errors, dirtyFields }
   } = useForm<BoxSolutionFormData>({
-    defaultValues: getFormValues(action, boxData),
+    defaultValues: getFormValues(boxData),
     resolver: zodResolver(boxSolutionSchema)
   })
 
@@ -36,11 +34,6 @@ export const BoxSolutionModal = ({ isOpen, onClose, action, boxData, onSave }: B
   const imagePreviewUrl =
     imageFileList && imageFileList.length > 0 ? URL.createObjectURL(imageFileList[0]) : boxData?.image
 
-  useEffect(() => {
-    const values = getFormValues(action, boxData)
-    reset(values, { keepDefaultValues: false })
-  }, [isOpen, action, boxData, reset])
-
   const onSubmit = async (data: BoxSolutionFormData) => {
     let imageBase64: string | undefined = undefined
 
@@ -52,9 +45,7 @@ export const BoxSolutionModal = ({ isOpen, onClose, action, boxData, onSave }: B
 
     const fullData: Omit<BoxData, 'id'> = mapFormDataToBoxData(data, imageBase64)
 
-    if (action === 'create') {
-      onSave(fullData)
-    } else if (action === 'edit') {
+    if (boxData) {
       const changed: Partial<Omit<BoxData, 'id'>> = {}
 
       if (dirtyFields.name) changed.name = fullData.name
@@ -68,6 +59,8 @@ export const BoxSolutionModal = ({ isOpen, onClose, action, boxData, onSave }: B
       if (dirtyFields.image && imageBase64) changed.image = imageBase64
 
       onSave(changed)
+    } else {
+      onSave(fullData)
     }
   }
 
@@ -85,7 +78,7 @@ export const BoxSolutionModal = ({ isOpen, onClose, action, boxData, onSave }: B
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title={`${action === 'create' ? 'Создать' : 'Редактировать'} коробочное решение`}
+      title={`${!boxData ? 'Создать' : 'Редактировать'} коробочное решение`}
       footer={
         <div className="flex justify-between w-full">
           <Button type="button" label="Отмена" variant="secondary" size="default" onClick={onClose} />
