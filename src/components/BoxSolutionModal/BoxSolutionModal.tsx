@@ -5,7 +5,7 @@ import { FormInput } from './ui'
 import { AddIcon } from '@/assets/icons'
 import { cn } from '@/lib/utils.clsx'
 import { fileToBase64 } from '@/lib/fileUtils/fileToBase64'
-import { getFormValues, mapFormDataToBoxData } from './helpers'
+import { FORM_TO_API_KEYS, getFormValues, mapFormDataToBoxData } from './helpers'
 import { boxSolutionSchema } from './schema'
 import type { BoxSolutionFormData, BoxSolutionModalType } from './BoxSolutionModal.type'
 import type { BoxData } from '@/types/solutions'
@@ -46,17 +46,19 @@ export const BoxSolutionModal = ({ isOpen, onClose, boxData, onSave }: BoxSoluti
     const fullData: Omit<BoxData, 'id'> = mapFormDataToBoxData(data, imageBase64)
 
     if (boxData) {
-      const changed: Partial<Omit<BoxData, 'id'>> = {}
+      const changed = Object.entries(dirtyFields).reduce(
+        (acc, [formKey, isDirty]) => {
+          const apiKey = FORM_TO_API_KEYS[formKey as keyof BoxSolutionFormData]
 
-      if (dirtyFields.name) changed.name = fullData.name
-      if (dirtyFields.isActive) changed.is_active_in_bot = fullData.is_active_in_bot
-      if (dirtyFields.timeSlots) changed.time_slots = fullData.time_slots
-      if (dirtyFields.location) changed.location = fullData.location
-      if (dirtyFields.description) changed.description = fullData.description
-      if (dirtyFields.rules) changed.rules = fullData.rules
-      if (dirtyFields.cost) changed.cost = fullData.cost
-      if (dirtyFields.organizer) changed.organizer = fullData.organizer
-      if (dirtyFields.image && imageBase64) changed.image = imageBase64
+          if (!apiKey || !isDirty) return acc
+
+          return {
+            ...acc,
+            [apiKey]: fullData[apiKey]
+          }
+        },
+        {} as Partial<Omit<BoxData, 'id'>>
+      )
 
       onSave(changed)
     } else {

@@ -2,6 +2,18 @@ import { formatDateISO, parseToDate } from '@/lib/utils.date'
 import type { BoxData, TimeSlot } from '@/types/solutions'
 import type { BoxSolutionFormData } from './BoxSolutionModal.type'
 
+export const FORM_TO_API_KEYS: Record<keyof BoxSolutionFormData, keyof Omit<BoxData, 'id'> | null> = {
+  name: 'name',
+  isActive: 'is_active_in_bot',
+  timeSlots: 'time_slots',
+  location: 'location',
+  description: 'description',
+  rules: 'rules',
+  cost: 'cost',
+  organizer: 'organizer',
+  image: 'image'
+} as const
+
 export const getFormValues = (boxData?: BoxData): BoxSolutionFormData => {
   if (boxData) {
     const timeSlots = boxData.time_slots
