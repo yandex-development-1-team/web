@@ -1,8 +1,8 @@
 import type { Column } from '@/components/ui/DataTable/DataTable.types'
-import type { BookingRequest, StatusType } from './types'
+import type { BookingRequest } from './types'
 import { InlineStatus } from './ui/EditableStatus'
 
-export const headerTableData = (onStatusChange: (id: number, status: StatusType) => void): Column<BookingRequest>[] => [
+export const headerTableData: Column<BookingRequest>[] = [
   {
     key: 'date',
     label: 'Дата заявки',
@@ -27,8 +27,6 @@ export const headerTableData = (onStatusChange: (id: number, status: StatusType)
   {
     key: 'status',
     label: 'Статус',
-    render: (_, row) => (
-      <InlineStatus initialStatus={row.status} onChange={newStatus => onStatusChange(row.id, newStatus)} />
-    )
+    render: (_, row) => <InlineStatus initialStatus={row.status} />
   }
 ]

@@ -8,7 +8,6 @@ export interface StatusProps {
 
 export interface InlineStatusProps {
   initialStatus: StatusType
-  onChange: (status: StatusType) => void
 }
 
 export interface BookingRequest {
