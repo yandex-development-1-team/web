@@ -1,9 +1,9 @@
 import type { SwitchProps } from './Switch.types'
 
-export const Switch = ({ onChange, checked = false, paleStyle = true, className }: SwitchProps) => {
-  const handleChange = () => {
-    onChange(!checked)
-  }
+export const Switch = ({ onChange, disabled = false, checked = false, paleStyle = true, className }: SwitchProps) => {
+  const disabledBg = 'bg-grey-extra-light opacity-60'
+  const disabledBorder = 'border-grey-light'
+  const disabledCursor = 'cursor-not-allowed'
 
   const switchBackgroundColorChecked = paleStyle ? 'bg-yellow-light' : 'bg-yellow-accent-light'
   const switchBackgroundColorUnchecked = paleStyle ? 'bg-white' : 'bg-grey-extra-light'
@@ -20,9 +20,13 @@ export const Switch = ({ onChange, checked = false, paleStyle = true, className 
   const thumbBorderColorChecked = 'border-white'
   const thumbBorderColorUnchecked = paleStyle ? 'border-white' : 'border-grey-extra-light'
 
+  const handleChange = () => {
+    if (!disabled) onChange(!checked)
+  }
+
   return (
     <>
-      <input type="checkbox" checked={checked} className="hidden" onChange={() => {}} />
+      <input type="checkbox" checked={checked} className="hidden" onChange={() => {}} disabled={disabled} />
       <div
         className={`
           w-[52px]
@@ -35,11 +39,12 @@ export const Switch = ({ onChange, checked = false, paleStyle = true, className 
           border-1
           outline-2
           outline-offset-[-2px]
-          cursor-pointer
+          ${disabled ? `${disabledBg} ${disabledBorder} ${disabledCursor}` : 'cursor-pointer'}
           ${
-            checked
+            !disabled &&
+            (checked
               ? `${switchBackgroundColorChecked} ${switchBorderColorChecked} ${switchOutlineColorChecked}`
-              : `${switchBackgroundColorUnchecked} ${switchBorderColorUnchecked} ${switchOutlineColorUnchecked}`
+              : `${switchBackgroundColorUnchecked} ${switchBorderColorUnchecked} ${switchOutlineColorUnchecked}`)
           }
           ${className}
         `}

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Button, Input } from '@/components/ui'
-import { Eye, EyeClose } from '@/assets/icons'
+import { EyeIcon, EyeCloseIcon } from '@/assets/icons'
 import { useModal } from '@/components/ui/Modal/useModal'
 import { RecoveryModal } from './ui/RecoveryModal'
 
@@ -74,7 +74,7 @@ export const LoginForm = () => {
             onClick={() => setShowPassword(s => !s)}
             className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer"
           >
-            {showPassword ? <Eye /> : <EyeClose />}
+            {showPassword ? <EyeIcon /> : <EyeCloseIcon />}
           </button>
         </div>
         <div className="text-xs">
@@ -93,7 +93,7 @@ export const LoginForm = () => {
         <Button
           type="submit"
           disabled={!!loginError || !!passwordError || !login || !password}
-          className="w-full min-h-[46px] bg-yellow-accent-light text-text text-button font-semibold rounded-[12px] py-[12px]"
+          className="w-full min-h-[46px] bg-yellow-accent-light text-text font-semibold rounded-[12px] py-[12px]"
         >
           Войти
         </Button>

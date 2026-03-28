@@ -42,13 +42,13 @@ const ManageSolutions = () => {
         <h4 className="text-h4sb text-text-black-dark pb-[18px]">Список коробок и спецпроектов</h4>
         <div className="grid grid-cols-2 gap-[20px]">
           <div className="flex flex-col gap-[20px]">
-            <BoxButton className="text-button" icon={'box'} onClick={handleBoxCreate}>
+            <BoxButton className="button-text" icon={'box'} onClick={handleBoxCreate}>
               Создать коробку
             </BoxButton>
             {mockBoxes.map(box => (
               <ManageButton
                 key={box.id}
-                text={box.name}
+                text={box.title}
                 onClick={() => handleBoxEdit(box.id)}
                 onDelete={() => handleBoxDelete(box.id)}
               />
@@ -56,13 +56,13 @@ const ManageSolutions = () => {
           </div>
 
           <div className="flex flex-col gap-[20px]">
-            <BoxButton className="text-button" icon={'special_projects'} onClick={handleProjectCreate}>
+            <BoxButton className="button-text" icon={'special_projects'} smallIcon onClick={handleProjectCreate}>
               Создать спецпроект
             </BoxButton>
             {mockProjects.map(project => (
               <ManageButton
                 key={project.id}
-                text={project.name}
+                text={project.title}
                 onClick={() => handleProjectEdit(project.id)}
                 onDelete={() => handleProjectDelete(project.id)}
               />
