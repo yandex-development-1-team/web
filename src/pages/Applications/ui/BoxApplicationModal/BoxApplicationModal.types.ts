@@ -4,6 +4,6 @@ export type BoxApplicationModalProps = {
   isOpen: boolean
   onClose: () => void
   onDelete: (id: string | number) => Promise<void>
-  onEdit: (id: string | number, newStatus: TApplicationStatus) => Promise<void>
+  onModify: (id: string | number, newStatus: TApplicationStatus) => Promise<void>
   data: IBoxApplication
 }

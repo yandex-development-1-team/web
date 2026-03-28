@@ -3,7 +3,7 @@ import { Button, Modal, DeleteModal, Select } from '@/components/ui'
 import type { BoxApplicationModalProps } from './BoxApplicationModal.types'
 import type { TApplicationStatus } from '@/types/applications'
 
-export const BoxApplicationModal = ({ isOpen, onClose, onDelete, onEdit, data }: BoxApplicationModalProps) => {
+export const BoxApplicationModal = ({ isOpen, onClose, onDelete, onModify, data }: BoxApplicationModalProps) => {
   const [boxApplicationToDelete, setBoxApplicationToDelete] = useState<string | number | null>(null)
   const [status, setStatus] = useState<TApplicationStatus>(data.processing.status)
 
@@ -14,7 +14,7 @@ export const BoxApplicationModal = ({ isOpen, onClose, onDelete, onEdit, data }:
 
   const handleSubmit = (e: React.SubmitEvent) => {
     e.preventDefault()
-    onEdit(data.id, status)
+    onModify(data.id, status)
     onClose()
   }
 
