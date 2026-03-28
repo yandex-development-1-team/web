@@ -121,14 +121,15 @@ const ManageSolutions = () => {
         </div>
       </div>
 
-      <BoxSolutionModal
-        key={`${modalAction}-${selectedBox?.id || 'new'}`}
-        isOpen={isCreateEditModalOpen}
-        onClose={closeCreateEditModal}
-        action={modalAction}
-        boxData={selectedBox}
-        onSave={handleBoxSave}
-      />
+      {isCreateEditModalOpen && (
+        <BoxSolutionModal
+          key={selectedBox?.id ?? 'create'}
+          isOpen={isCreateEditModalOpen}
+          onClose={closeCreateEditModal}
+          boxData={selectedBox}
+          onSave={handleBoxSave}
+        />
+      )}
 
       <DeleteModal
         isOpen={isDeleteModalOpen}

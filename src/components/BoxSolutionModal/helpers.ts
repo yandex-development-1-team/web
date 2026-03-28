@@ -1,9 +1,9 @@
 import { formatDateISO, parseToDate } from '@/lib/utils.date'
 import type { BoxData, TimeSlot } from '@/types/solutions'
-import type { BoxSolutionFormData, ModalAction } from './BoxSolutionModal.type'
+import type { BoxSolutionFormData } from './BoxSolutionModal.type'
 
-export const getFormValues = (action: ModalAction, boxData?: BoxData): BoxSolutionFormData => {
-  if (action === 'edit' && boxData) {
+export const getFormValues = (boxData?: BoxData): BoxSolutionFormData => {
+  if (boxData) {
     const timeSlots = boxData.time_slots
       .filter(slot => slot.date && slot.time_from && slot.time_to)
       .map(slot => {
