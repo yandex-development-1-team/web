@@ -8,10 +8,6 @@ export const Tabs = <T extends string = string>({
   className,
   ...props
 }: ITabsProps<T>) => {
-  const handleTabClick = (path: T) => {
-    onTabClick(path)
-  }
-
   if (!tabs.length) return null
 
   return (
@@ -38,7 +34,7 @@ export const Tabs = <T extends string = string>({
               'border-transparent border-b',
               activeTab === path && 'border-b-2 border-b-yellow-accent-dark'
             )}
-            onClick={() => handleTabClick(path)}
+            onClick={() => onTabClick(path)}
           >
             <div className={`w-6 h-6 shrink-0`}>
               <Icon className={`w-full h-full`} style={{ color: 'text-text-grey' }} />
