@@ -1,11 +1,11 @@
-import { paramsSchema, type IParams } from '../Pagination.types'
+import { ZodObject, type ZodRawShape } from 'zod'
 
-export const parseQueryParams = (searchParams: URLSearchParams): IParams => {
+export const parseQueryParams = <S extends ZodObject<ZodRawShape>>(searchParams: URLSearchParams, schema: S) => {
   const rawParams = Object.fromEntries(searchParams.entries())
 
-  const result = paramsSchema.safeParse(rawParams)
+  const result = schema.safeParse(rawParams)
 
-  if (!result.success) return paramsSchema.parse({})
+  if (!result.success) return schema.parse({})
 
   return result.data
 }

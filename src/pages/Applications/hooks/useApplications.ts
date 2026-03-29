@@ -1,15 +1,16 @@
 import { parseQueryParams } from '@/components/ui/Pagination'
 import { useQuery } from '@tanstack/react-query'
 import { useSearchParams } from 'react-router-dom'
-import { getApplications } from '../api/getApplications'
+import { applicationsParamsSchema, getApplications } from '../api/getApplications'
 
 export const useApplications = () => {
   const [searchParams] = useSearchParams()
-  const params = parseQueryParams(searchParams)
+
+  const params = parseQueryParams(searchParams, applicationsParamsSchema)
 
   const { data, isPending, isError, isLoading } = useQuery({
     queryKey: ['applications', params],
-    queryFn: meta => getApplications({ params }, meta),
+    queryFn: () => getApplications({ params }),
     placeholderData: prev => prev
   })
 

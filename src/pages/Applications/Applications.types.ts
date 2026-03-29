@@ -35,7 +35,7 @@ const STATUSES: ApplicationStatus[] = ['queue', 'in_progress', 'done']
 const TYPES: ApplicationType[] = ['box', 'special_project']
 const SOURCES: ApplicatonSource[] = ['telegram_bot', 'manual']
 
-export const mockApplications: ApplicationListItem[] = Array.from({ length: 120 }, (_, index) => {
+export const mockApplications: ApplicationListItem[] = Array.from({ length: 123 }, (_, index) => {
   const id = index + 1
   // Рандомная дата в пределах последних 30 дней
   const date = new Date()
