@@ -1,6 +1,6 @@
 import type { Column } from '@/components/ui/DataTable/DataTable.types'
 import { cn } from '@/lib/utils.clsx'
-import type { ApplicationListItem, ApplicationStatus, ApplicationType } from '@/pages/Applications/Applications.types'
+import type { ApplicationListItem, ApplicationStatus, ApplicationType } from '@/pages/Applications/applications.types'
 
 // Массив колонок для таблицы заявок
 export const applicationColumns: Column<ApplicationListItem>[] = [

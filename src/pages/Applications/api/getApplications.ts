@@ -1,6 +1,6 @@
 import type { IPagination } from '@/components/ui/Pagination/Pagination.types'
 import z from 'zod'
-import { mockApplications, type ApplicationListItem } from '../Applications.types'
+import { mockApplications, type ApplicationListItem } from '../applications.types'
 
 export const applicationsParamsSchema = z.object({
   status: z.enum(['queue', 'in_progress', 'done']).optional(),

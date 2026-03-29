@@ -5,9 +5,9 @@ import { Pagination } from '@/components/ui/Pagination'
 import { Tabs } from '@/components/ui/Tabs'
 import { useTabs } from '@/components/ui/Tabs/hooks/useTabs'
 import { applicationColumns } from '@/mockData/mockApplications'
-import { type ApplicationListItem } from './Applications.types'
+import { type ApplicationListItem } from './applications.types'
+import { TABS } from './applicationsTabs.config'
 import { useApplications } from './hooks/useApplications'
-import { TABS } from './mockData'
 
 const renderActions = (row: ApplicationListItem) => (
   <>

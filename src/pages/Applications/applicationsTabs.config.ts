@@ -14,4 +14,4 @@ export const TABS: ITab[] = [
     title: 'Спецпроекты',
     Icon: SpecialProjectsIcon
   }
-]
+] as const
