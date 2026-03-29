@@ -1,6 +1,7 @@
+import { useState } from 'react'
 import { Controller, useFieldArray, useForm, useWatch } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Button, CalendarInput, Input, Modal, Switch, TimeRangeInput } from '@/components/ui'
+import { Button, CalendarInput, ImageCropper, Input, Modal, Switch, TimeRangeInput } from '@/components/ui'
 import { FormInput } from './ui'
 import { AddIcon } from '@/assets/icons'
 import { cn } from '@/lib/utils.clsx'
@@ -15,6 +16,9 @@ export const BoxSolutionModal = ({ isOpen, onClose, boxData, onSave }: BoxSoluti
     control,
     handleSubmit,
     register,
+    setValue,
+    setError,
+    clearErrors,
     formState: { errors, dirtyFields }
   } = useForm<BoxSolutionFormData>({
     defaultValues: getFormValues(boxData),
@@ -31,10 +35,25 @@ export const BoxSolutionModal = ({ isOpen, onClose, boxData, onSave }: BoxSoluti
     name: 'image'
   })
 
-  const imagePreviewUrl =
-    imageFileList && imageFileList.length > 0 ? URL.createObjectURL(imageFileList[0]) : boxData?.image
+  const [cropImage, setCropImage] = useState<string | null>(null)
+  const [isCropping, setIsCropping] = useState(false)
+
+  const imagePreviewUrl = (() => {
+    if (imageFileList && imageFileList.length > 0) {
+      return URL.createObjectURL(imageFileList[0])
+    }
+    return boxData?.image || null
+  })()
 
   const onSubmit = async (data: BoxSolutionFormData) => {
+    if (isCropping) {
+      setError('root.croppingInProgress', {
+        type: 'manual',
+        message: 'Завершите обрезку изображения перед сохранением'
+      })
+      return
+    }
+
     let imageBase64: string | undefined = undefined
 
     if (data.image && data.image.length > 0) {
@@ -59,6 +78,10 @@ export const BoxSolutionModal = ({ isOpen, onClose, boxData, onSave }: BoxSoluti
         },
         {} as Partial<Omit<BoxData, 'id'>>
       )
+
+      if (data.image && data.image.length > 0 && !changed.image) {
+        changed.image = imageBase64
+      }
 
       onSave(changed)
     } else {
@@ -168,7 +191,8 @@ export const BoxSolutionModal = ({ isOpen, onClose, boxData, onSave }: BoxSoluti
                       type="button"
                       variant="secondary"
                       onClick={() => remove(index)}
-                      className="mt-[21px] border-(--input-border) hover:border-(--input-border-active)"
+                      className="mt-[21px] border-system-grey-light hover:bg-grey-extra-light 
+                        hover:border-system-grey-light active:border-system-grey-light"
                     >
                       <div className="w-[16px] h-[1px] bg-black" />
                     </Button>
@@ -236,7 +260,7 @@ export const BoxSolutionModal = ({ isOpen, onClose, boxData, onSave }: BoxSoluti
           <Controller
             name="image"
             control={control}
-            render={({ field: { onChange, ...field } }) => (
+            render={() => (
               <input
                 type="file"
                 id="image-upload"
@@ -244,30 +268,77 @@ export const BoxSolutionModal = ({ isOpen, onClose, boxData, onSave }: BoxSoluti
                 className="hidden"
                 onChange={e => {
                   if (e.target.files && e.target.files.length > 0) {
-                    onChange(e.target.files)
+                    const file = e.target.files[0]
+                    const url = URL.createObjectURL(file)
+
+                    setCropImage(url)
+                    setIsCropping(true)
+                    clearErrors('root.croppingInProgress')
+
+                    e.target.value = ''
                   }
                 }}
-                {...field}
-                value={undefined}
               />
             )}
           />
           <div
             className={cn(
-              'flex gap-[12px] items-center',
-              !imagePreviewUrl && `justify-center py-[23px] bg-grey-extra-light border border-grey-light rounded-[8px]`
+              'flex gap-[12px] items-stretch',
+              !isCropping &&
+                !cropImage &&
+                !imagePreviewUrl &&
+                `justify-center py-[23px] bg-grey-extra-light border border-grey-light rounded-[8px]`
             )}
           >
-            {imagePreviewUrl && (
-              <img src={imagePreviewUrl} alt="Preview" className="w-[296px] h-[141px] object-contain rounded-[8px]" />
+            {isCropping && cropImage ? (
+              <ImageCropper
+                image={cropImage}
+                aspect={296 / 141}
+                onCancel={() => {
+                  setIsCropping(false)
+                  setCropImage(null)
+                  clearErrors('root.croppingInProgress')
+                }}
+                onComplete={file => {
+                  const dataTransfer = new DataTransfer()
+                  dataTransfer.items.add(file)
+
+                  setValue('image', dataTransfer.files, {
+                    shouldDirty: true,
+                    shouldValidate: true
+                  })
+
+                  setIsCropping(false)
+                  setCropImage(null)
+                  clearErrors('root.croppingInProgress')
+                }}
+              />
+            ) : (
+              imagePreviewUrl && (
+                <img src={imagePreviewUrl} alt="Preview" className="w-[296px] h-[141px] object-contain rounded-[8px]" />
+              )
             )}
-            <div className="flex gap-[20px] items-center">
-              <Button size="icon-48" type="button" onClick={() => document.getElementById('image-upload')?.click()}>
+            <div
+              className={cn(
+                'flex gap-[20px] items-center',
+                (isCropping || imagePreviewUrl) && 'px-[12px] w-full border border-grey-light rounded-[8px]'
+              )}
+            >
+              <Button
+                size="icon-48"
+                type="button"
+                onClick={() => document.getElementById('image-upload')?.click()}
+                disabled={isCropping}
+              >
                 <AddIcon className="size-full" />
               </Button>
               <span className="text-xs">Загрузить изображение</span>
             </div>
           </div>
+
+          {errors.root?.croppingInProgress && (
+            <span className="text-xxs text-text-error">{errors.root.croppingInProgress.message}</span>
+          )}
         </div>
       </form>
     </Modal>

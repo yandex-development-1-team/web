@@ -36,7 +36,7 @@ export const getFormValues = (boxData?: BoxData): BoxSolutionFormData => {
       location: boxData.location || '',
       description: boxData.description || '',
       rules: boxData.rules || '',
-      cost: boxData.cost ? String(boxData.cost) : '',
+      cost: boxData.cost !== null && boxData.cost !== undefined ? String(boxData.cost) : '',
       organizer: boxData.organizer || '',
       image: null
     }
