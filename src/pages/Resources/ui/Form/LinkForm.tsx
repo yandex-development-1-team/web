@@ -87,7 +87,7 @@ export const LinkForm = ({ links, onAddLink, onRemoveLink }: LinkFormType) => {
                 to={link.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-button text-text pb-[2px] border-b 
+                className="button-text text-text pb-[2px] border-b 
                   border-yellow-accent-light 
                   hover:border-yellow-accent-dark
                   active:border-yellow-accent-dark active:border-b-[2px]"
