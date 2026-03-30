@@ -205,21 +205,12 @@ export const BoxSolutionModal = ({ isOpen, onClose, boxData, onSave }: BoxSoluti
           <Button
             type="button"
             onClick={handleAddTimeSlot}
-            variant="secondary"
+            variant="elevated"
             size="default"
-            className={cn(
-              'self-start px-[12px] border-none',
-              'shadow-[0px_1px_3px_0px_rgba(0,0,0,0.15),0px_1px_2px_0px_rgba(0,0,0,0.30)]',
-              'hover:shadow-[0px_6px_12px_0px_rgba(0,0,0,0.18),0px_3px_6px_0px_rgba(0,0,0,0.33)]',
-              'hover:-translate-y-px',
-              'active:shadow-[0px_1px_2px_0px_rgba(0,0,0,0.20),inset_0px_1px_2px_0px_rgba(0,0,0,0.15)]',
-              'active:translate-y-0',
-              'transition-all duration-200 ease-in-out'
-            )}
-          >
-            <AddIcon className="size-[24px] mr-[4px]" />
-            Добавить дату и время
-          </Button>
+            leftIcon={<AddIcon className="size-[24px] mr-[4px]" />}
+            className="self-start px-[12px]"
+            label="Добавить дату и время"
+          />
         </div>
 
         <div className="flex flex-col gap-[7px]">
@@ -283,7 +274,7 @@ export const BoxSolutionModal = ({ isOpen, onClose, boxData, onSave }: BoxSoluti
           />
           <div
             className={cn(
-              'flex gap-[12px] items-stretch',
+              'flex gap-[12px] items-start',
               !isCropping &&
                 !cropImage &&
                 !imagePreviewUrl &&
@@ -293,6 +284,8 @@ export const BoxSolutionModal = ({ isOpen, onClose, boxData, onSave }: BoxSoluti
             {isCropping && cropImage ? (
               <ImageCropper
                 image={cropImage}
+                containerWidth={296}
+                containerHeight={141}
                 aspect={296 / 141}
                 onCancel={() => {
                   setIsCropping(false)
@@ -321,7 +314,7 @@ export const BoxSolutionModal = ({ isOpen, onClose, boxData, onSave }: BoxSoluti
             <div
               className={cn(
                 'flex gap-[20px] items-center',
-                (isCropping || imagePreviewUrl) && 'px-[12px] w-full border border-grey-light rounded-[8px]'
+                (isCropping || imagePreviewUrl) && 'px-[12px] h-[141px] w-full border border-grey-light rounded-[8px]'
               )}
             >
               <Button

@@ -134,6 +134,19 @@ const secondaryDangerStyles = `
   disabled:text-text-grey-dark
 `
 
+const elevatedStyles = `
+  button-text
+  shadow-[0px_1px_3px_0px_rgba(0,0,0,0.15),0px_1px_2px_0px_rgba(0,0,0,0.30)]
+
+  hover:shadow-[0px_6px_12px_0px_rgba(0,0,0,0.18),0px_3px_6px_0px_rgba(0,0,0,0.33)]
+  hover:-translate-y-px
+
+  active:shadow-[0px_1px_2px_0px_rgba(0,0,0,0.20),inset_0px_1px_2px_0px_rgba(0,0,0,0.15)]
+  active:translate-y-0
+
+  transition-all duration-200 ease-in-out
+`
+
 export const buttonVariants = cva('', {
   variants: {
     variant: {
@@ -144,7 +157,8 @@ export const buttonVariants = cva('', {
       primary: `${baseStyles} ${primaryStyles}`,
       secondary: `${baseStyles} ${secondaryStyles}`,
       danger: `${baseStyles} ${dangerStyles}`,
-      secondaryDanger: `${baseStyles} ${secondaryDangerStyles}`
+      secondaryDanger: `${baseStyles} ${secondaryDangerStyles}`,
+      elevated: `${baseStyles} ${elevatedStyles}`
     },
     size: {
       default: 'h-[46px] px-8 py-3',
