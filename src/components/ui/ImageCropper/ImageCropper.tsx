@@ -2,15 +2,25 @@ import React, { useState, useRef } from 'react'
 import ReactCrop, { type Crop, centerCrop, makeAspectCrop, type PixelCrop } from 'react-image-crop'
 import 'react-image-crop/dist/ReactCrop.css'
 import { Button } from '@/components/ui'
+import { CheckIcon, CloseIcon } from '@/assets/icons'
 
-type Props = {
+type ImageCropperType = {
   image: string
+  containerWidth: number
+  containerHeight: number
   aspect?: number | null | undefined
   onComplete: (file: File) => void
   onCancel: () => void
 }
 
-export const ImageCropper = ({ image, aspect = null, onComplete, onCancel }: Props) => {
+export const ImageCropper = ({
+  image,
+  aspect = null,
+  containerWidth,
+  containerHeight,
+  onComplete,
+  onCancel
+}: ImageCropperType) => {
   const [crop, setCrop] = useState<Crop>()
   const [completedCrop, setCompletedCrop] = useState<PixelCrop>()
   const imgRef = useRef<HTMLImageElement>(null)
@@ -91,30 +101,37 @@ export const ImageCropper = ({ image, aspect = null, onComplete, onCancel }: Pro
 
   return (
     <div className="flex flex-col gap-3">
-      <ReactCrop
-        crop={crop}
-        onChange={c => setCrop(c)}
-        onComplete={c => setCompletedCrop(c)}
-        aspect={aspect && aspect !== null ? aspect : undefined}
-        ruleOfThirds={true}
+      <div
+        className={`w-[${containerWidth}px] h-[${containerHeight}px] 
+        border border-grey-light rounded-[8px] flex justify-center`}
       >
-        <img
-          ref={imgRef}
-          id="crop-image"
-          src={image}
-          onLoad={onImageLoad}
-          alt="Для обрезки"
-          style={{ maxWidth: '100%', maxHeight: '70vh' }}
-        />
-      </ReactCrop>
-
+        <ReactCrop
+          crop={crop}
+          onChange={c => setCrop(c)}
+          onComplete={c => setCompletedCrop(c)}
+          aspect={aspect && aspect !== null ? aspect : undefined}
+          className="[&>div]:h-full "
+        >
+          <img ref={imgRef} src={image} onLoad={onImageLoad} alt="Для обрезки" className="h-full object-contain" />
+        </ReactCrop>
+      </div>
       <div className="flex justify-between">
-        <Button type="button" variant="underline" onClick={onCancel} className="text-text no-underline">
-          Отмена
-        </Button>
-        <Button type="button" variant="underline" onClick={handleSave} className="text-text no-underline">
-          Готово
-        </Button>
+        <Button
+          type="button"
+          onClick={onCancel}
+          variant="elevated"
+          leftIcon={<CloseIcon className="size-[24px]" />}
+          className="self-start p-[8px] text-(length:--text-xs) font-normal"
+          label="Отмена"
+        />
+        <Button
+          type="button"
+          onClick={handleSave}
+          variant="elevated"
+          leftIcon={<CheckIcon className="size-[24px]" />}
+          className="self-start p-[8px] text-(length:--text-xs) font-normal"
+          label="Готово"
+        />
       </div>
     </div>
   )
