@@ -1,25 +1,27 @@
-import { Button } from '@/components/ui'
-import React, { useState, useRef, useCallback } from 'react'
+import React, { useState, useRef } from 'react'
 import ReactCrop, { type Crop, centerCrop, makeAspectCrop, type PixelCrop } from 'react-image-crop'
 import 'react-image-crop/dist/ReactCrop.css'
+import { Button } from '@/components/ui'
 
 type Props = {
   image: string
-  aspect?: number
+  aspect?: number | null | undefined
   onComplete: (file: File) => void
   onCancel: () => void
 }
 
-export const ImageCropper = ({ image, aspect = 296 / 141, onComplete, onCancel }: Props) => {
+export const ImageCropper = ({ image, aspect = null, onComplete, onCancel }: Props) => {
   const [crop, setCrop] = useState<Crop>()
   const [completedCrop, setCompletedCrop] = useState<PixelCrop>()
   const imgRef = useRef<HTMLImageElement>(null)
 
-  const onImageLoad = useCallback(
-    (e: React.SyntheticEvent<HTMLImageElement>) => {
-      const { width, height } = e.currentTarget
+  const onImageLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    const { width, height } = e.currentTarget
 
-      const initialCrop = centerCrop(
+    let initialCrop: Crop
+
+    if (aspect && aspect !== null) {
+      initialCrop = centerCrop(
         makeAspectCrop(
           {
             unit: '%',
@@ -32,15 +34,22 @@ export const ImageCropper = ({ image, aspect = 296 / 141, onComplete, onCancel }
         width,
         height
       )
+    } else {
+      initialCrop = {
+        unit: '%',
+        x: 5,
+        y: 5,
+        width: 90,
+        height: 90
+      }
+    }
 
-      setCrop(initialCrop)
-      setCompletedCrop({
-        ...initialCrop,
-        unit: 'px'
-      } as PixelCrop)
-    },
-    [aspect]
-  )
+    setCrop(initialCrop)
+    setCompletedCrop({
+      ...initialCrop,
+      unit: 'px'
+    } as PixelCrop)
+  }
 
   const handleSave = () => {
     const img = imgRef.current
@@ -86,7 +95,7 @@ export const ImageCropper = ({ image, aspect = 296 / 141, onComplete, onCancel }
         crop={crop}
         onChange={c => setCrop(c)}
         onComplete={c => setCompletedCrop(c)}
-        aspect={aspect}
+        aspect={aspect && aspect !== null ? aspect : undefined}
         ruleOfThirds={true}
       >
         <img
