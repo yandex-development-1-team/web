@@ -25,8 +25,10 @@ export const ScheduleCalendar = (props: TScheduleCalendar) => {
         return
       }
 
-      const filtered = events.filter(item =>
-        item.location?.toLocaleLowerCase().includes(debouncedSearch.toLocaleLowerCase())
+      const filtered = events.filter(
+        item =>
+          item.location?.toLocaleLowerCase().includes(debouncedSearch.toLocaleLowerCase()) ||
+          item?.box_name.toLocaleLowerCase().includes(debouncedSearch.toLocaleLowerCase())
       )
       setDataItem(filtered)
     }
@@ -90,12 +92,13 @@ export const ScheduleCalendar = (props: TScheduleCalendar) => {
             value={inputValue}
             onChange={handleChange}
             onBlur={handleBlur}
+            placeholder="Дата"
           />
           <Input
             variant="icon"
             icon={<SearchIcon className="size-4" />}
             value={inputSearch}
-            placeholder=""
+            placeholder="Поиск"
             onChange={e => {
               setInputSearch(e.target.value)
             }}

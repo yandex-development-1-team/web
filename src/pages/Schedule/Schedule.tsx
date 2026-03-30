@@ -1,10 +1,10 @@
-import { SORT_OPTIONS } from '@/pages/Schedule/config'
 import { useSchedule } from '@/pages/Schedule/hooks/useSchedule'
 import { ScheduleCalendar, ScheduleControl, ScheduleTable } from '@/pages/Schedule/ui'
 
 const Schedule = () => {
   const {
     toggle,
+    sortOptions,
     columnTable,
     columnCalendar,
     params,
@@ -27,7 +27,7 @@ const Schedule = () => {
       </div>
 
       <div className="bg-white text-text-black-dark p-[18px_20px] my-5 rounded-md">
-        <ScheduleControl options={SORT_OPTIONS} onSelect={handleSort} onToggle={handleToggle} />
+        <ScheduleControl options={sortOptions} onSelect={handleSort} onToggle={handleToggle} />
 
         <div className="mt-8">
           {toggle === 'left' ? (

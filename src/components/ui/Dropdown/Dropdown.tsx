@@ -2,7 +2,7 @@ import { BoxOperationIcon } from '@/assets/icons'
 import { Button } from '@/components/ui/Button'
 import { cn } from '@/lib/utils.clsx'
 import { DropdownMenu } from 'radix-ui'
-import React, { type ComponentProps } from 'react'
+import { type ComponentProps } from 'react'
 
 type IDropdownItem = {
   value: string
@@ -17,15 +17,7 @@ type IDropdown = {
 } & ComponentProps<typeof DropdownMenu.Root>
 
 export const Dropdown = ({ options, onSelect, className }: IDropdown) => {
-  const [optionsState, setOptionsState] = React.useState<IDropdownItem[]>(options)
-
   const handleSelect = (selectedItem: IDropdownItem) => {
-    setOptionsState(prev =>
-      prev.map(item => ({
-        ...item,
-        active: item.value === selectedItem.value
-      }))
-    )
     onSelect?.(selectedItem.value)
   }
   return (
@@ -47,7 +39,7 @@ export const Dropdown = ({ options, onSelect, className }: IDropdown) => {
           )}
           align="end"
         >
-          {optionsState.map(item => (
+          {options.map(item => (
             <DropdownMenu.Item
               key={item.value}
               className={cn(

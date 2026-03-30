@@ -1,3 +1,5 @@
+import type { TimeRange } from '@/lib/utils.time'
+
 export type TTableEvent = {
   id: number
   box_id: number
@@ -22,11 +24,6 @@ export type TEvent = {
   available_slots: number
   location: string
   status: string
-}
-
-export interface TimeRange {
-  from?: string
-  to?: string
 }
 
 export interface IEventsParams {

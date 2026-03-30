@@ -15,7 +15,12 @@ export const COLUMN_TABLE_CONFIG: Column<TTableEvent>[] = [
   { key: 'occupied_slots', label: 'Забронированные места', sortable: false }
 ]
 
-export const SORT_OPTIONS = [
+export const SORT_OPTIONS_TABLE = [
   { value: 'box_name', label: 'По названию', active: true },
   { value: 'time', label: 'По времени', active: false }
+]
+
+export const SORT_OPTIONS_CALENDAR = [
+  { value: 'box_name', label: 'По названию', active: true },
+  { value: 'location', label: 'По месту', active: false }
 ]
