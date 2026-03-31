@@ -16,6 +16,7 @@ export function DataTable<T extends Record<string, unknown>>(props: DataTablePro
     error = null,
     enableCheckboxes = false,
     onSelect,
+    onRowClick,
     pagination
   } = props
 
@@ -97,6 +98,7 @@ export function DataTable<T extends Record<string, unknown>>(props: DataTablePro
             selectedRows={selectedRows}
             onSelectRow={handleSelectRow}
             rowActions={rowActions}
+            onRowClick={onRowClick}
           />
         </table>
         {pagination}

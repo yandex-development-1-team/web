@@ -23,7 +23,7 @@ export interface DataTableProps<T extends Record<string, unknown>> {
   enableLoadMore?: boolean
   enableCheckboxes?: boolean
   pagination?: React.ReactElement<PaginationProps>
-
+  onRowClick?: (data: T) => void
   rowActions?: (row: T) => ReactNode
 
   idKey: keyof T

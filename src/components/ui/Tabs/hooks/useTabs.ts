@@ -11,13 +11,11 @@ export const useTabs = (tabs: ITab[]) => {
   }, [searchParams, tabs])
 
   const onTabClick = (path: ITab['path']) => {
-    const currentParams = Object.fromEntries(searchParams.entries())
-
-    setSearchParams({
-      ...currentParams,
+    setSearchParams(prev => ({
+      ...Object.fromEntries(prev.entries()),
       type: path,
       offset: '0'
-    })
+    }))
   }
 
   return {

@@ -1,8 +1,12 @@
 import type { Column } from '@/components/ui/DataTable/DataTable.types'
 import { cn } from '@/lib/utils.clsx'
-import type { ApplicationListItem, ApplicationStatus, ApplicationType } from '@/pages/Applications/applications.types'
+import type { ApplicationListItem, ApplicationStatus } from '@/pages/Applications/applications.types'
 
-// Массив колонок для таблицы заявок
+const manager: Record<'777' | '555', string> = {
+  '777': 'Анастасия',
+  '555': 'Ольга'
+}
+
 export const applicationColumns: Column<ApplicationListItem>[] = [
   {
     key: 'id',
@@ -48,13 +52,7 @@ export const applicationColumns: Column<ApplicationListItem>[] = [
         }
       }
       const { title, styles } = labels[value as ApplicationStatus]
-      // const options = Object.entries(labels).map(([key, item]) => ({
-      //   value: key,
-      //   label: item.title
-      // }))
-      // const classNames = {
-      //   trigger: styles + ' border-0'
-      // }
+
       return (
         <span className={cn(' flex justify-center items-center w-full h-7 rounded-sm', styles)}>{title}</span>
         // <Select key={value} value={value?.toString()} options={options} placeholder={title} classNames={classNames} />
@@ -62,14 +60,21 @@ export const applicationColumns: Column<ApplicationListItem>[] = [
     }
   },
   {
-    key: 'type',
-    label: 'Тип',
+    key: 'created_by',
+    label: 'Менеджер',
     render: value => {
-      const labels: Record<ApplicationType, string> = {
-        box: 'Коробка',
-        special_project: 'Спецпроект'
-      }
-      return labels[value as ApplicationType]
+      return manager[value.toString() as keyof typeof manager]
     }
   }
+  // {
+  //   key: 'type',
+  //   label: 'Тип',
+  //   render: value => {
+  //     const labels: Record<ApplicationType, string> = {
+  //       box: 'Коробка',
+  //       special_project: 'Спецпроект'
+  //     }
+  //     return labels[value as ApplicationType]
+  //   }
+  // }
 ]
