@@ -42,11 +42,15 @@ export const Modal = ({
     if (isOpen) {
       window.addEventListener('keydown', handleEsc)
       document.body.style.overflow = 'hidden'
+      if (document.body.scrollHeight > window.innerHeight + 1) {
+        document.body.style.marginRight = '8px'
+      }
     }
 
     return () => {
       window.removeEventListener('keydown', handleEsc)
       document.body.style.overflow = ''
+      document.body.style.marginRight = ''
     }
   }, [isOpen, onClose])
 

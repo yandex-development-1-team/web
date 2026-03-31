@@ -48,7 +48,7 @@ const ManageSolutions = () => {
             {mockBoxes.map(box => (
               <ManageButton
                 key={box.id}
-                text={box.name}
+                text={box.title}
                 onClick={() => handleBoxEdit(box.id)}
                 onDelete={() => handleBoxDelete(box.id)}
               />
@@ -62,7 +62,7 @@ const ManageSolutions = () => {
             {mockProjects.map(project => (
               <ManageButton
                 key={project.id}
-                text={project.name}
+                text={project.title}
                 onClick={() => handleProjectEdit(project.id)}
                 onDelete={() => handleProjectDelete(project.id)}
               />
