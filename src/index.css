@@ -135,6 +135,7 @@
   --color-text-grey-medium: var(--color-grey-medium);
   --color-text-error: var(--color-red-dark);
   --color-text-red-dark: var(--color-red-dark);
+  --color-text-red-medium: var(--color-red-medium);
 
   /* System colors */
   --color-system-grey-light: var(--color-grey-light);
@@ -267,4 +268,9 @@ input,
 textarea,
 select {
   font-family: var(--font-display);
+}
+
+@utility button-text {
+  font-size: var(--text-button);
+  font-weight: var(--text-button--font-weight);
 }
