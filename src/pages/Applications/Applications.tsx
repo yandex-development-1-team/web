@@ -13,7 +13,7 @@ const Applications = () => {
 
   const handleDelete = async (id: string | number) => void id
 
-  const handleEdit = async (id: string | number, status: TApplicationStatus) => {
+  const handleModify = async (id: string | number, status: TApplicationStatus) => {
     mockBoxApplicationData.processing.status = status
     return void { id, status }
   }
@@ -33,7 +33,7 @@ const Applications = () => {
         isOpen={isOpenBoxApplicationModal}
         onClose={closeBoxApplicationModal}
         onDelete={handleDelete}
-        onEdit={handleEdit}
+        onModify={handleModify}
         data={mockBoxApplicationData}
       />
     </>

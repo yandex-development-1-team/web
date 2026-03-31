@@ -1,18 +1,20 @@
-import { api } from '@/app/providers/axios'
-import type { IParams } from '@/components/ui/Pagination/Pagination.types'
 import { MOCK_BOXES } from '@/mockData/mock_box_solutions'
-import type { IBox, IPagination } from '../BoxSolutions.types'
+import type { BoxSolutionsSearchParamsType, IBox, IPagination } from '../BoxSolutions.types'
 
-type BoxesPesponseType = {
+type BoxesSolutionsResponseType = {
   items: IBox[]
   pagination: IPagination
 }
 
-export const getBoxes = async ({ params }: { params: IParams }, { signal }: { signal: AbortSignal }) => {
-  const response = await api.get<BoxesPesponseType>(`/boxes`, { params, signal })
-  if (!response.data) throw new Error('Faild to get box solutions')
+export const getBoxes = async (
+  { params }: { params: BoxSolutionsSearchParamsType },
+  { signal }: { signal: AbortSignal }
+) => {
+  // const response = await api.get<BoxesPesponseType>(`/boxes`, { params, signal })
+  // if (!response.data) throw new Error('Faild to get box solutions')
 
   //Имитация пагинации на беке
+  void signal
   const limit = Number(params.limit)
   const offset = Number(params.offset)
   const total = MOCK_BOXES.length
@@ -26,6 +28,6 @@ export const getBoxes = async ({ params }: { params: IParams }, { signal }: { si
       offset,
       total
     }
-  } as BoxesPesponseType
+  } as BoxesSolutionsResponseType
   //   return result.data
 }

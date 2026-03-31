@@ -56,7 +56,7 @@ const ManageSolutions = () => {
           </div>
 
           <div className="flex flex-col gap-[20px]">
-            <BoxButton className="button-text" icon={'special_projects'} smallIcon onClick={handleProjectCreate}>
+            <BoxButton className="button-text" icon={'special_projects'} onClick={handleProjectCreate}>
               Создать спецпроект
             </BoxButton>
             {mockProjects.map(project => (
