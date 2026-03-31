@@ -93,7 +93,7 @@ export const LoginForm = () => {
         <Button
           type="submit"
           disabled={!!loginError || !!passwordError || !login || !password}
-          className="w-full min-h-[46px] bg-yellow-accent-light text-text text-button font-semibold rounded-[12px] py-[12px]"
+          className="w-full min-h-[46px] bg-yellow-accent-light text-text font-semibold rounded-[12px] py-[12px]"
         >
           Войти
         </Button>

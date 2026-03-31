@@ -56,6 +56,9 @@
   --text-indicator: 60px;
   --text-indicator--font-weight: 700;
 
+  --text-indicator-st: 48px;
+  --text-indicator-st--font-weight: 700;
+
   --text-h2: 32px;
   --text-h2--font-weight: 700;
 
@@ -132,6 +135,7 @@
   --color-text-grey-medium: var(--color-grey-medium);
   --color-text-error: var(--color-red-dark);
   --color-text-red-dark: var(--color-red-dark);
+  --color-text-red-medium: var(--color-red-medium);
 
   /* System colors */
   --color-system-grey-light: var(--color-grey-light);
@@ -265,4 +269,9 @@ input,
 textarea,
 select {
   font-family: var(--font-display);
+}
+
+@utility button-text {
+  font-size: var(--text-button);
+  font-weight: var(--text-button--font-weight);
 }
