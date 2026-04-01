@@ -35,7 +35,7 @@ export const MOCK_CHART = {
     },
     {
       id: 4,
-      name: '2025-03-01-2025-03-05',
+      name: '2023-03-01-2023-03-05',
       data: [
         { date: '2025-03-01', visitors: 425 },
         { date: '2025-03-02', visitors: 457 },

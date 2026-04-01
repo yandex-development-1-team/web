@@ -5,11 +5,9 @@ import React, { useMemo } from 'react'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine } from 'recharts'
 
 export const Chart: React.FC<ChartProps> = ({ data, height = 400, label = 'Динамика посещаемости', colors }) => {
-  const chartData = useMemo(() => transformChartData(data!), [data])
+  const chartData = useMemo(() => transformChartData(data), [data])
 
   const periodColors = useMemo(() => {
-    if (!data?.periods) return {}
-
     return data.periods.reduce(
       (acc, period, index) => {
         acc[period.id] = generateRandomColor(index, colors)
@@ -20,10 +18,6 @@ export const Chart: React.FC<ChartProps> = ({ data, height = 400, label = 'Ди�
   }, [data, colors])
 
   const maxDay = chartData[chartData.length - 1]?.day || 0
-
-  if (!data?.periods?.length) {
-    return <div className="text-center py-12.5">Нет данных для отображения</div>
-  }
 
   return (
     <ResponsiveContainer width="100%" height={height}>
