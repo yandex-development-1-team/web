@@ -19,6 +19,10 @@ export const Chart: React.FC<ChartProps> = ({ data, height = 400, label = 'Ди�
 
   const maxDay = chartData[chartData.length - 1]?.day || 0
 
+  if (!data.periods.length) {
+    return <div className="text-center py-12.5">Нет данных для отображения</div>
+  }
+
   return (
     <ResponsiveContainer width="100%" height={height}>
       <LineChart data={chartData} accessibilityLayer={false}>
