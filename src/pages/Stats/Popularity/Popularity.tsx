@@ -1,7 +1,7 @@
 import { DownloadIcon, ArrowsUpDownIcon } from '@/assets/icons'
 import { Button, CalendarInput } from '@/components/ui'
 import { useMemo, useState, useCallback } from 'react'
-import { Funnel } from '@/components/Funnel'
+import { Funnel } from './ui/Funnel'
 import { downloadBlob } from '@/lib/utils.blob'
 import { useBoxesData, useExportData } from '@/hooks/usePopularityAnalytics'
 import { formatDateISO } from '@/lib/utils.date'

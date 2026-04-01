@@ -37,7 +37,7 @@ export const ManageButton = ({ onClick, onEdit, onDelete, text, className }: Man
       `}
     >
       <BoxesIcon className="w-[60px] mr-[12px]" />
-      <span className="flex-1 text-left text-text text-button">{text}</span>
+      <span className="flex-1 text-left text-text button-text">{text}</span>
       <div onClick={handleEdit} className={buttonClasses}>
         <EditIcon className="w-[24px]" />
       </div>

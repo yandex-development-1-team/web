@@ -1,4 +1,4 @@
-import type { IFunnel } from '@/components/Funnel/Funnel.typs'
+import type { IFunnel } from './Funnel.types'
 import { cn } from '@/lib/utils.clsx'
 import { useMemo } from 'react'
 
