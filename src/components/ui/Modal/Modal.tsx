@@ -74,7 +74,7 @@ export const Modal = ({
     >
       <div
         className={`
-          flex max-h-[90vh] w-full max-w-157 flex-col rounded-xl bg-white font-display shadow-lg
+          flex max-h-[90vh] w-full max-w-[651px] flex-col rounded-xl bg-white font-display shadow-lg
           ${isOpen ? 'animate-modal-in' : 'animate-modal-out pointer-events-none'}
           ${className}
         `}
@@ -89,7 +89,7 @@ export const Modal = ({
 
           <Button
             variant="ghost"
-            size="icon-32"
+            size="icon-48"
             onClick={onClose}
             aria-label="Закрыть модальное окно"
             className="text-text-grey-dark hover:text-text-grey-light active:text-text"
@@ -98,7 +98,7 @@ export const Modal = ({
           </Button>
         </header>
 
-        <div className="flex-1 overflow-y-auto p-6 text-text">{children}</div>
+        <div className="flex-1 overflow-y-auto px-[24px] py-[19px] text-text">{children}</div>
 
         {footer && (
           <footer
