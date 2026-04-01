@@ -9,12 +9,8 @@ export const roles: IRole[] = [
   { id: 4, name: 'Менеджер 3 звена', description: 'Ограниченный доступ', accessType: 'limited' }
 ]
 
-export const genderOptions = [
-  { value: 'male', label: 'Мужской' },
-  { value: 'female', label: 'Женский' }
-]
-
-export const citizenshipOptions = [
-  { value: 'РФ', label: 'РФ' },
-  { value: 'Другое', label: 'Другое' }
+export const chief = [
+  { id: 1, name: 'Петров П.П.' },
+  { id: 2, name: 'Иванов И.И.' },
+  { id: 3, name: 'Иванов И.И.' }
 ]
