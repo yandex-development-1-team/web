@@ -98,7 +98,7 @@ const ManageSolutions = () => {
             {boxes.map(box => (
               <ManageButton
                 key={box.id}
-                text={box.name}
+                text={box.title}
                 onClick={() => handleBoxEdit(box.id)}
                 onDelete={() => handleBoxDeleteClick(box.id)}
               />
