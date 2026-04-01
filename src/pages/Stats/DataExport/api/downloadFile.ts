@@ -1,4 +1,5 @@
 import { api } from '@/app/providers/axios'
+import { API_ROUTES } from '@/services/api/routes'
 
 export const downloadFile = async ({
   id,
@@ -9,7 +10,7 @@ export const downloadFile = async ({
   signal: AbortSignal
   onProgress: (percent: number) => void
 }) => {
-  const response = await api.get<Blob>(`/export/${id}`, {
+  const response = await api.get<Blob>(API_ROUTES.export.byId(id), {
     signal,
     responseType: 'blob',
     onDownloadProgress: progressEvent => {
