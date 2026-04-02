@@ -1,9 +1,6 @@
 import { MessageIcon, PhoneIcon, VideoIcon } from '@/assets/icons'
 import type { FC, SVGProps } from 'react'
 
-import mockPhoto from '@/mockData/mock_photo.jpg'
-import type { IEmployee } from '@/pages/Employees/employees.types'
-
 type TContactAction = {
   id: string
   label: string
@@ -39,90 +36,3 @@ export const MOCK_ACTIONS: TContactAction[] = [
     onClick: () => console.log('Video')
   }
 ] as const
-
-export const EMPLOYEES: IEmployee[] = [
-  {
-    id: 0,
-    avatar: mockPhoto,
-    personal_info: {
-      last_name: 'Иванов',
-      first_name: 'Петр',
-      middle_name: 'Сергеевич'
-    },
-    contacts: {
-      phone: '+7 (900) 111-22-33',
-      email: 'admin@company.ru',
-      telegram_nick: '@system_boss'
-    },
-    job_info: {
-      department: 'IT-департамент',
-      position: 'Системный администратор',
-      role: 'Администратор',
-      chief: {
-        first_name: 'Сергей',
-        last_name: 'Гаврилов',
-        middle_name: 'Михайлович'
-      }
-    },
-    access_level: 'Полный доступ',
-    status: 'active',
-    created_at: '2023-01-10T08:00:00Z',
-    updated_at: '2024-01-15T12:30:00Z'
-  },
-  {
-    id: 1,
-    avatar: mockPhoto,
-    personal_info: {
-      last_name: 'Кузнецова',
-      first_name: 'Елена',
-      middle_name: 'Викторовна'
-    },
-    contacts: {
-      phone: '+7 (999) 444-55-66',
-      email: 'kuznetsova.e@company.ru',
-      telegram_nick: '@system_boss'
-    },
-    job_info: {
-      department: 'Отдел продаж',
-      position: 'Руководитель группы',
-      role: 'Менеджер 2 звена',
-      chief: {
-        first_name: 'Сергей',
-        last_name: 'Гаврилов',
-        middle_name: 'Михайлович'
-      }
-    },
-    access_level: 'Ограниченный доступ',
-    status: 'inactive',
-    created_at: '2023-06-20T10:15:00Z',
-    updated_at: '2023-12-01T09:00:00Z'
-  },
-  {
-    id: 2,
-    avatar: mockPhoto,
-    personal_info: {
-      last_name: 'Лебедев',
-      first_name: 'Дмитрий',
-      middle_name: 'Александрович'
-    },
-    contacts: {
-      phone: '+7 (911) 000-88-99',
-      email: 'lebedev.d@company.ru',
-      telegram_nick: '@dmitry_fresh'
-    },
-    job_info: {
-      department: 'Клиентский сервис',
-      position: 'Младший менеджер',
-      role: 'Менеджер 1 звена',
-      chief: {
-        first_name: 'Сергей',
-        last_name: 'Гаврилов',
-        middle_name: 'Михайлович'
-      }
-    },
-    access_level: 'Ограниченный доступ',
-    status: 'inactive',
-    created_at: '2024-02-01T09:00:00Z',
-    updated_at: '2024-02-01T09:00:00Z'
-  }
-]
