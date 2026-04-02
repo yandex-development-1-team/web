@@ -18,6 +18,9 @@ export {
   SelectTrigger,
   SelectValue
 } from './Select'
+
+export { DataTable } from './DataTable'
 export { Switch } from './Switch'
 export { Textarea } from './Textarea'
+export { TimeRangeInput } from './TimeRangeInput'
 export { ToggleButton } from './ToggleButton'
