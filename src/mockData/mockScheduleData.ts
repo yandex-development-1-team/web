@@ -1,0 +1,754 @@
+import type { TEvent } from '@/types/schedule.types'
+
+export const events: TEvent[] = [
+  {
+    id: 1,
+    box_id: 1,
+    box_name: 'Концерт "Вечер джаза"',
+    date: '15.01.2024',
+    time: {
+      from: '18:30',
+      to: '20:00'
+    },
+    total_slots: 100,
+    occupied_slots: 75,
+    available_slots: 25,
+    location: 'ДК Железнодорожников',
+    status: 'active'
+  },
+  {
+    id: 2,
+    box_id: 2,
+    box_name: 'Лекция "История искусств"',
+    date: '15.01.2024',
+    time: {
+      from: '19:00',
+      to: '21:00'
+    },
+    total_slots: 50,
+    occupied_slots: 28,
+    available_slots: 22,
+    location: 'Библиотека им. Ленина',
+    status: 'active'
+  },
+  {
+    id: 3,
+    box_id: 1,
+    box_name: 'Кинопоказ: "Сталкер"',
+    date: '15.01.2024',
+    time: {
+      from: '20:00',
+      to: '22:30'
+    },
+    total_slots: 80,
+    occupied_slots: 45,
+    available_slots: 35,
+    location: 'Кинотеатр "Победа"',
+    status: 'active'
+  },
+  {
+    id: 4,
+    box_id: 3,
+    box_name: 'Мастер-класс для детей',
+    date: '15.01.2024',
+    time: {
+      from: '17:00',
+      to: '18:30'
+    },
+    total_slots: 20,
+    occupied_slots: 12,
+    available_slots: 8,
+    location: 'Детский центр "Радуга"',
+    status: 'active'
+  },
+  {
+    id: 5,
+    box_id: 4,
+    box_name: 'Stand-up вечер',
+    date: '15.01.2024',
+    time: {
+      from: '21:30',
+      to: '23:00'
+    },
+    total_slots: 60,
+    occupied_slots: 60,
+    available_slots: 0,
+    location: 'Comedy Club',
+    status: 'filled'
+  },
+  {
+    id: 6,
+    box_id: 5,
+    box_name: 'Утренняя йога',
+    date: '16.01.2024',
+    time: {
+      from: '10:00',
+      to: '11:30'
+    },
+    total_slots: 25,
+    occupied_slots: 8,
+    available_slots: 17,
+    location: 'Фитнес-центр "Energy"',
+    status: 'active'
+  },
+  {
+    id: 7,
+    box_id: 6,
+    box_name: 'Экскурсия по городу',
+    date: '16.01.2024',
+    time: {
+      from: '14:00',
+      to: '16:00'
+    },
+    total_slots: 15,
+    occupied_slots: 15,
+    available_slots: 0,
+    location: 'Центральная площадь',
+    status: 'filled'
+  },
+  {
+    id: 8,
+    box_id: 7,
+    box_name: 'Кулинарный мастер-класс',
+    date: '16.01.2024',
+    time: {
+      from: '16:30',
+      to: '18:30'
+    },
+    total_slots: 12,
+    occupied_slots: 9,
+    available_slots: 3,
+    location: 'Кулинарная студия',
+    status: 'active'
+  },
+  {
+    id: 9,
+    box_id: 8,
+    box_name: 'Поэтический вечер',
+    date: '16.01.2024',
+    time: {
+      from: '18:00',
+      to: '20:00'
+    },
+    total_slots: 40,
+    occupied_slots: 22,
+    available_slots: 18,
+    location: 'Кафе "Высоцкий"',
+    status: 'active'
+  },
+  {
+    id: 10,
+    box_id: 9,
+    box_name: 'Спектакль "Гроза"',
+    date: '16.01.2024',
+    time: {
+      from: '19:30',
+      to: '22:00'
+    },
+    total_slots: 150,
+    occupied_slots: 98,
+    available_slots: 52,
+    location: 'Театр юного зрителя',
+    status: 'active'
+  },
+  {
+    id: 11,
+    box_id: 10,
+    box_name: 'Рок-концерт',
+    date: '16.01.2024',
+    time: {
+      from: '20:00',
+      to: '23:00'
+    },
+    total_slots: 300,
+    occupied_slots: 245,
+    available_slots: 55,
+    location: 'Клуб "Подземка"',
+    status: 'active'
+  },
+  {
+    id: 12,
+    box_id: 11,
+    box_name: 'Ночная дискотека',
+    date: '16.01.2024',
+    time: {
+      from: '22:00',
+      to: '03:00'
+    },
+    total_slots: 200,
+    occupied_slots: 178,
+    available_slots: 22,
+    location: 'Ночной клуб "Cosmo"',
+    status: 'active'
+  },
+  {
+    id: 13,
+    box_id: 12,
+    box_name: 'Мастер-класс по фотографии',
+    date: '17.01.2024',
+    time: {
+      from: '11:00',
+      to: '13:30'
+    },
+    total_slots: 30,
+    occupied_slots: 30,
+    available_slots: 0,
+    location: 'Арт-пространство "Этажи"',
+    status: 'filled'
+  },
+  {
+    id: 14,
+    box_id: 13,
+    box_name: 'Лекция по психологии',
+    date: '17.01.2024',
+    time: {
+      from: '15:00',
+      to: '17:00'
+    },
+    total_slots: 45,
+    occupied_slots: 17,
+    available_slots: 28,
+    location: 'Образовательный центр',
+    status: 'active'
+  },
+  {
+    id: 15,
+    box_id: 14,
+    box_name: 'Детский спектакль',
+    date: '17.01.2024',
+    time: {
+      from: '17:30',
+      to: '19:00'
+    },
+    total_slots: 80,
+    occupied_slots: 65,
+    available_slots: 15,
+    location: 'Театр кукол',
+    status: 'active'
+  },
+  {
+    id: 16,
+    box_id: 15,
+    box_name: 'Джазовый концерт',
+    date: '17.01.2024',
+    time: {
+      from: '20:00',
+      to: '22:00'
+    },
+    total_slots: 120,
+    occupied_slots: 89,
+    available_slots: 31,
+    location: 'Филармония',
+    status: 'active'
+  },
+  {
+    id: 17,
+    box_id: 16,
+    box_name: 'Занятие по рисованию',
+    date: '18.01.2024',
+    time: {
+      from: '10:30',
+      to: '12:30'
+    },
+    total_slots: 15,
+    occupied_slots: 6,
+    available_slots: 9,
+    location: 'Художественная школа',
+    status: 'active'
+  },
+  {
+    id: 18,
+    box_id: 17,
+    box_name: 'Обед с шеф-поваром',
+    date: '18.01.2024',
+    time: {
+      from: '13:00',
+      to: '15:00'
+    },
+    total_slots: 20,
+    occupied_slots: 20,
+    available_slots: 0,
+    location: 'Ресторан "La Vue"',
+    status: 'filled'
+  },
+  {
+    id: 19,
+    box_id: 18,
+    box_name: 'Турнир по шахматам',
+    date: '18.01.2024',
+    time: {
+      from: '15:00',
+      to: '18:00'
+    },
+    total_slots: 32,
+    occupied_slots: 28,
+    available_slots: 4,
+    location: 'Шахматный клуб',
+    status: 'active'
+  },
+  {
+    id: 20,
+    box_id: 19,
+    box_name: 'Презентация книги',
+    date: '18.01.2024',
+    time: {
+      from: '17:00',
+      to: '18:30'
+    },
+    total_slots: 50,
+    occupied_slots: 31,
+    available_slots: 19,
+    location: 'Книжный магазин',
+    status: 'active'
+  },
+  {
+    id: 21,
+    box_id: 20,
+    box_name: 'Спектакль "Три сестры"',
+    date: '18.01.2024',
+    time: {
+      from: '18:30',
+      to: '21:30'
+    },
+    total_slots: 200,
+    occupied_slots: 187,
+    available_slots: 13,
+    location: 'Театр драмы',
+    status: 'active'
+  },
+  {
+    id: 22,
+    box_id: 21,
+    box_name: 'Хоровой концерт',
+    date: '18.01.2024',
+    time: {
+      from: '19:00',
+      to: '21:00'
+    },
+    total_slots: 150,
+    occupied_slots: 102,
+    available_slots: 48,
+    location: 'Консерватория',
+    status: 'active'
+  },
+  {
+    id: 23,
+    box_id: 22,
+    box_name: 'Вечер юмора',
+    date: '18.01.2024',
+    time: {
+      from: '20:00',
+      to: '22:00'
+    },
+    total_slots: 90,
+    occupied_slots: 74,
+    available_slots: 16,
+    location: 'Дом актера',
+    status: 'active'
+  },
+  {
+    id: 24,
+    box_id: 23,
+    box_name: 'Караоке-баттл',
+    date: '18.01.2024',
+    time: {
+      from: '21:00',
+      to: '23:30'
+    },
+    total_slots: 40,
+    occupied_slots: 25,
+    available_slots: 15,
+    location: 'Бар "Ностальжи"',
+    status: 'active'
+  },
+  {
+    id: 25,
+    box_id: 24,
+    box_name: 'Забег с препятствиями',
+    date: '19.01.2024',
+    time: {
+      from: '09:00',
+      to: '12:00'
+    },
+    total_slots: 100,
+    occupied_slots: 62,
+    available_slots: 38,
+    location: 'Парк Горького',
+    status: 'active'
+  },
+  {
+    id: 26,
+    box_id: 25,
+    box_name: 'Выставка кошек',
+    date: '19.01.2024',
+    time: {
+      from: '11:00',
+      to: '18:00'
+    },
+    total_slots: 200,
+    occupied_slots: 156,
+    available_slots: 44,
+    location: 'Выставочный зал',
+    status: 'active'
+  },
+  {
+    id: 27,
+    box_id: 26,
+    box_name: 'Бранч',
+    date: '19.01.2024',
+    time: {
+      from: '12:00',
+      to: '14:00'
+    },
+    total_slots: 35,
+    occupied_slots: 28,
+    available_slots: 7,
+    location: 'Кафе "Утро"',
+    status: 'active'
+  },
+  {
+    id: 28,
+    box_id: 27,
+    box_name: 'Лекция о космосе',
+    date: '19.01.2024',
+    time: {
+      from: '14:00',
+      to: '16:00'
+    },
+    total_slots: 60,
+    occupied_slots: 41,
+    available_slots: 19,
+    location: 'Планетарий',
+    status: 'active'
+  },
+  {
+    id: 29,
+    box_id: 28,
+    box_name: 'Гончарный мастер-класс',
+    date: '19.01.2024',
+    time: {
+      from: '15:30',
+      to: '17:30'
+    },
+    total_slots: 12,
+    occupied_slots: 12,
+    available_slots: 0,
+    location: 'Гончарная мастерская',
+    status: 'filled'
+  },
+  {
+    id: 30,
+    box_id: 29,
+    box_name: 'Джазовый концерт',
+    date: '19.01.2024',
+    time: {
+      from: '17:00',
+      to: '19:00'
+    },
+    total_slots: 80,
+    occupied_slots: 67,
+    available_slots: 13,
+    location: 'Джаз-клуб',
+    status: 'active'
+  },
+  {
+    id: 31,
+    box_id: 30,
+    box_name: 'Балет "Лебединое озеро"',
+    date: '19.01.2024',
+    time: {
+      from: '18:30',
+      to: '21:00'
+    },
+    total_slots: 250,
+    occupied_slots: 243,
+    available_slots: 7,
+    location: 'Театр оперы и балета',
+    status: 'active'
+  },
+  {
+    id: 32,
+    box_id: 31,
+    box_name: 'Иммерсивный спектакль',
+    date: '19.01.2024',
+    time: {
+      from: '19:30',
+      to: '21:30'
+    },
+    total_slots: 30,
+    occupied_slots: 19,
+    available_slots: 11,
+    location: 'Лофт "Ткачи"',
+    status: 'active'
+  },
+  {
+    id: 33,
+    box_id: 32,
+    box_name: 'Вечеринка 90-е',
+    date: '19.01.2024',
+    time: {
+      from: '22:00',
+      to: '04:00'
+    },
+    total_slots: 150,
+    occupied_slots: 134,
+    available_slots: 16,
+    location: 'Клуб "Метро"',
+    status: 'active'
+  },
+  {
+    id: 34,
+    box_id: 33,
+    box_name: 'Фитнес-марафон',
+    date: '20.01.2024',
+    time: {
+      from: '10:00',
+      to: '12:00'
+    },
+    total_slots: 50,
+    occupied_slots: 37,
+    available_slots: 13,
+    location: 'Спортивный комплекс',
+    status: 'active'
+  },
+  {
+    id: 35,
+    box_id: 34,
+    box_name: 'Квест для детей',
+    date: '20.01.2024',
+    time: {
+      from: '11:30',
+      to: '13:00'
+    },
+    total_slots: 24,
+    occupied_slots: 24,
+    available_slots: 0,
+    location: 'Парк аттракционов',
+    status: 'filled'
+  },
+  {
+    id: 36,
+    box_id: 35,
+    box_name: 'Фестиваль еды',
+    date: '20.01.2024',
+    time: {
+      from: '12:00',
+      to: '20:00'
+    },
+    total_slots: 300,
+    occupied_slots: 215,
+    available_slots: 85,
+    location: 'Ярмарка',
+    status: 'active'
+  },
+  {
+    id: 37,
+    box_id: 36,
+    box_name: 'Мастер-класс по танцам',
+    date: '20.01.2024',
+    time: {
+      from: '13:30',
+      to: '15:30'
+    },
+    total_slots: 20,
+    occupied_slots: 14,
+    available_slots: 6,
+    location: 'Танцевальная студия',
+    status: 'active'
+  },
+  {
+    id: 38,
+    box_id: 37,
+    box_name: 'Кино под открытым небом',
+    date: '20.01.2024',
+    time: {
+      from: '15:00',
+      to: '17:30'
+    },
+    total_slots: 150,
+    occupied_slots: 98,
+    available_slots: 52,
+    location: 'Парк "Сокольники"',
+    status: 'active'
+  },
+  {
+    id: 39,
+    box_id: 38,
+    box_name: 'Встреча с блогером',
+    date: '20.01.2024',
+    time: {
+      from: '16:00',
+      to: '18:00'
+    },
+    total_slots: 45,
+    occupied_slots: 43,
+    available_slots: 2,
+    location: 'ТЦ "Мега"',
+    status: 'active'
+  },
+  {
+    id: 40,
+    box_id: 39,
+    box_name: 'Рок-опера',
+    date: '20.01.2024',
+    time: {
+      from: '17:30',
+      to: '20:30'
+    },
+    total_slots: 400,
+    occupied_slots: 356,
+    available_slots: 44,
+    location: 'Ледовый дворец',
+    status: 'active'
+  },
+  {
+    id: 41,
+    box_id: 40,
+    box_name: 'Дегустация вин',
+    date: '20.01.2024',
+    time: {
+      from: '18:00',
+      to: '20:00'
+    },
+    total_slots: 25,
+    occupied_slots: 25,
+    available_slots: 0,
+    location: 'Винный бутик',
+    status: 'filled'
+  },
+  {
+    id: 42,
+    box_id: 41,
+    box_name: 'Симфонический концерт',
+    date: '20.01.2024',
+    time: {
+      from: '19:00',
+      to: '21:30'
+    },
+    total_slots: 180,
+    occupied_slots: 147,
+    available_slots: 33,
+    location: 'Филармония-2',
+    status: 'active'
+  },
+  {
+    id: 43,
+    box_id: 42,
+    box_name: 'Стендап',
+    date: '20.01.2024',
+    time: {
+      from: '20:30',
+      to: '22:30'
+    },
+    total_slots: 70,
+    occupied_slots: 70,
+    available_slots: 0,
+    location: 'Клуб "Веселье"',
+    status: 'filled'
+  },
+  {
+    id: 44,
+    box_id: 43,
+    box_name: 'Завтрак с психологом',
+    date: '21.01.2024',
+    time: {
+      from: '09:30',
+      to: '11:00'
+    },
+    total_slots: 18,
+    occupied_slots: 9,
+    available_slots: 9,
+    location: 'Кофейня',
+    status: 'active'
+  },
+  {
+    id: 45,
+    box_id: 44,
+    box_name: 'Выставка картин',
+    date: '21.01.2024',
+    time: {
+      from: '12:00',
+      to: '18:00'
+    },
+    total_slots: 60,
+    occupied_slots: 32,
+    available_slots: 28,
+    location: 'Галерея искусств',
+    status: 'active'
+  },
+  {
+    id: 46,
+    box_id: 45,
+    box_name: 'Лекция по инвестициям',
+    date: '21.01.2024',
+    time: {
+      from: '14:30',
+      to: '16:30'
+    },
+    total_slots: 40,
+    occupied_slots: 27,
+    available_slots: 13,
+    location: 'Бизнес-центр',
+    status: 'active'
+  },
+  {
+    id: 47,
+    box_id: 46,
+    box_name: 'Детский мюзикл',
+    date: '21.01.2024',
+    time: {
+      from: '16:00',
+      to: '18:00'
+    },
+    total_slots: 120,
+    occupied_slots: 105,
+    available_slots: 15,
+    location: 'Театр эстрады',
+    status: 'active'
+  },
+  {
+    id: 48,
+    box_id: 47,
+    box_name: 'Вечер фортепианной музыки',
+    date: '21.01.2024',
+    time: {
+      from: '18:00',
+      to: '20:00'
+    },
+    total_slots: 70,
+    occupied_slots: 51,
+    available_slots: 19,
+    location: 'Концертный зал',
+    status: 'active'
+  },
+  {
+    id: 49,
+    box_id: 48,
+    box_name: 'Спектакль "На дне"',
+    date: '21.01.2024',
+    time: {
+      from: '19:30',
+      to: '22:00'
+    },
+    total_slots: 150,
+    occupied_slots: 132,
+    available_slots: 18,
+    location: 'Драматический театр',
+    status: 'active'
+  },
+  {
+    id: 50,
+    box_id: 49,
+    box_name: 'Ночной джаз',
+    date: '21.01.2024',
+    time: {
+      from: '21:00',
+      to: '23:30'
+    },
+    total_slots: 50,
+    occupied_slots: 38,
+    available_slots: 12,
+    location: 'Ресторан "На крыше"',
+    status: 'active'
+  }
+]

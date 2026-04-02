@@ -36,7 +36,7 @@ const DataExport = () => {
       <Card>{isPending ? <Loader /> : <FileUploderList files={data} onDelete={setFileToDelete} />}</Card>
 
       <DeleteModal
-        title="Удалить документ!"
+        title="Удалить документ?"
         isOpen={!!fileToDelete}
         onDelete={() => deleteFile(fileToDelete ?? '')}
         onClose={() => setFileToDelete(null)}
