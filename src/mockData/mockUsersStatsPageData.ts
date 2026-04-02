@@ -98,7 +98,7 @@ export const mockUsersStats: IUsersStats[] = [
   },
   {
     id: 11,
-    name: '@dfxfsah',
+    name: '@ylmklb',
     recordsCount: 3,
     visitFrequency: 2,
     boxes: 'Русский музей',
@@ -114,7 +114,7 @@ export const mockUsersStats: IUsersStats[] = [
   },
   {
     id: 13,
-    name: '@dfxfsah',
+    name: '@kjbjhg',
     recordsCount: 3,
     visitFrequency: 2,
     boxes: 'Русский музей',
