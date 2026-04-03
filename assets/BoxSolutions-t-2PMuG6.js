@@ -1,0 +1,1 @@
+import{j as n}from"./index-BDAOK5Wg.js";const o=()=>n.jsxs(n.Fragment,{children:[n.jsx("h1",{children:"Коробочные решения"}),n.jsx("p",{children:"Страница в разработке..."})]}),s=o;export{s as Component};
