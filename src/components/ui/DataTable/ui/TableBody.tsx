@@ -33,7 +33,7 @@ export function TableBody<T>({
         return (
           <tr
             key={String(row[idKey])}
-            className={`${isSelected ? 'bg-[#FFFFF8]' : ''} border-b border-b-grey-light last:border-b-0`}
+            className={`${isSelected ? 'bg-creamy' : ''} border-b border-b-grey-blue-light last:border-b-0`}
           >
             {enableCheckboxes && (
               <td className="w-12 p-4">
@@ -60,7 +60,7 @@ export function TableBody<T>({
             )}
 
             {columns.map(col => (
-              <td key={col.key as string} className={`p-4 ${col.className || ''}`}>
+              <td key={col.key as string} className={`px-4 py-1 h-[52px] ${col.className || ''}`}>
                 {col.render ? (
                   col.render(row[col.key], row)
                 ) : isValidNumber(row[col.key]) ? (
