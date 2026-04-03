@@ -70,38 +70,33 @@ export const Modal = ({
     >
       <div
         className={`
-          flex max-h-[90vh] w-full max-w-157 flex-col rounded-xl bg-white font-display shadow-lg
+          flex max-h-[90vh] w-full max-w-[651px] flex-col rounded-xl bg-white font-display shadow-lg
           ${isOpen ? 'animate-modal-in' : 'animate-modal-out pointer-events-none'}
           ${className}
         `}
         onMouseDown={e => e.stopPropagation()}
       >
         <header
-          className={`
-            flex items-center justify-between px-6 py-[19px_17px] ${showBorders ? 'border-b border-grey-blue-light' : ''}
-          `}
+          className={`flex items-center justify-between pl-[24px] pr-[15px] py-[12px] ${showBorders ? 'border-b border-grey-blue-light' : ''}`}
         >
           {title && <h3 className="m-0 text-h3 text-text">{title}</h3>}
 
           <Button
             variant="ghost"
-            size="icon-32"
+            size="icon-48"
             onClick={onClose}
             aria-label="Закрыть модальное окно"
             className="text-text-grey-dark hover:text-text-grey-light active:text-text"
           >
-            <CloseIcon className="min-w-[26px] min-h-[26px]" />
+            <CloseIcon className="size-full" />
           </Button>
         </header>
 
-        <div className="flex-1 overflow-y-auto p-6 text-text">{children}</div>
+        <div className="flex-1 overflow-y-auto px-[24px] py-[19px] text-text">{children}</div>
 
         {footer && (
           <footer
-            className={`
-              flex items-center justify-end gap-3 px-6 py-[23px_24px]
-              ${showBorders ? 'border-t border-grey-blue-light' : ''}
-            `}
+            className={`flex items-center justify-end gap-3 px-[24px] py-[20px] ${showBorders ? 'border-t border-grey-blue-light' : ''}`}
           >
             {footer}
           </footer>
