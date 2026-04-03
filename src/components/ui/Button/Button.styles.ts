@@ -135,7 +135,7 @@ const secondaryDangerStyles = `
 `
 
 const elevatedStyles = `
-  text-button
+  button-text
   shadow-[0px_1px_3px_0px_rgba(0,0,0,0.15),0px_1px_2px_0px_rgba(0,0,0,0.30)]
 
   hover:shadow-[0px_6px_12px_0px_rgba(0,0,0,0.18),0px_3px_6px_0px_rgba(0,0,0,0.33)]

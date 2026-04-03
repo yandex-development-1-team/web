@@ -2,18 +2,19 @@ import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-q
 import { scheduleApi } from '@/services/schedule.service'
 import type { IEventsParams, IEventsResponse, TEvent } from '@/types/schedule.types'
 import { useNotification } from '@/app/providers/notification'
+import type { ButtonState } from '@/components/ui/ToggleButton/ToggleButton.types'
 
 export const eventKeys = {
   all: ['events'],
   lists: () => [...eventKeys.all, 'list'],
-  list: (params: IEventsParams) => [...eventKeys.lists(), { params }],
+  list: ({ params, side }: { params: IEventsParams; side: ButtonState }) => [...eventKeys.lists(), { params, side }],
   details: () => [...eventKeys.all, 'detail'],
   detail: (id: number) => [...eventKeys.details(), id]
 }
 
-export const useEvents = (params: IEventsParams) => {
+export const useEvents = ({ params, side }: { params: IEventsParams; side: ButtonState }) => {
   return useInfiniteQuery({
-    queryKey: eventKeys.list(params),
+    queryKey: eventKeys.list({ params, side }),
     queryFn: async ({ pageParam }) => {
       const response = await scheduleApi.getEvents({
         ...params,

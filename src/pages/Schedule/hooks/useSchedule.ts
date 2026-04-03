@@ -24,7 +24,7 @@ export const useSchedule = () => {
   const [selectedEvents, setSelectedEvents] = useState<TEvent[]>([])
 
   const { params, setDate } = useEventParams()
-  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } = useEvents(params)
+  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } = useEvents({ params, side: toggle })
 
   const events = useMemo(() => data?.pages.flatMap(page => page.items) ?? [], [data])
   const pagination = data?.pages[data.pages.length - 1].pagination

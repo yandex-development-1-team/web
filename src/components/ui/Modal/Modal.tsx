@@ -81,9 +81,7 @@ export const Modal = ({
         onMouseDown={e => e.stopPropagation()}
       >
         <header
-          className={`
-            flex items-center justify-between px-6 py-[19px_17px] ${showBorders ? 'border-b border-grey-blue-light' : ''}
-          `}
+          className={`flex items-center justify-between pl-[24px] pr-[15px] py-[12px] ${showBorders ? 'border-b border-grey-blue-light' : ''}`}
         >
           {title && <h3 className="m-0 text-h3 text-text">{title}</h3>}
 
@@ -94,7 +92,7 @@ export const Modal = ({
             aria-label="Закрыть модальное окно"
             className="text-text-grey-dark hover:text-text-grey-light active:text-text"
           >
-            <CloseIcon className="min-w-[26px] min-h-[26px]" />
+            <CloseIcon className="size-full" />
           </Button>
         </header>
 
@@ -102,10 +100,7 @@ export const Modal = ({
 
         {footer && (
           <footer
-            className={`
-              flex items-center justify-end gap-3 px-6 py-[23px_24px]
-              ${showBorders ? 'border-t border-grey-blue-light' : ''}
-            `}
+            className={`flex items-center justify-end gap-3 px-[24px] py-[20px] ${showBorders ? 'border-t border-grey-blue-light' : ''}`}
           >
             {footer}
           </footer>
