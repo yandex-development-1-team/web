@@ -1,0 +1,1 @@
+import{r as e}from"./index-B-WDLVPN.js";function p(){const[l,s]=e.useState(!1),[o,a]=e.useState(null),n=e.useCallback((t=null)=>{a(t),s(!0)},[]),u=e.useCallback(()=>{s(!1),a(null)},[]),c=e.useCallback(()=>s(t=>!t),[]);return{isOpen:l,modalData:o,open:n,close:u,toggle:c}}export{p as u};
