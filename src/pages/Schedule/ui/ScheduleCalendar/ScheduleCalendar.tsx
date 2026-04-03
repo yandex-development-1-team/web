@@ -2,7 +2,7 @@ import { DataTable, Input } from '@/components/ui'
 import { Calendar } from '@/components/ui/CalendarInput/ui/Calendar'
 import type { TScheduleCalendar } from './ScheduleCalendar.type'
 import { useEffect, useState, type ChangeEvent } from 'react'
-import { SearchIcon } from '@/assets/icons'
+import { CloseIcon, SearchIcon } from '@/assets/icons'
 import { formatDate, parseToDate } from '@/lib/utils.date'
 import useDebounce from '@/hooks/useDebounce'
 import { Button } from '@/components/ui/Button'
@@ -94,15 +94,28 @@ export const ScheduleCalendar = (props: TScheduleCalendar) => {
             onBlur={handleBlur}
             placeholder="Дата"
           />
-          <Input
-            variant="icon"
-            icon={<SearchIcon className="size-4" />}
-            value={inputSearch}
-            placeholder="Поиск"
-            onChange={e => {
-              setInputSearch(e.target.value)
-            }}
-          />
+          <div className="relative w-full ">
+            <Input
+              variant="icon"
+              icon={<SearchIcon className="size-4" />}
+              value={inputSearch}
+              placeholder="Поиск"
+              onChange={e => {
+                setInputSearch(e.target.value)
+              }}
+            />
+            {inputSearch && (
+              <Button
+                variant="ghost"
+                size="icon-32"
+                onClick={() => setInputSearch('')}
+                aria-label="Очистить поиск"
+                className="text-text-grey-dark hover:text-text-grey-light active:text-text absolute right-0.75 top-[50%] translate-y-[-50%] bg-white"
+              >
+                <CloseIcon className="size-full" />
+              </Button>
+            )}
+          </div>
         </div>
 
         <DataTable
