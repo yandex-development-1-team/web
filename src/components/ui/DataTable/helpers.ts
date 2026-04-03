@@ -1,4 +1,4 @@
-import type { SortConfig } from './DataTable.types'
+import type { Column, SortConfig } from './DataTable.types'
 
 export function sortData<T>(data: T[], sortConfig: SortConfig<T> | null): T[] {
   if (!sortConfig) return data
@@ -88,4 +88,30 @@ export function PaginationLogic(currentPage: number, totalPages: number, maxWind
   pages.push(totalPages)
 
   return pages
+}
+
+export const isValidNumber = <T>(value: T) => {
+  if (value === null || value === undefined || value === '') return false
+  const num = Number(value)
+
+  return !isNaN(num) && isFinite(num)
+}
+
+export const findMaxNumber = <T>(data: T[], columns: Column<T, keyof T>[]) => {
+  let maxValue = -Infinity
+
+  data.forEach(row => {
+    columns.forEach(col => {
+      const value = row[col.key]
+
+      if (isValidNumber(value)) {
+        const num = Number(value)
+        if (num > maxValue) {
+          maxValue = num
+        }
+      }
+    })
+  })
+
+  return maxValue !== -Infinity ? maxValue.toString().length : null
 }
