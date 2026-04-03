@@ -1,4 +1,4 @@
-import { ArrowsSeparateVerticalIcon } from '@/assets/icons'
+import { ArrowIcon, ArrowsSeparateVerticalIcon } from '@/assets/icons'
 import { CheckIcon } from '@/assets/icons'
 import type { ChangeEvent } from 'react'
 import type { Column } from '../DataTable.types'
@@ -9,9 +9,18 @@ type Props<T> = {
   enableRowActions?: boolean
   onSort?: (key: keyof T) => void
   onSelectAll?: (e: ChangeEvent<HTMLInputElement>) => void
+  direction: 'asc' | 'desc' | null
 }
 
-export function TableHeader<T>({ columns, enableCheckboxes, enableRowActions, onSort, onSelectAll }: Props<T>) {
+export function TableHeader<T>({
+  columns,
+  enableCheckboxes,
+  enableRowActions,
+  onSort,
+  onSelectAll,
+  direction
+}: Props<T>) {
+  console.log('direction', direction)
   return (
     <thead>
       <tr className="border-b border-grey-light h-12 bg-grey-extra-light text-color-black">
@@ -42,7 +51,17 @@ export function TableHeader<T>({ columns, enableCheckboxes, enableRowActions, on
           >
             <div className="flex items-center gap-1">
               <span>{col.label}</span>
-              {col.sortable && <ArrowsSeparateVerticalIcon className="h-4 w-4" />}
+              {col.sortable && (
+                <>
+                  {direction === null ? (
+                    <ArrowsSeparateVerticalIcon className="h-4 w-4" />
+                  ) : direction === 'asc' ? (
+                    <ArrowIcon className="w-4 h-4 rotate-180 stroke-2" />
+                  ) : (
+                    <ArrowIcon className="w-4 h-4 rotate-0  stroke-2" />
+                  )}
+                </>
+              )}
             </div>
           </th>
         ))}
