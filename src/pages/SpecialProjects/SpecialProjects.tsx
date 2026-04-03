@@ -159,7 +159,6 @@ const SpecialProjects = () => {
       >
         {projects.slice(offset, offset + pageSize).map(project => (
           <ProjectCard
-            //className="min-w-[284px]"
             style={{ minWidth: `${cardMinWidth}px`, maxWidth: `${cardMaxWidth}px` }}
             key={project.id}
             title={project.title}
