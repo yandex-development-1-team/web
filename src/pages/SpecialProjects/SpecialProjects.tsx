@@ -9,13 +9,20 @@ import { type IProject } from '@/types/solutions'
 import { useMainWidth } from '@/hooks/useMainWidth'
 
 const SpecialProjects = () => {
+  const cardMinWidth = 284
+  const cardMaxWidth = 344
+
   const mainWidth = useMainWidth()
-  const pageSize = Math.floor((mainWidth - 20) / (284 + 20)) || 1
+  const pageSize = Math.floor((mainWidth - 20) / (cardMinWidth + 20)) || 1
 
   const [searchParams] = useSearchParams()
   const offset = Number(searchParams.get('offset')) || 0
 
   const [projects, setProjects] = useState<IProject[]>(mockProjects)
+
+  const pageSizeLow = Math.floor((mainWidth - 20) / (cardMaxWidth + 20)) || 1
+  const cardsOnCurrentPageCount = projects.slice(offset, offset + pageSize).length
+  const justifyClass = cardsOnCurrentPageCount < pageSizeLow ? 'justify-start' : 'justify-between'
 
   const [url, setUrl] = useState(mockUrl)
   const [presentationFile, setPresentationFile] = useState<File | null>(null)
@@ -147,12 +154,13 @@ const SpecialProjects = () => {
       </div>
 
       <div
-        className="mt-[30px] flex gap-[20px] justify-between"
+        className={`mt-[30px] flex gap-[20px] ${justifyClass}`}
         style={{ gridTemplateColumns: `repeat(${pageSize}, minmax(0, 1fr))` }}
       >
         {projects.slice(offset, offset + pageSize).map(project => (
           <ProjectCard
-            className="min-w-[284px]"
+            //className="min-w-[284px]"
+            style={{ minWidth: `${cardMinWidth}px`, maxWidth: `${cardMaxWidth}px` }}
             key={project.id}
             title={project.title}
             description={project.description}
