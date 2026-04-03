@@ -14,6 +14,7 @@
     0% {
       transform: translateX(-100%);
     }
+
     100% {
       transform: translateX(200%);
     }
@@ -137,6 +138,12 @@
   --color-text-error: var(--color-red-dark);
   --color-text-red-dark: var(--color-red-dark);
   --color-text-red-medium: var(--color-red-medium);
+  --color-status-queue-bg: var(--color-yellow-light);
+  --color-status-queue-text: var(--color-yellow-dark);
+  --color-status-progress-bg: var(--color-green-light);
+  --color-status-progress-text: var(--color-green-dark);
+  --color-status-done-bg: var(--color-blue-light);
+  --color-status-done-text: var(--color-blue-dark);
 
   /* System colors */
   --color-system-grey-light: var(--color-grey-light);
@@ -185,6 +192,7 @@
     from {
       opacity: 0;
     }
+
     to {
       opacity: 1;
     }
@@ -194,6 +202,7 @@
     from {
       opacity: 1;
     }
+
     to {
       opacity: 0;
     }
@@ -204,6 +213,7 @@
       opacity: 0;
       transform: scale(0);
     }
+
     to {
       opacity: 1;
       transform: scale(1);
@@ -215,6 +225,7 @@
       opacity: 1;
       transform: scale(1);
     }
+
     to {
       opacity: 0;
       transform: scale(0);

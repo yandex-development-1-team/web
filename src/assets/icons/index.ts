@@ -49,4 +49,5 @@ export { default as ViewingIcon } from './Viewing.svg?react'
 
 export { default as Eye } from './Eye.svg?react'
 export { default as EyeClose } from './EyeClose.svg?react'
+export { default as Application2 } from './Application2.svg?react'
 export { default as BoxFilter } from './Box-filter.svg?react'
