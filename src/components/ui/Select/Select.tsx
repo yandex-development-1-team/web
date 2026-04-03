@@ -26,7 +26,7 @@ export function Select({ options, placeholder, classNames, ...props }: TSelect) 
       <SelectContent className={classNames?.content}>
         {options.map(o => {
           return (
-            <SelectItem value={o.value} className={classNames?.item}>
+            <SelectItem key={o.value} value={o.value} className={classNames?.item}>
               {o.label}
             </SelectItem>
           )
@@ -53,15 +53,20 @@ export function SelectTrigger({ className, children, ...props }: ComponentProps<
     <SelectPrimitive.Trigger
       data-slot="select-trigger"
       className={cn(
-        `border-(--input-border) border rounded-lg h-11 min-w-37 bg-transparent p-3 pe-2 outline-none
+        `border-(--input-border) border rounded-lg min-h-11 min-w-37 bg-transparent p-[10px] pe-2 outline-none cursor-pointer
         flex w-fit items-center justify-between gap-2
-        font-display text-xs whitespace-nowrap
+        font-display text-h5 data-[placeholder]:text-xs
         data-[placeholder]:text-(--input-border) data-[placeholder]:italic [&_svg:not([class*='text-'])]:text-(--input-border)
         focus-visible:border-(--input-border-active)
         aria-invalid:border-system-error
         disabled:cursor-not-allowed disabled:opacity-40 disabled:bg-grey-extra-light
-        data-[state=open]:[&>svg]:rotate-180 transition-[color,box-shadow] transition-transform duration-200 ease-in-out
-        *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2
+        hover:[&>svg]:text-system-grey-dark hover:border-system-grey-dark hover:data-[placeholder]:text-text-grey-dark
+        data-[state=open]:border-system-grey-dark data-[state=open]:data-[placeholder]:text-text-grey-dark
+        data-[state=open]:[&>svg]:text-system-grey-dark
+        data-[state=open]:[&>svg]:rotate-180 
+        transition-[border-color,color] duration-200 ease-in-out
+        [&>svg]:transition-[color,transform] [&>svg]:duration-200 [&>svg]:ease-in-out
+        *:data-[slot=select-value]:text-left *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2
         [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4`,
         className
       )}
@@ -132,7 +137,7 @@ export function SelectItem({ className, children, ...props }: ComponentProps<typ
     <SelectPrimitive.Item
       data-slot="select-item"
       className={cn(
-        `relative flex w-full cursor-default items-center gap-2 font-display text-text
+        `relative flex w-full cursor-default items-center gap-2 font-display text-text cursor-pointer
         rounded-sm py-2 pr-8 pl-2 text-xs outline-hidden
         focus:bg-(--select-option-hover) focus:text-accent-foreground
         [&_svg:not([class*='text-'])]:text-(--select-check) [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4
