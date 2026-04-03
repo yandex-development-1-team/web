@@ -14,7 +14,7 @@ export const ScheduleTable = (props: TScheduleTable) => {
   const [editItem, setEditItem] = useState<TEvent | null>(null)
   const [isOpenEdit, setIsOpenEdit] = useState(false)
 
-  const hendelEdit = (row: TTableEvent) => {
+  const handleEdit = (row: TTableEvent) => {
     const item = events.find(item => item.id === row.id)
     if (item) setEditItem(item)
     setIsOpenEdit(true)
@@ -46,7 +46,7 @@ export const ScheduleTable = (props: TScheduleTable) => {
 
   const renderRowActions = (row: TTableEvent) => (
     <div className="flex gap-2">
-      <Button variant="ghost" className="size-11.5 border-grey-light" onClick={() => hendelEdit(row)}>
+      <Button variant="ghost" className="size-11.5 border-grey-light" onClick={() => handleEdit(row)}>
         <EditIcon className="size-6" color="var(--color-black)" />
       </Button>
       <Button variant="ghost" className="size-11.5 border-grey-light" onClick={() => handleDeleteClick(row)}>
