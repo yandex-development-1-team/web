@@ -38,7 +38,7 @@ export function TableHeader<T>({ columns, enableCheckboxes, enableRowActions, on
           <th
             key={col.key as string}
             onClick={col.sortable ? () => onSort?.(col.key) : undefined}
-            className={`p-4 text-left text-black ${col.sortable ? 'cursor-pointer' : ''}`}
+            className={`px-4 py-1 h-[54px] text-left text-black ${col.sortable ? 'cursor-pointer' : ''}`}
           >
             <div className="flex items-center gap-1">
               <span>{col.label}</span>
