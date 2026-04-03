@@ -20,7 +20,6 @@ export function TableHeader<T>({
   onSelectAll,
   direction
 }: Props<T>) {
-  console.log('direction', direction)
   return (
     <thead>
       <tr className="border-b border-grey-light h-12 bg-grey-extra-light text-color-black">
