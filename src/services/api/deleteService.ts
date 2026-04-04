@@ -1,7 +1,7 @@
-import axios from 'axios'
+import { api } from '@/app/providers/axios'
+import { API_ROUTES } from './routes'
 
 export async function deleteItemById(id: string | number) {
-  const PATH = '/items'
-  const response = await axios.delete(`${PATH}/${id}`)
+  const response = await api.delete(`${API_ROUTES.items}/${id}`)
   return response.data
 }
