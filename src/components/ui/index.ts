@@ -22,7 +22,6 @@ export {
   SelectValue
 } from './Select'
 
-export { Dropzone } from './Dropzone'
 export { Switch } from './Switch'
 export { Textarea } from './Textarea'
 export { TimeRangeInput } from './TimeRangeInput'

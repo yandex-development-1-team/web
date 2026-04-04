@@ -9,10 +9,24 @@ type BoxActionsPropsType = {
 export const BoxActions = ({ onEdit, onDelete }: BoxActionsPropsType) => {
   return (
     <div className="flex justify-between text-text">
-      <Button variant={'default'} className="min-w-26.5 min-h-11" onClick={onEdit}>
+      <Button
+        variant={'default'}
+        className="min-w-26.5 min-h-11"
+        onClick={e => {
+          e.stopPropagation()
+          onEdit()
+        }}
+      >
         <EditIcon />
       </Button>
-      <Button variant={'outline'} className="min-w-26.5 min-h-11" onClick={onDelete}>
+      <Button
+        variant={'outline'}
+        className="min-w-26.5 min-h-11"
+        onClick={e => {
+          e.stopPropagation()
+          onDelete()
+        }}
+      >
         <DeleteIcon />
       </Button>
     </div>

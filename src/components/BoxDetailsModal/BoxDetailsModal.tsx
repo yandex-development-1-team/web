@@ -9,10 +9,10 @@ export const BoxDetailsModal = ({
   onClose,
   onFetchBox
 }: {
-  boxId: number | undefined | null
+  boxId: string
   isOpen: boolean
   onClose: () => void
-  onFetchBox: (id: string | null) => IBox | undefined
+  onFetchBox: (id: string) => IBox | undefined
 }) => {
   if (!boxId) return null
 
