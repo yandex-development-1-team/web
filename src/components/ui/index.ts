@@ -2,9 +2,11 @@ export { BoxButton } from './BoxButton'
 export { Button } from './Button'
 export { CalendarInput } from './CalendarInput'
 export { Card } from './Card'
+export { DataTable } from './DataTable'
+export { ImageCropper } from './ImageCropper'
 export { Input } from './Input'
 export { Loader } from './Loader'
-export { DeleteModal, Modal } from './Modal'
+export { Modal, DeleteModal } from './Modal'
 export {
   Select,
   SelectBase,
@@ -19,7 +21,6 @@ export {
   SelectValue
 } from './Select'
 
-export { DataTable } from './DataTable'
 export { Switch } from './Switch'
 export { Textarea } from './Textarea'
 export { TimeRangeInput } from './TimeRangeInput'

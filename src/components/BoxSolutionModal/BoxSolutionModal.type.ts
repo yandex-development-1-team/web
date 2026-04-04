@@ -1,0 +1,14 @@
+import type z from 'zod'
+import type { BoxData } from '@/types/solutions'
+import type { boxSolutionSchema } from './schema'
+
+export type ModalAction = 'create' | 'edit'
+
+export type BoxSolutionModalType = {
+  isOpen: boolean
+  onClose: () => void
+  boxData?: BoxData
+  onSave: (data: Partial<Omit<BoxData, 'id'>>) => void
+}
+
+export type BoxSolutionFormData = z.infer<typeof boxSolutionSchema>
