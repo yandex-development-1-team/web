@@ -56,7 +56,8 @@ function Input(props: TInputProps) {
       </InputGroup>
     )
   } else {
-    return <InputBasic aria-invalid={props.invalid} {...props} />
+    const { invalid, ...rest } = props
+    return <InputBasic aria-invalid={invalid} {...rest} />
   }
 }
 
