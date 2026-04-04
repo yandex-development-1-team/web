@@ -5,4 +5,6 @@ import type { VariantProps } from 'class-variance-authority'
 export interface ButtonProps extends ComponentProps<'button'>, VariantProps<typeof buttonVariants> {
   label?: string
   asChild?: boolean
+  leftIcon?: React.ReactNode
+  rightIcon?: React.ReactNode
 }
