@@ -13,7 +13,7 @@ import { indicators } from './solutionsData'
 import { ManageButton } from './ui/ManageButton'
 
 const ManageSolutions = () => {
-  const [boxes, setBoxes] = useState<BoxData[]>(initialMockBoxes)
+  const [boxes, setBoxes] = useState(initialMockBoxes)
   const [modalAction, setModalAction] = useState<ModalAction>('create')
   const [selectedBoxId, setSelectedBoxId] = useState<number | null>(null)
   const [deleteBoxId, setDeleteBoxId] = useState<number | null>(null)
@@ -43,7 +43,7 @@ const ManageSolutions = () => {
 
       setBoxes(prev => [...prev, newBox])
     } else if (modalAction === 'edit' && selectedBox) {
-      const updatedBox: BoxData = { ...selectedBox, ...data }
+      const updatedBox = { ...selectedBox, ...data }
 
       setBoxes(prev => prev.map(box => (box.id === selectedBox.id ? updatedBox : box)))
     }
