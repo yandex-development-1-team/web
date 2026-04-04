@@ -1,8 +1,10 @@
+import { BoxSolutionModal } from '@/components/BoxSolutionModal'
 import { BoxButton, DeleteModal } from '@/components/ui'
 import { Loader } from '@/components/ui/Loader'
 import { Pagination } from '@/components/ui/Pagination'
 import { useState } from 'react'
 import { deleteBoxById } from './api/deleteBoxById'
+import { getBoxById } from './api/getBoxById'
 import type { ModalState } from './BoxSolutions.types'
 import { useBoxes } from './hooks/useBoxes'
 import { Boxes } from './ui/Boxes'
@@ -49,6 +51,13 @@ const BoxSolutions = () => {
       >
         {'Вы действительно хотите удалить эту коробку?'}
       </DeleteModal>
+      <BoxSolutionModal
+        key={modal?.id}
+        isOpen={modal?.type === 'create' || modal?.type === 'edit'}
+        onClose={() => setModal(null)}
+        onSave={() => {}}
+        boxData={modal?.id ? getBoxById(String(modal?.id)) : undefined}
+      />
     </div>
   )
 }
