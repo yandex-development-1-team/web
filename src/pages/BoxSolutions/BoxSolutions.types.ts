@@ -29,8 +29,8 @@ export interface IPagination {
   offset: number
   total: number
 }
-
-export type ModalState = { type: 'delete' | 'edit'; id: number } | { type: 'create'; id: null } | null
+type ModalType = 'create' | 'edit' | 'delete' | 'details'
+export type ModalState = { type: Exclude<ModalType, 'create'>; id: number } | { type: 'create'; id: null } | null
 
 const boxStatusField = ['active', 'disable'] as const
 const boxSortField = ['name', 'created_at', 'updated_at'] as const

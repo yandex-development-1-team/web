@@ -5,15 +5,19 @@ import { BoxActions } from './BoxActions'
 import { StatusLabel } from './StatusLabel'
 
 type BoxPropsType = {
-  box: Pick<IBox, 'name' | 'description' | 'is_active_in_bot' | 'image'>
+  box: Pick<IBox, 'id' | 'name' | 'description' | 'is_active_in_bot' | 'image'>
   onDelete: () => void
   onEdit: () => void
+  onDetailsView: (id: number) => void
 }
 
-export const Box = ({ box, onDelete, onEdit }: BoxPropsType) => {
-  const { name, description, is_active_in_bot, image } = box
+export const Box = ({ box, onDelete, onEdit, onDetailsView }: BoxPropsType) => {
+  const { id, name, description, is_active_in_bot, image } = box
   return (
-    <Card className="max-w-86 relative">
+    <Card
+      className="max-w-86 relative shadow transition-shadow duration-300  hover:shadow-2xl "
+      onClick={() => onDetailsView(id)}
+    >
       <StatusLabel isActive={is_active_in_bot} className="top-8 right-8" />
       <div className="flex flex-col gap-3">
         <div className="border-0 rounded-xl overflow-hidden h-36">

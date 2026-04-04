@@ -1,3 +1,4 @@
+import { BoxDetailsModal } from '@/components/BoxDetailsModal/BoxDetailsModal'
 import { BoxSolutionModal } from '@/components/BoxSolutionModal'
 import { BoxButton, DeleteModal } from '@/components/ui'
 import { Loader } from '@/components/ui/Loader'
@@ -38,6 +39,7 @@ const BoxSolutions = () => {
           boxesList={boxes}
           onDelete={(id: number) => setModal({ type: 'delete', id })}
           onEdit={(id: number) => setModal({ type: 'edit', id })}
+          onDetailsView={(id: number) => setModal({ type: 'details', id })}
           pagination={<Pagination pagination={pagination} />}
         />
       )}
@@ -57,6 +59,12 @@ const BoxSolutions = () => {
         onClose={() => setModal(null)}
         onSave={() => {}}
         boxData={modal?.id ? getBoxById(String(modal?.id)) : undefined}
+      />
+      <BoxDetailsModal
+        boxId={modal?.id}
+        isOpen={modal?.type === 'details'}
+        onClose={() => setModal(null)}
+        onFetchBox={getBoxById}
       />
     </div>
   )
