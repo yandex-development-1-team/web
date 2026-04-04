@@ -1,6 +1,10 @@
 import z from 'zod'
 
-export type BoxStatus = 'active' | 'disable'
+export interface TimeSlot {
+  date: string // ISO формат "2024-03-10"
+  time_from: string // "00:00"
+  time_to: string // "00:00"
+}
 
 export interface IBox {
   id: number
@@ -9,11 +13,11 @@ export interface IBox {
   description: string
   rules: string
   date: string
-  time: string
+  time_slots: TimeSlot[]
   location: string
   price: number
   image: string
-  status: BoxStatus
+  is_active_in_bot: boolean
   organizer: string
   created_at: string
   updated_at: string
