@@ -3,4 +3,5 @@ export interface SwitchProps {
   checked?: boolean
   paleStyle?: boolean
   className?: string
+  disabled?: boolean
 }
