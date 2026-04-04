@@ -1,1 +1,0 @@
-const t="/export",s="/boxes",o={items:"/items",analytics:{boxes:"/analytics/boxes",export:"/analytics/export"},export:{byId:e=>`${t}/${e}`,deleteById:e=>`${t}/${e}`,byPath:e=>`${t}/${e}`},boxes:{byId:e=>`${s}/${e}`,deleteById:e=>`${s}/${e}`,get:`${s}`}};export{o as A};

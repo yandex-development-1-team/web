@@ -1,1 +1,0 @@
-import{j as r}from"./index-B0LArjC7.js";import{c as t}from"./ReactCrop-CQNgCjjU.js";const c=e=>{const{className:s,...o}=e;return r.jsx("div",{className:t("flex items-center justify-center",s),...o,children:r.jsx("div",{className:"h-8 w-8 animate-spin rounded-full border-4 border-solid border-yellow-accent-dark border-t-transparent"})})};export{c as L};
