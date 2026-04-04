@@ -1,15 +1,15 @@
+import { AddIcon } from '@/assets/icons'
+import { Button, CalendarInput, ImageCropper, Input, Modal, Switch, TimeRangeInput } from '@/components/ui'
+import { fileToBase64 } from '@/lib/fileUtils/fileToBase64'
+import { cn } from '@/lib/utils.clsx'
+import type { BoxData } from '@/types/solutions'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
 import { Controller, useFieldArray, useForm, useWatch } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { Button, CalendarInput, ImageCropper, Input, Modal, Switch, TimeRangeInput } from '@/components/ui'
-import { FormInput } from './ui'
-import { AddIcon } from '@/assets/icons'
-import { cn } from '@/lib/utils.clsx'
-import { fileToBase64 } from '@/lib/fileUtils/fileToBase64'
+import type { BoxSolutionFormData, BoxSolutionModalType } from './BoxSolutionModal.type'
 import { FORM_TO_API_KEYS, getFormValues, mapFormDataToBoxData } from './helpers'
 import { boxSolutionSchema } from './schema'
-import type { BoxSolutionFormData, BoxSolutionModalType } from './BoxSolutionModal.type'
-import type { BoxData } from '@/types/solutions'
+import { FormInput } from './ui'
 
 export const BoxSolutionModal = ({ isOpen, onClose, boxData, onSave }: BoxSolutionModalType) => {
   const {
@@ -62,7 +62,7 @@ export const BoxSolutionModal = ({ isOpen, onClose, boxData, onSave }: BoxSoluti
       imageBase64 = boxData.image
     }
 
-    const fullData: Omit<BoxData, 'id'> = mapFormDataToBoxData(data, imageBase64)
+    const fullData = mapFormDataToBoxData(data, imageBase64)
 
     if (boxData) {
       const changed = Object.entries(dirtyFields).reduce(
