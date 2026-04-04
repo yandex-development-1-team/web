@@ -21,6 +21,7 @@ export type BoxData = {
   updated_at: string
   created_by: number
 }
+
 export interface IProject {
   id: number
   title: string

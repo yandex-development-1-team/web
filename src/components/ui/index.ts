@@ -3,6 +3,7 @@ export { Button } from './Button'
 export { CalendarInput } from './CalendarInput'
 export { Card } from './Card'
 export { DataTable } from './DataTable'
+export { Dropzone } from './Dropzone'
 export { ImageCropper } from './ImageCropper'
 export { Input } from './Input'
 export { Loader } from './Loader'
@@ -21,7 +22,6 @@ export {
   SelectValue
 } from './Select'
 
-export { Dropzone } from './Dropzone'
 export { Switch } from './Switch'
 export { Textarea } from './Textarea'
 export { TimeRangeInput } from './TimeRangeInput'
