@@ -4,19 +4,23 @@ export interface TimeSlot {
   time_to: string // "00:00"
 }
 
-export interface BoxData {
+export type BoxData = {
   id: number
   name: string
-  is_active_in_bot: boolean
-  time_slots: TimeSlot[]
-  location: string
+  slug: string
   description: string
   rules: string
-  cost: number
+  date: string
+  time_slots: TimeSlot[]
+  location: string
+  price: number
+  image: string
+  is_active_in_bot: boolean
   organizer: string
-  image?: string
+  created_at: string
+  updated_at: string
+  created_by: number
 }
-
 export interface IProject {
   id: number
   title: string
