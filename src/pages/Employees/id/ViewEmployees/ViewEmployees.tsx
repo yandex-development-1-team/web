@@ -17,7 +17,7 @@ const ViewEmployees = () => {
   if (!employee) return <div className="text-h4 text-text-grey-dark">Сотрудник не найден</div>
 
   return (
-    <>
+    <div className="flex flex-col">
       <Card>
         <h1 className=" text-text-black-dark text-h2">Карточка сотрудника</h1>
       </Card>
@@ -41,7 +41,7 @@ const ViewEmployees = () => {
       >
         Редактировать
       </Link>
-    </>
+    </div>
   )
 }
 
