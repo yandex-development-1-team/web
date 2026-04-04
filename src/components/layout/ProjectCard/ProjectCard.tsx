@@ -10,7 +10,8 @@ export const ProjectCard = ({
   description,
   image,
   status,
-  className
+  className,
+  style
 }: ProjectCardProps) => {
   const handleEdit = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
     if (onEdit) {
@@ -31,6 +32,7 @@ export const ProjectCard = ({
   return (
     <div
       onClick={onClick}
+      style={style}
       className={`
         h-[377px] w-full max-w-[344px] flex flex-col text-text cursor-pointer
         rounded-[8px] bg-white px-[20px]

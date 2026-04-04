@@ -7,29 +7,20 @@ export function useMainWidth() {
     const aside = document.querySelector('aside')
 
     const calculateWidth = () => {
+      const viewportWidth = document.documentElement.clientWidth
       const asideWidth = aside ? aside.offsetWidth : 0
-      setWidth(window.innerWidth - asideWidth)
+      setWidth(viewportWidth - asideWidth)
     }
 
-    window.addEventListener('resize', calculateWidth)
+    const resizeObserver = new ResizeObserver(calculateWidth)
 
-    const resizeObserver = new ResizeObserver(() => {
-      calculateWidth()
-    })
-
-    if (aside) {
-      resizeObserver.observe(aside)
-    }
+    resizeObserver.observe(document.documentElement)
+    if (aside) resizeObserver.observe(aside)
 
     calculateWidth()
 
-    return () => {
-      window.removeEventListener('resize', calculateWidth)
-      resizeObserver.disconnect()
-    }
+    return () => resizeObserver.disconnect()
   }, [])
-
-  console.log(window.innerWidth)
 
   return width
 }

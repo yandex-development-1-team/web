@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react'
 import type { IProject } from '@/types/solutions'
 
 export type ProjectCardProps = Omit<IProject, 'id'> & {
@@ -5,4 +6,5 @@ export type ProjectCardProps = Omit<IProject, 'id'> & {
   onEdit?: () => void
   onDelete?: () => void
   className?: string
+  style?: CSSProperties
 }
