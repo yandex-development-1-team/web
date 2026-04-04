@@ -1,3 +1,11 @@
+export interface IProject {
+  id: number
+  title: string
+  description: string
+  image: string
+  status: boolean
+}
+
 export interface TimeSlot {
   date: string // ISO формат "2024-03-10"
   time_from: string // "00:00"
@@ -17,7 +25,6 @@ export interface BoxData {
   image?: string
 }
 
-export interface IProject {
-  id: number
-  name: string
+export interface IBox extends IProject {
+  rules: string
 }

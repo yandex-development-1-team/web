@@ -112,7 +112,7 @@ const ManageSolutions = () => {
             {mockProjects.map(project => (
               <ManageButton
                 key={project.id}
-                text={project.name}
+                text={project.title}
                 onClick={() => handleProjectEdit(project.id)}
                 onDelete={() => handleProjectDelete(project.id)}
               />
