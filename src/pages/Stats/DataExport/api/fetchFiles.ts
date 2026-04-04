@@ -1,10 +1,11 @@
 import { api } from '@/app/providers/axios'
+import { API_ROUTES } from '@/services/api/routes'
 
 import { MOCK_FILES } from '@/mockData/mockFileUploaderList'
 import type { TFile, TPath } from '../DataExport.types'
 
 export const getFiles = async (path: TPath) => {
-  const response = await api.get<TFile[]>(`/export/${path}`)
+  const response = await api.get<TFile[]>(API_ROUTES.export.byPath(path))
 
   if (!Array.isArray(response.data))
     return new Promise<TFile[]>(resolve => {
