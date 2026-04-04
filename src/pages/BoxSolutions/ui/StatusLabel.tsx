@@ -1,35 +1,34 @@
 import { cn } from '@/lib/utils.clsx'
 import type { ComponentProps } from 'react'
-import type { BoxStatus } from '../BoxSolutions.types'
 
-const STATUS_MAP: Record<BoxStatus, { title: string; styles: string }> = {
-  active: {
+const STATUS_MAP: Record<string, { title: string; styles: string }> = {
+  true: {
     title: 'Активен в боте',
     styles: 'bg-labels-yellow-light'
   },
-  disable: {
+  false: {
     title: 'Не активен в боте',
     styles: 'bg-labels-grey-light'
   }
 }
 
 type LabelProps = {
-  status: BoxStatus
+  isActive: boolean
 } & ComponentProps<'div'>
 
-export const StatusLabel = ({ status, className, ...props }: LabelProps) => {
-  const label = STATUS_MAP[status]
+export const StatusLabel = ({ isActive, className, ...props }: LabelProps) => {
+  const { styles, title } = STATUS_MAP[String(isActive)]
 
   return (
     <div
       className={cn(
         'absolute max-w-max h-7 flex justify-center items-center text-text px-3 py-1 rounded-sm',
-        label.styles,
+        styles,
         className
       )}
       {...props}
     >
-      {label.title}
+      {title}
     </div>
   )
 }

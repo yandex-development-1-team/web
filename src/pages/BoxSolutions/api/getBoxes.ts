@@ -10,7 +10,7 @@ export const getBoxes = async (
   { params }: { params: BoxSolutionsSearchParamsType },
   { signal }: { signal: AbortSignal }
 ) => {
-  // const response = await api.get<BoxesPesponseType>(`/boxes`, { params, signal })
+  // const response = await api.get<BoxesSolutionsResponseType>(API_ROUTES.boxes.get, { params, signal })
   // if (!response.data) throw new Error('Faild to get box solutions')
 
   //Имитация пагинации на беке

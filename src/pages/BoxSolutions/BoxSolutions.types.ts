@@ -1,6 +1,10 @@
 import z from 'zod'
 
-export type BoxStatus = 'active' | 'disable'
+export interface TimeSlot {
+  date: string // ISO формат "2024-03-10"
+  time_from: string // "00:00"
+  time_to: string // "00:00"
+}
 
 export interface IBox {
   id: number
@@ -9,11 +13,11 @@ export interface IBox {
   description: string
   rules: string
   date: string
-  time: string
+  time_slots: TimeSlot[]
   location: string
   price: number
   image: string
-  status: BoxStatus
+  is_active_in_bot: boolean
   organizer: string
   created_at: string
   updated_at: string
@@ -25,8 +29,8 @@ export interface IPagination {
   offset: number
   total: number
 }
-
-export type ModalState = { type: 'delete' | 'edit'; id: number } | { type: 'create'; id: null } | null
+type ModalType = 'create' | 'edit' | 'delete' | 'details'
+export type ModalState = { type: Exclude<ModalType, 'create'>; id: string } | { type: 'create'; id: null } | null
 
 const boxStatusField = ['active', 'disable'] as const
 const boxSortField = ['name', 'created_at', 'updated_at'] as const
