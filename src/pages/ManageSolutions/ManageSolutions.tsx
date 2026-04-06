@@ -1,14 +1,64 @@
-import { BoxButton } from '@/components/ui'
-import { indicators } from './solutionsData'
-import { mockIndicatorsValues, mockBoxes, mockProjects } from '@/mockData/mockManageSolutionsPageData'
+import { useState } from 'react'
+import { BoxButton, DeleteModal } from '@/components/ui'
 import { ManageButton } from './ui/ManageButton'
+import { BoxSolutionModal } from '../../components/BoxSolutionModal'
+import { useModal } from '@/components/ui/Modal/useModal'
+import { type ModalAction } from '@/components/BoxSolutionModal/BoxSolutionModal.type'
+import type { BoxData } from '@/types/solutions'
+import { indicators } from './solutionsData'
+import {
+  mockIndicatorsValues,
+  mockBoxes as initialMockBoxes,
+  mockProjects
+} from '@/mockData/mockManageSolutionsPageData'
 
 const ManageSolutions = () => {
-  const handleBoxCreate = () => {}
+  const [boxes, setBoxes] = useState<BoxData[]>(initialMockBoxes)
+  const [modalAction, setModalAction] = useState<ModalAction>('create')
+  const [selectedBoxId, setSelectedBoxId] = useState<number | null>(null)
+  const [deleteBoxId, setDeleteBoxId] = useState<number | null>(null)
+  const { isOpen: isCreateEditModalOpen, open: openCreateEditModal, close: closeCreateEditModal } = useModal()
+  const { isOpen: isDeleteModalOpen, open: openDeleteModal, close: closeDeleteModal } = useModal()
 
-  const handleBoxEdit = (id: number) => void id
+  const selectedBox = boxes.find(b => b.id === selectedBoxId)
 
-  const handleBoxDelete = (id: number) => void id
+  const handleBoxCreate = () => {
+    setModalAction('create')
+    setSelectedBoxId(null)
+    openCreateEditModal()
+  }
+
+  const handleBoxEdit = (id: number) => {
+    setModalAction('edit')
+    setSelectedBoxId(id)
+    openCreateEditModal()
+  }
+
+  const handleBoxSave = (data: Partial<Omit<BoxData, 'id'>>) => {
+    if (modalAction === 'create') {
+      const newBox: BoxData = {
+        id: Math.max(...boxes.map(b => b.id), 0) + 1,
+        ...(data as Omit<BoxData, 'id'>)
+      }
+
+      setBoxes(prev => [...prev, newBox])
+    } else if (modalAction === 'edit' && selectedBox) {
+      const updatedBox: BoxData = { ...selectedBox, ...data }
+
+      setBoxes(prev => prev.map(box => (box.id === selectedBox.id ? updatedBox : box)))
+    }
+
+    closeCreateEditModal()
+  }
+
+  const handleBoxDeleteClick = (id: number) => {
+    setDeleteBoxId(id)
+    openDeleteModal()
+  }
+
+  const handleBoxDeleteConfirm = async (id: string | number) => {
+    setBoxes(prev => prev.filter(box => box.id !== id))
+  }
 
   const handleProjectCreate = () => {}
 
@@ -45,12 +95,12 @@ const ManageSolutions = () => {
             <BoxButton className="button-text" icon={'box'} onClick={handleBoxCreate}>
               Создать коробку
             </BoxButton>
-            {mockBoxes.map(box => (
+            {boxes.map(box => (
               <ManageButton
                 key={box.id}
                 text={box.name}
                 onClick={() => handleBoxEdit(box.id)}
-                onDelete={() => handleBoxDelete(box.id)}
+                onDelete={() => handleBoxDeleteClick(box.id)}
               />
             ))}
           </div>
@@ -62,7 +112,7 @@ const ManageSolutions = () => {
             {mockProjects.map(project => (
               <ManageButton
                 key={project.id}
-                text={project.name}
+                text={project.title}
                 onClick={() => handleProjectEdit(project.id)}
                 onDelete={() => handleProjectDelete(project.id)}
               />
@@ -70,6 +120,26 @@ const ManageSolutions = () => {
           </div>
         </div>
       </div>
+
+      {isCreateEditModalOpen && (
+        <BoxSolutionModal
+          key={selectedBox?.id ?? 'create'}
+          isOpen={isCreateEditModalOpen}
+          onClose={closeCreateEditModal}
+          boxData={selectedBox}
+          onSave={handleBoxSave}
+        />
+      )}
+
+      <DeleteModal
+        isOpen={isDeleteModalOpen}
+        onClose={closeDeleteModal}
+        itemId={deleteBoxId}
+        onDelete={handleBoxDeleteConfirm}
+        title="Удалить коробку?"
+      >
+        Вы действительно хотите удалить эту коробку? Действие нельзя отменить.
+      </DeleteModal>
     </>
   )
 }

@@ -1,5 +1,6 @@
 import { api } from '@/app/providers/axios'
 import { MOCK_BOXES } from '@/mockData/mockBoxes'
+import { API_ROUTES } from '@/services/api/routes'
 import type { IDateRangeParams, IBox, ExportData } from '@/types/popularity.types'
 
 export const popularityApi = {
@@ -10,7 +11,7 @@ export const popularityApi = {
       sort_by: 'popularity'
     }
     try {
-      const response = await api.get('/analytics/boxes', {
+      const response = await api.get(API_ROUTES.analytics.boxes, {
         params: queryParams
       })
       const data = (response.data = MOCK_BOXES)
@@ -28,7 +29,7 @@ export const popularityApi = {
     }
 
     return api
-      .get(`/analytics/export`, {
+      .get(API_ROUTES.analytics.export, {
         params: queryParams,
         responseType: 'blob'
       })
