@@ -94,9 +94,9 @@ export const mockBoxes: BoxData[] = [
   }
 ]
 
-export const mockProjects: IProject[] = [
-  { id: 0, name: 'Название спецпроекта' },
-  { id: 1, name: 'Название спецпроекта' },
-  { id: 2, name: 'Название спецпроекта' },
-  { id: 3, name: 'Название спецпроекта' }
+export const mockProjects: Pick<IProject, 'id' | 'title'>[] = [
+  { id: 0, title: 'Название спецпроекта' },
+  { id: 1, title: 'Название спецпроекта' },
+  { id: 2, title: 'Название спецпроекта' },
+  { id: 3, title: 'Название спецпроекта' }
 ]
