@@ -61,12 +61,17 @@ export const ProjectCard = ({
       <p className="text-xs text-left min-h-[73px] h-[73px] mb-[3px] overflow-hidden">{description}</p>
       <div className="ml-[-20px] w-[calc(100%+40px)] border-b-1 border-grey-extra-light"></div>
       <div className="py-[19px_20px] px-[6px] flex justify-between gap-[20px]">
-        <Button className="max-w-[106px] w-[106px] max-h-[43px] h-[43px]" variant={'primary'} onClick={handleEdit}>
-          <Edit2Icon className="min-w-[18px] min-h-[18px]" />
-        </Button>
-        <Button className="max-w-[106px] w-[106px] max-h-[43px] h-[43px]" variant={'secondary'} onClick={handleDelete}>
-          <Delete2Icon className="min-w-[22px] min-h-[22px]" />
-        </Button>
+        {onEdit &&
+          <Button className="max-w-[106px] w-[106px] max-h-[43px] h-[43px]" variant={'primary'} onClick={handleEdit}>
+            <Edit2Icon className="min-w-[18px] min-h-[18px]" />
+          </Button>
+          || <div />
+        }
+        {onDelete &&
+          <Button className="max-w-[106px] w-[106px] max-h-[43px] h-[43px]" variant={'secondary'} onClick={handleDelete}>
+            <Delete2Icon className="min-w-[22px] min-h-[22px]" />
+          </Button>
+        }
       </div>
     </div>
   )

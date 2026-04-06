@@ -16,6 +16,8 @@ import { ROUTES } from '@/app/router'
 import type { ItemProps } from './ui/Item.types'
 import type { DownItemProps } from './ui/DownItem.types'
 
+import { PERMISSIONS } from '@/app/router/permissions'
+
 export const MENU_MANAGER: Omit<ItemProps, 'isExpanded'>[] = [
   {
     Icon: HomeIcon,
@@ -25,17 +27,20 @@ export const MENU_MANAGER: Omit<ItemProps, 'isExpanded'>[] = [
   {
     Icon: BoxesIcon,
     title: 'Коробочные решения',
-    route: ROUTES.boxSolutions
+    route: ROUTES.boxSolutions,
+    accessName: PERMISSIONS.boxesView
   },
   {
     Icon: SpecialProjectsIcon,
     title: 'Спецпроекты',
-    route: ROUTES.specialProjects
+    route: ROUTES.specialProjects,
+    accessName: PERMISSIONS.specprojectsView
   },
   {
     Icon: ApplicationIcon,
     title: 'Заявки',
-    route: ROUTES.applications
+    route: ROUTES.applications,
+    accessName: PERMISSIONS.applicationsView
   },
   {
     Icon: AfishaIcon,
@@ -60,7 +65,7 @@ export const MENU_ADMIN: Omit<ItemProps, 'isExpanded'>[] = [
   {
     Icon: BoxIcon,
     title: 'Управление коробками',
-    route: ROUTES.manageSolutions
+    route: ROUTES.manageSolutions,
   },
   {
     Icon: ScheduleIcon,
