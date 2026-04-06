@@ -27,7 +27,7 @@ export const Boxes = ({
   if (isLoading) return <Loader />
   return (
     <div className={cn('flex flex-col gap-10', className)} {...props}>
-      <div className="grid grid-cols-[repeat(auto-fill,344px)] gap-5">
+      <div className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-5">
         {boxesList?.map(box => {
           const id = String(box.id)
           return (

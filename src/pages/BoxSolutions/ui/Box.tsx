@@ -15,7 +15,7 @@ export const Box = ({ box, onDelete, onEdit, onDetailsView }: BoxPropsType) => {
   const { id, name, description, is_active_in_bot, image } = box
   return (
     <Card
-      className="flex flex-col max-w-86 relative shadow transition-shadow duration-300  hover:shadow-2xl "
+      className="flex flex-col relative shadow transition-shadow duration-300  hover:shadow-2xl "
       onClick={() => onDetailsView(String(id))}
     >
       <StatusLabel isActive={is_active_in_bot} className="top-8 right-8" />
