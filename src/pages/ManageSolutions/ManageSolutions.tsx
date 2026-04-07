@@ -1,19 +1,19 @@
-import { useState } from 'react'
-import { BoxButton, DeleteModal } from '@/components/ui'
-import { ManageButton } from './ui/ManageButton'
-import { BoxSolutionModal } from '../../components/BoxSolutionModal'
-import { useModal } from '@/components/ui/Modal/useModal'
 import { type ModalAction } from '@/components/BoxSolutionModal/BoxSolutionModal.type'
-import type { BoxData } from '@/types/solutions'
-import { indicators } from './solutionsData'
+import { BoxButton, DeleteModal } from '@/components/ui'
+import { useModal } from '@/components/ui/Modal/useModal'
 import {
-  mockIndicatorsValues,
   mockBoxes as initialMockBoxes,
+  mockIndicatorsValues,
   mockProjects
 } from '@/mockData/mockManageSolutionsPageData'
+import type { BoxData } from '@/types/solutions'
+import { useState } from 'react'
+import { BoxSolutionModal } from '../../components/BoxSolutionModal'
+import { indicators } from './solutionsData'
+import { ManageButton } from './ui/ManageButton'
 
 const ManageSolutions = () => {
-  const [boxes, setBoxes] = useState<BoxData[]>(initialMockBoxes)
+  const [boxes, setBoxes] = useState(initialMockBoxes)
   const [modalAction, setModalAction] = useState<ModalAction>('create')
   const [selectedBoxId, setSelectedBoxId] = useState<number | null>(null)
   const [deleteBoxId, setDeleteBoxId] = useState<number | null>(null)
@@ -43,7 +43,7 @@ const ManageSolutions = () => {
 
       setBoxes(prev => [...prev, newBox])
     } else if (modalAction === 'edit' && selectedBox) {
-      const updatedBox: BoxData = { ...selectedBox, ...data }
+      const updatedBox = { ...selectedBox, ...data }
 
       setBoxes(prev => prev.map(box => (box.id === selectedBox.id ? updatedBox : box)))
     }

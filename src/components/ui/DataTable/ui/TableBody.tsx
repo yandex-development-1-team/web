@@ -1,6 +1,7 @@
 import { CheckIcon } from '@/assets/icons'
-import { cn } from '@/lib/utils.clsx'
 import type { Column } from '../DataTable.types'
+import { findMaxNumber, isValidNumber } from '../helpers'
+import { PaddedNumber } from './PaddedNumber'
 
 type Props<T> = {
   data: T[]
@@ -22,9 +23,10 @@ export function TableBody<T>({
   enableRowActions,
   selectedRows,
   onSelectRow,
-  rowActions,
-  onRowClick
+  rowActions
 }: Props<T>) {
+  const maxLen = findMaxNumber(data, columns)
+
   return (
     <tbody>
       {data.map(row => {
@@ -33,8 +35,7 @@ export function TableBody<T>({
         return (
           <tr
             key={String(row[idKey])}
-            className={cn(`${isSelected ? 'bg-[#FFFFF8]' : ''}  hover:cursor-pointer hover:bg-grey-extra-light`)}
-            onClick={() => onRowClick?.(row)}
+            className={`${isSelected ? 'bg-creamy' : ''} border-b border-b-grey-blue-light last:border-b-0`}
           >
             {enableCheckboxes && (
               <td className="w-12 p-4">
@@ -61,8 +62,14 @@ export function TableBody<T>({
             )}
 
             {columns.map(col => (
-              <td key={col.key as string} className={`p-4 ${col.className || ''}`}>
-                {col.render ? col.render(row[col.key], row) : String(row[col.key] ?? '')}
+              <td key={col.key as string} className={`px-4 py-1 h-[52px] ${col.className || ''}`}>
+                {col.render ? (
+                  col.render(row[col.key], row)
+                ) : isValidNumber(row[col.key]) ? (
+                  <PaddedNumber maxLen={maxLen || 0} value={+row[col.key]} />
+                ) : (
+                  String(row[col.key] ?? '')
+                )}
               </td>
             ))}
 

@@ -21,5 +21,3 @@ export const Content = ({ children, className, ...props }: TContentProps) => {
     </div>
   )
 }
-// className={`w-full h-auto mt-5 grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-5 max-h-max ${className}`}
-//  grid grid-cols-[380px_1fr]

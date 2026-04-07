@@ -87,6 +87,7 @@ export function DataTable<T extends Record<string, unknown>>(props: DataTablePro
             enableRowActions={!!rowActions}
             onSort={handleSort}
             onSelectAll={e => handleSelectAll(e.target.checked)}
+            direction={sortConfig?.direction || null}
           />
 
           <TableBody
