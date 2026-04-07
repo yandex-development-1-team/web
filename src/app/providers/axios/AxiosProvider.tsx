@@ -35,7 +35,10 @@ export const AxiosProvider = ({ children }: Props) => {
         }
       },
       onForbidden: () => {
-        navigate(ROUTES.forbidden)
+        showNotification({
+          status: 'error',
+          message: 'Нет доступа'
+        })
       },
       onServerError: msg => {
         showNotification({
