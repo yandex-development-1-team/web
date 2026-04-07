@@ -9,7 +9,7 @@ export const ProjectCard = ({
   title,
   description,
   image,
-  status,
+  isActive: status,
   className,
   style
 }: ProjectCardProps) => {
