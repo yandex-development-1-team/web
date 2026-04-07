@@ -3,7 +3,7 @@ export interface IProject {
   title: string
   description: string
   image: string
-  status: boolean
+  isActive: boolean
 }
 
 export interface TimeSlot {

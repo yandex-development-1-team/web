@@ -7,6 +7,7 @@ import { ProjectCard } from '@/components/layout/ProjectCard'
 import { Pagination } from '@/components/ui/Pagination'
 import { type IProject } from '@/types/solutions'
 import { useMainWidth } from '@/hooks/useMainWidth'
+import { ProjectModal } from './components'
 
 const SpecialProjects = () => {
   const cardMinWidth = 284
@@ -28,6 +29,7 @@ const SpecialProjects = () => {
   const [presentationFile, setPresentationFile] = useState<File | null>(null)
 
   const [projectToDelete, setProjectToDelete] = useState<number | null>(null)
+  const [projectToEdit, setProjectToEdit] = useState<IProject | null | undefined>(null)
 
   const [urlError, setUrlError] = useState(false)
 
@@ -90,9 +92,13 @@ const SpecialProjects = () => {
     setProjects(prev => prev.filter(project => project.id !== id))
   }
 
-  const handleProjectCreate = () => {}
+  const handleProjectCreate = () => {
+    setProjectToEdit(undefined)
+  }
 
-  const handleProjectEdit = (id: number) => void id
+  const handleProjectEdit = (id: number) => {
+    setProjectToEdit(mockProjects.find(project => project.id === id) || null)
+  }
 
   const handleProjectDelete = (id: number) => {
     setProjectToDelete(id)
@@ -164,7 +170,7 @@ const SpecialProjects = () => {
             title={project.title}
             description={project.description}
             image={project.image}
-            status={project.status}
+            isActive={project.isActive}
             onClick={() => handleProjectEdit(project.id)}
             onDelete={() => handleProjectDelete(project.id)}
           />
@@ -179,6 +185,12 @@ const SpecialProjects = () => {
           offset: offset,
           total: projects.length
         }}
+      />
+
+      <ProjectModal
+        isOpen={projectToEdit !== null}
+        onClose={() => setProjectToEdit(null)}
+        project={projectToEdit || undefined}
       />
 
       <DeleteModal
