@@ -124,12 +124,11 @@ const SpecialProjects = () => {
           />
           {urlError && <p className="absolute mt-[3px] text-xxs text-text-error">Некорректный URL</p>}
         </div>
-        
-        {hasAccess(PERMISSIONS.presentationsEdit) &&
-          <h3 className="order-2 text-h3">Презентация</h3>
-          || <div className="order-2" />
-        }
-        {hasAccess(PERMISSIONS.presentationsEdit) &&
+
+        {(hasAccess(PERMISSIONS.presentationsEdit) && <h3 className="order-2 text-h3">Презентация</h3>) || (
+          <div className="order-2" />
+        )}
+        {hasAccess(PERMISSIONS.presentationsEdit) && (
           <Dropzone
             className="order-4 flex flex-col items-center min-h-[145px] outline-0 px-2"
             accept={{ 'application/pdf': ['.pdf'] }}
@@ -149,12 +148,12 @@ const SpecialProjects = () => {
               </>
             )}
           </Dropzone>
-        }
+        )}
       </div>
 
       <div className="flex justify-between mb-[20px]">
         <h3 className="text-h3 text-text">Список спецпроектов</h3>
-        {hasAccess(PERMISSIONS.specprojectsEdit) &&
+        {hasAccess(PERMISSIONS.specprojectsEdit) && (
           <BoxButton
             className="text-button max-w-[340px] h-[72px] ml-[20px]"
             icon={'special_projects'}
@@ -163,7 +162,7 @@ const SpecialProjects = () => {
           >
             Создать спецпроект
           </BoxButton>
-        }
+        )}
       </div>
 
       <div

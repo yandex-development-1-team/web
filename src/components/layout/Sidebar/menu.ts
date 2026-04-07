@@ -65,7 +65,7 @@ export const MENU_ADMIN: Omit<ItemProps, 'isExpanded'>[] = [
   {
     Icon: BoxIcon,
     title: 'Управление коробками',
-    route: ROUTES.manageSolutions,
+    route: ROUTES.manageSolutions
   },
   {
     Icon: ScheduleIcon,

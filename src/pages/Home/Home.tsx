@@ -44,11 +44,11 @@ const Home = () => {
           </div>
         ))}
 
-        {hasAccess(PERMISSIONS.boxesEdit) &&
+        {hasAccess(PERMISSIONS.boxesEdit) && (
           <BoxButton onClick={handleBoxCreate} icon="box" className="max-w-[407px]">
             Создать коробку
           </BoxButton>
-        }
+        )}
       </div>
 
       <div className="flex gap-[20px] h-[92px]">
@@ -71,11 +71,11 @@ const Home = () => {
           </div>
         </div>
 
-        {hasAccess(PERMISSIONS.specprojectsEdit) &&
+        {hasAccess(PERMISSIONS.specprojectsEdit) && (
           <BoxButton onClick={handleSpecProjectCreate} icon="special_projects" className="max-w-[407px]">
             Создать спецпроект
           </BoxButton>
-        }
+        )}
       </div>
 
       <div>

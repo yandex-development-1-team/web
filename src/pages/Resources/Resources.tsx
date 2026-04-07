@@ -34,11 +34,11 @@ const Resources = () => {
 
   return (
     <div className="flex flex-col gap-[20px]">
-      {hasAccess(PERMISSIONS.about) &&
+      {hasAccess(PERMISSIONS.about) && (
         <Block title="Информация об организации">
           <InfoForm defaultValue={data.organizationInfo} onSaveInfo={handleSaveInfo} onDeleteInfo={handleDeleteInfo} />
         </Block>
-      }
+      )}
       <Block title="Полезные ссылки">
         <LinkForm
           links={data.usefulLinks}
@@ -46,12 +46,12 @@ const Resources = () => {
           onRemoveLink={removeLink('usefulLinks')}
         />
       </Block>
-      {hasAccess(PERMISSIONS.faq) &&
+      {hasAccess(PERMISSIONS.faq) && (
         <Block title="FAQ">
           <LinkForm links={data.faq} onAddLink={addLink('faq')} onRemoveLink={removeLink('faq')} />
         </Block>
-      }
-      {hasAccess(PERMISSIONS.affiche) &&
+      )}
+      {hasAccess(PERMISSIONS.affiche) && (
         <Block title="Афиша Partner Relations">
           <LinkForm
             links={data.eventSchedule}
@@ -59,7 +59,7 @@ const Resources = () => {
             onRemoveLink={removeLink('eventSchedule')}
           />
         </Block>
-      }
+      )}
     </div>
   )
 }

@@ -17,7 +17,7 @@ export const ProtectedRoute = ({ requiredRole, requiredPermission }: ProtectedRo
     return <Navigate to={ROUTES.login} replace />
   }
 
-  if (requiredRole && !hasRole(requiredRole) || requiredPermission && !hasAccess(requiredPermission)) {
+  if ((requiredRole && !hasRole(requiredRole)) || (requiredPermission && !hasAccess(requiredPermission))) {
     return <ForbiddenPage />
   }
 

@@ -16,7 +16,7 @@ export const usePermissions = () => {
   const permissions = data?.permissions?.items || []
   const roleReceived = data?.role || ''
   const isLoggedIn = !!roleReceived
-  
+
   const hasAccess = (code: string) => permissions.includes(code)
   const hasRole = (role: string) => role === roleReceived
 
