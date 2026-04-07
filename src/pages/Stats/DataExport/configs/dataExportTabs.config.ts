@@ -1,7 +1,8 @@
 import { BoxIcon, UserIcon, UsersIcon } from '@/assets/icons'
-import type { ITabs } from '@/pages/Stats/DataExport/DataExport.types'
+import type { ITab } from '@/components/ui/Tabs'
+import type { TPath } from '../DataExport.types'
 
-export const TABS: ITabs[] = [
+export const TABS = [
   {
     id: '0',
     path: 'employees',
@@ -26,4 +27,4 @@ export const TABS: ITabs[] = [
     title: 'Пользователи',
     Icon: UsersIcon
   }
-] as const satisfies ITabs[]
+] as const satisfies ITab<TPath>[]

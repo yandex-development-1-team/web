@@ -7,7 +7,7 @@ export { Dropzone } from './Dropzone'
 export { ImageCropper } from './ImageCropper'
 export { Input } from './Input'
 export { Loader } from './Loader'
-export { Modal, DeleteModal } from './Modal'
+export { DeleteModal, Modal } from './Modal'
 export {
   Select,
   SelectBase,

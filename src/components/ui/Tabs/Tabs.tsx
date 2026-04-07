@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils.clsx'
-import type { ITabsProps } from './Tabs.types'
+import type { TabsPropsType } from './Tabs.types'
 
-export const Tabs = ({ tabs, onTabClick, activeTab, className, ...props }: ITabsProps) => {
+export const Tabs = <T extends string>({ tabs, onTabClick, activeTab, className, ...props }: TabsPropsType<T>) => {
   if (!tabs.length) return null
 
   return (
