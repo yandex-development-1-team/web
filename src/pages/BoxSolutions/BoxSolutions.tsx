@@ -8,10 +8,13 @@ import { getBoxById } from './api/getBoxById'
 import type { ModalState } from './BoxSolutions.types'
 import { useBoxes } from './hooks/useBoxes'
 import { Boxes } from './ui/Boxes'
+import { usePermissions, PERMISSIONS } from '@/hooks/usePermissions'
 
 const BoxSolutions = () => {
   const [modal, setModal] = useState<ModalState>()
   const { boxes, pagination, isError, isLoading, isPending, queryKey } = useBoxes()
+
+  const { hasAccess } = usePermissions()
 
   if (isError) return <div className="text-text">Ошибка при получении данных</div>
   if (!boxes?.length && !isPending) return <div className="text-text">Нет сохраненных коробок</div>
@@ -20,22 +23,24 @@ const BoxSolutions = () => {
     <div className="min-w-180">
       <div className="flex justify-between h-18 mb-5">
         <h1 className="text-h2 text-text">Коробочные решения</h1>
-        <BoxButton
-          size={'small'}
-          icon="box"
-          className="text-text p-5 w-85"
-          onClick={() => {
-            setModal({ type: 'create', id: null })
-          }}
-        >
-          Создать коробку
-        </BoxButton>
+        {hasAccess(PERMISSIONS.boxesEdit) &&
+          <BoxButton
+            size={'small'}
+            icon="box"
+            className="text-text p-5 w-85"
+            onClick={() => {
+              setModal({ type: 'create', id: null })
+            }}
+          >
+            Создать коробку
+          </BoxButton>
+        }
       </div>
       <Boxes
         boxesList={boxes}
         isLoading={isLoading}
-        onDelete={(id: string) => setModal({ type: 'delete', id })}
-        onEdit={(id: string) => setModal({ type: 'edit', id })}
+        onDelete={hasAccess(PERMISSIONS.boxesDelete) ? (id: string) => setModal({ type: 'delete', id }) : undefined}
+        onEdit={hasAccess(PERMISSIONS.boxesEdit) ? (id: string) => setModal({ type: 'edit', id }) : undefined}
         onDetailsView={(id: string) => setModal({ type: 'details', id })}
         pagination={<Pagination pagination={pagination} />}
       />
