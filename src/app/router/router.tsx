@@ -47,7 +47,7 @@ export const router = createBrowserRouter(
             },
             {
               path: ROUTES.stats,
-              lazy: () => import('@/pages/Stats/Stats')
+              lazy: () => import('@/pages/Stats/Stats/Stats')
             },
             {
               path: ROUTES.statsAttendance,
