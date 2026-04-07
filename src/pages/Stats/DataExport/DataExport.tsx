@@ -1,44 +1,33 @@
-import { useNotification } from '@/app/providers/notification'
 import { DeleteModal } from '@/components/ui'
 import { Card } from '@/components/ui/Card'
-import { Loader } from '@/components/ui/Loader'
-import { TABS } from '@/pages/Stats/DataExport/mockData.constants'
-import { useQuery } from '@tanstack/react-query'
+import { Tabs, useTabs } from '@/components/ui/Tabs'
+import { TABS } from '@/pages/Stats/DataExport/configs/dataExportTabs.config'
 import { useState } from 'react'
 import { deleteFile } from './api/deleteFile'
-import { getFiles } from './api/fetchFiles'
-import { FileUploderList } from './ui/FileUploaderList'
-import { Tabs } from './ui/Tabs'
+import { useDataExport } from './hooks/useDataExport'
+import { FileUploaderList } from './ui/FileUploaderList'
 
 const DataExport = () => {
   const [fileToDelete, setFileToDelete] = useState<string | null>(null)
-  const [activeTab, setActiveTab] = useState<(typeof TABS)[number]['path']>(TABS[0].path)
-  const { showNotification } = useNotification()
 
-  const { data, isPending, isError } = useQuery({
-    queryKey: ['data-export', activeTab],
-    queryFn: () => getFiles(activeTab)
-  })
+  const { activeTab, onTabClick } = useTabs(TABS)
 
-  if (isError) {
-    showNotification({
-      message: 'Не удалось получить список файлов',
-      status: 'error'
-    })
-  }
+  const { data, isPending } = useDataExport(activeTab)
 
   return (
     <div className={`flex flex-col gap-5`}>
       <Card>
         <h1 className=" text-text-black-dark text-h2">Экспортированные файлы</h1>
-        <Tabs tabs={TABS} onTabClick={setActiveTab} activeTab={activeTab} className="" />
+        <Tabs tabs={TABS} onTabClick={onTabClick} activeTab={activeTab} />
       </Card>
-      <Card>{isPending ? <Loader /> : <FileUploderList files={data} onDelete={setFileToDelete} />}</Card>
+      <Card>
+        <FileUploaderList files={data} isPending={isPending} onDelete={setFileToDelete} />
+      </Card>
 
       <DeleteModal
         title="Удалить документ?"
         isOpen={!!fileToDelete}
-        onDelete={() => deleteFile(fileToDelete ?? '')}
+        onDelete={() => deleteFile(fileToDelete)}
         onClose={() => setFileToDelete(null)}
         itemId={fileToDelete}
         queryKey={['data-export']}

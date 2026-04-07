@@ -1,6 +1,6 @@
 import { formatDateISO, parseToDate } from '@/lib/utils.date'
 import type { BoxData, TimeSlot } from '@/types/solutions'
-import type { BoxSolutionFormData } from './BoxSolutionModal.type'
+import type { BoxSolutionFormData, BoxSolutionModalData } from './BoxSolutionModal.type'
 
 export const FORM_TO_API_KEYS: Record<keyof BoxSolutionFormData, keyof Omit<BoxData, 'id'> | null> = {
   name: 'name',
@@ -9,12 +9,12 @@ export const FORM_TO_API_KEYS: Record<keyof BoxSolutionFormData, keyof Omit<BoxD
   location: 'location',
   description: 'description',
   rules: 'rules',
-  cost: 'cost',
+  cost: 'price',
   organizer: 'organizer',
   image: 'image'
 } as const
 
-export const getFormValues = (boxData?: BoxData): BoxSolutionFormData => {
+export const getFormValues = (boxData?: BoxSolutionModalData): BoxSolutionFormData => {
   if (boxData) {
     const timeSlots = boxData.time_slots
       .filter(slot => slot.date && slot.time_from && slot.time_to)
@@ -36,7 +36,7 @@ export const getFormValues = (boxData?: BoxData): BoxSolutionFormData => {
       location: boxData.location || '',
       description: boxData.description || '',
       rules: boxData.rules || '',
-      cost: boxData.cost !== null && boxData.cost !== undefined ? String(boxData.cost) : '',
+      cost: boxData.price !== null && boxData.price !== undefined ? String(boxData.price) : '',
       organizer: boxData.organizer || '',
       image: null
     }
@@ -60,7 +60,7 @@ export const getFormValues = (boxData?: BoxData): BoxSolutionFormData => {
   }
 }
 
-export const mapFormDataToBoxData = (data: BoxSolutionFormData, imageBase64?: string): Omit<BoxData, 'id'> => {
+export const mapFormDataToBoxData = (data: BoxSolutionFormData, imageBase64?: string): Partial<Omit<BoxData, 'id'>> => {
   const time_slots: TimeSlot[] = data.timeSlots
     .filter(slot => slot.date && slot.timeRange?.from && slot.timeRange?.to)
     .map(slot => ({
@@ -76,8 +76,8 @@ export const mapFormDataToBoxData = (data: BoxSolutionFormData, imageBase64?: st
     location: data.location,
     description: data.description,
     rules: data.rules,
-    cost: Number(data.cost),
+    price: Number(data.cost),
     organizer: data.organizer,
-    image: imageBase64
+    image: imageBase64 || ''
   }
 }

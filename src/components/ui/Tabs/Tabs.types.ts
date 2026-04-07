@@ -1,14 +1,14 @@
 import type { ComponentProps, FC, SVGProps } from 'react'
 
-export interface ITab {
+export interface ITab<T extends string> {
   id: string
-  path: string
+  path: T
   title: string
   Icon: FC<SVGProps<SVGSVGElement>>
 }
 
-export interface ITabsProps extends ComponentProps<'div'> {
-  readonly tabs: readonly ITab[]
-  activeTab: ITab['path']
-  onTabClick: (path: ITab['path']) => void
-}
+export type TabsPropsType<T extends string> = {
+  readonly tabs: readonly ITab<T>[]
+  activeTab: ITab<T>['path']
+  onTabClick: (path: ITab<T>['path']) => void
+} & ComponentProps<'div'>

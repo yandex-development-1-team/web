@@ -1,12 +1,12 @@
-import { useState, useRef } from 'react'
-import { useForm, useWatch, Controller, type SubmitHandler } from 'react-hook-form'
 import { useNotification } from '@/app/providers/notification'
-import { useNavigate } from 'react-router-dom'
-import { cn } from '@/lib/utils.clsx'
-import type { IEmployeeFormData } from './CreateEmployees.types'
 import { DownloadIcon, UserCreateIcon } from '@/assets/icons'
-import { departments, roles, chief } from './createEmployeesData'
-import { Input, Select, Button, Switch } from '@/components/ui'
+import { Button, Input, Select, Switch } from '@/components/ui'
+import { cn } from '@/lib/utils.clsx'
+import { useRef, useState } from 'react'
+import { Controller, useForm, useWatch, type SubmitHandler } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
+import type { IEmployeeFormData } from './CreateEmployees.types'
+import { chief, departments, roles } from './createEmployeesData'
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024
 const ALLOWED_TYPES = ['image/jpeg', 'image/png']
