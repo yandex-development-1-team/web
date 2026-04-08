@@ -108,7 +108,7 @@ export const SpecialProjectApplicationModal = ({
 
           <h4 className="text-h4sb my-[19px_14px]">Текст заявки</h4>
           <div className="pb-[7px]">
-            <div className="space-y-[10px]">
+            <div className="space-y-[10px] overflow-y-auto">
               {data.request.questions.map((question, index) => (
                 <div key={`${question.label}-${index}`}>
                   <p className={labelClasses}>{question.label}</p>
@@ -117,7 +117,7 @@ export const SpecialProjectApplicationModal = ({
               ))}
               <div>
                 <p className={labelClasses}>{data.request.textLabel ?? 'Текст'}</p>
-                <div className="max-h-[170px] overflow-y-auto pr-[8px]">
+                <div className="max-h-[170px] pr-[8px]">
                   <p className="text-h5 text-text leading-[140%]">{data.request.text}</p>
                 </div>
               </div>
