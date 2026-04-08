@@ -176,7 +176,7 @@ const SpecialProjects = () => {
             title={project.title}
             description={project.description}
             image={project.image}
-            status={project.status}
+            isActive={project.isActive}
             onClick={handleProjectView(project.id)}
             onDelete={hasAccess(PERMISSIONS.specprojectsDelete) ? () => handleProjectDelete(project.id) : undefined}
             onEdit={hasAccess(PERMISSIONS.specprojectsEdit) ? () => handleProjectEdit(project.id) : undefined}
