@@ -1,7 +1,10 @@
-import type { TFileUploaderProps } from '../DataExport.types'
+import { Loader } from '@/components/ui'
+import type { FileUploaderPropsType } from '../DataExport.types'
 import { FileItem } from './FileItem'
 
-export const FileUploderList = ({ files, onDelete, className, ...props }: TFileUploaderProps) => {
+export const FileUploaderList = ({ files, isPending, onDelete, className, ...props }: FileUploaderPropsType) => {
+  if (isPending) return <Loader />
+
   if (!Array.isArray(files) || !files.length)
     return <div className="p-4 text-center text-text-grey-dark">Список файлов пуст</div>
 

@@ -1,6 +1,7 @@
-import type { BoxData, IProject } from '@/types/solutions'
+import type { BoxSolutionModalData } from '@/components/BoxSolutionModal/BoxSolutionModal.type'
 import type { IIndicatorValues } from '@/types/indicators'
 import mockGallery from './mock_gallery.jpg'
+import type { IProject } from '@/types/solutions'
 
 export const mockIndicatorsValues: IIndicatorValues[] = [
   { id: 0, value: 5 },
@@ -9,7 +10,7 @@ export const mockIndicatorsValues: IIndicatorValues[] = [
   { id: 3, value: 4 }
 ]
 
-export const mockBoxes: BoxData[] = [
+export const mockBoxes: BoxSolutionModalData[] = [
   {
     id: 0,
     name: 'Экскурсия по русской живописи',
@@ -34,8 +35,9 @@ export const mockBoxes: BoxData[] = [
     location: 'Государственная Третьяковская галерея (Лаврушинский переулок, дом 10)',
     description: 'Обзорная экскурсия по залам русской живописи XIX-XX веков',
     rules: 'Не трогать экспонаты, фотосъемка без вспышки',
-    cost: 800,
-    organizer: 'Екатерина Волкова'
+    price: 800,
+    organizer: 'Екатерина Волкова',
+    image: ''
   },
   {
     id: 1,
@@ -51,8 +53,9 @@ export const mockBoxes: BoxData[] = [
     location: 'Пушкинский музей (улица Волхонка, дом 12)',
     description: 'Знакомство с коллекцией древнеегипетского искусства',
     rules: 'Верхнюю одежду сдать в гардероб, большие сумки запрещены',
-    cost: 600,
-    organizer: 'Александр Соколов'
+    price: 600,
+    organizer: 'Александр Соколов',
+    image: ''
   },
   {
     id: 2,
@@ -68,8 +71,9 @@ export const mockBoxes: BoxData[] = [
     location: 'Экспериментаниум (Ленинградский проспект, дом 80, корпус 11)',
     description: 'Интерактивное научное шоу с экспериментами',
     rules: 'Дети до 12 лет только в сопровождении взрослых',
-    cost: 1200,
-    organizer: 'Дмитрий Новиков'
+    price: 1200,
+    organizer: 'Дмитрий Новиков',
+    image: ''
   },
   {
     id: 3,
@@ -90,8 +94,9 @@ export const mockBoxes: BoxData[] = [
     location: 'Пушкинский музей (улица Волхонка, дом 12)',
     description: 'Создание керамических изделий своими руками',
     rules: 'Необходима предварительная запись, количество мест ограничено',
-    cost: 1500,
-    organizer: 'Ольга Морозова'
+    price: 1500,
+    organizer: 'Ольга Морозова',
+    image: ''
   }
 ]
 
