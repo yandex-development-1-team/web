@@ -7,6 +7,7 @@ import { ProjectCard } from '@/components/layout/ProjectCard'
 import { Pagination } from '@/components/ui/Pagination'
 import { type IProject } from '@/types/solutions'
 import { useMainWidth } from '@/hooks/useMainWidth'
+import { ProjectModal } from './components'
 import { usePermissions, PERMISSIONS } from '@/hooks/usePermissions'
 
 const SpecialProjects = () => {
@@ -29,6 +30,8 @@ const SpecialProjects = () => {
   const [presentationFile, setPresentationFile] = useState<File | null>(null)
 
   const [projectToDelete, setProjectToDelete] = useState<number | null>(null)
+  const [projectToEdit, setProjectToEdit] = useState<IProject | null | undefined>(null)
+  const [projectToView, setProjectToView] = useState<IProject | null>(null)
 
   const [urlError, setUrlError] = useState(false)
 
@@ -91,11 +94,17 @@ const SpecialProjects = () => {
     setProjects(prev => prev.filter(project => project.id !== id))
   }
 
-  const handleProjectCreate = () => {}
+  const handleProjectCreate = () => {
+    setProjectToEdit(undefined)
+  }
 
-  const handleProjectView = (id: number) => void id
+  const handleProjectView = (id: number) => {
+    setProjectToView(mockProjects.find(project => project.id === id) || null)
+  }
 
-  const handleProjectEdit = (id: number) => void id
+  const handleProjectEdit = (id: number) => {
+    setProjectToEdit(mockProjects.find(project => project.id === id) || null)
+  }
 
   const handleProjectDelete = (id: number) => {
     setProjectToDelete(id)
@@ -177,7 +186,7 @@ const SpecialProjects = () => {
             description={project.description}
             image={project.image}
             isActive={project.isActive}
-            onClick={handleProjectView(project.id)}
+            onClick={() => handleProjectView(project.id)}
             onDelete={hasAccess(PERMISSIONS.specprojectsDelete) ? () => handleProjectDelete(project.id) : undefined}
             onEdit={hasAccess(PERMISSIONS.specprojectsEdit) ? () => handleProjectEdit(project.id) : undefined}
           />
@@ -192,6 +201,19 @@ const SpecialProjects = () => {
           offset: offset,
           total: projects.length
         }}
+      />
+
+      <ProjectModal
+        isOpen={projectToView !== null}
+        onClose={() => setProjectToView(null)}
+        project={projectToView || undefined}
+        viewOnly={true}
+      />
+
+      <ProjectModal
+        isOpen={projectToEdit !== null}
+        onClose={() => setProjectToEdit(null)}
+        project={projectToEdit || undefined}
       />
 
       <DeleteModal
