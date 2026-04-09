@@ -1,6 +1,7 @@
 import type { BoxSolutionModalData } from '@/components/BoxSolutionModal/BoxSolutionModal.type'
 import type { IIndicatorValues } from '@/types/indicators'
 import type { IProject } from '@/types/solutions'
+import mockGallery from './mock_gallery.jpg'
 
 export const mockIndicatorsValues: IIndicatorValues[] = [
   { id: 0, value: 5 },
@@ -99,9 +100,9 @@ export const mockBoxes: BoxSolutionModalData[] = [
   }
 ]
 
-export const mockProjects: Pick<IProject, 'id' | 'title'>[] = [
-  { id: 0, title: 'Название спецпроекта' },
-  { id: 1, title: 'Название спецпроекта' },
-  { id: 2, title: 'Название спецпроекта' },
-  { id: 3, title: 'Название спецпроекта' }
+export const mockProjects: IProject[] = [
+  { id: 0, title: 'Большой театр', description: 'Театральная площадь, 1', image: mockGallery, isActive: true },
+  { id: 1, title: 'Большой театр', description: 'Театральная площадь, 1', image: mockGallery, isActive: false },
+  { id: 2, title: 'Большой театр', description: 'Театральная площадь, 1', image: mockGallery, isActive: false },
+  { id: 3, title: 'Большой театр', description: 'Театральная площадь, 1', image: mockGallery, isActive: false }
 ]

@@ -1,37 +1,44 @@
-import { type ModalAction } from '@/components/BoxSolutionModal/BoxSolutionModal.type'
+import { useState } from 'react'
 import { BoxButton, DeleteModal } from '@/components/ui'
+import { ManageButton } from './ui/ManageButton'
+import { BoxSolutionModal } from '@/components/BoxSolutionModal'
 import { useModal } from '@/components/ui/Modal/useModal'
+import { type ModalAction } from '@/components/BoxSolutionModal/BoxSolutionModal.type'
 import {
   mockBoxes as initialMockBoxes,
   mockIndicatorsValues,
   mockProjects
 } from '@/mockData/mockManageSolutionsPageData'
 import type { BoxData } from '@/types/solutions'
-import { useState } from 'react'
-import { BoxSolutionModal } from '../../components/BoxSolutionModal'
 import { indicators } from './solutionsData'
-import { ManageButton } from './ui/ManageButton'
+import type { IProject } from '@/types/solutions'
+import { ProjectModal } from '@/pages/SpecialProjects/components'
 
 const ManageSolutions = () => {
   const [boxes, setBoxes] = useState(initialMockBoxes)
   const [modalAction, setModalAction] = useState<ModalAction>('create')
   const [selectedBoxId, setSelectedBoxId] = useState<number | null>(null)
   const [deleteBoxId, setDeleteBoxId] = useState<number | null>(null)
-  const { isOpen: isCreateEditModalOpen, open: openCreateEditModal, close: closeCreateEditModal } = useModal()
-  const { isOpen: isDeleteModalOpen, open: openDeleteModal, close: closeDeleteModal } = useModal()
+
+  const { isOpen: isCreateEditBoxModalOpen, open: openCreateEditBoxModal, close: closeCreateEditBoxModal } = useModal()
+  const { isOpen: isDeleteBoxModalOpen, open: openDeleteBoxModal, close: closeDeleteBoxModal } = useModal()
+
+  const [projects, setProjects] = useState<IProject[]>(mockProjects)
+  const [projectToDelete, setProjectToDelete] = useState<number | null>(null)
+  const [projectToEdit, setProjectToEdit] = useState<IProject | null | undefined>(null)
 
   const selectedBox = boxes.find(b => b.id === selectedBoxId)
 
   const handleBoxCreate = () => {
     setModalAction('create')
     setSelectedBoxId(null)
-    openCreateEditModal()
+    openCreateEditBoxModal()
   }
 
   const handleBoxEdit = (id: number) => {
     setModalAction('edit')
     setSelectedBoxId(id)
-    openCreateEditModal()
+    openCreateEditBoxModal()
   }
 
   const handleBoxSave = (data: Partial<Omit<BoxData, 'id'>>) => {
@@ -48,23 +55,33 @@ const ManageSolutions = () => {
       setBoxes(prev => prev.map(box => (box.id === selectedBox.id ? updatedBox : box)))
     }
 
-    closeCreateEditModal()
+    closeCreateEditBoxModal()
   }
 
   const handleBoxDeleteClick = (id: number) => {
     setDeleteBoxId(id)
-    openDeleteModal()
+    openDeleteBoxModal()
   }
 
   const handleBoxDeleteConfirm = async (id: string | number) => {
     setBoxes(prev => prev.filter(box => box.id !== id))
   }
 
-  const handleProjectCreate = () => {}
+  const deleteProject = async (id: string | number) => {
+    setProjects(prev => prev.filter(project => project.id !== id))
+  }
 
-  const handleProjectEdit = (id: number) => void id
+  const handleProjectCreate = () => {
+    setProjectToEdit(undefined)
+  }
 
-  const handleProjectDelete = (id: number) => void id
+  const handleProjectEdit = (id: number) => {
+    setProjectToEdit(mockProjects.find(project => project.id === id) || null)
+  }
+
+  const handleProjectDelete = (id: number) => {
+    setProjectToDelete(id)
+  }
 
   return (
     <>
@@ -109,7 +126,7 @@ const ManageSolutions = () => {
             <BoxButton className="button-text" icon={'special_projects'} onClick={handleProjectCreate}>
               Создать спецпроект
             </BoxButton>
-            {mockProjects.map(project => (
+            {projects.map(project => (
               <ManageButton
                 key={project.id}
                 text={project.title}
@@ -121,24 +138,43 @@ const ManageSolutions = () => {
         </div>
       </div>
 
-      {isCreateEditModalOpen && (
+      {isCreateEditBoxModalOpen && (
         <BoxSolutionModal
           key={selectedBox?.id ?? 'create'}
-          isOpen={isCreateEditModalOpen}
-          onClose={closeCreateEditModal}
+          isOpen={isCreateEditBoxModalOpen}
+          onClose={closeCreateEditBoxModal}
           boxData={selectedBox}
           onSave={handleBoxSave}
         />
       )}
 
+      <ProjectModal
+        isOpen={projectToEdit !== null}
+        onClose={() => setProjectToEdit(null)}
+        project={projectToEdit || undefined}
+      />
+
       <DeleteModal
-        isOpen={isDeleteModalOpen}
-        onClose={closeDeleteModal}
+        isOpen={isDeleteBoxModalOpen}
+        onClose={closeDeleteBoxModal}
         itemId={deleteBoxId}
         onDelete={handleBoxDeleteConfirm}
         title="Удалить коробку?"
       >
         Вы действительно хотите удалить эту коробку? Действие нельзя отменить.
+      </DeleteModal>
+
+      <DeleteModal
+        title="Удалить спецпроект?"
+        isOpen={!!projectToDelete || projectToDelete === 0}
+        onDelete={async id => {
+          deleteProject(id)
+        }}
+        onClose={() => setProjectToDelete(null)}
+        itemId={projectToDelete}
+      >
+        <p>Вы действительно хотите удалить этот спецпроект?</p>
+        <p>Действие нельзя отменить</p>
       </DeleteModal>
     </>
   )
