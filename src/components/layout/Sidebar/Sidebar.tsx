@@ -66,7 +66,7 @@ export const Sidebar = ({ user }: { user: MockUserData }) => {
         </div>
       </div>
 
-      <nav className="flex flex-col justify-between flex-1 overflow-hidden">
+      <nav className="flex flex-col justify-between flex-1 overflow-hidden -mx-[20px] [&>div]:px-[20px]">
         <div
           className="flex flex-col transition-[gap] duration-400 overflow-y-auto narrow-scrollbar pb-[14px]"
           style={{ gap: isExpanded ? '19.5px' : '16px' }}

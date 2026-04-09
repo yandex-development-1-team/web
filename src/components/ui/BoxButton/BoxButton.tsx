@@ -39,13 +39,13 @@ function BoxButton({
       className={cn(BoxButtonVariants({ variant, size, className }))}
       {...props}
     >
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-[7px]">
         {IconComponent && (
           <IconComponent
             className={`
-              ${icon === 'box' && 'w-[37px] text-text-black-natural'}
-              ${icon === 'special_projects' && (smallIcon ? 'w-[31px]' : 'w-[42px] mx-[-10px]')}
-              ${icon === 'users' && 'w-[42px]'}
+              ${icon === 'box' && 'w-[37px] text-text-black-natural -ml-[7px]'}
+              ${icon === 'special_projects' && (smallIcon ? 'w-[31px]' : 'w-[42px] -mx-[10px]')}
+              ${icon === 'users' && 'w-[42px] -ml-[10px] -mr-[5px]'}
               shrink-0
             `}
           />
@@ -60,7 +60,7 @@ function BoxButton({
             : 'bg-yellow-accent-light group-hover:bg-yellow-light group-active:bg-yellow-accent-dark'
         )}
       >
-        <AddIcon className="size-6" />
+        <AddIcon className="size-8" />
       </div>
     </Comp>
   )
