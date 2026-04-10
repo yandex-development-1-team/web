@@ -21,9 +21,10 @@ const DEFAULT_FORM_VALUES: ProjectFormValues = {
 interface Props {
   initialData?: Partial<ProjectFormValues>
   onSubmit: (data: ProjectFormValues) => void
+  viewOnly?: boolean
 }
 
-export const ProjectForm = forwardRef<HTMLFormElement, Props>(({ initialData, onSubmit }, ref) => {
+export const ProjectForm = forwardRef<HTMLFormElement, Props>(({ initialData, onSubmit, viewOnly = false }, ref) => {
   const [preview, setPreview] = useState<string | null>(
     typeof initialData?.image === 'string' ? initialData.image : null
   )
@@ -65,7 +66,7 @@ export const ProjectForm = forwardRef<HTMLFormElement, Props>(({ initialData, on
           <Controller
             name="isActive"
             control={control}
-            render={({ field }) => <Switch checked={field.value} onChange={field.onChange} />}
+            render={({ field }) => <Switch checked={field.value} onChange={!viewOnly ? field.onChange : () => {}} />}
           />
         </div>
       </div>
@@ -101,13 +102,15 @@ export const ProjectForm = forwardRef<HTMLFormElement, Props>(({ initialData, on
           </div>
         </label>
 
-        <input
-          id="project-image-upload" // 4. Тот самый ID для связи с label
-          type="file"
-          className="hidden"
-          accept="image/*"
-          onChange={handleFileChange}
-        />
+        {!viewOnly && (
+          <input
+            id="project-image-upload" // 4. Тот самый ID для связи с label
+            type="file"
+            className="hidden"
+            accept="image/*"
+            onChange={handleFileChange}
+          />
+        )}
       </div>
     </form>
   )

@@ -1,16 +1,22 @@
 import mockPhoto from './mock_photo.jpg'
+import { PERMISSIONS } from '@/app/router/permissions'
 
-type MockManagerData = {
-  role: 'manager'
+type TUser = {
+  role: string
   name: string
   photo: string
+  permissions?: {
+    items: string[]
+  }
+}
+
+type MockManagerData = TUser & {
+  role: 'manager'
   grade: number
 }
 
-type MockAdminData = {
+type MockAdminData = TUser & {
   role: 'admin'
-  name: string
-  photo: string
 }
 
 export type MockUserData = MockManagerData | MockAdminData
@@ -19,11 +25,55 @@ export const MOCK_MANAGER: MockManagerData = {
   role: 'manager',
   name: 'Анастасия',
   photo: mockPhoto,
-  grade: 2
+  grade: 2,
+  permissions: {
+    items: [
+      PERMISSIONS.applicationsView,
+      PERMISSIONS.applicationsEdit,
+      PERMISSIONS.applicationsDelete,
+      PERMISSIONS.boxesView,
+      PERMISSIONS.boxesEdit,
+      PERMISSIONS.boxesDelete,
+      PERMISSIONS.presentationsView,
+      PERMISSIONS.presentationsEdit,
+      PERMISSIONS.presentationsDelete,
+      PERMISSIONS.specprojectsView,
+      PERMISSIONS.specprojectsEdit,
+      PERMISSIONS.specprojectsDelete,
+      PERMISSIONS.analyticsView,
+      PERMISSIONS.analyticsDownload,
+      PERMISSIONS.affiche,
+      PERMISSIONS.about,
+      PERMISSIONS.faq
+    ]
+  }
 }
 
 export const MOCK_ADMIN: MockAdminData = {
   role: 'admin',
   name: 'Анастасия',
-  photo: mockPhoto
+  photo: mockPhoto,
+  permissions: {
+    items: [
+      PERMISSIONS.applicationsView,
+      PERMISSIONS.applicationsEdit,
+      PERMISSIONS.applicationsDelete,
+      PERMISSIONS.boxesView,
+      PERMISSIONS.boxesEdit,
+      PERMISSIONS.boxesDelete,
+      PERMISSIONS.presentationsView,
+      PERMISSIONS.presentationsEdit,
+      PERMISSIONS.presentationsDelete,
+      PERMISSIONS.specprojectsView,
+      PERMISSIONS.specprojectsEdit,
+      PERMISSIONS.specprojectsDelete,
+      PERMISSIONS.analyticsView,
+      PERMISSIONS.analyticsDownload,
+      PERMISSIONS.affiche,
+      PERMISSIONS.about,
+      PERMISSIONS.faq
+    ]
+  }
 }
+
+export const MOCK_USER = MOCK_MANAGER
