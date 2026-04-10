@@ -8,10 +8,12 @@ import { useState } from 'react'
 import { Controller, useFieldArray, useForm, useWatch } from 'react-hook-form'
 import type { BoxSolutionFormData, BoxSolutionModalType } from './BoxSolutionModal.type'
 import { FORM_TO_API_KEYS, getFormValues, mapFormDataToBoxData } from './helpers'
+import { useSolution } from './hooks/useSolution'
 import { boxSolutionSchema } from './schema'
 import { FormInput } from './ui'
 
-export const BoxSolutionModal = ({ isOpen, onClose, boxData, onSave }: BoxSolutionModalType) => {
+export const BoxSolutionModal = ({ isOpen, onClose, boxData, boxId, onSave }: BoxSolutionModalType) => {
+  const { parsedFormData } = useSolution(boxId)
   const {
     control,
     handleSubmit,
@@ -21,7 +23,7 @@ export const BoxSolutionModal = ({ isOpen, onClose, boxData, onSave }: BoxSoluti
     clearErrors,
     formState: { errors, dirtyFields }
   } = useForm<BoxSolutionFormData>({
-    defaultValues: getFormValues(boxData),
+    values: getFormValues(parsedFormData),
     resolver: zodResolver(boxSolutionSchema)
   })
 

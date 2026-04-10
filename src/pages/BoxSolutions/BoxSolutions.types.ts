@@ -1,9 +1,9 @@
 import z from 'zod'
 
 export interface TimeSlot {
-  date: string // ISO формат "2024-03-10"
-  time_from: string // "00:00"
-  time_to: string // "00:00"
+  date: string
+  timeFrom: string
+  timeTo: string
 }
 
 export interface IBox {
@@ -13,15 +13,15 @@ export interface IBox {
   description: string
   rules: string
   date: string
-  time_slots: TimeSlot[]
+  slots: TimeSlot[]
   location: string
   price: number
   image: string
-  is_active_in_bot: boolean
+  status: boolean
   organizer: string
-  created_at: string
-  updated_at: string
-  created_by: number
+  createdAt: string
+  updatedAt: string
+  createdBy: number
 }
 
 export interface IPagination {
@@ -32,7 +32,7 @@ export interface IPagination {
 type ModalType = 'create' | 'edit' | 'delete' | 'details'
 export type ModalState = { type: Exclude<ModalType, 'create'>; id: string } | { type: 'create'; id: null } | null
 
-const boxStatusField = ['active', 'disable'] as const
+const boxStatusField = ['active', 'inactive'] as const
 const boxSortField = ['name', 'created_at', 'updated_at'] as const
 const boxOrderField = ['asc', 'desc'] as const
 

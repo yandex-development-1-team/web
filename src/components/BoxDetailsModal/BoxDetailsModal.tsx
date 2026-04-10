@@ -1,29 +1,32 @@
 import { BoxDetails } from '@/components/BoxDetailsModal/BoxDetails'
-
-import type { IBox } from '@/pages/BoxSolutions/BoxSolutions.types'
+import { getBoxById } from '@/pages/BoxSolutions/api/getBoxById'
+import { useQuery } from '@tanstack/react-query'
 import { Modal } from '../ui'
 
-export const BoxDetailsModal = ({
-  boxId,
-  isOpen,
-  onClose,
-  onFetchBox
-}: {
-  boxId: string
+type BoxDetailsModalPropsType = {
+  boxId: string | null
   isOpen: boolean
   onClose: () => void
-  onFetchBox: (id: string) => IBox | undefined
-}) => {
-  if (!boxId) return null
+}
 
-  const box = onFetchBox(boxId.toString())
+export const BoxDetailsModal = ({ boxId, isOpen, onClose }: BoxDetailsModalPropsType) => {
+  const { data: box } = useQuery({
+    queryKey: ['box', boxId],
+    queryFn: () => getBoxById(boxId)
+  })
 
-  if (!box) return <p>Данные не найдены</p>
+  if (!box)
+    return (
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <p>Данные не найдены</p>
+      </Modal>
+    )
+
   const { name } = box
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={name}>
-      <BoxDetails box={box}></BoxDetails>
+      <BoxDetails box={box} />
     </Modal>
   )
 }

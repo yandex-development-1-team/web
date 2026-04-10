@@ -1,5 +1,5 @@
 const EXPORT_BASE = '/export' as const
-const BOXES_BASE = '/boxes' as const
+const BOXES_BASE = '/boxes/' as const
 
 export const API_ROUTES = {
   items: '/items',
@@ -15,7 +15,7 @@ export const API_ROUTES = {
     byPath: (path: string) => `${EXPORT_BASE}/${path}`
   },
   boxes: {
-    byId: (id: string) => `${BOXES_BASE}/${id}`,
+    byId: (id: string) => `${BOXES_BASE}${id}`,
     deleteById: (id: string) => `${BOXES_BASE}/${id}`,
     get: `${BOXES_BASE}`
   }

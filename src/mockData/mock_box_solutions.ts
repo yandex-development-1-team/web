@@ -37,25 +37,25 @@ export const MOCK_BOXES: IBox[] = Array.from({ length: 72 }, (_, index) => {
     description: descriptions[Math.floor(Math.random() * descriptions.length)],
     rules: rulesList[Math.floor(Math.random() * rulesList.length)],
     date: '25122024',
-    time_slots: [
+    slots: [
       {
         date: `2024-03-${randomDay}`,
-        time_from: `${startHour}:00`,
-        time_to: `${startHour + 2}:00`
+        timeFrom: `${startHour}:00`,
+        timeTo: `${startHour + 2}:00`
       },
       {
         date: `2024-03-${randomDay + 1}`,
-        time_from: `${startHour + 4}:00`,
-        time_to: `${startHour + 6}:00`
+        timeFrom: `${startHour + 4}:00`,
+        timeTo: `${startHour + 6}:00`
       }
     ],
     location: `ул. ${streets[Math.floor(Math.random() * streets.length)]}, д. ${Math.floor(Math.random() * 90) + 1}`,
     price: Math.floor(Math.random() * (5000 - 500 + 1)) + 500,
     image: index % 4 === 0 ? '' : images[index % 5],
-    is_active_in_bot: index % 3 === 0,
+    status: index % 3 === 0,
     organizer: 'Secret Events Team',
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
-    created_by: 101
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    createdBy: 101
   }
 })

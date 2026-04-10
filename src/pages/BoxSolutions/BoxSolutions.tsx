@@ -4,17 +4,20 @@ import { BoxButton, DeleteModal } from '@/components/ui'
 import { Pagination } from '@/components/ui/Pagination'
 import { useState } from 'react'
 import { deleteBoxById } from './api/deleteBoxById'
-import { getBoxById } from './api/getBoxById'
 import type { ModalState } from './BoxSolutions.types'
 import { useBoxes } from './hooks/useBoxes'
 import { Boxes } from './ui/Boxes'
 
 const BoxSolutions = () => {
-  const [modal, setModal] = useState<ModalState>()
+  const [modal, setModal] = useState<ModalState | null>(null)
   const { boxes, pagination, isError, isLoading, isPending, queryKey } = useBoxes()
 
   if (isError) return <div className="text-text">Ошибка при получении данных</div>
   if (!boxes?.length && !isPending) return <div className="text-text">Нет сохраненных коробок</div>
+
+  const isShowDetails = modal?.type === 'details'
+  const isShowSolutions = modal?.type === 'create' || modal?.type === 'edit'
+  const isShowDelete = modal?.type === 'delete'
 
   return (
     <div className="min-w-180">
@@ -39,29 +42,28 @@ const BoxSolutions = () => {
         onDetailsView={(id: string) => setModal({ type: 'details', id })}
         pagination={<Pagination pagination={pagination} />}
       />
-      <DeleteModal
-        title="Удалить коробку!"
-        isOpen={modal?.type === 'delete'}
-        onDelete={() => deleteBoxById(modal?.id ?? '')}
-        onClose={() => setModal(null)}
-        itemId={Number(modal?.id)}
-        queryKey={queryKey}
-      >
-        Вы действительно хотите удалить эту коробку?
-      </DeleteModal>
-      <BoxSolutionModal
-        key={modal?.id}
-        isOpen={modal?.type === 'create' || modal?.type === 'edit'}
-        onClose={() => setModal(null)}
-        onSave={() => {}}
-        boxData={modal?.id ? getBoxById(String(modal?.id)) : undefined}
-      />
-      <BoxDetailsModal
-        boxId={modal?.id ?? ''}
-        isOpen={modal?.type === 'details'}
-        onClose={() => setModal(null)}
-        onFetchBox={getBoxById}
-      />
+      {isShowDelete && (
+        <DeleteModal
+          title="Удалить коробку!"
+          isOpen={true}
+          onDelete={() => deleteBoxById(modal?.id ?? '')}
+          onClose={() => setModal(null)}
+          itemId={Number(modal?.id)}
+          queryKey={queryKey}
+        >
+          Вы действительно хотите удалить эту коробку?
+        </DeleteModal>
+      )}
+      {isShowSolutions && (
+        <BoxSolutionModal
+          key={modal.id}
+          isOpen={true}
+          onClose={() => setModal(null)}
+          onSave={() => {}}
+          boxId={modal?.id}
+        />
+      )}
+      {isShowDetails && <BoxDetailsModal boxId={modal.id} isOpen={true} onClose={() => setModal(null)} />}
     </div>
   )
 }

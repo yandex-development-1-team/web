@@ -4,20 +4,18 @@ import { StatusLabel } from '../../pages/BoxSolutions/ui/StatusLabel'
 export const BoxDetails = ({ box }: { box: IBox }) => {
   if (!box) return null
 
-  const { name, date, image, price, organizer, description, location, rules, time_slots, is_active_in_bot } = box
+  const { name, date, image, price, organizer, description, location, rules, slots, status } = box
 
-  const formattedDate = date.replace(/(\d{2})(\d{2})(\d{4})/, '$1.$2.$3')
+  // const formattedDate = date.replace(/(\d{2})(\d{2})(\d{4})/, '$1.$2.$3')//TODO: fix
 
   return (
     <div className="flex flex-col gap-8">
-      <StatusLabel isActive={is_active_in_bot} className="self-end" />
+      <StatusLabel isActive={status} className="self-end" />
       <div className="grid grid-cols-[min-content_1fr] gap-3">
         <p className="mr-5">Дата</p>
-        <p>{formattedDate}</p>
+        <p>{date}</p>
         <p className="mr-5">Время</p>
-        <p>
-          с {time_slots[0].time_from} до {time_slots[0].time_to}
-        </p>
+        <p>{slots.length ? `с ${slots[0].timeFrom} до ${slots[0].timeTo}` : ' - '}</p>
         <p className="mr-5">Место</p>
         <p>
           {name} ({location})
