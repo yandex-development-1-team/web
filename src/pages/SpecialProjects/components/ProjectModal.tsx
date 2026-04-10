@@ -10,6 +10,7 @@ interface ProjectModalProps {
   isOpen: boolean
   onClose: () => void
   project?: ProjectFormValues & { id?: string | number }
+  viewOnly?: boolean
 }
 
 const prepareProjectFormData = (data: ProjectFormValues): FormData => {
@@ -25,7 +26,7 @@ const prepareProjectFormData = (data: ProjectFormValues): FormData => {
   return formData
 }
 
-export const ProjectModal = ({ isOpen, onClose, project }: ProjectModalProps) => {
+export const ProjectModal = ({ isOpen, onClose, project, viewOnly = false }: ProjectModalProps) => {
   const formRef = useRef<HTMLFormElement>(null)
   const queryClient = useQueryClient()
   const { showNotification } = useNotification()
@@ -73,18 +74,20 @@ export const ProjectModal = ({ isOpen, onClose, project }: ProjectModalProps) =>
           <Button variant="secondary" size="default" onClick={onClose} disabled={isPending} className="mr-auto">
             Отмена
           </Button>
-          <Button
-            variant="primary"
-            size="default"
-            onClick={() => formRef.current?.requestSubmit()}
-            disabled={isPending}
-          >
-            Сохранить
-          </Button>
+          {!viewOnly && (
+            <Button
+              variant="primary"
+              size="default"
+              onClick={() => formRef.current?.requestSubmit()}
+              disabled={isPending}
+            >
+              Сохранить
+            </Button>
+          )}
         </>
       }
     >
-      <ProjectForm ref={formRef} initialData={project} onSubmit={handleSubmit} />
+      <ProjectForm ref={formRef} initialData={project} onSubmit={handleSubmit} viewOnly={viewOnly} />
     </Modal>
   )
 }

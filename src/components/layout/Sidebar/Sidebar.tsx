@@ -8,7 +8,7 @@ import type { MockUserData } from '@/mockData/mockData'
 
 export const Sidebar = ({ user }: { user: MockUserData }) => {
   const [isExpanded, setIsExpanded] = useState<boolean>(true)
-  const menu = user.role === 'manager' ? MENU_MANAGER : MENU_ADMIN
+  const menu = user.role === 'admin' ? MENU_ADMIN : MENU_MANAGER
 
   return (
     <aside
@@ -23,7 +23,7 @@ export const Sidebar = ({ user }: { user: MockUserData }) => {
           className={`overflow-hidden transition-[width,margin] duration-400
           ${isExpanded ? 'w-auto' : 'w-[33px] mx-auto'}`}
         >
-          <Link to={user.role === 'manager' ? ROUTES.home : ROUTES.stats}>
+          <Link to={user.role === 'admin' ? ROUTES.stats : ROUTES.home}>
             <EventIcon />
           </Link>
         </div>
@@ -59,9 +59,7 @@ export const Sidebar = ({ user }: { user: MockUserData }) => {
         <div className={`overflow-hidden transition-[width] duration-400 ${isExpanded ? 'w-[200px]' : 'w-0'}`}>
           <div className="flex flex-col gap-[4px] w-[200px]">
             <span className="button-text">{user.name}</span>
-            <span className="text-xs">
-              {user.role === 'manager' ? `Менеджер ${user.grade} звена` : 'Администратор'}
-            </span>
+            <span className="text-xs">{user.role === 'admin' ? 'Администратор' : `Менеджер ${user.grade} звена`}</span>
           </div>
         </div>
       </div>
@@ -71,16 +69,19 @@ export const Sidebar = ({ user }: { user: MockUserData }) => {
           className="flex flex-col transition-[gap] duration-400 overflow-y-auto narrow-scrollbar pb-[14px]"
           style={{ gap: isExpanded ? '19.5px' : '16px' }}
         >
-          {menu.map(item => (
-            <Item
-              key={`${item.route}-${isExpanded}`}
-              Icon={item.Icon}
-              title={item.title}
-              route={item.route}
-              childrenItems={item.childrenItems}
-              isExpanded={isExpanded}
-            />
-          ))}
+          {menu.map(
+            item =>
+              (!item.accessName || user.role === 'admin' || user.permissions?.items.includes(item.accessName)) && (
+                <Item
+                  key={`${item.route}-${isExpanded}`}
+                  Icon={item.Icon}
+                  title={item.title}
+                  route={item.route}
+                  childrenItems={item.childrenItems}
+                  isExpanded={isExpanded}
+                />
+              )
+          )}
         </div>
         <div
           className={`flex flex-col border-t border-grey-extra-light transition-[gap] duration-400 flex-shrink-0
