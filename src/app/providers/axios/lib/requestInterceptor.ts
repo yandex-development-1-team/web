@@ -17,6 +17,7 @@ export class RequestInterceptor {
 
   private getValidToken(): string | null {
     const token = this.tokenStorage.getToken()
+    console.log('GET TOKEN:', token)
     if (token && token.length > 10) {
       return token
     }

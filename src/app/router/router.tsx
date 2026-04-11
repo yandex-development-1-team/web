@@ -4,6 +4,7 @@ import { NotificationProvider } from '@/app/providers/notification'
 import { AxiosProvider } from '@/app/providers/axios'
 import App from '@/App'
 import { QueryProvider } from '@/app/providers/tanstack-query'
+import { ProtectedRouter } from './ProtectedRouter'
 
 export const router = createBrowserRouter(
   [
@@ -23,7 +24,11 @@ export const router = createBrowserRouter(
           lazy: () => import('@/pages/Login/Login')
         },
         {
-          element: <App />,
+          element: (
+            <ProtectedRouter>
+              <App />
+            </ProtectedRouter>
+          ),
           children: [
             {
               path: ROUTES.home,

@@ -1,9 +1,9 @@
 import { useEffect, useRef, type ReactNode } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { setupInterceptors } from '@/app/providers/axios/interceptors'
-import { createTokenStorage } from '@/app/providers/axios/lib/tokenStorage'
 import { useNotification } from '@/app/providers/notification'
 import { ROUTES } from '@/app/router/routes'
+import { tokenStorage } from './lib/tokenStorageInstance'
 
 interface Props {
   children: ReactNode
@@ -18,8 +18,6 @@ export const AxiosProvider = ({ children }: Props) => {
 
   useEffect(() => {
     if (isInitialized.current) return
-
-    const tokenStorage = createTokenStorage()
 
     setupInterceptors(tokenStorage, {
       onUnauthorized: () => {

@@ -3,37 +3,58 @@ import { Button, Input } from '@/components/ui'
 import { EyeIcon, EyeCloseIcon } from '@/assets/icons'
 import { useModal } from '@/components/ui/Modal/useModal'
 import { RecoveryModal } from './ui/RecoveryModal'
+import { Navigate, useNavigate } from 'react-router-dom'
+import { ROUTES } from '@/app/router'
+import { useLogin } from './hooks/useLogin'
+import { validateLogin, validatePassword } from './validation'
+import { tokenStorage } from '@/app/providers/axios/lib/tokenStorageInstance'
+import type { AxiosError } from 'axios'
 
 export const LoginForm = () => {
-  const [login, setLogin] = useState('')
-  const [password, setPassword] = useState('')
-  const [loginError, setLoginError] = useState('')
-  const [passwordError, setPasswordError] = useState('')
+  const [authFormData, setAuthFormData] = useState({
+    login: '',
+    password: ''
+  })
   const [showPassword, setShowPassword] = useState(false)
+  const [serverError, setServerError] = useState('')
 
+  const navigate = useNavigate()
+
+  const { mutateAsync, isPending } = useLogin()
   const { isOpen: isOpenRecoveryModal, open: openRecoveryModal, close: closeRecoveryModal } = useModal()
 
-  const validateLogin = (value: string) => {
-    if (!value.trim()) return 'Логин обязателен'
-    if (value.length < 1) return 'Минимум 1 символ'
-    if (!/^[a-zA-Z0-9]+$/.test(value)) return 'Только латиница и цифры'
-    return ''
+  const token = tokenStorage.getToken()
+
+  if (token) {
+    return <Navigate to={ROUTES.home} replace />
   }
 
-  const validatePassword = (value: string) => {
-    if (!value) return 'Пароль обязателен'
-    return ''
+  const loginError = validateLogin(authFormData.login)
+  const passwordError = validatePassword(authFormData.password)
+  const isValid = !loginError && !passwordError
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target
+    setAuthFormData(prev => ({ ...prev, [name]: value }))
+    setServerError('')
   }
 
-  const handleSubmit = (e: React.SubmitEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    const loginErr = validateLogin(login)
-    const passwordErr = validatePassword(password)
 
-    setLoginError(loginErr)
-    setPasswordError(passwordErr)
+    try {
+      const user = await mutateAsync(authFormData)
 
-    if (loginErr || passwordErr) return
+      if (user.role === 'admin') {
+        navigate(ROUTES.stats)
+      } else if (user.role === 'manager') {
+        navigate(ROUTES.home)
+      }
+    } catch (error) {
+      const axiosError = error as AxiosError<{ message: string }>
+      const message = axiosError.response?.data?.message || 'Неверный логин или пароль'
+      setServerError(message)
+    }
   }
 
   return (
@@ -41,11 +62,9 @@ export const LoginForm = () => {
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <Input
-            value={login}
-            onChange={e => {
-              setLogin(e.target.value)
-              setLoginError(validateLogin(e.target.value))
-            }}
+            name="login"
+            value={authFormData.login}
+            onChange={handleChange}
             placeholder="Логин"
             className={`min-h-[46px] ${loginError ? 'border-red-dark focus:ring-red-dark' : ''}`}
           />
@@ -58,17 +77,13 @@ export const LoginForm = () => {
 
         <div className="relative">
           <Input
-            variant="text"
-            value={password}
-            onChange={e => {
-              setPassword(e.target.value)
-              setPasswordError(validatePassword(e.target.value))
-            }}
+            name="password"
+            value={authFormData.password}
+            onChange={handleChange}
             type={showPassword ? 'text' : 'password'}
             placeholder="Введите пароль"
             className={`min-h-[46px] ${passwordError ? 'border-red-dark' : ''}`}
           />
-
           <button
             type="button"
             onClick={() => setShowPassword(s => !s)}
@@ -77,23 +92,27 @@ export const LoginForm = () => {
             {showPassword ? <EyeIcon /> : <EyeCloseIcon />}
           </button>
         </div>
-        <div className="text-xs">
+
+        <div className="text-xs min-h-[18px]">
           <p className={`${passwordError ? 'text-text-red-dark opacity-100' : 'opacity-0'} transition-opacity`}>
             {passwordError}
           </p>
         </div>
+
+        {serverError && <div className="text-xs text-text-red-dark mb-2">{serverError}</div>}
+
         <button
           type="button"
           className="text-text-grey-dark text-xs mb-6 inline-block cursor-pointer outline-0"
-          onClick={() => openRecoveryModal()}
+          onClick={openRecoveryModal}
         >
           Забыли пароль?
         </button>
 
         <Button
           type="submit"
-          disabled={!!loginError || !!passwordError || !login || !password}
-          className="w-full min-h-[46px] bg-yellow-accent-light text-text font-semibold rounded-[12px] py-[12px]"
+          disabled={!isValid || isPending}
+          className="w-full min-h-[46px] bg-yellow-accent-light text-text text-button font-semibold rounded-[12px] py-[12px]"
         >
           Войти
         </Button>
