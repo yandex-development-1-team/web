@@ -4,13 +4,13 @@ import { BoxButton, DeleteModal } from '@/components/ui'
 import { Pagination } from '@/components/ui/Pagination'
 import { useState } from 'react'
 import { deleteBoxById } from './api/deleteBoxById'
-import type { ModalState } from './BoxSolutions.types'
+import type { ModalStateType } from './BoxSolutions.types'
 import { useBoxes } from './hooks/useBoxes'
 import { Boxes } from './ui/Boxes'
 import { QueryFilters } from './ui/QueryFilters'
 
 const BoxSolutions = () => {
-  const [modal, setModal] = useState<ModalState | null>(null)
+  const [modal, setModal] = useState<ModalStateType | null>(null)
   const { boxes, pagination, isError, isLoading, isPending, queryKey } = useBoxes()
 
   if (isError) return <div className="text-text">Ошибка при получении данных</div>

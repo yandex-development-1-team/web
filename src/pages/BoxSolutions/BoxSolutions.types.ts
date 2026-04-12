@@ -24,13 +24,8 @@ export interface IBox {
   createdBy: number
 }
 
-export interface IPagination {
-  limit: number
-  offset: number
-  total: number
-}
 type ModalType = 'create' | 'edit' | 'delete' | 'details'
-export type ModalState = { type: Exclude<ModalType, 'create'>; id: string } | { type: 'create'; id: null } | null
+export type ModalStateType = { type: Exclude<ModalType, 'create'>; id: string } | { type: 'create'; id: null } | null
 
 const boxStatusField = ['active', 'inactive'] as const
 const boxSortField = ['name', 'created_at', 'updated_at'] as const

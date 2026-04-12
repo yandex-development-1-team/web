@@ -1,6 +1,7 @@
 import { api } from '@/app/providers/axios'
+import type { IPagination } from '@/components/ui/Pagination/Pagination.types'
 import { API_ROUTES } from '@/services/api/routes'
-import type { BoxSolutionsSearchParamsType, IBox, IPagination, TimeSlot } from '../BoxSolutions.types'
+import type { BoxSolutionsSearchParamsType, IBox, TimeSlot } from '../BoxSolutions.types'
 
 export interface IBoxDTO {
   ID: number
@@ -54,7 +55,7 @@ export const getBoxes = async (
   //   }
   // } as BoxesSolutionsResponseType
 
-  console.log('getBoxes =>>>>', response.data)
+  console.log('getBoxes =>>>>', response.data) //TODO: console
 
   return {
     items: response.data.items.map(box => ({
