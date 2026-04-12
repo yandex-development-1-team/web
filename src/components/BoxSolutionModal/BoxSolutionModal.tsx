@@ -12,7 +12,7 @@ import { useSolution } from './hooks/useSolution'
 import { boxSolutionSchema } from './schema'
 import { FormInput } from './ui'
 
-export const BoxSolutionModal = ({ isOpen, onClose, boxData, boxId, onSave }: BoxSolutionModalType) => {
+export const BoxSolutionModal = ({ isOpen, onClose, boxData, boxId = null, onSave }: BoxSolutionModalType) => {
   const { parsedFormData } = useSolution(boxId)
   const {
     control,

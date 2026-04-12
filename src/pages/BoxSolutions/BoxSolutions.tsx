@@ -7,6 +7,7 @@ import { deleteBoxById } from './api/deleteBoxById'
 import type { ModalState } from './BoxSolutions.types'
 import { useBoxes } from './hooks/useBoxes'
 import { Boxes } from './ui/Boxes'
+import { QueryFilters } from './ui/QueryFilters'
 
 const BoxSolutions = () => {
   const [modal, setModal] = useState<ModalState | null>(null)
@@ -20,8 +21,9 @@ const BoxSolutions = () => {
   const isShowDelete = modal?.type === 'delete'
 
   return (
-    <div className="min-w-180">
-      <div className="flex justify-between h-18 mb-5">
+    <div className="flex flex-col gap-5 min-w-180">
+      {/* <div className=""> */}
+      <div className="flex justify-between h-18">
         <h1 className="text-h2 text-text">Коробочные решения</h1>
         <BoxButton
           size={'small'}
@@ -34,6 +36,8 @@ const BoxSolutions = () => {
           Создать коробку
         </BoxButton>
       </div>
+      <QueryFilters className="min-h-max"></QueryFilters>
+      {/* </div> */}
       <Boxes
         boxesList={boxes}
         isLoading={isLoading}
