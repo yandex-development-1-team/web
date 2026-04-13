@@ -5,7 +5,7 @@ import { ArrowIcon, ArrowReturnIcon, EventIcon } from '@/assets/icons'
 import { ROUTES } from '@/app/router'
 import { MENU_ADMIN, MENU_DOWN, MENU_MANAGER } from './menu'
 import type { MockUserData } from '@/mockData/mockData'
-import { useLogout } from '@/pages/Login/hooks/useLogout'
+import { useLogout } from '@/hooks/useLogout'
 
 export const Sidebar = ({ user }: { user: MockUserData }) => {
   const [isExpanded, setIsExpanded] = useState<boolean>(true)

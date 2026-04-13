@@ -9,15 +9,14 @@ export class RequestInterceptor {
   }
   public intercept(config: InternalAxiosRequestConfig): InternalAxiosRequestConfig {
     const token = this.getValidToken()
-    if (token && config.headers) {
-      config.headers.Authorization = `Bearer ${token}`
+    if (token) {
+      config.headers.set('Authorization', `Bearer ${token}`)
     }
     return config
   }
 
   private getValidToken(): string | null {
     const token = this.tokenStorage.getToken()
-    console.log('GET TOKEN:', token)
     if (token && token.length > 10) {
       return token
     }

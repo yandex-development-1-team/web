@@ -1,5 +1,5 @@
-import { useEffect, useRef, type ReactNode } from 'react'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { setupInterceptors } from '@/app/providers/axios/interceptors'
 import { useNotification } from '@/app/providers/notification'
 import { ROUTES } from '@/app/router/routes'
@@ -11,29 +11,34 @@ interface Props {
 
 export const AxiosProvider = ({ children }: Props) => {
   const navigate = useNavigate()
-  const location = useLocation()
   const { showNotification } = useNotification()
-  const isInitialized = useRef(false)
   const isRedirecting = useRef(false)
 
-  useEffect(() => {
-    if (isInitialized.current) return
+  const [isReady, setIsReady] = useState(false)
 
-    setupInterceptors(tokenStorage, {
+  useEffect(() => {
+    const cleanup = setupInterceptors(tokenStorage, {
       onUnauthorized: () => {
-        tokenStorage.removeToken()
-        if (location.pathname !== ROUTES.login && !isRedirecting.current) {
+        const isAtLogin = window.location.pathname === ROUTES.login
+
+        if (!isAtLogin && !isRedirecting.current) {
           isRedirecting.current = true
 
-          navigate(`${ROUTES.login}?reason=session_expired`)
+          tokenStorage.removeToken()
+          tokenStorage.removeRefreshToken()
+
+          navigate(`${ROUTES.login}?reason=session_expired`, { replace: true })
 
           setTimeout(() => {
             isRedirecting.current = false
-          }, 1000)
+          }, 200)
         }
       },
       onForbidden: () => {
-        navigate(ROUTES.forbidden)
+        showNotification({
+          status: 'error',
+          message: 'Нет доступа'
+        })
       },
       onServerError: msg => {
         showNotification({
@@ -55,8 +60,17 @@ export const AxiosProvider = ({ children }: Props) => {
       }
     })
 
-    isInitialized.current = true
-  }, [navigate, showNotification, location])
+    setTimeout(() => {
+      setIsReady(true)
+    }, 0)
+
+    return () => {
+      cleanup()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  if (!isReady) return null
 
   return <>{children}</>
 }

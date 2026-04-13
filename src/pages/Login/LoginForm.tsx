@@ -1,14 +1,14 @@
 import { useState } from 'react'
-import { Button, Input } from '@/components/ui'
+import { Button, Input, Loader } from '@/components/ui'
 import { EyeIcon, EyeCloseIcon } from '@/assets/icons'
 import { useModal } from '@/components/ui/Modal/useModal'
 import { RecoveryModal } from './ui/RecoveryModal'
 import { Navigate, useNavigate } from 'react-router-dom'
 import { ROUTES } from '@/app/router'
-import { useLogin } from './hooks/useLogin'
+import { useLogin } from '../../hooks/useLogin'
 import { validateLogin, validatePassword } from './validation'
-import { tokenStorage } from '@/app/providers/axios/lib/tokenStorageInstance'
 import type { AxiosError } from 'axios'
+import { usePermissions } from '@/hooks/usePermissions'
 
 export const LoginForm = () => {
   const [authFormData, setAuthFormData] = useState({
@@ -23,9 +23,11 @@ export const LoginForm = () => {
   const { mutateAsync, isPending } = useLogin()
   const { isOpen: isOpenRecoveryModal, open: openRecoveryModal, close: closeRecoveryModal } = useModal()
 
-  const token = tokenStorage.getToken()
-
-  if (token) {
+  const { isLoggedIn, isLoading, user: currentUser } = usePermissions()
+  if (isLoading) {
+    return <Loader />
+  }
+  if (isLoggedIn && currentUser) {
     return <Navigate to={ROUTES.home} replace />
   }
 
@@ -43,13 +45,8 @@ export const LoginForm = () => {
     e.preventDefault()
 
     try {
-      const user = await mutateAsync(authFormData)
-
-      if (user.role === 'admin') {
-        navigate(ROUTES.stats)
-      } else if (user.role === 'manager') {
-        navigate(ROUTES.home)
-      }
+      await mutateAsync(authFormData)
+      navigate(ROUTES.home, { replace: true })
     } catch (error) {
       const axiosError = error as AxiosError<{ message: string }>
       const message = axiosError.response?.data?.message || 'Неверный логин или пароль'
