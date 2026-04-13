@@ -136,27 +136,27 @@ const ManageSolutions = () => {
             </div>
           </div>
         </div>
-
-        {isCreateEditModalOpen && (
-          <BoxSolutionModal
-            key={selectedBox?.id ?? 'create'}
-            isOpen={isCreateEditModalOpen}
-            onClose={closeCreateEditModal}
-            boxData={selectedBox}
-            onSave={handleBoxSave}
-          />
-        )}
-
-        <DeleteModal
-          isOpen={isDeleteModalOpen}
-          onClose={closeDeleteModal}
-          itemId={deleteBoxId}
-          onDelete={handleBoxDeleteConfirm}
-          title="Удалить коробку?"
-        >
-          Вы действительно хотите удалить эту коробку? Действие нельзя отменить.
-        </DeleteModal>
       </div>
+
+      {isCreateEditModalOpen && (
+        <BoxSolutionModal
+          key={selectedBox?.id ?? 'create'}
+          isOpen={isCreateEditModalOpen}
+          onClose={closeCreateEditModal}
+          boxData={selectedBox}
+          onSave={handleBoxSave}
+        />
+      )}
+
+      <DeleteModal
+        isOpen={isDeleteModalOpen}
+        onClose={closeDeleteModal}
+        itemId={deleteBoxId}
+        onDelete={handleBoxDeleteConfirm}
+        title="Удалить коробку?"
+      >
+        Вы действительно хотите удалить эту коробку? Действие нельзя отменить.
+      </DeleteModal>
     </>
   )
 }
