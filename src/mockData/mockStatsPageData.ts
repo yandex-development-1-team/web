@@ -1,5 +1,5 @@
 import type { SummaryCardType } from '@/components/ui/SummaryCard'
-import type { TeammateCardType } from '@/pages/Stats/Stats/ui/TeammateCard/TeammateCard.types'
+import type { TeammateCardType } from '@/pages/Stats/StatsMain/ui/TeammateCard/TeammateCard.types'
 
 export const mockDaySummaryData: SummaryCardType[] = [
   {
