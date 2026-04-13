@@ -1,10 +1,10 @@
 import { useState } from 'react'
-import type { ToggleButtonProps, ButtonState } from './ToggleButton.types'
+import type { ToggleButtonProps, ToggleButtonState } from './ToggleButton.types'
 
 export const ToggleButton = ({ leftLabel, rightLabel, onToggle, className }: ToggleButtonProps) => {
-  const [selected, setSelected] = useState<ButtonState>('left')
+  const [selected, setSelected] = useState<ToggleButtonState>('left')
 
-  const handleToggle = (side: ButtonState) => {
+  const handleToggle = (side: ToggleButtonState) => {
     setSelected(side)
     onToggle(side)
   }

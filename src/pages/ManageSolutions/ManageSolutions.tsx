@@ -135,6 +135,7 @@ const ManageSolutions = () => {
               <BoxButton
                 className="button-text max-w-[calc(100%-5px)]"
                 icon={'special_projects'}
+                smallIcon
                 onClick={handleProjectCreate}
               >
                 Создать спецпроект
