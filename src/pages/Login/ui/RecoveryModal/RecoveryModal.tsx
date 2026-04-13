@@ -57,7 +57,9 @@ export const RecoveryModal = ({ isOpen, onClose, validateLogin }: RecoveryModalP
           className={`min-h-[46px] ${loginError && touched ? 'border-red-dark focus:ring-red-dark' : ''}`}
         />
         <div className="min-h-[18px] text-xs">
-          <p className={`${loginError && touched ? 'text-red-dark opacity-100' : 'opacity-0'} transition-opacity`}>{loginError}</p>
+          <p className={`${loginError && touched ? 'text-red-dark opacity-100' : 'opacity-0'} transition-opacity`}>
+            {loginError}
+          </p>
         </div>
       </form>
     </Modal>

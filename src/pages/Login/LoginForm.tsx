@@ -74,9 +74,11 @@ export const LoginForm = () => {
             className={`min-h-[46px] ${loginError && touched.login ? 'border-red-dark focus:ring-red-dark' : ''}`}
           />
           <div className="min-h-[18px] text-xs">
-            <p className={`
+            <p
+              className={`
               ${loginError && touched.login ? 'text-text-red-dark opacity-100' : 'opacity-0'} transition-opacity
-            `}>
+            `}
+            >
               {loginError}
             </p>
           </div>
@@ -102,9 +104,11 @@ export const LoginForm = () => {
         </div>
 
         <div className="text-xs min-h-[18px]">
-          <p className={`
+          <p
+            className={`
             ${passwordError && touched.password ? 'text-text-red-dark opacity-100' : 'opacity-0'} transition-opacity
-          `}>
+          `}
+          >
             {passwordError}
           </p>
         </div>
