@@ -17,6 +17,7 @@ export const LoginForm = () => {
   })
   const [showPassword, setShowPassword] = useState(false)
   const [serverError, setServerError] = useState('')
+  const [touched, setTouched] = useState({ login: false, password: false })
 
   const navigate = useNavigate()
 
@@ -38,7 +39,13 @@ export const LoginForm = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setAuthFormData(prev => ({ ...prev, [name]: value }))
+    //setTouched(prev => ({ ...prev, [name]: true }))
     setServerError('')
+  }
+
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    const { name } = e.target
+    setTouched(prev => ({ ...prev, [name]: true }))
   }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -62,11 +69,14 @@ export const LoginForm = () => {
             name="login"
             value={authFormData.login}
             onChange={handleChange}
+            onBlur={handleBlur}
             placeholder="Логин"
-            className={`min-h-[46px] ${loginError ? 'border-red-dark focus:ring-red-dark' : ''}`}
+            className={`min-h-[46px] ${loginError && touched.login ? 'border-red-dark focus:ring-red-dark' : ''}`}
           />
           <div className="min-h-[18px] text-xs">
-            <p className={`${loginError ? 'text-text-red-dark opacity-100' : 'opacity-0'} transition-opacity`}>
+            <p className={`
+              ${loginError && touched.login ? 'text-text-red-dark opacity-100' : 'opacity-0'} transition-opacity
+            `}>
               {loginError}
             </p>
           </div>
@@ -77,9 +87,10 @@ export const LoginForm = () => {
             name="password"
             value={authFormData.password}
             onChange={handleChange}
+            onBlur={handleBlur}
             type={showPassword ? 'text' : 'password'}
             placeholder="Введите пароль"
-            className={`min-h-[46px] ${passwordError ? 'border-red-dark' : ''}`}
+            className={`min-h-[46px] ${passwordError && touched.password ? 'border-red-dark' : ''}`}
           />
           <button
             type="button"
@@ -91,7 +102,9 @@ export const LoginForm = () => {
         </div>
 
         <div className="text-xs min-h-[18px]">
-          <p className={`${passwordError ? 'text-text-red-dark opacity-100' : 'opacity-0'} transition-opacity`}>
+          <p className={`
+            ${passwordError && touched.password ? 'text-text-red-dark opacity-100' : 'opacity-0'} transition-opacity
+          `}>
             {passwordError}
           </p>
         </div>
