@@ -33,25 +33,27 @@ const Stats = () => {
 
   return (
     <div className="flex flex-col gap-[20px]">
-      <div className="grid grid-cols-3 gap-[20px]">
-        <BoxButton icon="box" onClick={() => openCreateBoxModal()} className="max-[1070px]:px-[10px]">
-          <span className="text-left max-[1140px]:text-xs">Создать коробку</span>
+      <div className="grid grid-cols-3 gap-[20px] max-[1250px]:grid-cols-2">
+        <BoxButton icon="box" onClick={() => openCreateBoxModal()}>
+          <span className="text-left">Создать коробку</span>
         </BoxButton>
 
-        <BoxButton icon="special_projects" smallIcon className="max-[1070px]:px-[10px]">
-          <span className="text-left max-[1140px]:text-xs">Создать спецпроект</span>
+        <BoxButton icon="special_projects" smallIcon>
+          <span className="text-left">Создать спецпроект</span>
         </BoxButton>
 
-        <BoxButton icon="users" onClick={() => navigate(ROUTES.employeesCreate)} className="max-[1070px]:px-[10px]">
-          <span className="text-left max-[1140px]:text-xs">Добавить пользователя</span>
+        <BoxButton icon="users" onClick={() => navigate(ROUTES.employeesCreate)}>
+          <span className="text-left">Добавить пользователя</span>
         </BoxButton>
+      </div>
 
+      <div className="grid grid-cols-3 gap-[20px] max-[1250px]:grid-cols-2">
         {CARDS.map(card => (
           <CardLink key={card.to} {...card} />
         ))}
       </div>
 
-      <div className="flex gap-[20px]">
+      <div className="flex gap-[20px] max-[1180px]:flex-col">
         <Card className="flex flex-col gap-[40px] p-[20px] pb-[32px] flex-1">
           <div className="flex justify-between">
             <h4 className="text-h4sb text-black-dark">Сводка</h4>
@@ -60,7 +62,7 @@ const Stats = () => {
           <SummaryCardsList cards={summaryData} className="min-h-[176px]" />
         </Card>
 
-        <Card className="flex flex-col gap-[12px] p-[20px] max-h-[314px] max-w-[500px] w-full">
+        <Card className="flex flex-col gap-[12px] p-[20px] max-h-[314px] w-full">
           <h4 className="text-h4sb text-black-dark">Команда дня</h4>
           <ul className="flex flex-col gap-[16px] pr-[20px] overflow-y-auto">
             {mockDayTeam.map((teammate, index) => (
