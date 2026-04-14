@@ -1,1 +1,0 @@
-import{j as e,Y as t}from"./index-BTtNSAMS.js";const o="/web/preview/assets/Dino404-Cqq7mfNV.jpg",s=()=>e.jsx(t,{title:"Страница не найдена",text:"Извините, такой страницы не существует",image:o,code:"404"}),r=s;export{r as Component};
