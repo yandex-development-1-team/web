@@ -85,7 +85,11 @@ const ManageSolutions = () => {
 
   return (
     <>
-      <div className="flex flex-col h-[calc(100vh-40px)] overflow-hidden">
+      <div
+        className={`
+          flex flex-col overflow-hidden h-[max(calc(100vh-40px),1016px)] min-[1115px]:h-[max(calc(100vh-40px),968px)]
+        `}
+      >
         <div className="bg-white text-text-black-dark px-[20px] pb-[20px] rounded-[8px]">
           <h2 className="text-h2 py-[18px_13px]">Управление коробками и спецпроектами</h2>
           <h4 className="text-h4sb pb-[14px]">Сводка дня</h4>
