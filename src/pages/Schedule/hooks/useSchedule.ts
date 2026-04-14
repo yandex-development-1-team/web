@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useState } from 'react'
-import type { ButtonState } from '@/components/ui/ToggleButton/ToggleButton.types'
+import type { ToggleButtonState } from '@/components/ui/ToggleButton/ToggleButton.types'
 import {
   COLUMN_CALENDAR_CONFIG,
   COLUMN_TABLE_CONFIG,
@@ -12,7 +12,7 @@ import type { Column } from '@/components/ui/DataTable/DataTable.types'
 import { useEventParams } from '@/pages/Schedule/hooks/useEventParams'
 
 export const useSchedule = () => {
-  const [toggle, setToggle] = useState<ButtonState>('left')
+  const [toggle, setToggle] = useState<ToggleButtonState>('left')
   const [columnTable, setColumnTable] = useState<Column<TTableEvent>[]>(COLUMN_TABLE_CONFIG)
   const [columnCalendar, setColumnCalendar] = useState<Column<TTableEvent>[]>(COLUMN_CALENDAR_CONFIG)
 
@@ -29,7 +29,7 @@ export const useSchedule = () => {
   const events = useMemo(() => data?.pages.flatMap(page => page.items) ?? [], [data])
   const pagination = data?.pages[data.pages.length - 1].pagination
 
-  const handleToggle = (side: ButtonState) => {
+  const handleToggle = (side: ToggleButtonState) => {
     setToggle(side)
   }
 
