@@ -28,7 +28,7 @@ export const ManageButton = ({ onClick, onEdit, onDelete, text, className }: Man
       type="button"
       onClick={onClick}
       className={`
-        h-[92px] w-full px-[19px_15px] flex items-center text-text-grey-dark cursor-pointer
+        h-[92px] min-h-[92px] w-full px-[19px_15px] flex items-center text-text-grey-dark cursor-pointer
         border-1 border-grey-extra-light rounded-[8px]
         transition-[outline-color] duration-300 ease-in-out
         outline-2 outline-offset-[-2px] outline-transparent
@@ -36,8 +36,14 @@ export const ManageButton = ({ onClick, onEdit, onDelete, text, className }: Man
         ${className}
       `}
     >
-      <BoxesIcon className="w-[60px] mr-[12px]" />
-      <span className="flex-1 text-left text-text button-text">{text}</span>
+      <BoxesIcon className="w-[60px]" />
+      <span
+        className={`
+        flex-1 text-left text-text button-text break-words max-h-[74px] my-2 mx-3 overflow-hidden
+      `}
+      >
+        {text}
+      </span>
       <div onClick={handleEdit} className={buttonClasses}>
         <EditIcon className="w-[24px]" />
       </div>
