@@ -12,8 +12,12 @@ export interface ApiErrorResponse {
 
 export interface TokenStorage {
   getToken: () => string | null
+  setToken: (token: string) => void
   removeToken: () => void
-  getRefreshToken?: () => string | null
+
+  getRefreshToken: () => string | null
+  setRefreshToken: (token: string) => void
+  removeRefreshToken: () => void
 }
 
 export interface ErrorHandlerConfig {

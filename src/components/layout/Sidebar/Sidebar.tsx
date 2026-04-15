@@ -5,10 +5,12 @@ import { ArrowIcon, ArrowReturnIcon, EventIcon } from '@/assets/icons'
 import { ROUTES } from '@/app/router'
 import { MENU_ADMIN, MENU_DOWN, MENU_MANAGER } from './menu'
 import type { MockUserData } from '@/mockData/mockData'
+import { useLogout } from '@/hooks/useLogout'
 
 export const Sidebar = ({ user }: { user: MockUserData }) => {
   const [isExpanded, setIsExpanded] = useState<boolean>(true)
   const menu = user.role === 'admin' ? MENU_ADMIN : MENU_MANAGER
+  const logout = useLogout()
 
   return (
     <aside
@@ -89,7 +91,14 @@ export const Sidebar = ({ user }: { user: MockUserData }) => {
           style={{ gap: isExpanded ? '16px' : '12px' }}
         >
           {MENU_DOWN.map(item => (
-            <DownItem key={item.route} Icon={item.Icon} title={item.title} route={item.route} isExpanded={isExpanded} />
+            <DownItem
+              key={item.route}
+              Icon={item.Icon}
+              title={item.title}
+              route={item.route}
+              isExpanded={isExpanded}
+              onClick={item.title === 'Выход' ? logout.logout : undefined}
+            />
           ))}
         </div>
       </nav>

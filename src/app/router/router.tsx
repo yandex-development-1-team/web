@@ -6,6 +6,7 @@ import App from '@/App'
 import { QueryProvider } from '@/app/providers/tanstack-query'
 import { ProtectedRoute } from './protectedRoute'
 import { PERMISSIONS } from './permissions'
+import { HomeIndex } from '@/pages/Home/HomeIndex'
 
 export const router = createBrowserRouter(
   [
@@ -32,7 +33,7 @@ export const router = createBrowserRouter(
               children: [
                 {
                   path: ROUTES.home,
-                  lazy: () => import('@/pages/Home/Home')
+                  element: <HomeIndex />
                 },
                 {
                   element: <ProtectedRoute requiredPermission={PERMISSIONS.boxesView} />,
