@@ -38,6 +38,7 @@ export const getBoxes = async (
   const response = await api.get<BoxesSolutionsResponseType>(API_ROUTES.boxes.get, { params, signal })
   if (!response.data) throw new Error('Faild to get box solutions')
 
+  //TODO: remove comments
   //Имитация пагинации на беке
   // void signal
   // const limit = Number(params.limit)

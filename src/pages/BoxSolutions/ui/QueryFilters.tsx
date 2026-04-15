@@ -2,7 +2,7 @@ import { SearchIcon } from '@/assets/icons'
 import { Input, Select } from '@/components/ui'
 import { parseQueryParams } from '@/components/ui/Pagination'
 import { cn } from '@/lib/utils.clsx'
-import type { ComponentProps } from 'react'
+import { useCallback, useEffect, useRef, type ChangeEvent, type ComponentProps } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import type z from 'zod'
 import type { ZodObject, ZodRawShape } from 'zod'
@@ -96,33 +96,65 @@ const organizerOptions = {
 }
 type ToolbarPropsType = ComponentProps<'div'>
 
-const useSelect = <S extends ZodObject<ZodRawShape>>(schema: S) => {
+const useUrlFilters = <S extends ZodObject<ZodRawShape>>(schema: S) => {
   const [searchParams, setSearchParams] = useSearchParams()
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current)
+      }
+    }
+  }, [])
+
   const params = parseQueryParams<S>(searchParams, schema) as z.infer<S>
 
-  const setTypedParams = (newParams: Partial<z.infer<S>>) => {
-    setSearchParams(prev => ({
-      ...Object.fromEntries(prev.entries()),
-      ...newParams,
-      offset: 0
-    }))
-  }
+  const updateParams = useCallback(
+    (newParams: Partial<z.infer<S>>) => {
+      setSearchParams(prev => ({
+        ...Object.fromEntries(prev.entries()),
+        ...newParams,
+        offset: 0
+      }))
+    },
+    [setSearchParams]
+  )
 
-  return { params, setTypedParams } as const
+  const delayUpdateParams = useCallback(
+    (newParams: Partial<z.infer<S>>) => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current)
+      }
+
+      timeoutRef.current = setTimeout(() => {
+        updateParams(newParams)
+      }, 500)
+    },
+    [updateParams]
+  )
+
+  return { params, updateParams, delayUpdateParams } as const
 }
 
 export const QueryFilters = ({ className, ...props }: ToolbarPropsType) => {
-  const { params, setTypedParams } = useSelect(boxSolutionsParamsSchema)
+  const { params, updateParams, delayUpdateParams } = useUrlFilters(boxSolutionsParamsSchema)
 
-  const handleValueChange = (key: keyof BoxSolutionsSearchParamsType) => {
+  const handleSelectChange = (key: keyof BoxSolutionsSearchParamsType) => {
     return (value: string) => {
-      setTypedParams({ [key]: value })
+      updateParams({ [key]: value })
+    }
+  }
+
+  const handleInputChange = (key: keyof BoxSolutionsSearchParamsType) => {
+    return (e: ChangeEvent<HTMLInputElement, HTMLInputElement>) => {
+      const value = e.currentTarget.value
+      delayUpdateParams({ [key]: value })
     }
   }
 
   return (
     <div className={cn('flex gap-5', className)} {...props}>
-      {/* <div className="flex gap-5 h-16"> */}
       <div className="flex flex-col">
         <span className=" text-xxs text-grey-light">Название коробки</span>
         <Input
@@ -131,6 +163,7 @@ export const QueryFilters = ({ className, ...props }: ToolbarPropsType) => {
           icon={<SearchIcon />}
           iconPosition="inline-start"
           onClick={() => {}}
+          onChange={handleInputChange('search')}
           className="grow min-w-86 w-full bg-white text-text"
         />
       </div>
@@ -141,7 +174,7 @@ export const QueryFilters = ({ className, ...props }: ToolbarPropsType) => {
           placeholder={statusOptions.placeholder}
           classNames={statusOptions.classNames}
           defaultValue={params.status ?? statusOptions.options[0].value}
-          onValueChange={handleValueChange('status')}
+          onValueChange={handleSelectChange('status')}
         />
       </div>
       <div>
@@ -151,7 +184,7 @@ export const QueryFilters = ({ className, ...props }: ToolbarPropsType) => {
           placeholder={locationOptions.placeholder}
           classNames={locationOptions.classNames}
           defaultValue={params.location ?? locationOptions.options[0].value}
-          onValueChange={handleValueChange('location')}
+          onValueChange={handleSelectChange('location')}
         />
       </div>
       <div>
@@ -161,12 +194,9 @@ export const QueryFilters = ({ className, ...props }: ToolbarPropsType) => {
           placeholder={organizerOptions.placeholder}
           classNames={organizerOptions.classNames}
           defaultValue={params.organizer ?? organizerOptions.options[0].value}
-          onValueChange={handleValueChange('organizer')}
+          onValueChange={handleSelectChange('organizer')}
         />
       </div>
-      {/* </div> */}
-      {/* //TODO: remove */}
-      {/* <Button variant={'primary'} label="Экспорт XLSX" size={'default'} /> */}
     </div>
   )
 }

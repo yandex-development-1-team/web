@@ -14,7 +14,6 @@ const BoxSolutions = () => {
   const { boxes, pagination, isError, isLoading, isPending, queryKey } = useBoxes()
 
   if (isError) return <div className="text-text">Ошибка при получении данных</div>
-  if (!boxes?.length && !isPending) return <div className="text-text">Нет сохраненных коробок</div>
 
   const isShowDetails = modal?.type === 'details'
   const isShowSolutions = modal?.type === 'create' || modal?.type === 'edit'
@@ -22,7 +21,6 @@ const BoxSolutions = () => {
 
   return (
     <div className="flex flex-col gap-5 min-w-180">
-      {/* <div className=""> */}
       <div className="flex justify-between h-18">
         <h1 className="text-h2 text-text">Коробочные решения</h1>
         <BoxButton
@@ -36,16 +34,20 @@ const BoxSolutions = () => {
           Создать коробку
         </BoxButton>
       </div>
-      <QueryFilters className="min-h-max"></QueryFilters>
-      {/* </div> */}
-      <Boxes
-        boxesList={boxes}
-        isLoading={isLoading}
-        onDelete={(id: string) => setModal({ type: 'delete', id })}
-        onEdit={(id: string) => setModal({ type: 'edit', id })}
-        onDetailsView={(id: string) => setModal({ type: 'details', id })}
-        pagination={<Pagination pagination={pagination} />}
-      />
+      <QueryFilters className="min-h-max" />
+
+      {!boxes?.length && !isPending ? (
+        <div className="text-text">Коробочные решения не найдены</div>
+      ) : (
+        <Boxes
+          boxesList={boxes}
+          isLoading={isLoading}
+          onDelete={(id: string) => setModal({ type: 'delete', id })}
+          onEdit={(id: string) => setModal({ type: 'edit', id })}
+          onDetailsView={(id: string) => setModal({ type: 'details', id })}
+          pagination={<Pagination pagination={pagination} />}
+        />
+      )}
       {isShowDelete && (
         <DeleteModal
           title="Удалить коробку!"
