@@ -123,6 +123,7 @@ const ManageSolutions = () => {
                 className="button-text max-w-[calc(100%-5px)]"
                 icon={'special_projects'}
                 onClick={handleProjectCreate}
+                smallIcon
               >
                 Создать спецпроект
               </BoxButton>
