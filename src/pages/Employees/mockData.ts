@@ -10,6 +10,7 @@ export type Employee = {
   level: string
   phone: string
   email: string
+  city: string
 }
 
 export const employees: Employee[] = [
@@ -21,7 +22,8 @@ export const employees: Employee[] = [
     position: 'Администратор',
     level: 'A',
     phone: '+7 921 457-83-16',
-    email: 'ks.sm@gmail.com'
+    email: 'ks.sm@gmail.com',
+    city: 'Москва'
   },
   {
     id: 1024,
@@ -31,7 +33,8 @@ export const employees: Employee[] = [
     position: 'Менеджер',
     level: '3',
     phone: '+7 921 457-83-16',
-    email: 'nik.pup@gmail.com'
+    email: 'nik.pup@gmail.com',
+    city: 'Санкт-Петербург'
   },
   {
     id: 1025,
@@ -41,7 +44,8 @@ export const employees: Employee[] = [
     position: 'Менеджер',
     level: '2',
     phone: '+7 921 457-83-16',
-    email: 'vinokurov@gmail.com'
+    email: 'vinokurov@gmail.com',
+    city: 'Москва'
   },
   {
     id: 1026,
@@ -51,7 +55,8 @@ export const employees: Employee[] = [
     position: 'Маркетолог',
     level: '1',
     phone: '+7 921 457-83-16',
-    email: 'bely@gmail.com'
+    email: 'bely@gmail.com',
+    city: 'Санкт-Петербург'
   },
   {
     id: 1027,
@@ -61,7 +66,8 @@ export const employees: Employee[] = [
     position: 'Администратор',
     level: 'A',
     phone: '+7 921 457-83-16',
-    email: 'kosatkin@gmail.com'
+    email: 'kosatkin@gmail.com',
+    city: 'Москва'
   },
   {
     id: 1028,
@@ -71,7 +77,8 @@ export const employees: Employee[] = [
     position: 'PR',
     level: '1',
     phone: '+7 921 457-83-16',
-    email: 'artemyev@gmail.com'
+    email: 'artemyev@gmail.com',
+    city: 'Санкт-Петербург'
   },
   {
     id: 1029,
@@ -81,7 +88,8 @@ export const employees: Employee[] = [
     position: 'Маркетолог',
     level: '1',
     phone: '+7 921 457-83-16',
-    email: 'chestokin@gmail.com'
+    email: 'chestokin@gmail.com',
+    city: 'Москва'
   },
   {
     id: 1030,
@@ -91,7 +99,8 @@ export const employees: Employee[] = [
     position: 'Менеджер',
     level: '1',
     phone: '+7 921 457-83-16',
-    email: 'mops@gmail.com'
+    email: 'mops@gmail.com',
+    city: 'Санкт-Петербург'
   },
   {
     id: 1031,
@@ -101,7 +110,8 @@ export const employees: Employee[] = [
     position: 'Менеджер',
     level: '2',
     phone: '+7 921 457-83-16',
-    email: 'zaborskaya@gmail.com'
+    email: 'zaborskaya@gmail.com',
+    city: 'Москва'
   },
   {
     id: 1032,
@@ -111,7 +121,8 @@ export const employees: Employee[] = [
     position: 'Менеджер',
     level: '3',
     phone: '+7 921 457-83-16',
-    email: 'amir@gmail.com'
+    email: 'amir@gmail.com',
+    city: 'Санкт-Петербург'
   },
   {
     id: 1033,
@@ -121,12 +132,13 @@ export const employees: Employee[] = [
     position: 'Администратор',
     level: 'A',
     phone: '+7 921 457-83-16',
-    email: 'golovchenko@gmail.com'
+    email: 'golovchenko@gmail.com',
+    city: 'Москва'
   }
 ]
 
 export const EMPLOYEES: IEmployee[] = Array.from({ length: 11 }, (_, index) => {
-  const { id, department, email, name, position, manager, level } = employees[index]
+  const { id, department, email, name, position, manager, level, phone, city } = employees[index]
 
   return {
     id,
@@ -137,14 +149,14 @@ export const EMPLOYEES: IEmployee[] = Array.from({ length: 11 }, (_, index) => {
       middle_name: ''
     },
     contacts: {
-      phone: '+7 (911) 000-88-99',
+      phone: phone,
       email,
-      telegram_nick: '@dmitry_fresh'
+      city: city
     },
     job_info: {
       department,
       position,
-      role: `Менеджер ${level} звена`,
+      role: level === 'A' ? 'Администратор' : `Менеджер ${level} звена`,
       chief: {
         first_name: manager,
         last_name: '',

@@ -7,14 +7,6 @@ export interface IEmployeeFormData {
     patronymic: string
   }
 
-  passportData: {
-    citizenship: string
-    birthDate: string
-    gender: 'male' | 'female' | null
-    passportSeries: string
-    passportNumber: string
-  }
-
   contactInfo: {
     phone: string
     email: string

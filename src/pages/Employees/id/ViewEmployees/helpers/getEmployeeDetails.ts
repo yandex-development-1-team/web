@@ -6,8 +6,8 @@ export const getEmployeeDetails = (employee: IEmployee) => [
     title: 'Контактная информация',
     items: [
       { label: 'Телефон', value: employee.contacts.phone },
-      { label: 'Почта', value: employee.contacts.email },
-      { label: 'Telegram', value: employee.contacts.telegram_nick || '—' }
+      { label: 'Email', value: employee.contacts.email },
+      { label: 'Место проживания', value: employee.contacts.city }
     ]
   },
   {

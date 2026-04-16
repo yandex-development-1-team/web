@@ -7,7 +7,7 @@ type PersonalInfoType = {
 export type ContactsType = {
   phone: string
   email: string
-  telegram_nick?: string
+  city: string
 }
 
 type JobInfoType = {
