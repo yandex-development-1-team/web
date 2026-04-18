@@ -14,7 +14,7 @@ export interface IEmployeeFormData {
   }
 
   jobInfo: {
-    departmentId: number | null
+    department: string
     position: string
     chief: string
   }
@@ -22,11 +22,6 @@ export interface IEmployeeFormData {
   accessLevel: {
     roleId: number | null
   }
-}
-
-export interface IDepartment {
-  id: number
-  name: string
 }
 
 export interface IRole {

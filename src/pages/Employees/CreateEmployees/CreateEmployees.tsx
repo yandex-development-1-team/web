@@ -1,11 +1,13 @@
 import { useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useForm, useWatch, type SubmitHandler } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { Button, Card, Input, Switch } from '@/components/ui'
 import { FormInput } from '../ui'
 import { DownloadIcon, UserCreateIcon } from '@/assets/icons'
 import { useNotification } from '@/app/providers/notification'
 import { roles } from './createEmployeesData'
+import { employeeFormSchema, type EmployeeFormData } from '../schema'
 import type { IEmployeeFormData } from './CreateEmployees.types'
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024
@@ -23,7 +25,8 @@ export const CreateEmployees = () => {
     clearErrors,
     reset,
     formState: { errors }
-  } = useForm<IEmployeeFormData>({
+  } = useForm<EmployeeFormData>({
+    resolver: zodResolver(employeeFormSchema),
     defaultValues: {
       photo: null,
       personalInfo: {
@@ -37,7 +40,7 @@ export const CreateEmployees = () => {
         city: ''
       },
       jobInfo: {
-        departmentId: null,
+        department: '',
         position: '',
         chief: ''
       },
@@ -127,22 +130,7 @@ export const CreateEmployees = () => {
                       variant="text"
                       placeholder="Фамилия"
                       aria-invalid={!!errors.personalInfo?.surname}
-                      {...register('personalInfo.surname', {
-                        required: 'Введите фамилию',
-                        minLength: {
-                          value: 2,
-                          message: 'Фамилия должна быть введена'
-                        },
-                        pattern: {
-                          value: /^[А-Яа-яЁё]+$/u,
-                          message: 'Фамилия может содержать только буквы'
-                        },
-                        onChange: () => {
-                          if (errors.personalInfo?.surname) {
-                            clearErrors('personalInfo.surname')
-                          }
-                        }
-                      })}
+                      {...register('personalInfo.surname')}
                     />
                   }
                 />
@@ -156,22 +144,7 @@ export const CreateEmployees = () => {
                       variant="text"
                       placeholder="Имя"
                       aria-invalid={!!errors.personalInfo?.firstName}
-                      {...register('personalInfo.firstName', {
-                        required: 'Введите имя',
-                        minLength: {
-                          value: 2,
-                          message: 'Имя должно быть введено'
-                        },
-                        pattern: {
-                          value: /^[А-Яа-яЁё]+$/u,
-                          message: 'Имя может содержать только буквы'
-                        },
-                        onChange: () => {
-                          if (errors.personalInfo?.firstName) {
-                            clearErrors('personalInfo.firstName')
-                          }
-                        }
-                      })}
+                      {...register('personalInfo.firstName')}
                     />
                   }
                 />
@@ -185,22 +158,7 @@ export const CreateEmployees = () => {
                       variant="text"
                       placeholder="Отчество"
                       aria-invalid={!!errors.personalInfo?.patronymic}
-                      {...register('personalInfo.patronymic', {
-                        required: 'Введите отчество',
-                        minLength: {
-                          value: 2,
-                          message: 'Отчество должно быть введено'
-                        },
-                        pattern: {
-                          value: /^[А-Яа-яЁё]+$/u,
-                          message: 'Отчество может содержать только буквы'
-                        },
-                        onChange: () => {
-                          if (errors.personalInfo?.patronymic) {
-                            clearErrors('personalInfo.patronymic')
-                          }
-                        }
-                      })}
+                      {...register('personalInfo.patronymic')}
                     />
                   }
                 />
@@ -223,20 +181,7 @@ export const CreateEmployees = () => {
                         variant="text"
                         placeholder="+7 999 999-66-77"
                         aria-invalid={!!errors.contactInfo?.phone}
-                        {...register('contactInfo.phone', {
-                          required: 'Введите номер телефона',
-                          pattern: {
-                            value: /^\+?[1-9][0-9]{7,14}$/,
-                            message: 'Введите полный номер'
-                          },
-                          onChange: e => {
-                            const filtered = e.target.value.replace(/[^\d\s+\-()]/g, '')
-                            if (filtered !== e.target.value) {
-                              e.target.value = filtered
-                            }
-                            if (errors.contactInfo?.phone) clearErrors('contactInfo.phone')
-                          }
-                        })}
+                        {...register('contactInfo.phone')}
                       />
                     }
                   />
@@ -250,18 +195,7 @@ export const CreateEmployees = () => {
                         variant="text"
                         placeholder="Email"
                         aria-invalid={!!errors.contactInfo?.email}
-                        {...register('contactInfo.email', {
-                          required: 'Введите почту',
-                          pattern: {
-                            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                            message: 'Введите корректный email'
-                          },
-                          onChange: () => {
-                            if (errors.contactInfo?.email) {
-                              clearErrors('contactInfo.email')
-                            }
-                          }
-                        })}
+                        {...register('contactInfo.email')}
                       />
                     }
                   />
@@ -275,19 +209,7 @@ export const CreateEmployees = () => {
                         variant="text"
                         placeholder="Город"
                         aria-invalid={!!errors.contactInfo?.city}
-                        {...register('contactInfo.city', {
-                          required: 'Введите город',
-                          minLength: 2,
-                          pattern: {
-                            value: /^[А-Яа-яЁё]+$/u,
-                            message: 'Город может содержать только буквы'
-                          },
-                          onChange: () => {
-                            if (errors.contactInfo?.city) {
-                              clearErrors('contactInfo.city')
-                            }
-                          }
-                        })}
+                        {...register('contactInfo.city')}
                       />
                     }
                   />
@@ -299,26 +221,14 @@ export const CreateEmployees = () => {
                 <div className="flex flex-col gap-[11px]">
                   <FormInput
                     label="Отдел"
-                    errorMessage={errors.jobInfo?.departmentId?.message}
+                    errorMessage={errors.jobInfo?.department?.message}
                     input={
                       <Input
                         type="text"
                         variant="text"
                         placeholder="Отдел"
-                        aria-invalid={!!errors.jobInfo?.departmentId}
-                        {...register('jobInfo.departmentId', {
-                          required: 'Введите название отдела',
-                          minLength: 2,
-                          pattern: {
-                            value: /^[А-Яа-яЁё]+$/u,
-                            message: 'Название отдела может содержать только буквы'
-                          },
-                          onChange: () => {
-                            if (errors.jobInfo?.departmentId) {
-                              clearErrors('jobInfo.departmentId')
-                            }
-                          }
-                        })}
+                        aria-invalid={!!errors.jobInfo?.department}
+                        {...register('jobInfo.department')}
                       />
                     }
                   />
@@ -332,19 +242,7 @@ export const CreateEmployees = () => {
                         variant="text"
                         placeholder="Должность"
                         aria-invalid={!!errors.jobInfo?.position}
-                        {...register('jobInfo.position', {
-                          required: 'Введите должность',
-                          minLength: 2,
-                          pattern: {
-                            value: /^[А-Яа-яЁё]+$/u,
-                            message: 'Должность может содержать только буквы'
-                          },
-                          onChange: () => {
-                            if (errors.jobInfo?.position) {
-                              clearErrors('jobInfo.position')
-                            }
-                          }
-                        })}
+                        {...register('jobInfo.position')}
                       />
                     }
                   />
@@ -358,19 +256,7 @@ export const CreateEmployees = () => {
                         variant="text"
                         placeholder="Начальник"
                         aria-invalid={!!errors.jobInfo?.chief}
-                        {...register('jobInfo.chief', {
-                          required: 'Введите ФИО руководителя',
-                          minLength: 2,
-                          pattern: {
-                            value: /^[А-Яа-яЁё]+$/u,
-                            message: 'ФИО руководителя может содержать только буквы'
-                          },
-                          onChange: () => {
-                            if (errors.jobInfo?.chief) {
-                              clearErrors('jobInfo.chief')
-                            }
-                          }
-                        })}
+                        {...register('jobInfo.chief')}
                       />
                     }
                   />
