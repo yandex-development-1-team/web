@@ -1,6 +1,6 @@
 import { BoxDetailsModal } from '@/components/BoxDetailsModal/BoxDetailsModal'
 import { BoxSolutionModal } from '@/components/BoxSolutionModal'
-import { BoxButton, DeleteModal } from '@/components/ui'
+import { BoxButton, DeleteModal, Input } from '@/components/ui'
 import { Pagination } from '@/components/ui/Pagination'
 import { useState } from 'react'
 import { deleteBoxById } from './api/deleteBoxById'
@@ -8,13 +8,56 @@ import { getBoxById } from './api/getBoxById'
 import type { ModalState } from './BoxSolutions.types'
 import { useBoxes } from './hooks/useBoxes'
 import { Boxes } from './ui/Boxes'
+import FilterDropdown from './ui/FilterDropdown'
+import { SearchIcon } from '@/assets/icons'
+
+const statusOption = [
+  { value: 'all', label: 'Все статусы' },
+  { value: 'active', label: 'Активные' },
+  { value: 'disable', label: 'Неактивные' }
+]
+
+const locationOption = [
+  { value: 'all', label: 'Все локации' },
+  { value: 'Ленина', label: 'Ленина' },
+  { value: 'Мира', label: 'Мира' },
+  { value: 'Советская', label: 'Советская' },
+  { value: 'Гагарина', label: 'Гагарина' },
+  { value: 'Лесная', label: 'Лесная' },
+  { value: 'Полевая', label: 'Полевая' },
+  { value: 'Новая', label: 'Новая' },
+  { value: 'Садовая', label: 'Садовая' }
+]
+
+const organizationOption = [
+  { value: 'all', label: 'Все локации' },
+  { value: 'Secret Events Team', label: 'Secret Events Team' }
+]
 
 const BoxSolutions = () => {
   const [modal, setModal] = useState<ModalState>()
   const { boxes, pagination, isError, isLoading, isPending, queryKey } = useBoxes()
+  const [statusFilter, setStatusFilter] = useState('all')
+  const [locationFilter, setLocationFilter] = useState('all')
+  const [organizationFilter, setOrganizationFilter] = useState('all')
+  const [search, setSearch] = useState('')
 
   if (isError) return <div className="text-text">Ошибка при получении данных</div>
   if (!boxes?.length && !isPending) return <div className="text-text">Нет сохраненных коробок</div>
+
+  const filteredData = boxes?.filter(box => {
+    const matchesStatus =
+      statusFilter === 'all' ||
+      (statusFilter === 'active' && box.is_active_in_bot) ||
+      (statusFilter === 'disable' && !box.is_active_in_bot)
+    const matchesLocation =
+      locationFilter === 'all' || box.location.toLowerCase().includes(locationFilter.toLocaleLowerCase())
+    const matchesOraganization =
+      organizationFilter === 'all' || box.organizer.toLocaleLowerCase().includes(organizationFilter.toLocaleLowerCase())
+    const matchesSearch = box.name.toLocaleLowerCase().includes(search.toLocaleLowerCase())
+
+    return matchesStatus && matchesLocation && matchesOraganization && matchesSearch
+  })
 
   return (
     <div className="min-w-180">
@@ -31,8 +74,47 @@ const BoxSolutions = () => {
           Создать коробку
         </BoxButton>
       </div>
+      <div className="grid grid-cols-[32%_68%] place-items-end mb-5">
+        <Input
+          variant="icon"
+          icon={<SearchIcon />}
+          onChange={e => setSearch(e.target.value)}
+          className="h-[44px] my-0.5 min-w-[344px] py-[14px] w-full pl-[12px] rounded-[8px]"
+          placeholder=""
+        />
+        <div className="flex flex-row gap-3">
+          <div>
+            <span className="text-xxs text-text-grey-dark">Статус</span>
+            <FilterDropdown
+              value={statusFilter}
+              onChange={setStatusFilter}
+              options={statusOption}
+              className="text-text-grey-light text-small italic px-[6px] py-[12px] border border-grey-light rounded-[8px] pl-[12px] md:min-w-[228px] bg-white"
+            />
+          </div>
+          <div>
+            <span className="text-xxs text-text-grey-dark">Место проведения</span>
+            <FilterDropdown
+              value={locationFilter}
+              onChange={setLocationFilter}
+              options={locationOption}
+              placeholder="Выберите статус"
+              className="text-text-grey-light text-small italic px-[6px] py-[12px] border border-grey-light rounded-[8px] pl-[12px] md:min-w-[228px] bg-white"
+            />
+          </div>
+          <div>
+            <span className="text-xxs text-text-grey-dark">Организатор</span>
+            <FilterDropdown
+              value={organizationFilter}
+              onChange={setOrganizationFilter}
+              options={organizationOption}
+              className="text-text-grey-light text-small italic px-[6px] py-[12px] border border-grey-light rounded-[8px] pl-[12px] md:min-w-[228px] bg-white"
+            />
+          </div>
+        </div>
+      </div>
       <Boxes
-        boxesList={boxes}
+        boxesList={filteredData}
         isLoading={isLoading}
         onDelete={(id: string) => setModal({ type: 'delete', id })}
         onEdit={(id: string) => setModal({ type: 'edit', id })}
