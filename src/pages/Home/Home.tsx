@@ -1,13 +1,43 @@
 import { BoxButton, Button, DataTable } from '@/components/ui'
 import { Application2 } from '@/assets/icons'
 import { useState } from 'react'
+import { useModal } from '@/components/ui/Modal/useModal'
+import { BoxSolutionModal } from '@/components/BoxSolutionModal'
+import { ProjectModal } from '@/pages/SpecialProjects/components'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { api } from '@/app/providers/axios'
+import { API_ROUTES } from '@/services/api/routes'
+import { useNotification } from '@/app/providers/notification'
 import FilterDropdown from './ui/FilterDropdown'
 import { headerTableData } from './homePageData'
 import { bookingRequestsMock } from '@/mockData/bookingRequestsMock'
+import type { BoxData } from '@/types/solutions'
 
 const Home = () => {
   const [statusFilter, setStatusFilter] = useState('all')
+  const { isOpen: isCreateBoxModalOpen, open: openCreateBoxModal, close: closeCreateBoxModal } = useModal()
+  const { isOpen: isCreateProjectModalOpen, open: openCreateProjectModal, close: closeCreateProjectModal } = useModal()
+  const { showNotification } = useNotification()
+  const queryClient = useQueryClient()
   const data = bookingRequestsMock
+
+  const { mutate: createBox } = useMutation({
+    mutationFn: (payload: Partial<Omit<BoxData, 'id'>>) => api.post(API_ROUTES.boxes.get, payload),
+    onSuccess: () => {
+      showNotification({
+        status: 'success',
+        message: 'Коробочное решение успешно создано'
+      })
+      queryClient.invalidateQueries({ queryKey: ['boxSolutions'] })
+      closeCreateBoxModal()
+    },
+    onError: () => {
+      showNotification({
+        status: 'error',
+        message: 'Не удалось создать коробочное решение'
+      })
+    }
+  })
 
   const countQueue = data.filter(item => item.status === 'queue').length
   const countInProgress = data.filter(item => item.status === 'progress').length
@@ -18,9 +48,17 @@ const Home = () => {
     { title: 'Заявки в работе', value: countInProgress }
   ]
 
-  const handleBoxCreate = () => {}
+  const handleBoxCreate = () => {
+    openCreateBoxModal()
+  }
 
-  const handleSpecProjectCreate = () => {}
+  const handleSpecProjectCreate = () => {
+    openCreateProjectModal()
+  }
+
+  const handleBoxSave = (data: Partial<Omit<BoxData, 'id'>>) => {
+    createBox(data)
+  }
 
   const filteredData = statusFilter === 'all' ? data : data.filter(item => item.status === statusFilter)
 
@@ -86,6 +124,11 @@ const Home = () => {
           <DataTable idKey="id" data={filteredData} enableLoadMore columns={headerTableData} />
         </div>
       </div>
+
+      {isCreateBoxModalOpen && (
+        <BoxSolutionModal isOpen={isCreateBoxModalOpen} onClose={closeCreateBoxModal} onSave={handleBoxSave} />
+      )}
+      <ProjectModal isOpen={isCreateProjectModalOpen} onClose={closeCreateProjectModal} />
     </div>
   )
 }
