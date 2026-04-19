@@ -1,6 +1,6 @@
 import { BoxDetailsModal } from '@/components/BoxDetailsModal/BoxDetailsModal'
 import { BoxSolutionModal } from '@/components/BoxSolutionModal'
-import { BoxButton, DeleteModal, Input } from '@/components/ui'
+import { BoxButton, DeleteModal, Input, Select } from '@/components/ui'
 import { Pagination } from '@/components/ui/Pagination'
 import { useState } from 'react'
 import { deleteBoxById } from './api/deleteBoxById'
@@ -8,7 +8,6 @@ import { getBoxById } from './api/getBoxById'
 import type { ModalState } from './BoxSolutions.types'
 import { useBoxes } from './hooks/useBoxes'
 import { Boxes } from './ui/Boxes'
-import FilterDropdown from './ui/FilterDropdown'
 import { SearchIcon } from '@/assets/icons'
 
 const statusOption = [
@@ -85,30 +84,47 @@ const BoxSolutions = () => {
         <div className="flex flex-row gap-3">
           <div>
             <span className="text-xxs text-text-grey-dark">Статус</span>
-            <FilterDropdown
+            <Select
               value={statusFilter}
-              onChange={setStatusFilter}
+              onValueChange={setStatusFilter}
               options={statusOption}
-              className="text-text-grey-light text-small italic px-[6px] py-[12px] border border-grey-light rounded-[8px] pl-[12px] md:min-w-[228px] bg-white"
+              placeholder="Выберите статус"
+              classNames={{
+                trigger:
+                  'text-small italic px-[6px] py-[5px] border border-grey-light rounded-[8px] pl-[12px] md:min-w-[228px] bg-white text-text-grey-light',
+                content: 'border border-grey-light rounded-[8px] bg-white',
+                item: 'px-[12px] py-[8px]'
+              }}
             />
           </div>
           <div>
             <span className="text-xxs text-text-grey-dark">Место проведения</span>
-            <FilterDropdown
+            <Select
               value={locationFilter}
-              onChange={setLocationFilter}
+              onValueChange={setLocationFilter}
               options={locationOption}
-              placeholder="Выберите статус"
-              className="text-text-grey-light text-small italic px-[6px] py-[12px] border border-grey-light rounded-[8px] pl-[12px] md:min-w-[228px] bg-white"
+              placeholder="Выберите локацию"
+              classNames={{
+                trigger:
+                  'text-small italic px-[6px] py-[5px] border border-grey-light rounded-[8px] pl-[12px] md:min-w-[228px] bg-white text-text-grey-light',
+                content: 'border border-grey-light rounded-[8px] bg-white',
+                item: 'px-[12px] py-[8px]'
+              }}
             />
           </div>
           <div>
             <span className="text-xxs text-text-grey-dark">Организатор</span>
-            <FilterDropdown
+            <Select
               value={organizationFilter}
-              onChange={setOrganizationFilter}
+              onValueChange={setOrganizationFilter}
               options={organizationOption}
-              className="text-text-grey-light text-small italic px-[6px] py-[12px] border border-grey-light rounded-[8px] pl-[12px] md:min-w-[228px] bg-white"
+              placeholder="Выберите организатора"
+              classNames={{
+                trigger:
+                  'text-small italic px-[8px] py-[5px] border border-grey-light rounded-[8px] pl-[12px] md:min-w-[228px] bg-white text-text-grey-light',
+                content: 'border border-grey-light rounded-[8px] bg-white',
+                item: 'px-[12px] py-[8px]'
+              }}
             />
           </div>
         </div>
