@@ -15,35 +15,35 @@ export const MOCK_SPEC_PROJECTS_DATA: (TSpecialProjectListItemResponse & {
   description: string
 })[] = [
   {
-    id: 1,
+    id: 0,
     is_active_in_bot: true,
     title: 'Большой театр',
     description: 'Театральная площадь, 1',
     image: ImgCard
   },
   {
-    id: 2,
+    id: 1,
     is_active_in_bot: true,
     title: 'Большой театр',
     description: 'Театральная площадь, 2',
     image: undefined
   },
   {
-    id: 3,
+    id: 2,
     is_active_in_bot: false,
     title: 'Большой театр',
     description: 'Театральная площадь, 3',
     image: undefined
   },
   {
-    id: 4,
+    id: 3,
     is_active_in_bot: false,
     title: 'Большой театр',
     description: 'Театральная площадь, 4',
     image: undefined
   },
   {
-    id: 5,
+    id: 4,
     is_active_in_bot: false,
     title: 'Большой театр',
     description: 'Театральная площадь, 5',

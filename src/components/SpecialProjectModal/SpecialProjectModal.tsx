@@ -43,7 +43,7 @@ export function SpecialProjectModal({
 
   const [checkCropping, setCheckCropping] = useState(false)
 
-  const isSaveDiasbled = !isDirty || isPending
+  const isSaveDiasbled = (!isDirty && 'id' in initialData) || isPending
 
   const handleFormSubmit = (data: TFormData) => {
     const isCropping = checkCropping

@@ -1,211 +1,134 @@
-import { useState, type ChangeEvent } from 'react'
-import { useSearchParams } from 'react-router-dom'
-import { BoxButton, Input, Dropzone, DeleteModal } from '@/components/ui'
-import { mockProjects, mockUrl } from '@/mockData/mockSpecialProjectsPageData'
-import { EnvelopeIcon } from '@/assets/icons'
-import { ProjectCard } from '@/components/layout/ProjectCard'
-import { Pagination } from '@/components/ui/Pagination'
-import { type IProject } from '@/types/solutions'
-import { useMainWidth } from '@/hooks/useMainWidth'
-import { ProjectModal } from './components'
+import { Link } from 'react-router-dom'
+import { useState } from 'react'
+import { EnvelopeIcon, SearchIcon } from '@/assets/icons'
+import { BoxButton, DeleteModal, Dropzone, Input, Select } from '@/components/ui'
+import { cn } from '@/lib/utils.clsx'
+import { MOCK_DATA, MOCK_SPEC_PROJECTS_DATA } from '@/mockData/specProjects.mock'
+import { ProjectCard } from './ui/ProjectCard'
+import { useModal } from '@/components/ui/Modal/useModal'
+import { SpecialProjectModal } from '@/components/SpecialProjectModal/SpecialProjectModal'
+import { InfoBlock } from './ui/InfoBlock'
 
-const SpecialProjects = () => {
-  const cardMinWidth = 284
-  const cardMaxWidth = 344
+export function SpecialProjects() {
+  const { isOpen: isOpenDeleteModal, open: openDeleteModal, close } = useModal()
+  const { isOpen: isOpenCreateProject, close: onCloseCreateProject, open: onOpenProjectModal } = useModal()
 
-  const mainWidth = useMainWidth()
-  const pageSize = Math.floor((mainWidth - 20) / (cardMinWidth + 20)) || 1
+  const [file, setFile] = useState<File | null>(null)
+  const [deletingId, setDeletingId] = useState<number | null>(null)
+  const [editingId, setEditingId] = useState<number | null>(null)
 
-  const [searchParams] = useSearchParams()
-  const offset = Number(searchParams.get('offset')) || 0
-
-  const [projects, setProjects] = useState<IProject[]>(mockProjects)
-
-  const pageSizeLow = Math.floor((mainWidth - 20) / (cardMaxWidth + 20)) || 1
-  const cardsOnCurrentPageCount = projects.slice(offset, offset + pageSize).length
-  const justifyClass = cardsOnCurrentPageCount < pageSizeLow ? 'justify-start' : 'justify-between'
-
-  const [url, setUrl] = useState(mockUrl)
-  const [presentationFile, setPresentationFile] = useState<File | null>(null)
-
-  const [projectToDelete, setProjectToDelete] = useState<number | null>(null)
-  const [projectToEdit, setProjectToEdit] = useState<IProject | null | undefined>(null)
-
-  const [urlError, setUrlError] = useState(false)
-
-  const handleFileAccept = (file: File) => {
-    setPresentationFile(file)
+  const handleFileAccept = (fileItem: File) => {
+    setFile(fileItem)
   }
 
-  const updateUrl = () => void url
-
-  const handleUrlInput = () => {
-    validateUrl()
-    if (!urlError) {
-      updateUrl()
-    }
+  const handleDeletProject = (id: string | number) => {
+    setDeletingId(Number(id))
+    openDeleteModal()
   }
 
-  const isValidUrl = (urlString: string) => {
-    try {
-      const url = new URL(urlString)
-      return url.protocol === 'http:' || url.protocol === 'https:'
-    } catch {
-      return false
-    }
+  const handleEditProject = (id: string | number) => {
+    setEditingId(Number(id))
+    onOpenProjectModal()
   }
 
-  const validateUrl = () => {
-    const isSimpleUrl = url.includes('.') && !url.startsWith('.') && !url.endsWith('.')
-    if (!isSimpleUrl) {
-      setUrlError(true)
-      return
-    }
-    const finalUrl = url.includes('://') ? url : `https://${url}`
-    if (isValidUrl(finalUrl)) {
-      setUrl(finalUrl)
-      setUrlError(false)
-    } else {
-      setUrlError(true)
-    }
-  }
-
-  const filterUrl = (url: string) => {
-    return url.replace(/[^a-zA-Z0-9-._~:/?#[\]@!$&'()*+,;=%]/g, '')
-  }
-
-  const handleUrlChange = (e: ChangeEvent<HTMLInputElement, HTMLInputElement>) => {
-    setUrl(filterUrl(e.target.value))
-  }
-
-  const handleUrlBlur = () => {
-    handleUrlInput()
-  }
-
-  const handleUrlKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      e.currentTarget.blur()
-    }
-  }
-
-  const deleteProject = async (id: string | number) => {
-    setProjects(prev => prev.filter(project => project.id !== id))
-  }
-
-  const handleProjectCreate = () => {
-    setProjectToEdit(undefined)
-  }
-
-  const handleProjectEdit = (id: number) => {
-    setProjectToEdit(mockProjects.find(project => project.id === id) || null)
-  }
-
-  const handleProjectDelete = (id: number) => {
-    setProjectToDelete(id)
+  const handleCloseModal = () => {
+    setEditingId(null)
+    onCloseCreateProject()
   }
 
   return (
-    <>
-      <h2 className="text-h2 text-text py-[38px_38px]">Управление спецпроектами</h2>
-      <div className="grid grid-cols-2 grid-rows-[auto_1fr] gap-[10px_19px] text-text py-[19px_59px] relative">
-        <h3 className="order-1 text-h3">Яндекс-форма для заявок</h3>
-        <div className="relative order-3 ">
-          <Input
-            placeholder="URL"
-            type="url"
-            className={`
-              text-h5 text-text bg-white text-center pe-3 min-h-[145px] h-full
-              transition-[border-color] duration-300 ease-in-out
-            `}
-            onKeyDown={handleUrlKeyPress}
-            value={url}
-            onChange={handleUrlChange}
-            onBlur={handleUrlBlur}
-            invalid={urlError}
-          />
-          {urlError && <p className="absolute mt-[3px] text-xxs text-text-error">Некорректный URL</p>}
-        </div>
-        <h3 className="order-2 text-h3">Презентация</h3>
-        <Dropzone
-          className="order-4 flex flex-col items-center min-h-[145px] outline-0 px-2"
-          accept={{ 'application/pdf': ['.pdf'] }}
-          onFileAccepted={handleFileAccept}
-        >
-          <div className="h-[48px] w-[48px] flex items-center justify-center my-[15px_19px]">
-            <EnvelopeIcon className="text-text" />
-          </div>
-          {presentationFile ? (
-            <p className="text-h5 text-text">{presentationFile.name}</p>
-          ) : (
-            <>
-              <p className="text-h5 text-text mb-[2px] text-center">Переместите сюда нужный файл</p>
-              <p className="text-small italic text-text-grey-dark mb-[14px] text-center">
-                Можно загрузить только один файл
+    <div className={cn('pt-5 flex flex-col gap-14')}>
+      <h2 className="text-h2 text-black">Управление спецпроектами</h2>
+      <div className="flex gap-3 max-[1200px]:flex-col">
+        <InfoBlock title="Яндекс-форма для заявок" classNameContent="p-3">
+          <Link to={MOCK_DATA.formLink} target="_blank" className="text-text text-h5">
+            <span className="break-all">{MOCK_DATA.formLink}</span>
+          </Link>
+        </InfoBlock>
+        <InfoBlock title="Презентация" classNameContent="border-0">
+          <Dropzone
+            accept={{ 'application/pdf': ['.pdf'] }}
+            onFileAccepted={handleFileAccept}
+            className="w-full h-full flex flex-col items-center pt-5 gap-5"
+          >
+            <EnvelopeIcon />
+            <div>
+              <p>Переместите сюда нужный файл</p>
+              <p className="text-small italic text-text-grey-dark">
+                {file ? file.name : 'Можно загрузить только один файл'}
               </p>
-            </>
-          )}
-        </Dropzone>
+            </div>
+          </Dropzone>
+        </InfoBlock>
       </div>
-
-      <div className="flex justify-between mb-[20px]">
-        <h3 className="text-h3 text-text">Список спецпроектов</h3>
-        <BoxButton
-          className="text-button max-w-[340px] h-[72px] ml-[20px]"
-          icon={'special_projects'}
-          onClick={handleProjectCreate}
-          variant={'filled'}
-        >
-          Создать спецпроект
-        </BoxButton>
+      <div className="flex flex-col gap-10">
+        <div className="flex justify-between">
+          <h3 className="text-h3 text-text">Список спецпроектов</h3>
+          <BoxButton
+            className="text-button max-w-85 h-18 ml-5"
+            icon={'special_projects'}
+            variant={'filled'}
+            onClick={() => onOpenProjectModal()}
+          >
+            Создать спецпроект
+          </BoxButton>
+        </div>
       </div>
-
-      <div
-        className={`mt-[30px] flex gap-[20px] ${justifyClass}`}
-        style={{ gridTemplateColumns: `repeat(${pageSize}, minmax(0, 1fr))` }}
-      >
-        {projects.slice(offset, offset + pageSize).map(project => (
-          <ProjectCard
-            style={{ minWidth: `${cardMinWidth}px`, maxWidth: `${cardMaxWidth}px` }}
-            key={project.id}
-            title={project.title}
-            description={project.description}
-            image={project.image}
-            isActive={project.isActive}
-            onClick={() => handleProjectEdit(project.id)}
-            onDelete={() => handleProjectDelete(project.id)}
+      <div>
+        <div className="flex items-center gap-5 mb-6">
+          <Input
+            variant="icon"
+            icon={<SearchIcon />}
+            className="bg-white min-[1440px]:min-w-84 h-full"
+            placeholder=""
           />
-        ))}
+          <Select
+            options={MOCK_DATA.selectData}
+            placeholder="Выберите статус"
+            classNames={{ trigger: 'bg-white w-full h-11.5' }}
+          />
+        </div>
+        <div className="gap-5 grid grid-cols-[repeat(auto-fit,minmax(288px,1fr))]">
+          {MOCK_SPEC_PROJECTS_DATA.map(item => {
+            return (
+              <ProjectCard
+                key={item.id}
+                descriptioin={item.description ?? ''}
+                status={item.is_active_in_bot}
+                title={item.title}
+                image={item.image}
+                onDelete={() => handleDeletProject(item.id)}
+                onEdit={() => handleEditProject(item.id)}
+              />
+            )
+          })}
+        </div>
       </div>
 
-      <Pagination
-        className="mt-[26px]"
-        variant="nav"
-        pagination={{
-          limit: pageSize,
-          offset: offset,
-          total: projects.length
+      <SpecialProjectModal
+        modalTitle={editingId !== null ? 'Редактировать спецпроект' : 'Создать спецпроект'}
+        onSubmit={data => {
+          console.log(data)
+          handleCloseModal()
         }}
-      />
-
-      <ProjectModal
-        isOpen={projectToEdit !== null}
-        onClose={() => setProjectToEdit(null)}
-        project={projectToEdit || undefined}
+        isOpen={isOpenCreateProject}
+        onClose={handleCloseModal}
+        initialData={editingId !== null ? MOCK_SPEC_PROJECTS_DATA.find(item => item.id === editingId) : undefined}
       />
 
       <DeleteModal
         title="Удалить спецпроект?"
-        isOpen={!!projectToDelete || projectToDelete === 0}
+        isOpen={isOpenDeleteModal}
         onDelete={async id => {
-          deleteProject(id)
+          handleDeletProject(id)
         }}
-        onClose={() => setProjectToDelete(null)}
-        itemId={projectToDelete}
+        onClose={close}
+        itemId={deletingId}
       >
         <p>Вы действительно хотите удалить этот спецпроект?</p>
         <p>Действие нельзя отменить</p>
       </DeleteModal>
-    </>
+    </div>
   )
 }
 
