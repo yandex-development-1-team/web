@@ -7,43 +7,19 @@ import { BoxSolutionModal } from '@/components/BoxSolutionModal'
 import { ProjectModal } from '@/pages/SpecialProjects/components'
 import { CardLink, TeammateCard } from './ui'
 import { useModal } from '@/components/ui/Modal/useModal'
-import { useNotification } from '@/app/providers/notification'
 import { CARDS } from './cards'
 import { mockDaySummaryData, mockDayTeam, mockWeekSummaryData } from '@/mockData/mockStatsPageData'
 import type { ToggleButtonState } from '@/components/ui/ToggleButton'
 import type { BoxData } from '@/types/solutions'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { api } from '@/app/providers/axios'
-import { API_ROUTES } from '@/services/api/routes'
 
 type PeriodType = 'day' | 'week'
 
 const Stats = () => {
   const navigate = useNavigate()
-  const { showNotification } = useNotification()
-  const queryClient = useQueryClient()
 
   const [period, setPeriod] = useState<PeriodType>('day')
   const { isOpen: isCreateBoxModalOpen, open: openCreateBoxModal, close: closeCreateBoxModal } = useModal()
   const { isOpen: isCreateProjectModalOpen, open: openCreateProjectModal, close: closeCreateProjectModal } = useModal()
-
-  const { mutate: createBox } = useMutation({
-    mutationFn: (payload: Partial<Omit<BoxData, 'id'>>) => api.post(API_ROUTES.boxes.get, payload),
-    onSuccess: () => {
-      showNotification({
-        status: 'success',
-        message: 'Коробочное решение успешно создано'
-      })
-      queryClient.invalidateQueries({ queryKey: ['boxSolutions'] })
-      closeCreateBoxModal()
-    },
-    onError: () => {
-      showNotification({
-        status: 'error',
-        message: 'Не удалось создать коробочное решение'
-      })
-    }
-  })
 
   const handleToggle = (side: ToggleButtonState) => {
     const newPeriod = side === 'left' ? 'day' : 'week'
@@ -51,7 +27,8 @@ const Stats = () => {
   }
 
   const handleBoxSave = (data: Partial<Omit<BoxData, 'id'>>) => {
-    createBox(data)
+    void data
+    closeCreateBoxModal()
   }
 
   const summaryData = period === 'day' ? mockDaySummaryData : mockWeekSummaryData
