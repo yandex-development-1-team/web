@@ -1,19 +1,7 @@
 import mockPhoto from '@/mockData/mock_photo.jpg'
 import type { IEmployee } from './employees.types'
 
-export type Employee = {
-  id: number
-  name: string
-  department: string
-  manager: string
-  position: string
-  level: string
-  phone: string
-  email: string
-  city: string
-}
-
-export const employees: Employee[] = [
+const initialEmployeesData = [
   {
     id: 1023,
     name: 'Смирнова Ксения',
@@ -137,35 +125,31 @@ export const employees: Employee[] = [
   }
 ]
 
-export const EMPLOYEES: IEmployee[] = Array.from({ length: 11 }, (_, index) => {
-  const { id, department, email, name, position, manager, level, phone, city } = employees[index]
-
-  return {
-    id,
-    avatar: mockPhoto,
-    personal_info: {
-      first_name: name,
+export const EMPLOYEES: IEmployee[] = initialEmployeesData.map((emp, index) => ({
+  id: emp.id,
+  avatar: mockPhoto,
+  personal_info: {
+    first_name: emp.name.split(' ')[1] || emp.name,
+    last_name: emp.name.split(' ')[0] || '',
+    middle_name: emp.name.split(' ')[2] || ''
+  },
+  contacts: {
+    phone: emp.phone,
+    email: emp.email,
+    city: emp.city
+  },
+  job_info: {
+    department: emp.department,
+    position: emp.position,
+    role: emp.level === 'A' ? 'Администратор' : `Менеджер ${emp.level} звена`,
+    chief: {
+      first_name: emp.manager,
       last_name: '',
-      middle_name: ''
-    },
-    contacts: {
-      phone: phone,
-      email,
-      city: city
-    },
-    job_info: {
-      department,
-      position,
-      role: level === 'A' ? 'Администратор' : `Менеджер ${level} звена`,
-      chief: {
-        first_name: manager,
-        last_name: '',
-        middle_name: 'Михайлович'
-      }
-    },
-    access_level: 'Ограниченный доступ',
-    status: index % 2 === 0 ? 'inactive' : 'active',
-    created_at: '2024-02-01T09:00:00Z',
-    updated_at: '2024-02-01T09:00:00Z'
-  } as const
-})
+      middle_name: 'Михайлович'
+    }
+  },
+  access_level: 'Ограниченный доступ',
+  status: index % 2 === 0 ? 'inactive' : 'active',
+  created_at: '2024-02-01T09:00:00Z',
+  updated_at: '2024-02-01T09:00:00Z'
+}))

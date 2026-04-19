@@ -1,6 +1,11 @@
-import type { IRole } from './CreateEmployees.types'
+type Role = {
+  id: number
+  name: string
+  description: string
+  accessType: 'full' | 'limited'
+}
 
-export const roles: IRole[] = [
+export const roles: Role[] = [
   { id: 0, name: 'Администратор', description: 'Полный доступ', accessType: 'full' },
   { id: 1, name: 'Менеджер 1 звена', description: 'Ограниченный доступ', accessType: 'limited' },
   { id: 2, name: 'Менеджер 2 звена', description: 'Ограниченный доступ', accessType: 'limited' },

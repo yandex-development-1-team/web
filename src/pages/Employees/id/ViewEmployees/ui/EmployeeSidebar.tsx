@@ -2,7 +2,7 @@ import { Switch } from '@/components/ui'
 import { Card } from '@/components/ui/Card'
 import { MOCK_ACTIONS } from '@/mockData/mock_view_employees'
 import type { StatusType } from '@/pages/Employees/employees.types'
-import { useStatusChange } from '../hooks/useStatusChange'
+import { useStatusChange } from '../../../hooks/useStatusChange'
 import { Actions } from './Actions'
 import { Avatar } from './Avatar'
 

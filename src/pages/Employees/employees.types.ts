@@ -1,4 +1,4 @@
-type PersonalInfoType = {
+export type PersonalInfoType = {
   last_name: string
   first_name: string
   middle_name?: string
@@ -10,7 +10,7 @@ export type ContactsType = {
   city: string
 }
 
-type JobInfoType = {
+export type JobInfoType = {
   department: string
   position: string
   role: string
@@ -32,4 +32,25 @@ export interface IEmployee extends IUser {
   status: StatusType
   created_at: string
   updated_at: string
+}
+
+export type CreateEmployeeData = {
+  avatar?: string
+  personal_info: PersonalInfoType
+  contacts: ContactsType
+  job_info: JobInfoType
+  access_level?: string
+  status?: StatusType
+}
+
+export type EmployeeForTable = {
+  id: number
+  name: string
+  department: string
+  manager: string
+  position: string
+  level: string
+  phone: string
+  email: string
+  city: string
 }
