@@ -26,6 +26,9 @@ const defaultStyles = `
   text-black
   button-text
   hover:bg-yellow-light
+  focus:ring-2
+  focus:ring-yellow-accent-dark
+  focus:ring-offset-2
   active:bg-yellow-accent-dark
   aria-invalid:bg-red-medium
   aria-invalid:text-white
@@ -38,6 +41,9 @@ const outlineStyles = `
   text-black
   button-text
   hover:ring-yellow-light
+  focus:ring-2
+  focus:ring-yellow-accent-dark
+  focus:ring-offset-2
   active:ring-2
   active:ring-yellow-accent-dark
   aria-invalid:ring-2
@@ -57,6 +63,7 @@ const underlineStyles = `
   decoration-1
   underline-offset-6
   hover:decoration-yellow-light
+  focus:decoration-yellow-light
   active:decoration-2
   active:decoration-yellow-accent-dark
   disabled:text-grey-dark
@@ -79,7 +86,10 @@ const primaryStyles = `
   button-text
   hover:bg-yellow-light
   hover:border-yellow-light
-
+  focus:ring-2
+  focus:ring-yellow-accent-dark
+  focus:ring-offset-2
+  
   active:bg-yellow-accent-dark
   active:border-yellow-accent-dark
   active:outline-yellow-accent-dark
@@ -96,6 +106,9 @@ const secondaryStyles = `
   bg-white
 
   hover:border-yellow-light
+  focus:ring-2
+  focus:ring-yellow-accent-dark
+  focus:ring-offset-2
   active:border-yellow-accent-dark
   active:outline-yellow-accent-dark
 
@@ -140,6 +153,9 @@ const elevatedStyles = `
 
   hover:shadow-[0px_6px_12px_0px_rgba(0,0,0,0.18),0px_3px_6px_0px_rgba(0,0,0,0.33)]
   hover:-translate-y-px
+  focus:ring-2
+  focus:ring-yellow-accent-dark
+  focus:ring-offset-2
 
   active:shadow-[0px_1px_2px_0px_rgba(0,0,0,0.20),inset_0px_1px_2px_0px_rgba(0,0,0,0.15)]
   active:translate-y-0

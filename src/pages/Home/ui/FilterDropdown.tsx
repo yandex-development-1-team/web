@@ -36,7 +36,7 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({ className, onChange, va
       <button
         type="button"
         onClick={() => setOpen(prev => !prev)}
-        className={`relative w-auto  text-left text-xs ${className}`}
+        className={`relative w-auto text-left text-xs cursor-pointer hover:border-system-grey-dark ${className}`}
       >
         {selected?.label}
 
@@ -51,7 +51,7 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({ className, onChange, va
             <li
               key={option.value}
               onClick={() => handleSelect(option.value)}
-              className="px-[12px] py-[8px] cursor-pointer hover:bg-grey-light"
+              className="px-[12px] py-[8px] cursor-pointer hover:bg-(--select-option-hover)"
             >
               {option.label}
             </li>

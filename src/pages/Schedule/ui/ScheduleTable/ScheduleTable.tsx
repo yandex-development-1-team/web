@@ -46,13 +46,25 @@ export const ScheduleTable = (props: TScheduleTable) => {
 
   const renderRowActions = (row: TTableEvent) => (
     <div className="flex gap-2">
-      <Button variant="ghost" className="size-11.5 border-grey-light" onClick={() => handleEdit(row)}>
+      <Button
+        variant="ghost"
+        className="size-11.5 border-grey-light hover:ring-1 hover:ring-yellow-light focus:ring-1 focus:ring-yellow-accent-dark active:bg-yellow-light"
+        onClick={() => handleEdit(row)}
+      >
         <EditIcon className="size-6" color="var(--color-black)" />
       </Button>
-      <Button variant="ghost" className="size-11.5 border-grey-light" onClick={() => handleDeleteClick(row)}>
+      <Button
+        variant="ghost"
+        className="size-11.5 border-grey-light hover:ring-1 hover:ring-yellow-light focus:ring-1 focus:ring-yellow-accent-dark active:bg-yellow-light"
+        onClick={() => handleDeleteClick(row)}
+      >
         <DeleteIcon className="size-6" color="var(--color-black)" />
       </Button>
-      <Button variant="ghost" className="size-11.5 border-grey-light" onClick={() => {}}>
+      <Button
+        variant="ghost"
+        className="size-11.5 border-grey-light hover:ring-1 hover:ring-yellow-light focus:ring-1 focus:ring-yellow-accent-dark active:bg-yellow-light"
+        onClick={() => {}}
+      >
         <DownloadIcon className="size-6" color="var(--color-black)" />
       </Button>
     </div>

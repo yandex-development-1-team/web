@@ -31,7 +31,7 @@ export const PaginationNav = ({
             key={`page-${page}`}
             to={current(page)}
             className={`w-10 h-10 flex items-center justify-center rounded-md 
-            ${page === activePage ? 'border border-yellow-accent-light bg-white text-text pointer-events-none' : 'text-grey-light'}`}
+            ${page === activePage ? 'border border-yellow-accent-light bg-white text-text pointer-events-none focus:ring-offset-2 focus:border-yellow-accent-light' : 'text-grey-light hover:bg-yellow-light focus:ring-2 focus:ring-yellow-accent-light'}`}
           >
             {page}
           </Link>
