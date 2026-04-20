@@ -17,6 +17,7 @@ interface SpecialProjectModalProps {
   initialData?: TFormData
   modalTitle?: string
   isPending?: boolean
+  viewOnly?: boolean
 }
 
 export function SpecialProjectModal({
@@ -25,7 +26,8 @@ export function SpecialProjectModal({
   isOpen = false,
   onClose,
   modalTitle,
-  isPending
+  isPending,
+  viewOnly = false
 }: SpecialProjectModalProps) {
   const getDefaultData = (): TFormData => ({
     id: uuidv4(),
@@ -81,14 +83,16 @@ export function SpecialProjectModal({
       footer={
         <div className="flex justify-between w-full">
           <Button type="button" label="Отмена" variant="secondary" size="default" onClick={onClose} />
-          <Button
-            type="submit"
-            label={isPending ? 'Сохранение...' : 'Сохранить'}
-            variant="primary"
-            size="default"
-            onClick={handleSubmit(handleFormSubmit)}
-            disabled={isSaveDisabled}
-          />
+          {!viewOnly && (
+            <Button
+              type="submit"
+              label="Сохранить"
+              variant="primary"
+              size="default"
+              onClick={handleSubmit(handleFormSubmit)}
+              disabled={isSaveDisabled}
+            />
+          )}
         </div>
       }
     >
