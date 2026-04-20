@@ -19,7 +19,7 @@ export const ManageButton = ({ onClick, onEdit, onDelete, text, className }: Man
   }
 
   const buttonClasses = `
-    w-[44px] h-[44px]  flex items-center justify-center rounded-[8px] hover:ring-1 hover:ring-yellow-light
+    w-[44px] h-[44px]  flex items-center justify-center rounded-[8px] cursor-pointer hover:ring-1 hover:ring-yellow-light
     focus:ring-1 focus:ring-yellow-accent-dark active:bg-yellow-light
     transition-[bg-color,shadow] duration-300 ease-in-out
   `
