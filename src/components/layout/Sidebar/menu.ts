@@ -27,8 +27,7 @@ export const MENU_MANAGER: Omit<ItemProps, 'isExpanded'>[] = [
   {
     Icon: BoxesIcon,
     title: 'Коробочные решения',
-    route: ROUTES.boxSolutions,
-    accessName: PERMISSIONS.boxesView
+    route: ROUTES.boxSolutions
   },
   {
     Icon: SpecialProjectsIcon,

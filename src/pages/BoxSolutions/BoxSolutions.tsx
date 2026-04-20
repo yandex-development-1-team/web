@@ -23,7 +23,7 @@ const BoxSolutions = () => {
     <div className="min-w-180">
       <div className="flex justify-between h-18 mb-5">
         <h1 className="text-h2 text-text">Коробочные решения</h1>
-        {hasAccess(PERMISSIONS.boxesEdit) && (
+        {hasAccess(PERMISSIONS.boxesCreate) && (
           <BoxButton
             size={'small'}
             icon="box"
