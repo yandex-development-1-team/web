@@ -3,7 +3,7 @@ import { Application2 } from '@/assets/icons'
 import { useState } from 'react'
 import { useModal } from '@/components/ui/Modal/useModal'
 import { BoxSolutionModal } from '@/components/BoxSolutionModal'
-import { ProjectModal } from '@/pages/SpecialProjects/components'
+import { SpecialProjectModal } from '@/components/SpecialProjectModal/SpecialProjectModal'
 import FilterDropdown from './ui/FilterDropdown'
 import { headerTableData } from './homePageData'
 import { bookingRequestsMock } from '@/mockData/bookingRequestsMock'
@@ -105,7 +105,12 @@ const Home = () => {
       {isCreateBoxModalOpen && (
         <BoxSolutionModal isOpen={isCreateBoxModalOpen} onClose={closeCreateBoxModal} onSave={handleBoxSave} />
       )}
-      <ProjectModal isOpen={isCreateProjectModalOpen} onClose={closeCreateProjectModal} />
+      <SpecialProjectModal
+        isOpen={isCreateProjectModalOpen}
+        onClose={closeCreateProjectModal}
+        onSubmit={closeCreateProjectModal}
+        modalTitle={'Создать спецпроект'}
+      />
     </div>
   )
 }

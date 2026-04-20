@@ -4,7 +4,7 @@ import { ROUTES } from '@/app/router'
 import { BoxButton, Card, ToggleButton } from '@/components/ui'
 import { SummaryCardsList } from '@/components/SummaryCardsList'
 import { BoxSolutionModal } from '@/components/BoxSolutionModal'
-import { ProjectModal } from '@/pages/SpecialProjects/components'
+import { SpecialProjectModal } from '@/components/SpecialProjectModal/SpecialProjectModal'
 import { CardLink, TeammateCard } from './ui'
 import { useModal } from '@/components/ui/Modal/useModal'
 import { CARDS } from './cards'
@@ -79,7 +79,12 @@ const Stats = () => {
       {isCreateBoxModalOpen && (
         <BoxSolutionModal isOpen={isCreateBoxModalOpen} onClose={closeCreateBoxModal} onSave={handleBoxSave} />
       )}
-      <ProjectModal isOpen={isCreateProjectModalOpen} onClose={closeCreateProjectModal} />
+      <SpecialProjectModal
+        isOpen={isCreateProjectModalOpen}
+        onClose={closeCreateProjectModal}
+        onSubmit={closeCreateProjectModal}
+        modalTitle={'Создать спецпроект'}
+      />
     </div>
   )
 }
