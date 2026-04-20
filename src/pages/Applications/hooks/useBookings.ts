@@ -14,6 +14,7 @@ export const useBookings = (
   const { data: booking } = useQuery({
     queryKey: ['bookingByIdKey', bookingId],
     queryFn: () => getBokingById(bookingId),
+    placeholderData: prev => prev,
     enabled: !!bookingId
   })
 

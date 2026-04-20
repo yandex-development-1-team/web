@@ -19,8 +19,8 @@ export const useApplications = () => {
     queryFn: meta => {
       console.log('Инвалидируем bookingsQueryKey')
       return getBookings({ params }, meta)
-    }
-    // placeholderData: prev => prev
+    },
+    placeholderData: prev => prev
   })
 
   const applications = useQuery({
