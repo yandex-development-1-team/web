@@ -59,7 +59,7 @@ const Home = () => {
           </div>
         ))}
 
-        {hasAccess(PERMISSIONS.boxesEdit) && (
+        {hasAccess(PERMISSIONS.boxesCreate) && (
           <BoxButton onClick={handleBoxCreate} icon="box" className="max-w-[407px]">
             Создать коробку
           </BoxButton>
