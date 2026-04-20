@@ -12,6 +12,7 @@ import { type ApplicationListItemType, type BookingListItemType, type ModalState
 import { TABS } from './configs/pageTabs.config'
 import { appDataTableColumns, bookingDataTableColumns } from './configs/tableColumns.config'
 import { useApplications } from './hooks/useApplications'
+import { useDownload } from './hooks/useDownload'
 import { Actions } from './ui/Actions'
 import { BookingModal } from './ui/BookingModal'
 import { QueryFilters } from './ui/QueryFilters'
@@ -20,8 +21,9 @@ import { SpecialProjectModal } from './ui/SpecialProjectModal'
 const Applications = () => {
   const [modal, setModal] = useState<ModalStateType | null>(null)
   const [itemToDelete, setItemToDelete] = useState<string | number | null>(null)
+  // const [itemToDownload, setItemToDownload] = useState<string>('')
   // if (isError) return <div className="text-text">Ошибка при получении данных</div>
-
+  const { start } = useDownload()
   const { activeTab, onTabClick } = useTabs(TABS)
   const { bookings, applications, bookingsQueryKey, applicationsQueryKey } = useApplications()
 
@@ -52,6 +54,8 @@ const Applications = () => {
   }
 
   const handleDownload = async (id: string | number) => {
+    // setItemToDownload(String(id))
+    start(String(id))
     console.log('Download', id)
   }
 
@@ -75,7 +79,7 @@ const Applications = () => {
             data={bookings.data?.items ?? []}
             columns={dataTableColumns[activeTab]}
             enableCheckboxes
-            rowActions={Actions({ onDelete: setItemToDelete, onDownload: handleDownload })}
+            rowActions={Actions({ onDelete: setItemToDelete, onDownload: start })}
             isLoading={bookings.isLoading}
             onRowClick={handleRowClick}
             pagination={<Pagination pagination={bookings.data?.pagination} className="p-4 pt-0" />}
