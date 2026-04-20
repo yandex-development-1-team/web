@@ -9,7 +9,7 @@ interface DeleteModalProps {
   onDelete: (id: string | number) => Promise<void>
   title?: string
   children?: React.ReactNode
-  queryKey?: string | undefined
+  queryKey?: string[] | undefined
 }
 
 export const DeleteModal = ({

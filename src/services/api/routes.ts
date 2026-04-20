@@ -1,7 +1,7 @@
 const EXPORT_BASE = '/export' as const
 const BOXES_BASE = '/boxes' as const
-const BOOKINGS_BASE = '/bookings/' as const
-const APPLICATIONS_BASE = '/applications/' as const
+export const BOOKINGS_BASE = '/bookings/' as const
+export const APPLICATIONS_BASE = '/applications/' as const
 
 export const API_ROUTES = {
   items: '/items',

@@ -7,5 +7,5 @@ export type BoxApplicationModalProps = {
   onModify: (id: string | number, newStatus: TApplicationStatus) => Promise<void>
   data?: IBoxApplication
   id: string
-  queryKey?: string
+  queryKey?: string[] | undefined
 }

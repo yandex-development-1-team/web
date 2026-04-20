@@ -6,7 +6,7 @@ import { getBokingById } from '../api/bookings/getBokingById'
 export const useBookings = (
   bookingId: string,
   onModify: (id: string | number, newStatus: TApplicationStatus) => Promise<void>,
-  invalidateQueryKey: string | undefined
+  invalidateQueryKey: string[] | undefined
 ) => {
   const { showNotification } = useNotification()
   const queryClient = useQueryClient()
@@ -25,7 +25,7 @@ export const useBookings = (
         message: 'Статус обновлен успешно!',
         status: 'success'
       })
-      if (invalidateQueryKey) queryClient.invalidateQueries({ queryKey: [invalidateQueryKey] })
+      if (invalidateQueryKey) queryClient.invalidateQueries({ queryKey: invalidateQueryKey })
     }
   })
   return { booking, updateStatus }

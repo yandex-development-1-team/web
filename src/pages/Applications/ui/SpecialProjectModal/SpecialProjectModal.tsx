@@ -37,7 +37,7 @@ export const SpecialProjectModal = ({
   }
 
   const handleDelete = () => {
-    // setApplicationToDelete(data.id)
+    setApplicationToDelete(id)
   }
 
   const labelClasses = 'text-xxs text-text-grey-dark mb-[6px]'
@@ -143,7 +143,7 @@ export const SpecialProjectModal = ({
         title="Удалить заявку?"
         isOpen={!!applicationToDelete || applicationToDelete === 0}
         onDelete={id => onDelete(id)}
-        onClose={() => setApplicationToDelete(null)}
+        onClose={() => onClose()}
         itemId={applicationToDelete}
         queryKey={queryKey}
       >

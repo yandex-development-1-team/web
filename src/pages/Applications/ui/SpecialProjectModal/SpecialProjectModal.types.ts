@@ -7,5 +7,5 @@ export type SpecialProjectApplicationModalProps = {
   onModify: (id: string | number, newStatus: TApplicationStatus) => Promise<void>
   data?: ISpecialProjectApplication
   id: string
-  queryKey?: string
+  queryKey?: string[] | undefined
 }
