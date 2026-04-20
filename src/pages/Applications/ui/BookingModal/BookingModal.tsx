@@ -1,37 +1,64 @@
-import { useState } from 'react'
-import { Button, Modal, DeleteModal, Select } from '@/components/ui'
-import type { BoxApplicationModalProps } from './BoxApplicationModal.types'
+import { Button, DeleteModal, Modal, Select } from '@/components/ui'
 import type { TApplicationStatus } from '@/types/applications'
+import { useState } from 'react'
+import { useBookings } from '../../hooks/useBookings'
+import type { BoxApplicationModalProps } from './BookingModal.types'
 
-export const BoxApplicationModal = ({ isOpen, onClose, onDelete, onModify, data }: BoxApplicationModalProps) => {
+type TSelect = {
+  options: {
+    value: string
+    label: string
+  }[]
+  placeholder: string
+  classNames?: {
+    trigger?: string
+    value?: string
+    content?: string
+    item?: string
+  }
+}
+
+const selectOptions: TSelect = {
+  options: [
+    { value: 'confirmed', label: 'В работе' },
+    { value: 'pending', label: 'В очереди' },
+    { value: 'cancelled', label: 'Завершено' }
+  ],
+  placeholder: ''
+}
+
+export const BookingModal = ({ isOpen, onClose, onDelete, onModify, data, queryKey, id }: BoxApplicationModalProps) => {
+  const { booking, updateStatus } = useBookings(id, onModify, queryKey)
   const [boxApplicationToDelete, setBoxApplicationToDelete] = useState<string | number | null>(null)
-  const [status, setStatus] = useState<TApplicationStatus>(data.processing.status)
+  const [status, setStatus] = useState<TApplicationStatus | undefined>(booking?.processing.status)
 
   const handleCancel = () => {
-    setStatus(data.processing.status)
+    // setStatus(data.processing.status)
+    void data //TODO: remove
     onClose()
   }
+  console.log(booking?.processing.status)
 
-  const handleSubmit = (e: React.SubmitEvent) => {
+  const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault()
-    onModify(data.id, status)
-    onClose()
+
+    console.log('handleSubmit', { status })
+    if (status) {
+      updateStatus({ id: id, newStatus: status })
+      onClose()
+    }
   }
 
   const handleDelete = () => {
-    setBoxApplicationToDelete(data.id)
+    setBoxApplicationToDelete(id)
   }
 
   const labelClasses = 'text-xxs text-text-grey-dark mb-[6px]'
   const fieldClasses = 'text-h5 mb-[16px]'
 
-  const selectOptions = [
-    { value: 'В работе', label: 'В работе' },
-    { value: 'В очереди', label: 'В очереди' },
-    { value: 'Готово', label: 'Готово' }
-  ]
-
   const handleStatusChange = (newStatus: TApplicationStatus) => {
+    // console.log('status changed', { newStatus })
+
     setStatus(newStatus)
   }
 
@@ -69,15 +96,15 @@ export const BoxApplicationModal = ({ isOpen, onClose, onDelete, onModify, data 
           <div className="grid grid-cols-2 gap-[20px] pb-[7px] border-b-1 border-grey-blue-light">
             <div>
               <p className={labelClasses}>Имя</p>
-              <p className={fieldClasses}>{data.client?.name}</p>
+              <p className={fieldClasses}>{booking?.client?.name}</p>
               <p className={labelClasses}>Организация</p>
-              <p className={fieldClasses}>{data.client?.organization}</p>
+              <p className={fieldClasses}>{booking?.client?.organization}</p>
             </div>
             <div>
               <p className={labelClasses}>Tg-аккаунт</p>
-              <p className={fieldClasses}>{data.client?.telegram}</p>
+              <p className={fieldClasses}>{booking?.client?.telegram}</p>
               <p className={labelClasses}>Должность</p>
-              <p className={fieldClasses}>{data.client?.position}</p>
+              <p className={fieldClasses}>{booking?.client?.position}</p>
             </div>
           </div>
 
@@ -85,11 +112,11 @@ export const BoxApplicationModal = ({ isOpen, onClose, onDelete, onModify, data 
           <div className="grid grid-cols-2 gap-[20px] pb-[7px] border-b-1 border-grey-blue-light">
             <div>
               <p className={labelClasses}>Дата бронирования</p>
-              <p className={fieldClasses}>{data.reservation?.date}</p>
+              <p className={fieldClasses}>{booking?.reservation?.date}</p>
             </div>
             <div>
               <p className={labelClasses}>Время</p>
-              <p className={fieldClasses}>{data.reservation?.time}</p>
+              <p className={fieldClasses}>{booking?.reservation?.time}</p>
             </div>
           </div>
 
@@ -98,23 +125,24 @@ export const BoxApplicationModal = ({ isOpen, onClose, onDelete, onModify, data 
             <div>
               <p className={`${labelClasses} !mb-[10px]`}>Менеджер</p>
               <div className="flex mb-[16px] items-center">
-                <img className="rounded-full size-[32px] object-cover" src={data.processing.manager?.photo} />
-                <p className="text-h5 ml-[5px]">{data.processing.manager?.name}</p>
+                <img className="rounded-full size-[32px] object-cover" src={booking?.processing.manager?.photo} />
+                <p className="text-h5 ml-[5px]">{booking?.processing.manager?.name}</p>
               </div>
               <p className={labelClasses}>Название коробки</p>
-              <p className={`${fieldClasses} !mb-[2px]`}>{data.processing.boxName}</p>
+              <p className={`${fieldClasses} !mb-[2px]`}>{booking?.processing.boxName}</p>
             </div>
             <div>
               <p className={`${labelClasses} !mb-[2px]`}>Статус</p>
               <Select
+                key={booking?.processing.status}
                 classNames={{ trigger: 'w-full' }}
-                options={selectOptions}
-                value={status}
-                placeholder="Статус"
+                options={selectOptions.options}
+                defaultValue={booking?.processing.status}
+                placeholder={selectOptions.placeholder}
                 onValueChange={handleStatusChange}
               />
               <p className={`${labelClasses} mt-[12px]`}>Дата заявки</p>
-              <p className={`${fieldClasses} !mb-[2px]`}>{data.processing.applicationDate}</p>
+              <p className={`${fieldClasses} !mb-[2px]`}>{booking?.processing.applicationDate}</p>
             </div>
           </div>
         </form>
@@ -124,8 +152,12 @@ export const BoxApplicationModal = ({ isOpen, onClose, onDelete, onModify, data 
         title="Удалить заявку?"
         isOpen={!!boxApplicationToDelete || boxApplicationToDelete === 0}
         onDelete={id => onDelete(id)}
-        onClose={() => setBoxApplicationToDelete(null)}
+        onClose={() => {
+          // setBoxApplicationToDelete(null)
+          onClose()
+        }}
         itemId={boxApplicationToDelete}
+        queryKey={queryKey}
       >
         <p>Вы действительно хотите удалить эту заявку?</p>
         <p>Действие нельзя отменить</p>

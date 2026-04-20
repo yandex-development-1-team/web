@@ -1,42 +1,58 @@
-import type { IPagination } from '@/components/ui/Pagination/Pagination.types'
 import z from 'zod'
-import mock from './mock.json'
 
-export type ApplicationStatus = 'queue' | 'in_progress' | 'done'
-export type ApplicationType = 'box' | 'special_project'
-export type ApplicatonSource = 'telegram_bot' | 'manual'
+// export type ApplicationStatus = 'queue' | 'in_progress' | 'done'
+export type StatusType = 'pending' | 'confirmed' | 'cancelled'
+export type AppType = 'bookings' | 'applications'
+export type SourceType = 'telegram_bot' | 'manual'
 
-export interface Application {
+export type ApplicationListItemType = {
   id: number
-  type: ApplicationType
-  source: ApplicatonSource
-  customer_name: string
-  project_name: string
-  contact_info: string
-  status: ApplicationStatus
-  box_id: number | null
-  special_project_id: number | null
-  created_at: string
-  updated_at: string
-  created_by: number | null
+  status: StatusType
+  managerId: number
+  managerName: string
+  customerName: string
+  contactInfo: string
+  createdAt: string
 }
 
-export type ApplicationListItem = {
+export type ApplicationType = {
+  formAnswerId: string
+  description?: string
+  updatedAt: string
+} & ApplicationListItemType
+
+// export type BookingStatus = 'pending' | 'confirmed' | 'cancelled'
+
+export type BookingListItemType = {
   id: number
-  type: ApplicationType
-  source: ApplicatonSource
-  customer_name: string
-  project_name: string
-  contact_info: string
-  status: ApplicationStatus
-  created_at: string
-  created_by: number
+  status: StatusType
+  guestName: string
+  guestContact: string
+  serviceName: string
+  managerId: number
+  managerName: string
+  createdAt: string
 }
+
+export type BookingType = {
+  userId: number
+  serviceId: number
+  bookingDate: string
+  bookingTime: string
+  guestOrganization: string
+  guestPosition: string
+  updatedAt: string
+} & BookingListItemType
+
+// const applicationStatus = ['queue', 'in_progress', 'done'] as const
+const applicationStatus = ['pending', 'confirmed', 'cancelled'] as const
+// const applicationType = ['box', 'special_project'] as const
 
 export const applicationsParamsSchema = z.object({
-  status: z.enum(['queue', 'in_progress', 'done', 'all']).default('all'),
-  type: z.enum(['box', 'special_project']).default('box'),
-  created_by: z.string().default('all'), //z.coerce.number().int().positive().optional(),
+  status: z.enum(applicationStatus).optional(), //default('all'),
+  // type: z.enum(applicationType).default('box'),
+  search: z.string().optional(),
+  manager_id: z.string().optional(), //default('all'),
   date_from: z
     .string()
     .regex(/^\d{4}-\d{2}-\d{2}$/)
@@ -50,10 +66,6 @@ export const applicationsParamsSchema = z.object({
 })
 
 export type ApplicationParamsType = z.infer<typeof applicationsParamsSchema>
-export type ApplicationsPesponseType = {
-  items: ApplicationListItem[]
-  pagination: IPagination
-}
 
 //TODO: моки
 // const STATUSES: ApplicationStatus[] = ['queue', 'in_progress', 'done']
@@ -78,4 +90,41 @@ export type ApplicationsPesponseType = {
 //     created_by: id % 3 === 0 ? 777 : 555
 //   }
 // })
-export const mockApplications = mock as ApplicationListItem[]
+// export const mockApplications = mock as ApplicationListItem[]
+
+// const boxStatusField = ['active', 'disable'] as const
+// const boxSortField = ['name', 'created_at', 'updated_at'] as const
+// const boxOrderField = ['asc', 'desc'] as const
+
+// export const paramsSchema = z.object({
+//   limit: z.coerce.number().min(1).max(20).default(6),
+//   offset: z.coerce.number().min(0).default(0),
+//   status: z.enum(boxStatusField).optional(),
+//   manager_id: z.string().default('all'),
+//   location: z.string().optional(),
+//   organizer: z.string().optional(),
+//   search: z.string().optional(),
+//   sort: z.enum(boxSortField).optional(),
+//   order: z.enum(boxOrderField).optional()
+// })
+// export type BoxSolutionsSearchParamsType = z.infer<typeof paramsSchema>
+
+// export interface QueryState<T> {
+//   data: {
+//     items: T[]
+//     pagination: IPagination | undefined
+//   }
+//   isPending: boolean | undefined
+//   isLoading: boolean | undefined
+//   isError: boolean | undefined
+//   queryKey: readonly string[]
+
+//   // data: T[]
+//   // pagination: IPagination | undefined
+//   // isPending: boolean | undefined
+//   // isLoading: boolean | undefined
+//   // isError: boolean | undefined
+//   // queryKey: readonly string[]
+// }
+
+export type ModalStateType = { type: AppType; id: string }

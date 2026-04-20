@@ -5,5 +5,7 @@ export type SpecialProjectApplicationModalProps = {
   onClose: () => void
   onDelete: (id: string | number) => Promise<void>
   onModify: (id: string | number, newStatus: TApplicationStatus) => Promise<void>
-  data: ISpecialProjectApplication
+  data?: ISpecialProjectApplication
+  id: string
+  queryKey?: string
 }

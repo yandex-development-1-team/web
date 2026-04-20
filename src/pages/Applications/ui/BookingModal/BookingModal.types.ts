@@ -5,5 +5,7 @@ export type BoxApplicationModalProps = {
   onClose: () => void
   onDelete: (id: string | number) => Promise<void>
   onModify: (id: string | number, newStatus: TApplicationStatus) => Promise<void>
-  data: IBoxApplication
+  data?: IBoxApplication
+  id: string
+  queryKey?: string
 }

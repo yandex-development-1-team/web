@@ -1,5 +1,5 @@
-import { Modal } from './Modal'
 import { Button } from '@/components/ui/Button'
+import { Modal } from './Modal'
 import { useDeleteItem } from './useDeleteItem'
 
 interface DeleteModalProps {
@@ -9,7 +9,7 @@ interface DeleteModalProps {
   onDelete: (id: string | number) => Promise<void>
   title?: string
   children?: React.ReactNode
-  queryKey?: string[] | undefined
+  queryKey?: string | undefined
 }
 
 export const DeleteModal = ({

@@ -14,7 +14,7 @@ export interface SortConfig<T> {
   direction: 'asc' | 'desc'
 }
 
-export interface DataTableProps<T extends Record<string, unknown>> {
+export interface DataTableProps<T> {
   columns: Column<T>[]
   data: T[]
   isLoading?: boolean

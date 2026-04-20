@@ -4,7 +4,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 export const useDeleteItem = (
   onDelete: (id: string | number) => Promise<void>,
   onClose: () => void,
-  queryKey?: string[]
+  queryKey?: string | undefined
 ) => {
   const queryClient = useQueryClient()
   const { showNotification } = useNotification()
@@ -18,7 +18,7 @@ export const useDeleteItem = (
         status: 'success'
       })
 
-      if (queryKey) queryClient.invalidateQueries({ queryKey })
+      if (queryKey) queryClient.invalidateQueries({ queryKey: [queryKey] })
       onClose()
     },
 
