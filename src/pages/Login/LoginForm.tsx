@@ -39,7 +39,6 @@ export const LoginForm = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setAuthFormData(prev => ({ ...prev, [name]: value }))
-    //setTouched(prev => ({ ...prev, [name]: true }))
     setServerError('')
   }
 
