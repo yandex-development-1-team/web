@@ -17,7 +17,8 @@ export const API_ROUTES = {
   },
   applications: {
     get: APPLICATIONS_BASE,
-    byId: (id: string) => `${APPLICATIONS_BASE}${id}`
+    byId: (id: string) => `${APPLICATIONS_BASE}${id}`,
+    changeStatus: (id: string) => `${APPLICATIONS_BASE}${id}/status`
   },
 
   export: {

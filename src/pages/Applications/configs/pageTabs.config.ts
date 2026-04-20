@@ -5,13 +5,13 @@ import type { AppType } from '../applications.types'
 export const TABS: ITab<AppType>[] = [
   {
     id: '0',
-    path: 'bookings',
+    path: 'box',
     title: 'Коробочные решения',
     Icon: BoxIcon
   },
   {
     id: '1',
-    path: 'applications',
+    path: 'specialProject',
     title: 'Спецпроекты',
     Icon: SpecialProjectsIcon
   }

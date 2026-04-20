@@ -1,39 +1,43 @@
 import { Button, DeleteModal, Modal, Select } from '@/components/ui'
 import type { TApplicationStatus } from '@/types/applications'
-import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
-import { getApplicationById } from '../../api/applications/getApplicationById'
-import type { SpecialProjectApplicationModalProps } from './SpecialProjectModal.types'
+import type { ModalPropsType } from '../../applications.types'
+import { useStatus } from '../../hooks/useBoxes'
+import type { SelectType } from '../types'
+
+const specialProjectSelectOptions: SelectType = {
+  options: [
+    { value: 'confirmed', label: 'В работе' },
+    { value: 'pending', label: 'В очереди' },
+    { value: 'cancelled', label: 'Завершено' }
+  ],
+  placeholder: ''
+}
 
 export const SpecialProjectModal = ({
+  id,
   isOpen,
   onClose,
   onDelete,
   onModify,
-  data,
   queryKey,
-  id
-}: SpecialProjectApplicationModalProps) => {
+  activeTab
+}: ModalPropsType) => {
+  const { specialProject, updateStatus } = useStatus(id, activeTab, onModify, queryKey)
   const [applicationToDelete, setApplicationToDelete] = useState<string | number | null>(null)
-  // const [status, setStatus] = useState<TApplicationStatus>(data?.processing?.status)
-
-  const { data: application } = useQuery({
-    queryKey: ['applicationById', id],
-    queryFn: () => getApplicationById(id),
-    enabled: !!id
-  })
+  const [status, setStatus] = useState<TApplicationStatus | undefined>(specialProject?.processing.status)
 
   const handleCancel = () => {
-    // setStatus(data.processing.status)
     onClose()
   }
 
-  const handleSubmit = (e: React.SubmitEvent) => {
+  const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault()
-    void onModify //TODO: remove
-    void data //TODO: remove
-    //onModify(data.id, status)
-    onClose()
+
+    if (status) {
+      updateStatus({ id: id, newStatus: status })
+      onClose()
+    }
   }
 
   const handleDelete = () => {
@@ -43,15 +47,8 @@ export const SpecialProjectModal = ({
   const labelClasses = 'text-xxs text-text-grey-dark mb-[6px]'
   const fieldClasses = 'text-h5 mb-[16px]'
 
-  const selectOptions = [
-    { value: 'В работе', label: 'В работе' },
-    { value: 'В очереди', label: 'В очереди' },
-    { value: 'Готово', label: 'Готово' }
-  ]
-
   const handleStatusChange = (newStatus: TApplicationStatus) => {
-    void newStatus //TODO: remove
-    // setStatus(newStatus)
+    setStatus(newStatus)
   }
 
   return (
@@ -88,11 +85,11 @@ export const SpecialProjectModal = ({
           <div className="grid grid-cols-2 gap-[20px] pb-[7px] border-b-1 border-grey-blue-light">
             <div>
               <p className={labelClasses}>Имя</p>
-              <p className={fieldClasses}>{application?.client?.name}</p>
+              <p className={fieldClasses}>{specialProject?.client?.name}</p>
             </div>
             <div>
               <p className={labelClasses}>Тг-аккаунт</p>
-              <p className={fieldClasses}>{application?.client?.telegram}</p>
+              <p className={fieldClasses}>{specialProject?.client?.telegram}</p>
             </div>
           </div>
 
@@ -101,19 +98,23 @@ export const SpecialProjectModal = ({
             <div>
               <p className={`${labelClasses} !mb-[10px]`}>Менеджер</p>
               <div className="flex mb-[16px] items-center">
-                <img className="rounded-full size-[32px] object-cover" src={application?.processing.manager?.photo} />
-                <p className="text-h5 ml-[5px]">{application?.processing.manager?.name}</p>
+                <img
+                  className="rounded-full size-[32px] object-cover"
+                  src={specialProject?.processing.manager?.photo}
+                />
+                <p className="text-h5 ml-[5px]">{specialProject?.processing.manager?.name}</p>
               </div>
               <p className={labelClasses}>Дата заявки</p>
-              <p className={`${fieldClasses} !mb-[2px]`}>{application?.processing.applicationDate}</p>
+              <p className={`${fieldClasses} !mb-[2px]`}>{specialProject?.processing.applicationDate}</p>
             </div>
             <div>
               <p className={`${labelClasses} !mb-[2px]`}>Статус</p>
               <Select
+                key={specialProject?.processing.status}
                 classNames={{ trigger: 'w-full' }}
-                options={selectOptions}
-                value={status}
-                placeholder="Статус"
+                options={specialProjectSelectOptions.options}
+                defaultValue={specialProject?.processing.status}
+                placeholder={specialProjectSelectOptions.placeholder}
                 onValueChange={handleStatusChange}
               />
             </div>
@@ -122,16 +123,16 @@ export const SpecialProjectModal = ({
           <h4 className="text-h4sb my-[19px_14px]">Текст заявки</h4>
           <div className="pb-[7px]">
             <div className="space-y-[10px] overflow-y-auto">
-              {application?.request.questions.map((question, index) => (
+              {specialProject?.request.questions.map((question, index) => (
                 <div key={`${question.label}-${index}`}>
                   <p className={labelClasses}>{question.label}</p>
                   <p className={`${fieldClasses} !mb-[6px]`}>{question.answer}</p>
                 </div>
               ))}
               <div>
-                <p className={labelClasses}>{application?.request.textLabel ?? 'Текст'}</p>
+                <p className={labelClasses}>{specialProject?.request.textLabel ?? 'Текст'}</p>
                 <div className="max-h-[170px] pr-[8px]">
-                  <p className="text-h5 text-text leading-[140%]">{application?.request.text}</p>
+                  <p className="text-h5 text-text leading-[140%]">{specialProject?.request.text}</p>
                 </div>
               </div>
             </div>

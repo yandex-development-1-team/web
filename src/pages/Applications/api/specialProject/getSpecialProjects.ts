@@ -1,14 +1,14 @@
 import { api } from '@/app/providers/axios'
 import { API_ROUTES } from '@/services/api/routes'
-import type { ApplicationListItemType, ApplicationParamsType } from '../../applications.types'
+import type { ApplicationParamsType, SpecialProjectListItemType } from '../../applications.types'
 import type { ApplicationsPesponseType } from '../types'
-import { mapApplicationListItem } from './applications.mapper'
+import { mapApplicationListItem } from './specialProject.mapper'
 import type { ApplicationListResponseDTO } from './types'
 
 export const getApplications = async (
   { params }: { params: ApplicationParamsType },
   { signal }: { signal: AbortSignal }
-): Promise<ApplicationsPesponseType<ApplicationListItemType>> => {
+): Promise<ApplicationsPesponseType<SpecialProjectListItemType>> => {
   const response = await api.get<ApplicationListResponseDTO>(API_ROUTES.applications.get, {
     params,
     signal

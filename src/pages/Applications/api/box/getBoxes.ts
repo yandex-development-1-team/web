@@ -1,14 +1,14 @@
 import { api } from '@/app/providers/axios'
 import { API_ROUTES } from '@/services/api/routes'
-import type { ApplicationParamsType, BookingListItemType } from '../../applications.types'
+import type { ApplicationParamsType, BoxListItemType } from '../../applications.types'
 import type { ApplicationsPesponseType } from '../types'
-import { mapBookingListItem } from './bookings.mapper'
+import { mapBoxListItem } from './box.mapper'
 import type { BookingListResponseDTO } from './types'
 
-export const getBookings = async (
+export const getBoxes = async (
   { params }: { params: ApplicationParamsType },
   { signal }: { signal: AbortSignal }
-): Promise<ApplicationsPesponseType<BookingListItemType>> => {
+): Promise<ApplicationsPesponseType<BoxListItemType>> => {
   const response = await api.get<BookingListResponseDTO>(API_ROUTES.bookings.get, {
     params,
     signal
@@ -16,10 +16,10 @@ export const getBookings = async (
 
   if (!response.data) throw new Error('Faild to get box applications')
 
-  const bookings = response.data.items.map(app => mapBookingListItem(app))
+  const boxes = response.data.items.map(app => mapBoxListItem(app))
 
   return {
-    items: bookings,
+    items: boxes,
     pagination: response.data.pagination
   }
 }

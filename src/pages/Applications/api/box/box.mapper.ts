@@ -1,14 +1,8 @@
 import type { IBoxApplication } from '@/types/applications'
-import type { BookingListItemType, StatusType } from '../../applications.types'
+import type { BoxListItemType, StatusType } from '../../applications.types'
 import type { BookingDTO, BookingListItemDTO } from './types'
 
-export const mapBookingToBoxApplication = (dto: BookingDTO): IBoxApplication => {
-  // const statusMap: Record<BookingDTO['status'], TApplicationStatus> = {
-  //   pending: 'В очереди',
-  //   confirmed: 'В работе',
-  //   cancelled: 'Завершено' // или добавьте новый статус в тип, если нужно
-  // }
-
+export const mapBoxDTOToBoxApplication = (dto: BookingDTO): IBoxApplication => {
   return {
     id: dto.id,
     client: {
@@ -33,7 +27,7 @@ export const mapBookingToBoxApplication = (dto: BookingDTO): IBoxApplication => 
   }
 }
 
-export const mapBookingListItem = (dto: BookingListItemDTO): BookingListItemType => {
+export const mapBoxListItem = (dto: BookingListItemDTO): BoxListItemType => {
   return {
     id: dto.id,
     status: dto.status as StatusType,

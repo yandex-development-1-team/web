@@ -1,8 +1,8 @@
 import type { Column } from '@/components/ui/DataTable/DataTable.types'
 import { cn } from '@/lib/utils.clsx'
-import type { ApplicationListItemType, BookingListItemType, StatusType } from '../applications.types'
+import type { BoxListItemType, SpecialProjectListItemType, StatusType } from '../applications.types'
 
-export const bookingDataTableColumns: Column<BookingListItemType>[] = [
+export const boxDataTableColumns: Column<BoxListItemType>[] = [
   {
     key: 'id',
     label: 'ID',
@@ -56,7 +56,7 @@ export const bookingDataTableColumns: Column<BookingListItemType>[] = [
   }
 ]
 
-export const appDataTableColumns: Column<ApplicationListItemType>[] = [
+export const appDataTableColumns: Column<SpecialProjectListItemType>[] = [
   {
     key: 'id',
     label: 'ID',
@@ -101,3 +101,8 @@ export const appDataTableColumns: Column<ApplicationListItemType>[] = [
     }
   }
 ]
+
+export const dataTableColumns = {
+  box: boxDataTableColumns,
+  specialProject: appDataTableColumns
+}
