@@ -10,7 +10,7 @@ import {
   mockProjects
 } from '@/mockData/mockManageSolutionsPageData'
 import type { IProject } from '@/types/solutions'
-import { ProjectModal } from '@/pages/SpecialProjects/components'
+import { SpecialProjectModal } from '@/components/SpecialProjectModal/SpecialProjectModal'
 import type { BoxData } from '@/types/solutions'
 import { indicators } from './solutionsData'
 
@@ -24,7 +24,7 @@ const ManageSolutions = () => {
   const { isOpen: isDeleteBoxModalOpen, open: openDeleteBoxModal, close: closeDeleteBoxModal } = useModal()
 
   const [projects, setProjects] = useState<IProject[]>(mockProjects)
-  const [projectToDelete, setProjectToDelete] = useState<number | null>(null)
+  const [projectToDelete, setProjectToDelete] = useState<number | string | null>(null)
   const [projectToEdit, setProjectToEdit] = useState<IProject | null | undefined>(null)
 
   const selectedBox = boxes.find(b => b.id === selectedBoxId)
@@ -71,15 +71,19 @@ const ManageSolutions = () => {
     setProjects(prev => prev.filter(project => project.id !== id))
   }
 
+  const updateProject = async (newData: IProject) => {
+    setProjects(prev => prev.map(project => (project.id === newData.id ? newData : project)))
+  }
+
   const handleProjectCreate = () => {
     setProjectToEdit(undefined)
   }
 
-  const handleProjectEdit = (id: number) => {
-    setProjectToEdit(mockProjects.find(project => project.id === id) || null)
+  const handleProjectEdit = (id: number | string) => {
+    setProjectToEdit(projects.find(project => project.id === id) || null)
   }
 
-  const handleProjectDelete = (id: number) => {
+  const handleProjectDelete = (id: number | string) => {
     setProjectToDelete(id)
   }
 
@@ -148,10 +152,15 @@ const ManageSolutions = () => {
         />
       )}
 
-      <ProjectModal
+      <SpecialProjectModal
         isOpen={projectToEdit !== null}
         onClose={() => setProjectToEdit(null)}
-        project={projectToEdit || undefined}
+        onSubmit={data => {
+          updateProject(data)
+          setProjectToEdit(null)
+        }}
+        modalTitle={projectToEdit !== undefined ? 'Редактировать спецпроект' : 'Создать спецпроект'}
+        initialData={projectToEdit || undefined}
       />
 
       <DeleteModal

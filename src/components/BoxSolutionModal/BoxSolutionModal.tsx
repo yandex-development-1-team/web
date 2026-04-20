@@ -1,5 +1,6 @@
 import { AddIcon } from '@/assets/icons'
-import { Button, CalendarInput, ImageCropper, Input, Modal, Switch, TimeRangeInput } from '@/components/ui'
+import { Button, CalendarInput, Input, Modal, Switch, TimeRangeInput } from '@/components/ui'
+import { ImageCropper } from '@/components/ui/ImageCropper/ImageCropper'
 import { fileToBase64 } from '@/lib/fileUtils/fileToBase64'
 import { cn } from '@/lib/utils.clsx'
 import type { BoxData } from '@/types/solutions'

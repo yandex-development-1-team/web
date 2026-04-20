@@ -1,17 +1,23 @@
 import { useState, type ChangeEvent } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { BoxButton, Input, Dropzone, DeleteModal } from '@/components/ui'
+import { BoxButton, Input, Dropzone, DeleteModal, Select } from '@/components/ui'
 import { mockProjects, mockUrl } from '@/mockData/mockSpecialProjectsPageData'
-import { EnvelopeIcon } from '@/assets/icons'
+import { EnvelopeIcon, SearchIcon } from '@/assets/icons'
 import { ProjectCard } from '@/components/layout/ProjectCard'
 import { Pagination } from '@/components/ui/Pagination'
 import { type IProject } from '@/types/solutions'
 import { useMainWidth } from '@/hooks/useMainWidth'
-import { ProjectModal } from './components'
+import { SpecialProjectModal } from '@/components/SpecialProjectModal/SpecialProjectModal'
 
 const SpecialProjects = () => {
   const cardMinWidth = 284
   const cardMaxWidth = 344
+
+  const selectData = [
+    { value: 'all', label: 'Все' },
+    { value: 'active', label: 'Активные' },
+    { value: 'inactive', label: 'Не активные' }
+  ]
 
   const mainWidth = useMainWidth()
   const pageSize = Math.floor((mainWidth - 20) / (cardMinWidth + 20)) || 1
@@ -28,7 +34,7 @@ const SpecialProjects = () => {
   const [url, setUrl] = useState(mockUrl)
   const [presentationFile, setPresentationFile] = useState<File | null>(null)
 
-  const [projectToDelete, setProjectToDelete] = useState<number | null>(null)
+  const [projectToDelete, setProjectToDelete] = useState<number | string | null>(null)
   const [projectToEdit, setProjectToEdit] = useState<IProject | null | undefined>(null)
 
   const [urlError, setUrlError] = useState(false)
@@ -92,15 +98,19 @@ const SpecialProjects = () => {
     setProjects(prev => prev.filter(project => project.id !== id))
   }
 
+  const updateProject = async (newData: IProject) => {
+    setProjects(prev => prev.map(project => (project.id === newData.id ? newData : project)))
+  }
+
   const handleProjectCreate = () => {
     setProjectToEdit(undefined)
   }
 
-  const handleProjectEdit = (id: number) => {
-    setProjectToEdit(mockProjects.find(project => project.id === id) || null)
+  const handleProjectEdit = (id: number | string) => {
+    setProjectToEdit(projects.find(project => project.id === id) || null)
   }
 
-  const handleProjectDelete = (id: number) => {
+  const handleProjectDelete = (id: number | string) => {
     setProjectToDelete(id)
   }
 
@@ -159,6 +169,11 @@ const SpecialProjects = () => {
         </BoxButton>
       </div>
 
+      <div className="flex items-center gap-5 mb-6">
+        <Input variant="icon" icon={<SearchIcon />} className="bg-white min-[1440px]:min-w-84 h-full" placeholder="" />
+        <Select options={selectData} placeholder="Выберите статус" classNames={{ trigger: 'bg-white w-full h-11.5' }} />
+      </div>
+
       <div
         className={`mt-[30px] flex gap-[20px] ${justifyClass}`}
         style={{ gridTemplateColumns: `repeat(${pageSize}, minmax(0, 1fr))` }}
@@ -187,10 +202,15 @@ const SpecialProjects = () => {
         }}
       />
 
-      <ProjectModal
+      <SpecialProjectModal
         isOpen={projectToEdit !== null}
         onClose={() => setProjectToEdit(null)}
-        project={projectToEdit || undefined}
+        onSubmit={data => {
+          updateProject(data)
+          setProjectToEdit(null)
+        }}
+        modalTitle={projectToEdit !== undefined ? 'Редактировать спецпроект' : 'Создать спецпроект'}
+        initialData={projectToEdit || undefined}
       />
 
       <DeleteModal
