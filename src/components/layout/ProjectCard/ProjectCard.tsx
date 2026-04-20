@@ -9,7 +9,7 @@ export const ProjectCard = ({
   title,
   description,
   image,
-  status,
+  isActive,
   className,
   style
 }: ProjectCardProps) => {
@@ -49,10 +49,10 @@ export const ProjectCard = ({
             className={`
             absolute top-[12px] right-[12px] whitespace-nowrap text-h5 rounded-[4px]
             px-[12px] py-[2px_1px]
-            ${status ? 'bg-yellow-light' : 'bg-grey-light'}
+            ${isActive ? 'bg-yellow-light' : 'bg-grey-light'}
           `}
           >
-            {status ? 'Активен в боте' : 'Не активен в боте'}
+            {isActive ? 'Активен в боте' : 'Не активен в боте'}
           </p>
         </div>
       </div>
