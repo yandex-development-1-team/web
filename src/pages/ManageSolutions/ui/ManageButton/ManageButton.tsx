@@ -18,6 +18,12 @@ export const ManageButton = ({ onClick, onEdit, onDelete, text, className }: Man
     }
   }
 
+  const buttonClasses = `
+    w-[44px] h-[44px]  flex items-center justify-center rounded-[8px] hover:ring-1 hover:ring-yellow-light
+    focus:ring-1 focus:ring-yellow-accent-dark active:bg-yellow-light
+    transition-[bg-color,shadow] duration-300 ease-in-out
+  `
+
   return (
     <div
       role="button"
@@ -40,17 +46,11 @@ export const ManageButton = ({ onClick, onEdit, onDelete, text, className }: Man
         {text}
       </span>
       <div className="flex flex-row gap-3">
-        <button
-          onClick={handleEdit}
-          className="w-[44px] h-[44px]  flex items-center justify-center rounded-[8px] hover:ring-1 hover:ring-yellow-light focus:ring-1 focus:ring-yellow-accent-dark active:bg-yellow-light"
-        >
+        <button onClick={handleEdit} className={buttonClasses}>
           <EditIcon className="w-[24px] h-[24px]" color="var(--color-grey-dark)" />
         </button>
 
-        <button
-          onClick={handleDelete}
-          className="w-[44px] h-[44px] flex items-center justify-center rounded-[8px] hover:ring-1 hover:ring-yellow-light focus:ring-1 focus:ring-yellow-accent-dark active:bg-yellow-light"
-        >
+        <button onClick={handleDelete} className={buttonClasses}>
           <CloseIcon className="w-[32px] h-[32px]" color="var(--color-grey-dark)" />
         </button>
       </div>

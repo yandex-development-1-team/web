@@ -26,7 +26,10 @@ export const FileItem = ({ file, onDelete, className, ...props }: IFileItem) => 
       <div className="flex flex-row gap-3 items-center justify-between">
         <Button
           variant={'ghost'}
-          className="w-10.5 h-10.5 border focus:ring-offset-2 focus:border-yellow-accent-dark  active:bg-yellow-light active:border-yellow-light"
+          className={`
+            w-10.5 h-10.5 border focus:ring-offset-2 focus:border-yellow-accent-dark
+            active:bg-yellow-light active:border-yellow-light transition-[border-color,bg-color,shadow] duration-300
+          `}
           onClick={start}
         >
           <DownloadIcon color="var(--color-black)" />
@@ -42,7 +45,10 @@ export const FileItem = ({ file, onDelete, className, ...props }: IFileItem) => 
         ) : (
           <Button
             variant={'ghost'}
-            className="w-8 h-8 hover:ring-1 hover:ring-yellow-light focus:ring-1 focus:ring-yellow-accent-dark active:bg-yellow-light"
+            className={`
+              w-8 h-8 hover:ring-1 hover:ring-yellow-light focus:ring-1 focus:ring-yellow-accent-dark
+              active:bg-yellow-light transition-[bg-color,shadow] duration-300
+            `}
             onClick={() => onDelete?.(id)}
           >
             <DeleteIcon color="var(--color-black)" />

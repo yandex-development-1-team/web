@@ -12,7 +12,7 @@ const baseStyles = `
   [&_svg]:pointer-events-none
   [&_svg:not([class*='size-'])]:size-4
   [&_svg]:shrink-0
-  transition-[background-color,border-color,outline-color,color]
+  transition-[background-color,border-color,outline-color,color,shadow]
   duration-300
   ease-in-out
   disabled:cursor-default

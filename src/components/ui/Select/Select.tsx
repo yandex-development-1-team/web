@@ -139,7 +139,7 @@ export function SelectItem({ className, children, ...props }: ComponentProps<typ
       className={cn(
         `relative flex w-full cursor-default items-center gap-2 font-display text-text cursor-pointer
         rounded-sm py-2 pr-8 pl-2 text-xs outline-hidden
-        focus:bg-(--select-option-hover) focus:text-accent-foreground
+        focus:bg-select-option-hover focus:text-accent-foreground
         [&_svg:not([class*='text-'])]:text-(--select-check) [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4
         data-[disabled]:pointer-events-none data-[disabled]:opacity-50
         *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2`,
