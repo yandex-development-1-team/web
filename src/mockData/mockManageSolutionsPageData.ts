@@ -2,6 +2,7 @@ import type { BoxSolutionModalData } from '@/components/BoxSolutionModal/BoxSolu
 import type { IIndicatorValues } from '@/types/indicators'
 import mockGallery from './mock_gallery.jpg'
 import type { IProject } from '@/types/solutions'
+import mockImage from './box_image_1.jpg'
 
 export const mockIndicatorsValues: IIndicatorValues[] = [
   { id: 0, value: 5 },
@@ -37,7 +38,7 @@ export const mockBoxes: BoxSolutionModalData[] = [
     rules: 'Не трогать экспонаты, фотосъемка без вспышки',
     price: 800,
     organizer: 'Екатерина Волкова',
-    image: ''
+    image: mockImage
   },
   {
     id: 1,

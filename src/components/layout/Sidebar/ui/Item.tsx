@@ -14,7 +14,7 @@ export const Item = ({ Icon, title, route, childrenItems, isExpanded }: ItemProp
     }
   }
 
-  const handleButtonClick = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+  const handleClick = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
     e.preventDefault()
     e.stopPropagation()
     setIsOpen(state => !state)
@@ -40,11 +40,11 @@ export const Item = ({ Icon, title, route, childrenItems, isExpanded }: ItemProp
             </div>
 
             {childrenItems?.length && (
-              <button
-                type="button"
-                onClick={handleButtonClick}
+              <div
+                onClick={handleClick}
                 className={`
-                  absolute right-[4px] cursor-pointer h-[32px] top-[14px]
+                  flex justify-center items-center
+                  absolute right-[7px] cursor-pointer h-[32px] top-[14px]
                   overflow-hidden transition-[width,opacity] duration-400
                   ${isExpanded ? 'w-[32px] opacity-100' : 'w-0 opacity-0'}
                 `}
@@ -55,7 +55,7 @@ export const Item = ({ Icon, title, route, childrenItems, isExpanded }: ItemProp
                     ${isOpen ? '-rotate-180' : ''}
                   `}
                 />
-              </button>
+              </div>
             )}
           </div>
         )}

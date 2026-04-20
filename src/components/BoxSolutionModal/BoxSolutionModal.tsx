@@ -309,13 +309,15 @@ export const BoxSolutionModal = ({ isOpen, onClose, boxData, onSave }: BoxSoluti
               />
             ) : (
               imagePreviewUrl && (
-                <img src={imagePreviewUrl} alt="Preview" className="w-[296px] h-[141px] object-contain rounded-[8px]" />
+                <div className="w-[296px] h-[141px]">
+                  <img src={imagePreviewUrl} alt="Preview" className="w-full h-full object-contain rounded-[8px]" />
+                </div>
               )
             )}
             <div
               className={cn(
                 'flex gap-[20px] items-center',
-                (isCropping || imagePreviewUrl) && 'px-[12px] h-[141px] w-full border border-grey-light rounded-[8px]'
+                (isCropping || imagePreviewUrl) && 'px-[12px] h-[141px] flex-1 border border-grey-light rounded-[8px]'
               )}
             >
               <Button
