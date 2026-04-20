@@ -14,7 +14,7 @@ export type JobInfoType = {
   department: string
   position: string
   role: string
-  chief: PersonalInfoType
+  chief: string
 }
 
 export type StatusType = 'active' | 'inactive'
@@ -39,15 +39,13 @@ export type CreateEmployeeData = {
   personal_info: PersonalInfoType
   contacts: ContactsType
   job_info: JobInfoType
-  access_level?: string
-  status?: StatusType
 }
 
 export type EmployeeForTable = {
   id: number
   name: string
   department: string
-  manager: string
+  chief: string
   position: string
   level: string
   phone: string

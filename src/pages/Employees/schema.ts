@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-const hasCyrillicLetter = (val: string) => /[a-zA-ZА-Яа-яЁё]/.test(val)
+const onlyLetters = (val: string) => /^[a-zA-ZА-Яа-яЁё\s-]+$/.test(val)
 
 const baseValidation = z
   .string()
@@ -9,11 +9,17 @@ const baseValidation = z
     message: 'Поле не может быть пустым'
   })
 
-const lettersValidation = baseValidation
-  .refine(hasCyrillicLetter, 'Поле может содержать только буквы')
+const requiredLettersValidation = baseValidation
+  .refine(onlyLetters, 'Поле может содержать только буквы')
   .refine(val => val === '' || val.length >= 2, {
     message: 'Минимум 2 буквы'
   })
+
+const optionalLettersValidation = z
+  .string()
+  .trim()
+  .refine(val => val === '' || onlyLetters(val), 'Поле может содержать только буквы')
+  .refine(val => val === '' || val.length >= 2, 'Минимум 2 буквы')
 
 const photoSchema = z
   .instanceof(File)
@@ -21,25 +27,23 @@ const photoSchema = z
   .nullable()
 
 const personalInfoSchema = z.object({
-  surname: lettersValidation,
-  firstName: lettersValidation,
-  patronymic: lettersValidation
+  surname: requiredLettersValidation,
+  firstName: requiredLettersValidation,
+  patronymic: optionalLettersValidation
 })
 
 const contactInfoSchema = z.object({
-  phone: baseValidation
-    .transform(val => val.replace(/\D/g, ''))
-    .refine(val => val.length === 11 && val.startsWith('7'), {
-      message: 'Введите корректный номер'
-    }),
+  phone: baseValidation.refine(val => /^(\+7|7)\d{10}$/.test(val.replace(/\D/g, '')), {
+    message: 'Введите корректный номер'
+  }),
   email: baseValidation.email('Введите корректный email'),
-  city: lettersValidation
+  city: requiredLettersValidation
 })
 
 const jobInfoSchema = z.object({
-  department: lettersValidation,
-  position: lettersValidation,
-  chief: lettersValidation
+  department: requiredLettersValidation,
+  position: requiredLettersValidation,
+  chief: requiredLettersValidation
 })
 
 const accessLevelSchema = z.object({

@@ -1,10 +1,11 @@
 import { useRef, useState } from 'react'
-import { useForm, useWatch, type SubmitHandler } from 'react-hook-form'
+import { Controller, useForm, useWatch, type SubmitHandler } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button, Card, Input, Switch } from '@/components/ui'
 import { FormInput } from '../FormInput/FormInput'
 import { DownloadIcon, UserCreateIcon } from '@/assets/icons'
 import { useNotification } from '@/app/providers/notification'
+import { formatPhone, handlePhoneKeyDown } from '@/lib/utils.phone'
 import { roles } from './roles'
 import { employeeFormSchema, type EmployeeFormData } from '../../schema'
 import type { EmployeeFormType } from './EmployeeForm.types'
@@ -82,10 +83,28 @@ export const EmployeeForm = ({ initialData, initialPreview = null, onSubmit, onC
             <Card className="py-[20px] flex flex-col items-center justify-center">
               <div
                 onClick={() => fileRef.current?.click()}
-                className="w-[146px] h-[146px] rounded-full border border-yellow-accent-light flex items-center justify-center cursor-pointer overflow-hidden mx-auto relative bg-white"
+                className="
+                  w-[146px] h-[146px]
+                  rounded-full border border-yellow-accent-light
+                  flex items-center justify-center
+                  cursor-pointer overflow-hidden mx-auto
+                  bg-white group
+                "
               >
                 {preview ? (
-                  <img src={preview} className="object-cover object-center w-[132px] h-[132px] rounded-full" />
+                  <div className="relative w-[132px] h-[132px] rounded-full overflow-hidden">
+                    <img src={preview} className="object-cover object-center w-full h-full" />
+                    <div
+                      className="
+                        absolute inset-0
+                        flex items-center justify-center
+                        bg-black-natural/0 group-hover:bg-black-natural/40
+                        transition
+                      "
+                    >
+                      <DownloadIcon className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition" />
+                    </div>
+                  </div>
                 ) : (
                   <DownloadIcon className="w-8 h-8 text-text-grey-dark" />
                 )}
@@ -158,12 +177,23 @@ export const EmployeeForm = ({ initialData, initialPreview = null, onSubmit, onC
                     label="Номер телефона"
                     errorMessage={errors.contactInfo?.phone?.message}
                     input={
-                      <Input
-                        type="tel"
-                        variant="text"
-                        placeholder="+7 999 999-66-77"
-                        aria-invalid={!!errors.contactInfo?.phone}
-                        {...register('contactInfo.phone')}
+                      <Controller
+                        name="contactInfo.phone"
+                        control={control}
+                        render={({ field }) => (
+                          <Input
+                            type="tel"
+                            variant="text"
+                            placeholder="+7 999 999-66-77"
+                            aria-invalid={!!errors.contactInfo?.phone}
+                            value={field.value || ''}
+                            onChange={e => {
+                              const formatted = formatPhone(e.target.value)
+                              field.onChange(formatted)
+                            }}
+                            onKeyDown={e => handlePhoneKeyDown(e, field.value, field.onChange)}
+                          />
+                        )}
                       />
                     }
                   />

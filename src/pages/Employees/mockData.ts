@@ -1,12 +1,12 @@
 import mockPhoto from '@/mockData/mock_photo.jpg'
-import type { IEmployee } from './employees.types'
+import type { EmployeeForTable, IEmployee } from './employees.types'
 
-const initialEmployeesData = [
+const initialEmployeesData: EmployeeForTable[] = [
   {
     id: 1023,
     name: 'Смирнова Ксения',
     department: 'Маркетинг',
-    manager: 'Гаврилов Сергей',
+    chief: 'Гаврилов Сергей',
     position: 'Администратор',
     level: 'A',
     phone: '+7 921 457-83-16',
@@ -17,7 +17,7 @@ const initialEmployeesData = [
     id: 1024,
     name: 'Пупышкин Николай',
     department: 'Маркетинг',
-    manager: 'Гаврилов Сергей',
+    chief: 'Гаврилов Сергей',
     position: 'Менеджер',
     level: '3',
     phone: '+7 921 457-83-16',
@@ -28,7 +28,7 @@ const initialEmployeesData = [
     id: 1025,
     name: 'Винокуров Владимир',
     department: 'Маркетинг',
-    manager: 'Гаврилов Сергей',
+    chief: 'Гаврилов Сергей',
     position: 'Менеджер',
     level: '2',
     phone: '+7 921 457-83-16',
@@ -39,7 +39,7 @@ const initialEmployeesData = [
     id: 1026,
     name: 'Белый Сергей',
     department: 'Маркетинг',
-    manager: 'Гаврилов Сергей',
+    chief: 'Гаврилов Сергей',
     position: 'Маркетолог',
     level: '1',
     phone: '+7 921 457-83-16',
@@ -50,7 +50,7 @@ const initialEmployeesData = [
     id: 1027,
     name: 'Косаткин Денис',
     department: 'Маркетинг',
-    manager: 'Гаврилов Сергей',
+    chief: 'Гаврилов Сергей',
     position: 'Администратор',
     level: 'A',
     phone: '+7 921 457-83-16',
@@ -61,7 +61,7 @@ const initialEmployeesData = [
     id: 1028,
     name: 'Артемьев Илья',
     department: 'Маркетинг',
-    manager: 'Гаврилов Сергей',
+    chief: 'Гаврилов Сергей',
     position: 'PR',
     level: '1',
     phone: '+7 921 457-83-16',
@@ -72,7 +72,7 @@ const initialEmployeesData = [
     id: 1029,
     name: 'Честокин Александр',
     department: 'Маркетинг',
-    manager: 'Гаврилов Сергей',
+    chief: 'Гаврилов Сергей',
     position: 'Маркетолог',
     level: '1',
     phone: '+7 921 457-83-16',
@@ -83,7 +83,7 @@ const initialEmployeesData = [
     id: 1030,
     name: 'Жучкин Мопс',
     department: 'Маркетинг',
-    manager: 'Гаврилов Сергей',
+    chief: 'Гаврилов Сергей',
     position: 'Менеджер',
     level: '1',
     phone: '+7 921 457-83-16',
@@ -94,7 +94,7 @@ const initialEmployeesData = [
     id: 1031,
     name: 'Заборская Виктория',
     department: 'Маркетинг',
-    manager: 'Гаврилов Сергей',
+    chief: 'Гаврилов Сергей',
     position: 'Менеджер',
     level: '2',
     phone: '+7 921 457-83-16',
@@ -105,7 +105,7 @@ const initialEmployeesData = [
     id: 1032,
     name: 'Саркисян Амир',
     department: 'Маркетинг',
-    manager: 'Гаврилов Сергей',
+    chief: 'Гаврилов Сергей',
     position: 'Менеджер',
     level: '3',
     phone: '+7 921 457-83-16',
@@ -116,7 +116,7 @@ const initialEmployeesData = [
     id: 1033,
     name: 'Головченко Дмитрий',
     department: 'Маркетинг',
-    manager: 'Гаврилов Сергей',
+    chief: 'Гаврилов Сергей',
     position: 'Администратор',
     level: 'A',
     phone: '+7 921 457-83-16',
@@ -129,8 +129,8 @@ export const EMPLOYEES: IEmployee[] = initialEmployeesData.map((emp, index) => (
   id: emp.id,
   avatar: mockPhoto,
   personal_info: {
-    first_name: emp.name.split(' ')[1] || emp.name,
-    last_name: emp.name.split(' ')[0] || '',
+    first_name: emp.name.split(' ')[1],
+    last_name: emp.name.split(' ')[0],
     middle_name: emp.name.split(' ')[2] || ''
   },
   contacts: {
@@ -142,11 +142,7 @@ export const EMPLOYEES: IEmployee[] = initialEmployeesData.map((emp, index) => (
     department: emp.department,
     position: emp.position,
     role: emp.level === 'A' ? 'Администратор' : `Менеджер ${emp.level} звена`,
-    chief: {
-      first_name: emp.manager,
-      last_name: '',
-      middle_name: 'Михайлович'
-    }
+    chief: emp.chief
   },
   access_level: 'Ограниченный доступ',
   status: index % 2 === 0 ? 'inactive' : 'active',

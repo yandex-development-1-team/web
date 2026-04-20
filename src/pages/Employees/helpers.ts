@@ -18,11 +18,7 @@ export const formDataToCreateEmployee = (data: EmployeeFormData, imageBase64?: s
       department: data.jobInfo.department,
       position: data.jobInfo.position,
       role: data.accessLevel.roleId === 0 ? 'Администратор' : `Менеджер ${data.accessLevel.roleId} звена`,
-      chief: {
-        first_name: data.jobInfo.chief,
-        last_name: '',
-        middle_name: ''
-      }
+      chief: data.jobInfo.chief
     }
   }
 }
@@ -50,11 +46,7 @@ export const formDataToUpdateEmployee = (
       department: data.jobInfo.department,
       position: data.jobInfo.position,
       role: data.accessLevel.roleId === 0 ? 'Администратор' : `Менеджер ${data.accessLevel.roleId} звена`,
-      chief: {
-        first_name: data.jobInfo.chief,
-        last_name: '',
-        middle_name: ''
-      }
+      chief: data.jobInfo.chief
     },
     access_level: 'Ограниченный доступ',
     status: existingEmployee?.status || 'active',
@@ -85,7 +77,7 @@ export const employeeToFormData = (employee: IEmployee): EmployeeFormData => {
     jobInfo: {
       department: employee.job_info.department,
       position: employee.job_info.position,
-      chief: employee.job_info.chief.first_name
+      chief: employee.job_info.chief
     },
     accessLevel: {
       roleId: parseRoleFromString(employee.job_info.role)
@@ -99,7 +91,7 @@ export const employeeToTableFormat = (employee: IEmployee): EmployeeForTable => 
     id: employee.id,
     name: `${employee.personal_info.last_name} ${employee.personal_info.first_name}`,
     department: employee.job_info.department,
-    manager: employee.job_info.chief.first_name,
+    chief: employee.job_info.chief,
     position: employee.job_info.position,
     level: employee.job_info.role === 'Администратор' ? 'A' : employee.job_info.role.match(/\d+/)?.[0] || '1',
     phone: employee.contacts.phone,

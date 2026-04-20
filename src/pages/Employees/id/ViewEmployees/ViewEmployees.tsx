@@ -27,6 +27,8 @@ const ViewEmployees = () => {
           status={employee.status}
           employeeId={employeeId}
           queryKey={queryKey}
+          phone={employee.contacts.phone}
+          email={employee.contacts.email}
         />
         <EmployeeDetails employee={employee} />
       </Content>

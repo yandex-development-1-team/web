@@ -69,7 +69,7 @@ const Employees = () => {
       render: (_, row) => (
         <div className="flex flex-col">
           <div>{row.department}</div>
-          <div className="text-grey-dark text-sm">{row.manager ?? '—'}</div>
+          <div className="text-grey-dark text-sm">{row.chief ?? '—'}</div>
         </div>
       )
     },
