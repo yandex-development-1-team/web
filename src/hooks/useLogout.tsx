@@ -1,14 +1,11 @@
 import { api } from '@/app/providers/axios'
 import { tokenStorage } from '@/app/providers/axios/lib/tokenStorageInstance'
-import { ROUTES } from '@/app/router'
 import { useQueryClient } from '@tanstack/react-query'
-import { useNavigate } from 'react-router-dom'
 import { API_ROUTES } from '@/services/api/routes'
 
 export const useLogout = () => {
-  const navigate = useNavigate()
   const queryClient = useQueryClient()
-
+  
   const logout = async () => {
     try {
       await api.post(API_ROUTES.logout, {
@@ -21,8 +18,6 @@ export const useLogout = () => {
       tokenStorage.removeRefreshToken()
 
       queryClient.clear()
-
-      navigate(ROUTES.login, { replace: true })
     }
   }
 
