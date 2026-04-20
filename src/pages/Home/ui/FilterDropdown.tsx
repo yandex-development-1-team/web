@@ -36,12 +36,15 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({ className, onChange, va
       <button
         type="button"
         onClick={() => setOpen(prev => !prev)}
-        className={`relative w-auto  text-left text-xs ${className}`}
+        className={`
+          relative w-auto text-left text-xs cursor-pointer hover:border-system-grey-dark
+          transition-[border-color] duration-300 ${className}
+        `}
       >
         {selected?.label}
 
         <div className="pointer-events-none absolute right-[8px] top-1/2 -translate-y-1/2">
-          <ArrowIcon width={32} height={32} color="text-text-grey-light" />
+          <ArrowIcon width={32} height={32} color="var(--color-grey-light)" />
         </div>
       </button>
 
@@ -51,7 +54,8 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({ className, onChange, va
             <li
               key={option.value}
               onClick={() => handleSelect(option.value)}
-              className="px-[12px] py-[8px] cursor-pointer hover:bg-grey-light"
+              className={`px-[12px] py-[8px] cursor-pointer hover:bg-select-option-hover transition-[bg-color] duration-300
+              `}
             >
               {option.label}
             </li>
