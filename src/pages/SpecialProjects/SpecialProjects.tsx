@@ -189,6 +189,11 @@ const SpecialProjects = () => {
         <Select options={selectData} placeholder="Выберите статус" classNames={{ trigger: 'bg-white w-full h-11.5' }} />
       </div>
 
+      <div className="flex items-center gap-5 mb-6">
+        <Input variant="icon" icon={<SearchIcon />} className="bg-white min-[1440px]:min-w-84 h-full" placeholder="" />
+        <Select options={selectData} placeholder="Выберите статус" classNames={{ trigger: 'bg-white w-full h-11.5' }} />
+      </div>
+
       <div
         className={`mt-[30px] flex gap-[20px] ${justifyClass}`}
         style={{ gridTemplateColumns: `repeat(${pageSize}, minmax(0, 1fr))` }}

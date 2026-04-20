@@ -4,6 +4,7 @@ import { ROUTES } from '@/app/router'
 import { BoxButton, Card, ToggleButton } from '@/components/ui'
 import { SummaryCardsList } from '@/components/SummaryCardsList'
 import { BoxSolutionModal } from '@/components/BoxSolutionModal'
+import { SpecialProjectModal } from '@/components/SpecialProjectModal/SpecialProjectModal'
 import { CardLink, TeammateCard } from './ui'
 import { useModal } from '@/components/ui/Modal/useModal'
 import { CARDS } from './cards'
@@ -18,6 +19,7 @@ const Stats = () => {
 
   const [period, setPeriod] = useState<PeriodType>('day')
   const { isOpen: isCreateBoxModalOpen, open: openCreateBoxModal, close: closeCreateBoxModal } = useModal()
+  const { isOpen: isCreateProjectModalOpen, open: openCreateProjectModal, close: closeCreateProjectModal } = useModal()
 
   const handleToggle = (side: ToggleButtonState) => {
     const newPeriod = side === 'left' ? 'day' : 'week'
@@ -25,7 +27,7 @@ const Stats = () => {
   }
 
   const handleBoxSave = (data: Partial<Omit<BoxData, 'id'>>) => {
-    console.log(data)
+    void data
     closeCreateBoxModal()
   }
 
@@ -38,7 +40,7 @@ const Stats = () => {
           <span className="text-left">Создать коробку</span>
         </BoxButton>
 
-        <BoxButton icon="special_projects" smallIcon>
+        <BoxButton icon="special_projects" smallIcon onClick={() => openCreateProjectModal()}>
           <span className="text-left">Создать спецпроект</span>
         </BoxButton>
 
@@ -77,6 +79,12 @@ const Stats = () => {
       {isCreateBoxModalOpen && (
         <BoxSolutionModal isOpen={isCreateBoxModalOpen} onClose={closeCreateBoxModal} onSave={handleBoxSave} />
       )}
+      <SpecialProjectModal
+        isOpen={isCreateProjectModalOpen}
+        onClose={closeCreateProjectModal}
+        onSubmit={closeCreateProjectModal}
+        modalTitle={'Создать спецпроект'}
+      />
     </div>
   )
 }
