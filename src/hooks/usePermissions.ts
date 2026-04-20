@@ -42,8 +42,16 @@ export const usePermissions = () => {
   const isLoggedIn = !!decodedToken?.role
 
   const hasAccess = (code: string) => permissions.includes(code) || roleReceived === 'admin'
-  const hasRole = (role: string) => role === roleReceived
-
+  const hasRole = (role: string) => {
+    if (role === 'admin') {
+      return roleReceived === 'admin'
+    }
+    if (role === 'manager') {
+      return roleReceived.startsWith('manager')
+    }
+    return false
+  }
+  
   return {
     hasRole,
     hasAccess,
