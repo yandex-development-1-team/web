@@ -86,13 +86,19 @@ export function ImagePickerWithCrop({ name, getIsCropping, previewImg }: ImagePi
             <img
               src={cropImage || ''}
               alt="preview"
-              className="w-[262px] h-[172px] object-contain border-grey-light border rounded-lg"
+              className="w-[262px] h-[172px] object-contain rounded-lg"
             />
           )
         )}
       </>
-      <div className={cn('flex items-center gap-3')}>
-        <Button size="icon-48" type="button" className="relative" onClick={() => inputRef.current?.click()}>
+      <div className={`flex items-center ${!cropImage ? 'flex-col gap-2' : 'gap-3'}`}>
+        <Button
+          size="icon-48"
+          type="button"
+          className={`relative ${!cropImage ? 'order-2' : 'order-1'}`}
+          onClick={() => inputRef.current?.click()}
+          disabled={isCropping}
+        >
           <AddIcon className="size-full" />
           <div className="absolute">
             <Input
@@ -105,7 +111,9 @@ export function ImagePickerWithCrop({ name, getIsCropping, previewImg }: ImagePi
             />
           </div>
         </Button>
-        <div className={cn('text-small')}>{!cropImage ? 'Загрузить изображение' : 'Загрузить другое изображение'}</div>
+        <div className={`text-small ${!cropImage ? 'order-1' : 'order-2'}`}>
+          {!cropImage ? 'Загрузить изображение' : 'Загрузить другое изображение'}
+        </div>
       </div>
     </div>
   )
