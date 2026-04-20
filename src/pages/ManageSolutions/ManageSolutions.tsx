@@ -100,7 +100,7 @@ const ManageSolutions = () => {
           `}
         >
           <h4 className="text-h4sb text-text-black-dark pb-[18px] ml-[5px]">Список коробок и спецпроектов</h4>
-          <div className="flex-1 min-h-0 grid grid-cols-2 gap-[10px]">
+          <div className="flex-1 min-h-0 grid lg:grid-cols-2 gap-[10px]">
             <div className="flex-1 min-h-0 flex flex-col gap-[20px] ml-[5px]">
               <BoxButton className="button-text max-w-[calc(100%-5px)]" icon={'box'} onClick={handleBoxCreate}>
                 Создать коробку
