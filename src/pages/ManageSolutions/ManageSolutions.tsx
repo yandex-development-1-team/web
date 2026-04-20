@@ -10,9 +10,10 @@ import {
   mockProjects
 } from '@/mockData/mockManageSolutionsPageData'
 import type { IProject } from '@/types/solutions'
-import { ProjectModal } from '@/pages/SpecialProjects/components'
 import type { BoxData } from '@/types/solutions'
 import { indicators } from './solutionsData'
+import { SpecialProjectModal } from '@/components/SpecialProjectModal/SpecialProjectModal'
+import { MOCK_SPEC_PROJECTS_DATA } from '@/mockData/specProjects.mock'
 
 const ManageSolutions = () => {
   const [boxes, setBoxes] = useState(initialMockBoxes)
@@ -23,9 +24,11 @@ const ManageSolutions = () => {
   const { isOpen: isCreateEditBoxModalOpen, open: openCreateEditBoxModal, close: closeCreateEditBoxModal } = useModal()
   const { isOpen: isDeleteBoxModalOpen, open: openDeleteBoxModal, close: closeDeleteBoxModal } = useModal()
 
+  const { isOpen: isOpenCreateProject, close: onCloseCreateProject, open: onOpenProjectModal } = useModal()
+
   const [projects, setProjects] = useState<IProject[]>(mockProjects)
   const [projectToDelete, setProjectToDelete] = useState<number | null>(null)
-  const [projectToEdit, setProjectToEdit] = useState<IProject | null | undefined>(null)
+  const [editingId, setEditingId] = useState<number | null>(null)
 
   const selectedBox = boxes.find(b => b.id === selectedBoxId)
 
@@ -72,11 +75,13 @@ const ManageSolutions = () => {
   }
 
   const handleProjectCreate = () => {
-    setProjectToEdit(undefined)
+    setEditingId(null)
+    onOpenProjectModal()
   }
 
   const handleProjectEdit = (id: number) => {
-    setProjectToEdit(mockProjects.find(project => project.id === id) || null)
+    setEditingId(id)
+    onOpenProjectModal()
   }
 
   const handleProjectDelete = (id: number) => {
@@ -148,10 +153,15 @@ const ManageSolutions = () => {
         />
       )}
 
-      <ProjectModal
-        isOpen={projectToEdit !== null}
-        onClose={() => setProjectToEdit(null)}
-        project={projectToEdit || undefined}
+      <SpecialProjectModal
+        modalTitle={editingId !== null ? 'Редактировать спецпроект' : 'Создать спецпроект'}
+        onSubmit={data => {
+          console.log(data)
+          onCloseCreateProject()
+        }}
+        isOpen={isOpenCreateProject}
+        onClose={onCloseCreateProject}
+        initialData={editingId !== null ? MOCK_SPEC_PROJECTS_DATA.find(item => item.id === editingId) : undefined}
       />
 
       <DeleteModal
