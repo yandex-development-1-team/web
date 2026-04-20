@@ -1,5 +1,6 @@
 import type { BoxSolutionModalData } from '@/components/BoxSolutionModal/BoxSolutionModal.type'
 import type { IIndicatorValues } from '@/types/indicators'
+import mockGallery from './mock_gallery.jpg'
 import type { IProject } from '@/types/solutions'
 import mockGallery from './mock_gallery.jpg'
 import mockImage from './box_image_1.jpg'

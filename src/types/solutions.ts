@@ -23,10 +23,10 @@ export type BoxData = {
 }
 
 export interface IProject {
-  id: number
+  id: number | string
   title: string
   description: string
-  image: string
+  image?: string
   isActive: boolean
 }
 
