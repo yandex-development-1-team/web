@@ -22,7 +22,7 @@ export function TableHeader<T>({
 }: Props<T>) {
   return (
     <thead>
-      <tr className="border-b border-grey-light h-12 bg-grey-extra-light text-color-black ">
+      <tr className="border-b border-grey-light h-12 bg-grey-extra-light text-color-black">
         {enableCheckboxes && (
           <th className="w-12">
             <label className="inline-flex cursor-pointer items-center justify-center">

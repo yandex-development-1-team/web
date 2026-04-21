@@ -46,7 +46,7 @@ export function DataTable<T extends Record<string, unknown>>(props: DataTablePro
   if (isLoading || !sortedData) {
     const rowsToShow = 10
     return (
-      <div className="rounded-lg border bg-white">
+      <div className="rounded-lg border border-grey-light bg-white">
         <table className="min-w-max whitespace-nowrap">
           <thead>
             <tr className="h-12 border-b bg-gray-100">
