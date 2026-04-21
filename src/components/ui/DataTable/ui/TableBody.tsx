@@ -33,7 +33,7 @@ export function TableBody<T>({
         return (
           <tr
             key={String(row[idKey])}
-            className={`${isSelected ? 'bg-creamy' : ''} border-b border-b-grey-blue-light last:border-b-0`}
+            className={`${isSelected ? 'bg-creamy' : ''} border-b whitespace-nowrap border-b-grey-blue-light last:border-b-0`}
           >
             {enableCheckboxes && (
               <td className="w-12 p-4">
