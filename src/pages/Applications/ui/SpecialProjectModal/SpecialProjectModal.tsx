@@ -4,6 +4,7 @@ import { useState } from 'react'
 import type { ModalPropsType } from '../../applications.types'
 import { useStatus } from '../../hooks/useBoxes'
 import type { SelectType } from '../types'
+import { UserIcon } from '@/assets/icons'
 
 const specialProjectSelectOptions: SelectType = {
   options: [
@@ -98,10 +99,13 @@ export const SpecialProjectModal = ({
             <div>
               <p className={`${labelClasses} !mb-[10px]`}>Менеджер</p>
               <div className="flex mb-[16px] items-center">
-                <img
-                  className="rounded-full size-[32px] object-cover"
-                  src={specialProject?.processing.manager?.photo}
-                />
+                {specialProject?.processing.manager?.photo && (
+                    <img
+                      className="rounded-full size-[32px] object-cover"
+                      src={specialProject?.processing.manager?.photo}
+                    />
+                  ) || <UserIcon className="text-text-grey-light size-[32px]" />
+                }
                 <p className="text-h5 ml-[5px]">{specialProject?.processing.manager?.name}</p>
               </div>
               <p className={labelClasses}>Дата заявки</p>
