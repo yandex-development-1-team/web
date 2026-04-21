@@ -45,9 +45,9 @@ export const Dropdown = ({ options, onSelect, className }: IDropdown) => {
               className={cn(
                 `relative flex w-full items-center gap-2 font-display text-text
                     rounded-sm py-2 pr-8 pl-2 text-xs outline-hidden
-                    focus:bg-select-option-hover focus:text-accent-foreground
+                    focus:bg-(--select-option-hover) focus:text-accent-foreground
                     cursor-pointer
-                    ${item.active ? 'bg-select-option-hover text-accent-foreground' : 'hover:bg-select-option-hover hover:text-accent-foreground'}
+                    ${item.active ? 'bg-(--select-option-hover) text-accent-foreground' : 'hover:bg-(--select-option-hover) hover:text-accent-foreground'}
                     *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2`
               )}
               onClick={() => handleSelect(item)}

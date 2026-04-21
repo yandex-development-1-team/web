@@ -54,7 +54,7 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({ className, onChange, va
             <li
               key={option.value}
               onClick={() => handleSelect(option.value)}
-              className={`px-[12px] py-[8px] cursor-pointer hover:bg-select-option-hover transition-[bg-color] duration-300
+              className={`px-[12px] py-[8px] cursor-pointer hover:bg-(--select-option-hover) transition-[bg-color] duration-300
               `}
             >
               {option.label}
