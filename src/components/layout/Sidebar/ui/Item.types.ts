@@ -6,4 +6,5 @@ export interface ItemProps {
   route: string
   childrenItems?: Omit<ItemProps, 'Icon' | 'isExpanded'>[]
   isExpanded: boolean
+  accessName?: string
 }

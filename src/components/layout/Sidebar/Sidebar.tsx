@@ -6,23 +6,21 @@ import { ROUTES } from '@/app/router'
 import { MENU_ADMIN, MENU_DOWN, MENU_MANAGER } from './menu'
 import { useLogout } from '@/hooks/useLogout'
 import { UserIcon } from '@/assets/icons'
-import type { IUser, UserRole } from '@/types/user'
+import type { IUser } from '@/types/user'
 import { usePermissions } from '@/hooks/usePermissions'
 
 export const Sidebar = () => {
-  const { user: rawUser, hasRole } = usePermissions()
-  const userGrade: number = rawUser.role === 'admin' ? 0 : Number(rawUser.role.at(-1)) || 3
-  const userRole: UserRole = hasRole('admin') ? 'admin' : 'manager'
-  const user: IUser = {
+  const { user: rawUser, hasRole, hasAccess } = usePermissions()
+  const userGrade: number = hasRole('admin') ? 0 : Number(rawUser.role.at(-1)) || 3
+  const user: Partial<IUser> = {
     name: rawUser.name,
-    role: userRole,
     grade: userGrade,
     photo: rawUser.photo
   }
 
   const [isExpanded, setIsExpanded] = useState<boolean>(true)
   const logout = useLogout()
-  const menu = user.role === 'manager' ? MENU_MANAGER : MENU_ADMIN
+  const menu = hasRole('admin') ? MENU_ADMIN : MENU_MANAGER
   return (
     <aside
       className={`${isExpanded ? 'w-[328px]' : 'w-[120px]'} transition-[width] duration-400 h-screen 
@@ -36,7 +34,7 @@ export const Sidebar = () => {
           className={`overflow-hidden transition-[width,margin] duration-400
           ${isExpanded ? 'w-auto' : 'w-[33px] mx-auto'}`}
         >
-          <Link to={user.role === 'manager' ? ROUTES.home : ROUTES.stats}>
+          <Link to={ROUTES.home}>
             <EventIcon />
           </Link>
         </div>
@@ -75,27 +73,30 @@ export const Sidebar = () => {
           <div className="flex flex-col gap-[4px] w-[200px]">
             <span className="button-text">{user.name}</span>
             <span className="text-xs">
-              {user.role === 'manager' ? `Менеджер ${user.grade} звена` : 'Администратор'}
+              {hasRole('admin') ? 'Администратор' : `Менеджер ${user.grade} звена`}
             </span>
           </div>
         </div>
       </div>
 
-      <nav className="flex flex-col justify-between flex-1 overflow-hidden">
+      <nav className="flex flex-col justify-between flex-1 overflow-hidden -mx-[20px] [&>div]:px-[20px]">
         <div
           className="flex flex-col transition-[gap] duration-400 overflow-y-auto narrow-scrollbar pb-[14px]"
           style={{ gap: isExpanded ? '19.5px' : '16px' }}
         >
-          {menu.map(item => (
-            <Item
-              key={`${item.route}-${isExpanded}`}
-              Icon={item.Icon}
-              title={item.title}
-              route={item.route}
-              childrenItems={item.childrenItems}
-              isExpanded={isExpanded}
-            />
-          ))}
+          {menu.map(
+            item =>
+              (!item.accessName || hasRole('admin') || hasAccess(item.accessName)) && (
+                <Item
+                  key={`${item.route}-${isExpanded}`}
+                  Icon={item.Icon}
+                  title={item.title}
+                  route={item.route}
+                  childrenItems={item.childrenItems}
+                  isExpanded={isExpanded}
+                />
+              )
+          )}
         </div>
         <div
           className={`flex flex-col border-t border-grey-extra-light transition-[gap] duration-400 flex-shrink-0
