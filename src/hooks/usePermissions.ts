@@ -51,7 +51,7 @@ export const usePermissions = () => {
     }
     return false
   }
-  
+
   return {
     hasRole,
     hasAccess,
