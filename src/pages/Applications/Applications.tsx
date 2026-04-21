@@ -58,7 +58,7 @@ const Applications = () => {
         <div className="flex justify-between mt-4 h-11">
           <QueryFilters />
           <Button size={'default'} className="text-text p-5 w-43 self-end" onClick={() => {}}>
-            Эксорт XLSX
+            Экспорт XLSX
           </Button>
         </div>
       </Card>
