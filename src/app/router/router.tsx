@@ -66,7 +66,7 @@ export const router = createBrowserRouter(
                   children: [
                     {
                       path: ROUTES.stats,
-                      lazy: () => import('@/pages/Stats/Stats')
+                      lazy: () => import('@/pages/Stats/StatsMain/StatsMain')
                     },
                     {
                       path: ROUTES.statsAttendance,
