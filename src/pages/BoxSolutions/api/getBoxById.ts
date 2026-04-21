@@ -5,7 +5,7 @@ export const getBoxById = (id: string) => {
   if (!id) return
   // const response = await api.get<IBox>(API_ROUTES.boxes.byId(id))
 
-  // if (!response.data) throw new Error('Faild to get box')
+  // if (!response.data) throw new Error('Failed to get box')
 
   // return response.data
   return MOCK_BOXES.find(box => box.id.toString() === id) as IBox

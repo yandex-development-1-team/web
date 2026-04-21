@@ -14,7 +14,7 @@ export const getBoxes = async (
     signal
   })
 
-  if (!response.data) throw new Error('Faild to get box applications')
+  if (!response.data) throw new Error('Failed to get box applications')
 
   const boxes = response.data.items.map(app => mapBoxListItem(app))
 

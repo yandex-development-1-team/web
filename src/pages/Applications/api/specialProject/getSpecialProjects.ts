@@ -14,7 +14,7 @@ export const getApplications = async (
     signal
   })
 
-  if (!response.data) throw new Error('Faild to get applications')
+  if (!response.data) throw new Error('Failed to get applications')
 
   const applications = response.data.items.map(app => mapApplicationListItem(app))
 

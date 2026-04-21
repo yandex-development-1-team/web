@@ -6,7 +6,7 @@ import type { BookingDTO } from './types'
 export const getBoxById = async (id: string) => {
   const response = await api.get<BookingDTO>(API_ROUTES.bookings.byId(id))
 
-  if (!response.data) throw new Error('Faild to get booking')
+  if (!response.data) throw new Error('Failed to get booking')
 
   const booking = mapBoxDTOToBoxApplication(response.data)
 
