@@ -48,16 +48,15 @@ export const formDataToUpdateEmployee = (
       role: data.accessLevel.roleId === 0 ? 'Администратор' : `Менеджер ${data.accessLevel.roleId} звена`,
       chief: data.jobInfo.chief
     },
-    access_level: 'Ограниченный доступ',
     status: existingEmployee?.status || 'active',
     updated_at: now
   }
 }
 
-const parseRoleFromString = (role: string): number | null => {
+const parseRoleFromString = (role: string): number | undefined => {
   if (role === 'Администратор') return 0
   const match = role.match(/Менеджер (\d+) звена/)
-  return match ? parseInt(match[1]) : null
+  return match ? parseInt(match[1]) : undefined
 }
 
 // Преобразование IEmployee в EmployeeFormData (для редактирования)
@@ -93,7 +92,7 @@ export const employeeToTableFormat = (employee: IEmployee): EmployeeForTable => 
     department: employee.job_info.department,
     chief: employee.job_info.chief,
     position: employee.job_info.position,
-    level: employee.job_info.role === 'Администратор' ? 'A' : employee.job_info.role.match(/\d+/)?.[0] || '1',
+    level: employee.job_info.role === 'Администратор' ? 'A' : employee.job_info.role.match(/\d+/)?.[0] || '3',
     phone: employee.contacts.phone,
     email: employee.contacts.email,
     city: employee.contacts.city

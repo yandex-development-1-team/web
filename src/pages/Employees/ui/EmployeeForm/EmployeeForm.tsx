@@ -31,7 +31,7 @@ export const EmployeeForm = ({ initialData, initialPreview = null, onSubmit, onC
       personalInfo: { surname: '', firstName: '', patronymic: '' },
       contactInfo: { phone: '', email: '', city: '' },
       jobInfo: { department: '', position: '', chief: '' },
-      accessLevel: { roleId: null }
+      accessLevel: { roleId: undefined }
     }
   })
 
@@ -65,10 +65,6 @@ export const EmployeeForm = ({ initialData, initialPreview = null, onSubmit, onC
   }
 
   const handleFormSubmit: SubmitHandler<EmployeeFormData> = async data => {
-    if (!data.accessLevel?.roleId && data.accessLevel?.roleId !== 0) {
-      showNotification({ message: 'Выберите уровень доступа', status: 'error' })
-      return
-    }
     await onSubmit(data, hasNewImage)
   }
 
@@ -283,6 +279,9 @@ export const EmployeeForm = ({ initialData, initialPreview = null, onSubmit, onC
                 <UserCreateIcon className="w-4 h-4 text-text" />
                 <h3 className="text-h3 text-text">Уровень доступа</h3>
               </div>
+              {errors.accessLevel?.roleId?.message && (
+                <span className="text-xxs text-text-error">{errors.accessLevel.roleId.message}</span>
+              )}
               <div className="grid grid-cols-2 gap-x-[100px] gap-y-[42px]">
                 {roles.map(role => (
                   <div

@@ -1,5 +1,5 @@
 import { Card } from '@/components/ui/Card'
-import image_placeholder from '@/mockData/box_image_placeholder.png'
+import image_placeholder from '@/assets/images/box_image_placeholder.png'
 import type { IBox } from '../BoxSolutions.types'
 import { BoxActions } from './BoxActions'
 import { StatusLabel } from './StatusLabel'

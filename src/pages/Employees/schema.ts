@@ -47,7 +47,12 @@ const jobInfoSchema = z.object({
 })
 
 const accessLevelSchema = z.object({
-  roleId: z.number().nullable()
+  roleId: z
+    .number()
+    .optional()
+    .refine(roleId => roleId !== undefined, {
+      message: 'Выберите уровень доступа'
+    })
 })
 
 export const employeeFormSchema = z.object({

@@ -144,7 +144,6 @@ export const EMPLOYEES: IEmployee[] = initialEmployeesData.map((emp, index) => (
     role: emp.level === 'A' ? 'Администратор' : `Менеджер ${emp.level} звена`,
     chief: emp.chief
   },
-  access_level: 'Ограниченный доступ',
   status: index % 2 === 0 ? 'inactive' : 'active',
   created_at: '2024-02-01T09:00:00Z',
   updated_at: '2024-02-01T09:00:00Z'

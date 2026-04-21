@@ -1,6 +1,6 @@
 import type { CreateEmployeeData, IEmployee } from '../employees.types'
 import { EMPLOYEES } from '../mockData'
-import photoPlaceholder from '@/mockData/photo_placeholder.jpg'
+import photoPlaceholder from '@/assets/images/photo_placeholder.jpg'
 
 export const createEmployee = async (data: CreateEmployeeData): Promise<IEmployee> => {
   const getNextId = () => {
@@ -17,7 +17,6 @@ export const createEmployee = async (data: CreateEmployeeData): Promise<IEmploye
     personal_info: data.personal_info,
     contacts: data.contacts,
     job_info: data.job_info,
-    access_level: 'Ограниченный доступ',
     status: 'active',
     created_at: now,
     updated_at: now
