@@ -1,0 +1,1 @@
+import{j as e,d as a}from"./index-CkB9Ao2V.js";const n=r=>{const{className:s,...t}=r;return e.jsx("div",{className:a("flex items-center justify-center",s),...t,children:e.jsx("div",{className:"h-8 w-8 animate-spin rounded-full border-4 border-solid border-yellow-accent-dark border-t-transparent"})})};export{n as L};

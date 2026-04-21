@@ -1,0 +1,1 @@
+import{j as e,T as t}from"./index-CkB9Ao2V.js";const o="/web/preview/assets/Dino404-Cqq7mfNV.jpg",s=()=>e.jsx(t,{title:"Страница не найдена",text:"Извините, такой страницы не существует",image:o,code:"404"}),r=s;export{r as Component};
