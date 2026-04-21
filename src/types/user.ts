@@ -5,4 +5,7 @@ export interface IUser {
   name: string
   photo?: string
   grade?: number
+  permissions?: {
+    items: string[]
+  }
 }
