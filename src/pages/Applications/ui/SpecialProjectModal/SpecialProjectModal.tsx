@@ -5,6 +5,7 @@ import type { ModalPropsType } from '../../applications.types'
 import { useStatus } from '../../hooks/useBoxes'
 import type { SelectType } from '../types'
 import { UserIcon } from '@/assets/icons'
+import { formatDateToLocalUI } from '@/lib/utils.date'
 
 const specialProjectSelectOptions: SelectType = {
   options: [
@@ -109,7 +110,9 @@ export const SpecialProjectModal = ({
                 <p className="text-h5 ml-[5px]">{specialProject?.processing.manager?.name}</p>
               </div>
               <p className={labelClasses}>Дата заявки</p>
-              <p className={`${fieldClasses} !mb-[2px]`}>{specialProject?.processing.applicationDate}</p>
+              <p className={`${fieldClasses} !mb-[2px]`}>
+                {formatDateToLocalUI(specialProject?.processing.applicationDate)}
+              </p>
             </div>
             <div>
               <p className={`${labelClasses} !mb-[2px]`}>Статус</p>

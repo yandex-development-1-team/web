@@ -5,6 +5,7 @@ import type { ModalPropsType } from '../../applications.types'
 import { useStatus } from '../../hooks/useBoxes'
 import type { SelectType } from '../types'
 import { UserIcon } from '@/assets/icons'
+import { formatDateToLocalUI } from '@/lib/utils.date'
 
 const boxSelectOptions: SelectType = {
   options: [
@@ -94,7 +95,7 @@ export const BoxModal = ({ id, isOpen, onClose, onDelete, onModify, queryKey, ac
           <div className="grid grid-cols-2 gap-[20px] pb-[7px] border-b-1 border-grey-blue-light">
             <div>
               <p className={labelClasses}>Дата бронирования</p>
-              <p className={fieldClasses}>{box?.reservation?.date}</p>
+              <p className={fieldClasses}>{formatDateToLocalUI(box?.reservation?.date)}</p>
             </div>
             <div>
               <p className={labelClasses}>Время</p>
@@ -127,7 +128,7 @@ export const BoxModal = ({ id, isOpen, onClose, onDelete, onModify, queryKey, ac
                 onValueChange={handleStatusChange}
               />
               <p className={`${labelClasses} mt-[12px]`}>Дата заявки</p>
-              <p className={`${fieldClasses} !mb-[2px]`}>{box?.processing.applicationDate}</p>
+              <p className={`${fieldClasses} !mb-[2px]`}>{formatDateToLocalUI(box?.processing.applicationDate)}</p>
             </div>
           </div>
         </form>
