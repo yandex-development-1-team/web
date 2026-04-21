@@ -59,13 +59,13 @@ export const router = createBrowserRouter(
                           lazy: () => import('@/pages/Applications/Applications')
                         }
                       ]
-                    },
-                    {
-                      path: ROUTES.resources,
-                      lazy: () => import('@/pages/Resources/Resources')
                     }
                   ]
                 },
+                {
+                  path: ROUTES.resources,
+                  lazy: () => import('@/pages/Resources/Resources')
+                },       
                 {
                   element: <ProtectedRoute requiredRole="admin" />,
                   children: [
