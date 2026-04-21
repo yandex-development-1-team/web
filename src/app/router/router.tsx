@@ -36,30 +36,35 @@ export const router = createBrowserRouter(
                   element: <HomeIndex />
                 },
                 {
-                  path: ROUTES.boxSolutions,
-                  lazy: () => import('@/pages/BoxSolutions/BoxSolutions')
-                },
-                {
-                  element: <ProtectedRoute requiredPermission={PERMISSIONS.specprojectsView} />,
+                  element: <ProtectedRoute requiredRole="manager" />,
                   children: [
                     {
-                      path: ROUTES.specialProjects,
-                      lazy: () => import('@/pages/SpecialProjects/SpecialProjects')
-                    }
-                  ]
-                },
-                {
-                  element: <ProtectedRoute requiredPermission={PERMISSIONS.applicationsView} />,
-                  children: [
+                      path: ROUTES.boxSolutions,
+                      lazy: () => import('@/pages/BoxSolutions/BoxSolutions')
+                    },
                     {
-                      path: ROUTES.applications,
-                      lazy: () => import('@/pages/Applications/Applications')
+                      element: <ProtectedRoute requiredPermission={PERMISSIONS.specprojectsView} />,
+                      children: [
+                        {
+                          path: ROUTES.specialProjects,
+                          lazy: () => import('@/pages/SpecialProjects/SpecialProjects')
+                        }
+                      ]
+                    },
+                    {
+                      element: <ProtectedRoute requiredPermission={PERMISSIONS.applicationsView} />,
+                      children: [
+                        {
+                          path: ROUTES.applications,
+                          lazy: () => import('@/pages/Applications/Applications')
+                        }
+                      ]
+                    },
+                    {
+                      path: ROUTES.resources,
+                      lazy: () => import('@/pages/Resources/Resources')
                     }
                   ]
-                },
-                {
-                  path: ROUTES.resources,
-                  lazy: () => import('@/pages/Resources/Resources')
                 },
                 {
                   element: <ProtectedRoute requiredRole="admin" />,
