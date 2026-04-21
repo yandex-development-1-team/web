@@ -93,6 +93,6 @@ export const MENU_DOWN: Omit<DownItemProps, 'isExpanded'>[] = [
   {
     Icon: ExitIcon,
     title: 'Выход',
-    route: ROUTES.login
+    route: ''
   }
 ]
