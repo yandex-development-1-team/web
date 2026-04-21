@@ -26,7 +26,7 @@ export function Select({ options, placeholder, classNames, ...props }: TSelect) 
       <SelectContent className={classNames?.content}>
         {options.map(o => {
           return (
-            <SelectItem key={o.value} value={o.value} className={classNames?.item}>
+            <SelectItem value={o.value} className={classNames?.item} key={o.value}>
               {o.label}
             </SelectItem>
           )

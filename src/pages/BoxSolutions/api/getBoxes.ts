@@ -11,7 +11,7 @@ export const getBoxes = async (
   { signal }: { signal: AbortSignal }
 ) => {
   // const response = await api.get<BoxesSolutionsResponseType>(API_ROUTES.boxes.get, { params, signal })
-  // if (!response.data) throw new Error('Faild to get box solutions')
+  // if (!response.data) throw new Error('Failed to get box solutions')
 
   //Имитация пагинации на беке
   void signal
