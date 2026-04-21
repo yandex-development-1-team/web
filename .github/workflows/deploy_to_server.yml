@@ -1,0 +1,45 @@
+name: Deploy To Server
+
+on:
+  push:
+    branches:
+      - main
+      - devops/test-deploy
+
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # --- Checkout исходной ветки ---
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      # --- Setup Node ---
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      # --- Install dependencies ---
+      - name: Install dependencies
+        run: npm ci
+
+      # --- Build site
+      - name: Build site (develop)
+        run: npm run build
+        env:
+          VITE_API_BASE_URL: ${{ vars.VITE_API_BASE_URL }}
+
+      # --- Copy files to server
+      - name: 4. Copy dist to server
+        uses: appleboy/scp-action@v1
+        with:
+          host: ${{ vars.SSH_DEPLOY_HOST }}
+          username: ${{ secrets.SSH_DEPLOY_USER }}
+          key: ${{ secrets.SSH_DEPLOY_KEY }}
+          overwrite: true
+          source: "dist"
+          target: "~/frontend/"

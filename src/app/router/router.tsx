@@ -36,13 +36,8 @@ export const router = createBrowserRouter(
                   element: <HomeIndex />
                 },
                 {
-                  element: <ProtectedRoute requiredPermission={PERMISSIONS.boxesView} />,
-                  children: [
-                    {
-                      path: ROUTES.boxSolutions,
-                      lazy: () => import('@/pages/BoxSolutions/BoxSolutions')
-                    }
-                  ]
+                  path: ROUTES.boxSolutions,
+                  lazy: () => import('@/pages/BoxSolutions/BoxSolutions')
                 },
                 {
                   element: <ProtectedRoute requiredPermission={PERMISSIONS.specprojectsView} />,
