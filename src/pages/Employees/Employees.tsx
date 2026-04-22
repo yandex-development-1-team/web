@@ -1,21 +1,28 @@
-import { BoxFilter, DownloadIcon, SearchIcon, SortByNumbersIcon } from '@/assets/icons'
-import { Button, DataTable, Input } from '@/components/ui'
 import { useState } from 'react'
-import { employees, type Employee } from './mockData'
 import { useNavigate } from 'react-router-dom'
+import { useQuery } from '@tanstack/react-query'
+import { Button, DataTable, Input, Loader } from '@/components/ui'
+import { BoxFilter, DownloadIcon, SearchIcon, SortByNumbersIcon } from '@/assets/icons'
 import { ROUTES } from '@/app/router'
-import type { Column } from '@/components/ui/DataTable/DataTable.types'
+import { getEmployees } from './api/getEmployees'
 import { sortData } from '@/components/ui/DataTable/helpers'
+import type { Column } from '@/components/ui/DataTable/DataTable.types'
+import type { EmployeeForTable } from './employees.types'
 
 const Employees = () => {
   const navigate = useNavigate()
   const [search, setSearch] = useState('')
   const [filter, setFilter] = useState(false)
-  const [select, setSelect] = useState<Employee[]>([])
+  const [select, setSelect] = useState<EmployeeForTable[]>([])
   const [sortConfig, setSortConfig] = useState<{
-    key: keyof Employee
+    key: keyof EmployeeForTable
     direction: 'asc' | 'desc'
   } | null>(null)
+
+  const { data: employeesData, isPending } = useQuery({
+    queryKey: ['employees'],
+    queryFn: getEmployees
+  })
 
   const sortOptions = [
     { label: 'По отделу', key: 'department' },
@@ -27,7 +34,7 @@ const Employees = () => {
     setFilter(prev => !prev)
   }
 
-  const handleSort = (key: keyof Employee) => {
+  const handleSort = (key: keyof EmployeeForTable) => {
     setSortConfig(prev =>
       prev?.key === key ? { key, direction: prev.direction === 'asc' ? 'desc' : 'asc' } : { key, direction: 'asc' }
     )
@@ -35,15 +42,16 @@ const Employees = () => {
 
   const handleDownload = () => void select
 
-  const filtered = employees.filter(e => e.name.toLowerCase().includes(search.toLowerCase()))
+  if (isPending) return <Loader />
 
+  const filtered = (employeesData || []).filter(e => e.name.toLowerCase().includes(search.toLowerCase()))
   const sorted = sortData(filtered, sortConfig)
 
   const addEmployees = () => {
     navigate(ROUTES.employeesCreate)
   }
 
-  const columns: Column<Employee>[] = [
+  const columns: Column<EmployeeForTable>[] = [
     { key: 'id', label: 'ID' },
     {
       key: 'name',
@@ -61,7 +69,7 @@ const Employees = () => {
       render: (_, row) => (
         <div className="flex flex-col">
           <div>{row.department}</div>
-          <div className="text-grey-dark text-sm">{row.manager ?? '—'}</div>
+          <div className="text-grey-dark text-sm">{row.chief ?? '—'}</div>
         </div>
       )
     },
@@ -89,7 +97,7 @@ const Employees = () => {
 
   return (
     <>
-      <div className="p-5  bg-white rounded-[8px] mb-[20px]">
+      <div className="p-5 bg-white rounded-[8px] mb-[20px]">
         <h2 className="mb-8 text-h2">Управление пользователями и правами</h2>
         <div className="flex items-center gap-5 h-[48px]">
           <Button onClick={addEmployees} className="py-[12px] px-[32px] min-w-[241px]">
@@ -105,7 +113,7 @@ const Employees = () => {
 
           <div className="flex gap-[10px]">
             <div className="relative">
-              <Button className="p-4 bg-transparent  border-grey-border " onClick={handleOpenFilter}>
+              <Button className="p-4 bg-transparent border-grey-border" onClick={handleOpenFilter}>
                 <BoxFilter />
               </Button>
               {filter && (
@@ -116,7 +124,7 @@ const Employees = () => {
                         key={option.key}
                         className="py-[9px] px-[12px] cursor-pointer hover:bg-grey-blue-light"
                         onClick={() => {
-                          handleSort(option.key as keyof Employee)
+                          handleSort(option.key as keyof EmployeeForTable)
                           setFilter(false)
                         }}
                       >
@@ -127,7 +135,7 @@ const Employees = () => {
                 </div>
               )}
             </div>
-            <Button onClick={handleDownload} className="p-4 bg-transparent  border-grey-border">
+            <Button onClick={handleDownload} className="p-4 bg-transparent border-grey-border">
               <DownloadIcon />
             </Button>
           </div>

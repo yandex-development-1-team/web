@@ -4,12 +4,12 @@ import { ROUTES } from '@/app/router'
 import { BoxButton, Card, ToggleButton } from '@/components/ui'
 import { SummaryCardsList } from '@/components/SummaryCardsList'
 import { BoxSolutionModal } from '@/components/BoxSolutionModal'
+import { SpecialProjectModal } from '@/components/SpecialProjectModal/SpecialProjectModal'
 import { CardLink, TeammateCard } from './ui'
 import { useModal } from '@/components/ui/Modal/useModal'
 import { CARDS } from './cards'
 import { mockDaySummaryData, mockDayTeam, mockWeekSummaryData } from '@/mockData/mockStatsPageData'
 import type { ToggleButtonState } from '@/components/ui/ToggleButton'
-import type { BoxData } from '@/types/solutions'
 
 type PeriodType = 'day' | 'week'
 
@@ -18,15 +18,11 @@ const Stats = () => {
 
   const [period, setPeriod] = useState<PeriodType>('day')
   const { isOpen: isCreateBoxModalOpen, open: openCreateBoxModal, close: closeCreateBoxModal } = useModal()
+  const { isOpen: isCreateProjectModalOpen, open: openCreateProjectModal, close: closeCreateProjectModal } = useModal()
 
   const handleToggle = (side: ToggleButtonState) => {
     const newPeriod = side === 'left' ? 'day' : 'week'
     setPeriod(newPeriod)
-  }
-
-  const handleBoxSave = (data: Partial<Omit<BoxData, 'id'>>) => {
-    console.log(data)
-    closeCreateBoxModal()
   }
 
   const summaryData = period === 'day' ? mockDaySummaryData : mockWeekSummaryData
@@ -38,7 +34,7 @@ const Stats = () => {
           <span className="text-left">Создать коробку</span>
         </BoxButton>
 
-        <BoxButton icon="special_projects" smallIcon>
+        <BoxButton icon="special_projects" smallIcon onClick={() => openCreateProjectModal()}>
           <span className="text-left">Создать спецпроект</span>
         </BoxButton>
 
@@ -75,8 +71,14 @@ const Stats = () => {
       </div>
 
       {isCreateBoxModalOpen && (
-        <BoxSolutionModal isOpen={isCreateBoxModalOpen} onClose={closeCreateBoxModal} onSave={handleBoxSave} />
+        <BoxSolutionModal isOpen={isCreateBoxModalOpen} onClose={closeCreateBoxModal} onSave={closeCreateBoxModal} />
       )}
+      <SpecialProjectModal
+        isOpen={isCreateProjectModalOpen}
+        onClose={closeCreateProjectModal}
+        onSubmit={closeCreateProjectModal}
+        modalTitle={'Создать спецпроект'}
+      />
     </div>
   )
 }

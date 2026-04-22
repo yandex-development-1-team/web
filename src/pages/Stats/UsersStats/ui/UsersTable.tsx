@@ -1,22 +1,20 @@
-import { useState, useMemo } from 'react'
+import { useMemo } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { DataTable } from '@/components/ui'
 import type { Column } from '@/components/ui/DataTable/DataTable.types'
-import Pagination from '@/components/ui/DataTable/ui/Pagination'
+import { Pagination } from '@/components/ui/Pagination'
 import { Card } from '@/components/ui/Card'
 import type { IUsersStats } from '@/types/users_stats'
 
 export const UsersTable = ({ data }: { data: IUsersStats[] }) => {
   const pageSize = 10
-  const [currentPage, setCurrentPage] = useState(1)
 
-  const totalPages = Math.ceil(data.length / pageSize)
+  const [searchParams] = useSearchParams()
+  const offset = Number(searchParams.get('offset')) || 0
 
   const paginatedData = useMemo(() => {
-    const start = (currentPage - 1) * pageSize
-    return data.slice(start, start + pageSize)
-  }, [data, currentPage, pageSize])
-
-  const handlePageChange = (page: number) => setCurrentPage(page)
+    return data.slice(offset, offset + pageSize)
+  }, [data, offset, pageSize])
 
   const columns: Column<IUsersStats>[] = [
     { key: 'name', label: 'Пользователь', sortable: true },
@@ -29,9 +27,14 @@ export const UsersTable = ({ data }: { data: IUsersStats[] }) => {
   return (
     <Card className="overflow-hidden rounded-lg px-0 pt-0">
       <DataTable idKey="id" columns={columns} data={paginatedData} />
-      <div className="flex justify-end pt-0">
-        <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange}></Pagination>
-      </div>
+      <Pagination
+        variant="nav"
+        pagination={{
+          limit: pageSize,
+          offset: offset,
+          total: data.length
+        }}
+      />
     </Card>
   )
 }

@@ -23,11 +23,11 @@ export type BoxData = {
 }
 
 export interface IProject {
-  id: number
+  id: number | string
   title: string
   description: string
-  image: string
-  status: boolean
+  image?: string
+  isActive: boolean
 }
 
 export interface IBox extends IProject {
