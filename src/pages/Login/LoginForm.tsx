@@ -116,8 +116,11 @@ export const LoginForm = () => {
 
         <button
           type="button"
-          className="text-text-grey-dark text-xs mb-6 inline-block cursor-pointer outline-0"
-          onClick={openRecoveryModal}
+          className={`
+            text-text-grey-dark text-xs mb-6 inline-block cursor-pointer outline-0 hover:text-text-grey-light
+            focus:ring-1 focus:ring-yellow-accent-dark transition-[color,shadow] duration-300
+          `}
+          onClick={() => openRecoveryModal()}
         >
           Забыли пароль?
         </button>
