@@ -1,25 +1,12 @@
-import { EditIcon, MoreVerticalIcon, PhoneIcon } from '@/assets/icons'
-import type { ContactType, TeammateCardType } from './TeammateCard.types'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/CalendarInput/ui/Popover'
 import { useState } from 'react'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/CalendarInput/ui/Popover'
+import { MoreVerticalIcon } from '@/assets/icons'
+import { getContacts } from './helpers'
+import type { TeammateCardType } from './TeammateCard.types'
 
 export const TeammateCard = ({ name, grade, isActive, email, phone }: TeammateCardType) => {
   const [open, setOpen] = useState<boolean>(false)
-
-  const contacts: ContactType[] = [
-    {
-      link: email,
-      action: 'Написать',
-      Icon: EditIcon,
-      iconClassName: 'w-[16px]'
-    },
-    {
-      link: phone,
-      action: 'Позвонить',
-      Icon: PhoneIcon,
-      iconClassName: 'w-[32px] -mr-[6px]'
-    }
-  ]
+  const contacts = getContacts(email, phone)
 
   return (
     <div className="flex items-start justify-between pb-[9px] border-b border-grey-light">
