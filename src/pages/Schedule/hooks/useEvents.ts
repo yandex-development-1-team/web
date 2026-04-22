@@ -7,7 +7,10 @@ import type { ToggleButtonState } from '@/components/ui/ToggleButton/ToggleButto
 export const eventKeys = {
   all: ['events'],
   lists: () => [...eventKeys.all, 'list'],
-  list: ({ params, side }: { params: IEventsParams; side: ToggleButtonState }) => [...eventKeys.lists(), { params, side }],
+  list: ({ params, side }: { params: IEventsParams; side: ToggleButtonState }) => [
+    ...eventKeys.lists(),
+    { params, side }
+  ],
   details: () => [...eventKeys.all, 'detail'],
   detail: (id: number) => [...eventKeys.details(), id]
 }

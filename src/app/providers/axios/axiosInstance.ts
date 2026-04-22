@@ -10,3 +10,4 @@ const axiosConfig: AxiosRequestConfig = {
 }
 
 export const api = axios.create(axiosConfig)
+export const refreshApi = axios.create(axiosConfig)
