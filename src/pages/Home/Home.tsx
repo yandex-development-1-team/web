@@ -1,13 +1,19 @@
 import { BoxButton, Button, DataTable } from '@/components/ui'
 import { Application2 } from '@/assets/icons'
 import { useState } from 'react'
+import { useModal } from '@/components/ui/Modal/useModal'
+import { BoxSolutionModal } from '@/components/BoxSolutionModal'
+import { SpecialProjectModal } from '@/components/SpecialProjectModal/SpecialProjectModal'
 import FilterDropdown from './ui/FilterDropdown'
 import { headerTableData } from './homePageData'
 import { bookingRequestsMock } from '@/mockData/bookingRequestsMock'
+import type { BoxData } from '@/types/solutions'
 import { usePermissions, PERMISSIONS } from '@/hooks/usePermissions'
 
 const Home = () => {
   const [statusFilter, setStatusFilter] = useState('all')
+  const { isOpen: isCreateBoxModalOpen, open: openCreateBoxModal, close: closeCreateBoxModal } = useModal()
+  const { isOpen: isCreateProjectModalOpen, open: openCreateProjectModal, close: closeCreateProjectModal } = useModal()
   const data = bookingRequestsMock
 
   const countQueue = data.filter(item => item.status === 'queue').length
@@ -19,9 +25,18 @@ const Home = () => {
     { title: 'Заявки в работе', value: countInProgress }
   ]
 
-  const handleBoxCreate = () => {}
+  const handleBoxCreate = () => {
+    openCreateBoxModal()
+  }
 
-  const handleSpecProjectCreate = () => {}
+  const handleSpecProjectCreate = () => {
+    openCreateProjectModal()
+  }
+
+  const handleBoxSave = (data: Partial<Omit<BoxData, 'id'>>) => {
+    void data
+    closeCreateBoxModal()
+  }
 
   const filteredData = statusFilter === 'all' ? data : data.filter(item => item.status === statusFilter)
 
@@ -93,6 +108,16 @@ const Home = () => {
           <DataTable idKey="id" data={filteredData} enableLoadMore columns={headerTableData} />
         </div>
       </div>
+
+      {isCreateBoxModalOpen && (
+        <BoxSolutionModal isOpen={isCreateBoxModalOpen} onClose={closeCreateBoxModal} onSave={handleBoxSave} />
+      )}
+      <SpecialProjectModal
+        isOpen={isCreateProjectModalOpen}
+        onClose={closeCreateProjectModal}
+        onSubmit={closeCreateProjectModal}
+        modalTitle={'Создать спецпроект'}
+      />
     </div>
   )
 }
