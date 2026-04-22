@@ -12,13 +12,11 @@ import { usePermissions, PERMISSIONS } from '@/hooks/usePermissions'
 import { SearchIcon } from '@/assets/icons'
 
 const statusOption = [
-  { value: 'all', label: 'Все статусы' },
-  { value: 'active', label: 'Активные' },
-  { value: 'disable', label: 'Неактивные' }
+  { value: 'active', label: 'Активен в боте' },
+  { value: 'disable', label: 'Не активен в боте' }
 ]
 
 const locationOption = [
-  { value: 'all', label: 'Все локации' },
   { value: 'Ленина', label: 'Ленина' },
   { value: 'Мира', label: 'Мира' },
   { value: 'Советская', label: 'Советская' },
@@ -29,17 +27,14 @@ const locationOption = [
   { value: 'Садовая', label: 'Садовая' }
 ]
 
-const organizationOption = [
-  { value: 'all', label: 'Все локации' },
-  { value: 'Secret Events Team', label: 'Secret Events Team' }
-]
+const organizationOption = [{ value: 'Secret Events Team', label: 'Secret Events Team' }]
 
 const BoxSolutions = () => {
   const [modal, setModal] = useState<ModalState>()
   const { boxes, pagination, isError, isLoading, isPending, queryKey } = useBoxes()
-  const [statusFilter, setStatusFilter] = useState('all')
-  const [locationFilter, setLocationFilter] = useState('all')
-  const [organizationFilter, setOrganizationFilter] = useState('all')
+  const [statusFilter, setStatusFilter] = useState('')
+  const [locationFilter, setLocationFilter] = useState('')
+  const [organizationFilter, setOrganizationFilter] = useState('')
   const [search, setSearch] = useState('')
 
   const { hasAccess } = usePermissions()
@@ -49,13 +44,18 @@ const BoxSolutions = () => {
 
   const filteredData = boxes?.filter(box => {
     const matchesStatus =
+      !statusFilter ||
       statusFilter === 'all' ||
       (statusFilter === 'active' && box.is_active_in_bot) ||
       (statusFilter === 'disable' && !box.is_active_in_bot)
     const matchesLocation =
-      locationFilter === 'all' || box.location.toLowerCase().includes(locationFilter.toLocaleLowerCase())
+      !locationFilter ||
+      locationFilter === 'all' ||
+      box.location.toLowerCase().includes(locationFilter.toLocaleLowerCase())
     const matchesOraganization =
-      organizationFilter === 'all' || box.organizer.toLocaleLowerCase().includes(organizationFilter.toLocaleLowerCase())
+      !organizationFilter ||
+      organizationFilter === 'all' ||
+      box.organizer.toLocaleLowerCase().includes(organizationFilter.toLocaleLowerCase())
     const matchesSearch = box.name.toLocaleLowerCase().includes(search.toLocaleLowerCase())
 
     return matchesStatus && matchesLocation && matchesOraganization && matchesSearch
@@ -63,7 +63,7 @@ const BoxSolutions = () => {
 
   return (
     <div className="min-w-180">
-      <div className="flex justify-between h-18 mb-5">
+      <div className="flex justify-between h-18 mb-4">
         <h1 className="text-h2 text-text">Коробочные решения</h1>
         {hasAccess(PERMISSIONS.boxesCreate) && (
           <BoxButton
@@ -78,17 +78,17 @@ const BoxSolutions = () => {
           </BoxButton>
         )}
       </div>
-      <div className="grid grid-cols-[32%_68%] place-items-end mb-5">
+      <div className="grid grid-cols-[32%_68%] place-items-end mb-5.5">
         <Input
           variant="icon"
-          icon={<SearchIcon />}
+          icon={<SearchIcon className="size-4.5" />}
           onChange={e => setSearch(e.target.value)}
-          className="h-[44px] my-0.5 min-w-[344px] py-[14px] w-full pl-[12px] rounded-[8px]"
+          className="h-[44px] min-w-[344px] py-[14px] w-full pl-[12px] rounded-[8px] [&_[data-slot='input-group-addon']]:px-2 [&_[data-slot='input-group-addon']]:py-2 bg-system-background"
           placeholder=""
         />
-        <div className="flex flex-row gap-3">
+        <div className="flex flex-row gap-2.5">
           <div>
-            <span className="text-xxs text-text-grey-dark">Статус</span>
+            <span className="text-xxs text-text-grey-light">Статус</span>
             <Select
               value={statusFilter}
               onValueChange={setStatusFilter}
@@ -96,14 +96,14 @@ const BoxSolutions = () => {
               placeholder="Выберите статус"
               classNames={{
                 trigger:
-                  'text-small italic px-[6px] py-[5px] border border-grey-light rounded-[8px] pl-[12px] md:min-w-[228px] bg-white text-text-grey-light',
+                  'text-[16px] px-[6px] py-[5px] border border-grey-light rounded-[8px] pl-[12px] md:min-w-[228px] bg-white data-[placeholder]:text-text-grey-light data-[placeholder]:text-[14px] data-[placeholder]:italic',
                 content: 'border border-grey-light rounded-[8px] bg-white',
                 item: 'px-[12px] py-[8px]'
               }}
             />
           </div>
           <div>
-            <span className="text-xxs text-text-grey-dark">Место проведения</span>
+            <span className="text-xxs text-text-grey-light">Место проведения</span>
             <Select
               value={locationFilter}
               onValueChange={setLocationFilter}
@@ -111,14 +111,14 @@ const BoxSolutions = () => {
               placeholder="Выберите локацию"
               classNames={{
                 trigger:
-                  'text-small italic px-[6px] py-[5px] border border-grey-light rounded-[8px] pl-[12px] md:min-w-[228px] bg-white text-text-grey-light',
+                  'text-[16px] px-[6px] py-[5px] border border-grey-light rounded-[8px] pl-[12px] md:min-w-[228px] bg-white data-[placeholder]:text-text-grey-light data-[placeholder]:text-[14px] data-[placeholder]:italic',
                 content: 'border border-grey-light rounded-[8px] bg-white',
                 item: 'px-[12px] py-[8px]'
               }}
             />
           </div>
           <div>
-            <span className="text-xxs text-text-grey-dark">Организатор</span>
+            <span className="text-xxs text-text-grey-light">Организатор</span>
             <Select
               value={organizationFilter}
               onValueChange={setOrganizationFilter}
@@ -126,7 +126,7 @@ const BoxSolutions = () => {
               placeholder="Выберите организатора"
               classNames={{
                 trigger:
-                  'text-small italic px-[8px] py-[5px] border border-grey-light rounded-[8px] pl-[12px] md:min-w-[228px] bg-white text-text-grey-light',
+                  'text-[16px] px-[6px] py-[5px] border border-grey-light rounded-[8px] pl-[12px] md:min-w-[228px] bg-white data-[placeholder]:text-text-grey-light data-[placeholder]:text-[14px] data-[placeholder]:italic',
                 content: 'border border-grey-light rounded-[8px] bg-white',
                 item: 'px-[12px] py-[8px]'
               }}

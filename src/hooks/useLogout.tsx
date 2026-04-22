@@ -8,7 +8,7 @@ import { API_ROUTES } from '@/services/api/routes'
 export const useLogout = () => {
   const navigate = useNavigate()
   const queryClient = useQueryClient()
-  
+
   const logout = async () => {
     try {
       await api.post(API_ROUTES.logout, {

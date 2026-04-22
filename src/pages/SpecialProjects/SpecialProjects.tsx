@@ -9,6 +9,7 @@ import { type IProject } from '@/types/solutions'
 import { useMainWidth } from '@/hooks/useMainWidth'
 import { usePermissions, PERMISSIONS } from '@/hooks/usePermissions'
 import { SpecialProjectModal } from '@/components/SpecialProjectModal/SpecialProjectModal'
+import { usePermissions, PERMISSIONS } from '@/hooks/usePermissions'
 
 const SpecialProjects = () => {
   const cardMinWidth = 284
@@ -112,6 +113,10 @@ const SpecialProjects = () => {
     setProjectToEdit(undefined)
   }
 
+  const handleProjectView = (id: number | string) => {
+    setProjectToView(mockProjects.find(project => project.id === id) || null)
+  }
+
   const handleProjectEdit = (id: number | string) => {
     setProjectToEdit(projects.find(project => project.id === id) || null)
   }
@@ -189,11 +194,6 @@ const SpecialProjects = () => {
         <Select options={selectData} placeholder="Выберите статус" classNames={{ trigger: 'bg-white w-full h-11.5' }} />
       </div>
 
-      <div className="flex items-center gap-5 mb-6">
-        <Input variant="icon" icon={<SearchIcon />} className="bg-white min-[1440px]:min-w-84 h-full" placeholder="" />
-        <Select options={selectData} placeholder="Выберите статус" classNames={{ trigger: 'bg-white w-full h-11.5' }} />
-      </div>
-
       <div
         className={`mt-[30px] flex gap-[20px] ${justifyClass}`}
         style={{ gridTemplateColumns: `repeat(${pageSize}, minmax(0, 1fr))` }}
@@ -226,11 +226,11 @@ const SpecialProjects = () => {
       <SpecialProjectModal
         isOpen={projectToView !== null}
         onClose={() => setProjectToView(null)}
-        onSubmit={() => {}}
+        onSubmit={() => setProjectToView(null)}
         modalTitle={'Спецпроект'}
         initialData={projectToView || undefined}
         viewOnly={true}
-      />
+      /> 
 
       <SpecialProjectModal
         isOpen={projectToEdit !== null}
@@ -241,7 +241,7 @@ const SpecialProjects = () => {
         }}
         modalTitle={projectToEdit !== undefined ? 'Редактировать спецпроект' : 'Создать спецпроект'}
         initialData={projectToEdit || undefined}
-      />
+      /> 
 
       <DeleteModal
         title="Удалить спецпроект?"
