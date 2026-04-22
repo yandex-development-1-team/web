@@ -46,3 +46,16 @@ export const paramsSchema = z.object({
 })
 
 export type BoxSolutionsSearchParamsType = z.infer<typeof paramsSchema>
+
+export type FilterOption = {
+  value: string
+  label: string
+}
+
+export type FilterDropdownProps = {
+  value: string
+  options: FilterOption[]
+  className?: string
+  placeholder?: string
+  onChange: (value: string) => void
+}
