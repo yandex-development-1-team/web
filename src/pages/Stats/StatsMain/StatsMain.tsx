@@ -29,7 +29,7 @@ const Stats = () => {
 
   return (
     <div className="flex flex-col gap-[20px]">
-      <div className="grid grid-cols-3 gap-[20px] max-[1250px]:grid-cols-2">
+      <div className="grid grid-cols-1 min-[1110px]:grid-cols-3 gap-[20px]">
         <BoxButton icon="box" onClick={() => openCreateBoxModal()}>
           <span className="text-left">Создать коробку</span>
         </BoxButton>
