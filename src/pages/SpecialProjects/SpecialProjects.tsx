@@ -9,7 +9,6 @@ import { type IProject } from '@/types/solutions'
 import { useMainWidth } from '@/hooks/useMainWidth'
 import { usePermissions, PERMISSIONS } from '@/hooks/usePermissions'
 import { SpecialProjectModal } from '@/components/SpecialProjectModal/SpecialProjectModal'
-import { usePermissions, PERMISSIONS } from '@/hooks/usePermissions'
 
 const SpecialProjects = () => {
   const cardMinWidth = 284
@@ -99,10 +98,6 @@ const SpecialProjects = () => {
 
   const deleteProject = async (id: string | number) => {
     setProjects(prev => prev.filter(project => project.id !== id))
-  }
-
-  const handleProjectView = (id: number | string) => {
-    setProjectToView(projects.find(project => project.id === id) || null)
   }
 
   const updateProject = async (newData: IProject) => {
