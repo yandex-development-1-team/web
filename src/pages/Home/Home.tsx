@@ -4,6 +4,7 @@ import { useState } from 'react'
 import FilterDropdown from './ui/FilterDropdown'
 import { headerTableData } from './homePageData'
 import { bookingRequestsMock } from '@/mockData/bookingRequestsMock'
+import { usePermissions, PERMISSIONS } from '@/hooks/usePermissions'
 
 const Home = () => {
   const [statusFilter, setStatusFilter] = useState('all')
@@ -24,6 +25,8 @@ const Home = () => {
 
   const filteredData = statusFilter === 'all' ? data : data.filter(item => item.status === statusFilter)
 
+  const { hasAccess } = usePermissions()
+
   return (
     <div className="flex flex-col gap-[20px]">
       <h2 className="text-h2">Главная страница</h2>
@@ -41,9 +44,11 @@ const Home = () => {
           </div>
         ))}
 
-        <BoxButton onClick={handleBoxCreate} icon="box" className="max-w-[407px]">
-          Создать коробку
-        </BoxButton>
+        {hasAccess(PERMISSIONS.boxesCreate) && (
+          <BoxButton onClick={handleBoxCreate} icon="box" className="max-w-[407px]">
+            Создать коробку
+          </BoxButton>
+        )}
       </div>
 
       <div className="flex gap-[20px] h-[92px]">
@@ -66,9 +71,11 @@ const Home = () => {
           </div>
         </div>
 
-        <BoxButton onClick={handleSpecProjectCreate} icon="special_projects" className="max-w-[407px]">
-          Создать спецпроект
-        </BoxButton>
+        {hasAccess(PERMISSIONS.specprojectsEdit) && (
+          <BoxButton onClick={handleSpecProjectCreate} icon="special_projects" className="max-w-[407px]">
+            Создать спецпроект
+          </BoxButton>
+        )}
       </div>
 
       <div>

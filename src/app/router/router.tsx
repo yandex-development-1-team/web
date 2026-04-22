@@ -36,29 +36,29 @@ export const router = createBrowserRouter(
                   element: <HomeIndex />
                 },
                 {
-                  element: <ProtectedRoute requiredPermission={PERMISSIONS.boxesView} />,
+                  element: <ProtectedRoute requiredRole="manager" />,
                   children: [
                     {
                       path: ROUTES.boxSolutions,
                       lazy: () => import('@/pages/BoxSolutions/BoxSolutions')
-                    }
-                  ]
-                },
-                {
-                  element: <ProtectedRoute requiredPermission={PERMISSIONS.specprojectsView} />,
-                  children: [
+                    },
                     {
-                      path: ROUTES.specialProjects,
-                      lazy: () => import('@/pages/SpecialProjects/SpecialProjects')
-                    }
-                  ]
-                },
-                {
-                  element: <ProtectedRoute requiredPermission={PERMISSIONS.applicationsView} />,
-                  children: [
+                      element: <ProtectedRoute requiredPermission={PERMISSIONS.specprojectsView} />,
+                      children: [
+                        {
+                          path: ROUTES.specialProjects,
+                          lazy: () => import('@/pages/SpecialProjects/SpecialProjects')
+                        }
+                      ]
+                    },
                     {
-                      path: ROUTES.applications,
-                      lazy: () => import('@/pages/Applications/Applications')
+                      element: <ProtectedRoute requiredPermission={PERMISSIONS.applicationsView} />,
+                      children: [
+                        {
+                          path: ROUTES.applications,
+                          lazy: () => import('@/pages/Applications/Applications')
+                        }
+                      ]
                     }
                   ]
                 },
@@ -71,7 +71,7 @@ export const router = createBrowserRouter(
                   children: [
                     {
                       path: ROUTES.stats,
-                      lazy: () => import('@/pages/Stats/Stats')
+                      lazy: () => import('@/pages/Stats/StatsMain/StatsMain')
                     },
                     {
                       path: ROUTES.statsAttendance,

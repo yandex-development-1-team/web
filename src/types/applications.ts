@@ -30,3 +30,21 @@ export interface IBoxApplication {
   reservation?: IReservation
   processing: IApplicationProcessing
 }
+
+export interface IRequestQuestion {
+  label: string
+  answer: string
+}
+
+export interface ISpecialProjectRequest {
+  questions: IRequestQuestion[]
+  text: string
+  textLabel?: string
+}
+
+export interface ISpecialProjectApplication {
+  id: string | number
+  client?: IClient
+  processing: IApplicationProcessing
+  request: ISpecialProjectRequest
+}

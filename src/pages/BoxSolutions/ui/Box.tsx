@@ -6,8 +6,8 @@ import { StatusLabel } from './StatusLabel'
 
 type BoxPropsType = {
   box: Pick<IBox, 'id' | 'name' | 'description' | 'is_active_in_bot' | 'image'>
-  onDelete: () => void
-  onEdit: () => void
+  onDelete?: () => void
+  onEdit?: () => void
   onDetailsView: (id: string) => void
 }
 
