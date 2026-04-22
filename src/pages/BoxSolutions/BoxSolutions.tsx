@@ -29,29 +29,6 @@ const locationOption = [
 
 const organizationOption = [{ value: 'Secret Events Team', label: 'Secret Events Team' }]
 
-const statusOption = [
-  { value: 'all', label: 'Все статусы' },
-  { value: 'active', label: 'Активные' },
-  { value: 'disable', label: 'Неактивные' }
-]
-
-const locationOption = [
-  { value: 'all', label: 'Все локации' },
-  { value: 'Ленина', label: 'Ленина' },
-  { value: 'Мира', label: 'Мира' },
-  { value: 'Советская', label: 'Советская' },
-  { value: 'Гагарина', label: 'Гагарина' },
-  { value: 'Лесная', label: 'Лесная' },
-  { value: 'Полевая', label: 'Полевая' },
-  { value: 'Новая', label: 'Новая' },
-  { value: 'Садовая', label: 'Садовая' }
-]
-
-const organizationOption = [
-  { value: 'all', label: 'Все локации' },
-  { value: 'Secret Events Team', label: 'Secret Events Team' }
-]
-
 const BoxSolutions = () => {
   const [modal, setModal] = useState<ModalState>()
   const { boxes, pagination, isError, isLoading, isPending, queryKey } = useBoxes()
