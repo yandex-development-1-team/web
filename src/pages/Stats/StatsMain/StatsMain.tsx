@@ -10,7 +10,6 @@ import { useModal } from '@/components/ui/Modal/useModal'
 import { CARDS } from './cards'
 import { mockDaySummaryData, mockDayTeam, mockWeekSummaryData } from '@/mockData/mockStatsPageData'
 import type { ToggleButtonState } from '@/components/ui/ToggleButton'
-import type { BoxData } from '@/types/solutions'
 
 type PeriodType = 'day' | 'week'
 
@@ -24,11 +23,6 @@ const Stats = () => {
   const handleToggle = (side: ToggleButtonState) => {
     const newPeriod = side === 'left' ? 'day' : 'week'
     setPeriod(newPeriod)
-  }
-
-  const handleBoxSave = (data: Partial<Omit<BoxData, 'id'>>) => {
-    void data
-    closeCreateBoxModal()
   }
 
   const summaryData = period === 'day' ? mockDaySummaryData : mockWeekSummaryData
@@ -77,7 +71,7 @@ const Stats = () => {
       </div>
 
       {isCreateBoxModalOpen && (
-        <BoxSolutionModal isOpen={isCreateBoxModalOpen} onClose={closeCreateBoxModal} onSave={handleBoxSave} />
+        <BoxSolutionModal isOpen={isCreateBoxModalOpen} onClose={closeCreateBoxModal} onSave={closeCreateBoxModal} />
       )}
       <SpecialProjectModal
         isOpen={isCreateProjectModalOpen}
