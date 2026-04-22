@@ -4,14 +4,23 @@ import { DownItem, Item } from '@/components/layout/Sidebar/ui'
 import { ArrowIcon, ArrowReturnIcon, EventIcon } from '@/assets/icons'
 import { ROUTES } from '@/app/router'
 import { MENU_ADMIN, MENU_DOWN, MENU_MANAGER } from './menu'
-import type { MockUserData } from '@/mockData/mockData'
 import { useLogout } from '@/hooks/useLogout'
+import { UserIcon } from '@/assets/icons'
+import type { IUser } from '@/types/user'
+import { usePermissions } from '@/hooks/usePermissions'
 
-export const Sidebar = ({ user }: { user: MockUserData }) => {
+export const Sidebar = () => {
+  const { user: rawUser, hasRole, hasAccess } = usePermissions()
+  const userGrade: number = hasRole('admin') ? 0 : Number(rawUser.role.at(-1)) || 3
+  const user: Partial<IUser> = {
+    name: rawUser.name,
+    grade: userGrade,
+    photo: rawUser.photo
+  }
+
   const [isExpanded, setIsExpanded] = useState<boolean>(true)
   const logout = useLogout()
-  const menu = user.role === 'admin' ? MENU_ADMIN : MENU_MANAGER
-
+  const menu = hasRole('admin') ? MENU_ADMIN : MENU_MANAGER
   return (
     <aside
       className={`${isExpanded ? 'w-[328px]' : 'w-[120px]'} transition-[width] duration-400 h-screen 
@@ -25,7 +34,7 @@ export const Sidebar = ({ user }: { user: MockUserData }) => {
           className={`overflow-hidden transition-[width,margin] duration-400
           ${isExpanded ? 'w-auto' : 'w-[33px] mx-auto'}`}
         >
-          <Link to={user.role === 'admin' ? ROUTES.stats : ROUTES.home}>
+          <Link to={ROUTES.home}>
             <EventIcon />
           </Link>
         </div>
@@ -52,16 +61,20 @@ export const Sidebar = ({ user }: { user: MockUserData }) => {
           className={`h-[48px] p-[4px] rounded-full border border-yellow-accent-light flex-shrink-0 
             transition-[margin] duration-400 ${isExpanded ? 'w-[48px]' : 'w-[48px] mx-auto'}`}
         >
-          <img
-            src={user.photo}
-            alt="Фото пользователя"
-            className="object-cover object-center w-[40px] h-[40px] rounded-full"
-          />
+          {(user.photo && (
+            <img
+              src={user.photo}
+              alt="Фото пользователя"
+              className="object-cover object-center w-[40px] h-[40px] rounded-full"
+            />
+          )) || <UserIcon className="text-text-grey-light" />}
         </div>
         <div className={`overflow-hidden transition-[width] duration-400 ${isExpanded ? 'w-[200px]' : 'w-0'}`}>
           <div className="flex flex-col gap-[4px] w-[200px]">
             <span className="button-text">{user.name}</span>
-            <span className="text-xs">{user.role === 'admin' ? 'Администратор' : `Менеджер ${user.grade} звена`}</span>
+            <span className="text-xs">
+              {hasRole('admin') ? 'Администратор' : `Менеджер ${user.grade} звена`}
+            </span>
           </div>
         </div>
       </div>
@@ -73,7 +86,7 @@ export const Sidebar = ({ user }: { user: MockUserData }) => {
         >
           {menu.map(
             item =>
-              (!item.accessName || user.role === 'admin' || user.permissions?.items.includes(item.accessName)) && (
+              (!item.accessName || hasRole('admin') || hasAccess(item.accessName)) && (
                 <Item
                   key={`${item.route}-${isExpanded}`}
                   Icon={item.Icon}
