@@ -1,11 +1,11 @@
+import { UserIcon } from '@/assets/icons'
 import { Button, DeleteModal, Modal, Select } from '@/components/ui'
+import { formatDateToLocalUI } from '@/lib/utils.date'
 import type { TApplicationStatus } from '@/types/applications'
 import { useState } from 'react'
 import type { ModalPropsType } from '../../applications.types'
-import { useStatus } from '../../hooks/useBoxes'
+import { useStatus } from '../../hooks/useStatus'
 import type { SelectType } from '../types'
-import { UserIcon } from '@/assets/icons'
-import { formatDateToLocalUI } from '@/lib/utils.date'
 
 const boxSelectOptions: SelectType = {
   options: [
@@ -17,7 +17,7 @@ const boxSelectOptions: SelectType = {
 }
 
 export const BoxModal = ({ id, isOpen, onClose, onDelete, onModify, queryKey, activeTab }: ModalPropsType) => {
-  const { box, updateStatus } = useStatus(id, activeTab, onModify, queryKey)
+  const { box, updateStatus, isStatusUpdating } = useStatus(id, activeTab, onModify, queryKey)
   const [boxApplicationToDelete, setBoxApplicationToDelete] = useState<string | number | null>(null)
   const [status, setStatus] = useState<TApplicationStatus | undefined>(box?.processing.status)
 
@@ -25,12 +25,16 @@ export const BoxModal = ({ id, isOpen, onClose, onDelete, onModify, queryKey, ac
     onClose()
   }
 
-  const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     if (status) {
-      updateStatus({ id: id, newStatus: status })
-      onClose()
+      try {
+        await updateStatus({ id: id, newStatus: status })
+        onClose()
+      } catch (e) {
+        console.error('Update status failed:', e)
+      }
     }
   }
 
@@ -69,7 +73,13 @@ export const BoxModal = ({ id, isOpen, onClose, onDelete, onModify, queryKey, ac
               onClick={handleCancel}
               size="normal"
             />
-            <Button className="w-[152px]" type="submit" label="Сохранить" size="normal" form="boxApplication" />
+            <Button
+              className="w-[152px]"
+              type="submit"
+              label={isStatusUpdating ? 'Сохранение...' : 'Сохранить'}
+              size="normal"
+              form="boxApplication"
+            />
           </div>
         }
         showBorders={true}
@@ -108,10 +118,9 @@ export const BoxModal = ({ id, isOpen, onClose, onDelete, onModify, queryKey, ac
             <div>
               <p className={`${labelClasses} !mb-[10px]`}>Менеджер</p>
               <div className="flex mb-[16px] items-center">
-                {box?.processing.manager?.photo && (
-                    <img className="rounded-full size-[32px] object-cover" src={box?.processing.manager?.photo} />
-                  ) || <UserIcon className="text-text-grey-light size-[32px]" />
-                }
+                {(box?.processing.manager?.photo && (
+                  <img className="rounded-full size-[32px] object-cover" src={box?.processing.manager?.photo} />
+                )) || <UserIcon className="text-text-grey-light size-[32px]" />}
                 <p className="text-h5 ml-[5px]">{box?.processing.manager?.name}</p>
               </div>
               <p className={labelClasses}>Название коробки</p>

@@ -27,13 +27,14 @@ export const useStatus = (
     enabled: activeTab === 'specialProject'
   })
 
-  const { mutateAsync: updateStatus } = useMutation({
+  const { mutateAsync: updateStatus, isPending: isStatusUpdating } = useMutation({
     mutationFn: ({ id, newStatus }: { id: string; newStatus: TApplicationStatus }) => onModify(id, newStatus),
     onSuccess: () => {
       showNotification({
         message: 'Статус обновлен успешно!',
         status: 'success'
       })
+
       if (invalidateQueryKey) queryClient.invalidateQueries({ queryKey: invalidateQueryKey })
     },
     onError: () => {
@@ -43,5 +44,5 @@ export const useStatus = (
       })
     }
   })
-  return { box, specialProject, updateStatus }
+  return { box, specialProject, updateStatus, isStatusUpdating }
 }
