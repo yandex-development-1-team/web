@@ -12,20 +12,18 @@ export const QueryFilters = ({ className, ...props }: ComponentProps<'div'>) => 
   return (
     <div className={cn('flex gap-5', className)} {...props}>
       <div className="flex flex-col">
-        {/* <span className="text-xxs text-grey-light">Название коробки</span> */}
         <Input
-          placeholder=""
+          placeholder="имя клиента"
           variant="icon"
           icon={<SearchIcon />}
           iconPosition="inline-start"
           onClick={() => {}}
-          defaultValue={params.search}
+          defaultValue={params.customer_name}
           onChange={updateOnSearchParams('customer_name')}
           className="grow min-w-86 w-full bg-white text-text"
         />
       </div>
       <div className="flex flex-col">
-        {/* <span className="text-xxs text-grey-light">{statusSelectOptions.label}</span> */}
         <Select
           options={statusSelectOptions.options}
           placeholder={statusSelectOptions.placeholder}

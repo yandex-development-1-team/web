@@ -24,7 +24,7 @@ const Applications = () => {
   const [itemToDelete, setItemToDelete] = useState<string | number | null>(null)
   const { start } = useDownload()
   const { activeTab, onTabClick } = useTabs(TABS)
-  const { boxes, specialProjects, boxesQueryKey, specialProjectsQueryKey, isError } = useApplications()
+  const { boxes, projects, boxesQueryKey, specialProjectsQueryKey, isError } = useApplications(activeTab)
 
   const handleRowClick = (data: SpecialProjectListItemType | BoxListItemType) => {
     setModal({ id: String(data.id), type: activeTab })
@@ -54,9 +54,8 @@ const Applications = () => {
       <Card>
         <h1 className=" text-text-black-dark text-h2">Заявки</h1>
         <Tabs activeTab={activeTab} onTabClick={onTabClick} tabs={TABS} className="w-full" />
-        {/* <Filters className="mt-4" /> */}
         <div className="flex justify-between mt-4 h-11">
-          <QueryFilters />
+          <QueryFilters key={activeTab} />
           <Button size={'default'} className="text-text p-5 w-43 self-end" onClick={() => {}}>
             Экспорт XLSX
           </Button>
@@ -77,13 +76,13 @@ const Applications = () => {
         ) : (
           <DataTable
             idKey={'id'}
-            data={specialProjects.data?.items ?? []}
+            data={projects.data?.items ?? []}
             columns={dataTableColumns[activeTab]}
             enableCheckboxes
             rowActions={Actions({ onDelete: setItemToDelete, onDownload: start })}
-            isLoading={specialProjects.isLoading}
+            isLoading={projects.isLoading}
             onRowClick={handleRowClick}
-            pagination={<Pagination pagination={specialProjects.data?.pagination} className="p-4 pt-0" />}
+            pagination={<Pagination pagination={projects.data?.pagination} className="p-4 pt-0" />}
           />
         )}
       </Card>
