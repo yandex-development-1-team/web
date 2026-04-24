@@ -12,7 +12,7 @@ export const mockSpecialProjectApplicationData: ISpecialProjectApplication = {
       name: 'Анастасия Дмитриева',
       photo: mockPhoto
     },
-    status: 'В работе',
+    status: 'confirmed',
     applicationDate: '01.11.2025'
   },
   request: {
