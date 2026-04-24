@@ -9,8 +9,8 @@ type BoxesProps = {
   boxesList: IBox[] | undefined
   pagination?: React.ReactElement<IPagination>
   isLoading: boolean
-  onDelete: (id: string) => void
-  onEdit: (id: string) => void
+  onDelete?: (id: string) => void
+  onEdit?: (id: string) => void
   onDetailsView: (id: string) => void
 } & ComponentProps<'div'>
 
@@ -34,8 +34,8 @@ export const Boxes = ({
             <Box
               box={box}
               key={box.id}
-              onDelete={() => onDelete(id)}
-              onEdit={() => onEdit(id)}
+              onDelete={onDelete ? () => onDelete(id) : undefined}
+              onEdit={onEdit ? () => onEdit(id) : undefined}
               onDetailsView={(id: string) => onDetailsView(id)}
             />
           )

@@ -46,7 +46,7 @@ export function TableHeader<T>({
           <th
             key={col.key as string}
             onClick={col.sortable ? () => onSort?.(col.key) : undefined}
-            className={`px-4 py-1 h-[54px] text-left text-black ${col.sortable ? 'cursor-pointer' : ''}`}
+            className={`px-4 py-1 h-[54px] whitespace-nowrap text-left text-black ${col.sortable ? 'cursor-pointer' : ''}`}
           >
             <div className="flex items-center gap-1">
               <span>{col.label}</span>

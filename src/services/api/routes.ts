@@ -6,6 +6,11 @@ export const APPLICATIONS_BASE = '/applications/' as const
 export const API_ROUTES = {
   items: '/items',
 
+  login: '/auth/login',
+  logout: '/auth/logout',
+  refreshToken: '/auth/refresh',
+  users: '/users',
+
   analytics: {
     boxes: '/analytics/boxes',
     export: '/analytics/export'

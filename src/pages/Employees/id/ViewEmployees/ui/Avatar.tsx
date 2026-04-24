@@ -21,7 +21,7 @@ export const Avatar = ({ src, width = 100, height = 100, alt = 'Фото пол�
         <img
           src={src}
           alt={alt}
-          className={cn(`object-cover object-center border rounded-full border-yellow-accent-light`)}
+          className={cn(`object-cover object-center rounded-full`)}
           style={{ width: width - width / 10, height: height - height / 10 }}
         />
       </div>

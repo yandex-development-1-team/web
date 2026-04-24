@@ -5,6 +5,7 @@ import type { RecoveryModalProps } from './RecoveryModal.types'
 export const RecoveryModal = ({ isOpen, onClose, validateLogin }: RecoveryModalProps) => {
   const [login, setLogin] = useState('')
   const [loginError, setLoginError] = useState('')
+  const [touched, setTouched] = useState(false)
 
   const resetLogin = () => {
     setLogin('')
@@ -24,6 +25,10 @@ export const RecoveryModal = ({ isOpen, onClose, validateLogin }: RecoveryModalP
   const handleClose = () => {
     resetLogin()
     onClose()
+  }
+
+  const handleBlur = () => {
+    setTouched(true)
   }
 
   return (
@@ -47,11 +52,14 @@ export const RecoveryModal = ({ isOpen, onClose, validateLogin }: RecoveryModalP
             setLogin(e.target.value)
             setLoginError(validateLogin(e.target.value))
           }}
+          onBlur={handleBlur}
           placeholder="Логин"
-          className={`min-h-[46px] ${loginError ? 'border-red-dark focus:ring-red-dark' : ''}`}
+          className={`min-h-[46px] ${loginError && touched ? 'border-red-dark focus:ring-red-dark' : ''}`}
         />
         <div className="min-h-[18px] text-xs">
-          <p className={`${loginError ? 'text-red-dark opacity-100' : 'opacity-0'} transition-opacity`}>{loginError}</p>
+          <p className={`${loginError && touched ? 'text-red-dark opacity-100' : 'opacity-0'} transition-opacity`}>
+            {loginError}
+          </p>
         </div>
       </form>
     </Modal>
