@@ -9,6 +9,7 @@ import { type IProject } from '@/types/solutions'
 import { useMainWidth } from '@/hooks/useMainWidth'
 import { usePermissions, PERMISSIONS } from '@/hooks/usePermissions'
 import { SpecialProjectModal } from '@/components/SpecialProjectModal/SpecialProjectModal'
+import { usePermissions, PERMISSIONS } from '@/hooks/usePermissions'
 
 const SpecialProjects = () => {
   const cardMinWidth = 284
@@ -225,7 +226,7 @@ const SpecialProjects = () => {
         modalTitle={'Спецпроект'}
         initialData={projectToView || undefined}
         viewOnly={true}
-      /> 
+      />
 
       <SpecialProjectModal
         isOpen={projectToEdit !== null}

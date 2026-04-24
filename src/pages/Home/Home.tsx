@@ -7,8 +7,8 @@ import { SpecialProjectModal } from '@/components/SpecialProjectModal/SpecialPro
 import FilterDropdown from './ui/FilterDropdown'
 import { headerTableData } from './homePageData'
 import { bookingRequestsMock } from '@/mockData/bookingRequestsMock'
-import { usePermissions, PERMISSIONS } from '@/hooks/usePermissions'
 import type { BoxData } from '@/types/solutions'
+import { usePermissions, PERMISSIONS } from '@/hooks/usePermissions'
 
 const Home = () => {
   const [statusFilter, setStatusFilter] = useState('all')

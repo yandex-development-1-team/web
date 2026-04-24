@@ -8,8 +8,8 @@ import { getBoxById } from './api/getBoxById'
 import type { ModalState } from './BoxSolutions.types'
 import { useBoxes } from './hooks/useBoxes'
 import { Boxes } from './ui/Boxes'
-import { usePermissions, PERMISSIONS } from '@/hooks/usePermissions'
 import { SearchIcon } from '@/assets/icons'
+import { usePermissions, PERMISSIONS } from '@/hooks/usePermissions'
 
 const statusOption = [
   { value: 'active', label: 'Активен в боте' },

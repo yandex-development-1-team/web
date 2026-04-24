@@ -76,4 +76,4 @@ export const MOCK_ADMIN: MockAdminData = {
   }
 }
 
-export const MOCK_USER = MOCK_ADMIN
+export const MOCK_USER = MOCK_MANAGER
