@@ -18,7 +18,7 @@ export const useDeleteItem = (
         status: 'success'
       })
 
-      if (queryKey) queryClient.invalidateQueries({ queryKey })
+      if (queryKey) queryClient.invalidateQueries({ queryKey: queryKey })
       onClose()
     },
 

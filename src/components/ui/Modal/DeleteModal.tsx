@@ -1,5 +1,5 @@
-import { Modal } from './Modal'
 import { Button } from '@/components/ui/Button'
+import { Modal } from './Modal'
 import { useDeleteItem } from './useDeleteItem'
 
 interface DeleteModalProps {

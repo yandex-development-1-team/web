@@ -76,9 +76,7 @@ export const Sidebar = () => {
         <div className={`overflow-hidden transition-[width] duration-400 ${isExpanded ? 'w-[200px]' : 'w-0'}`}>
           <div className="flex flex-col gap-[4px] w-[200px]">
             <span className="button-text">{user.name}</span>
-            <span className="text-xs">
-              {hasRole('admin') ? 'Администратор' : `Менеджер ${user.grade} звена`}
-            </span>
+            <span className="text-xs">{hasRole('admin') ? 'Администратор' : `Менеджер ${user.grade} звена`}</span>
           </div>
         </div>
       </div>
