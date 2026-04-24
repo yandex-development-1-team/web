@@ -28,10 +28,10 @@ export const LinkForm = ({ links, onAddLink, onRemoveLink }: LinkFormType) => {
           }
         }}
         noValidate
-        className="flex gap-[20px]"
+        className="flex gap-5"
       >
-        <div className="flex flex-col gap-[20px] grow">
-          <label className="flex flex-col gap-[3px]">
+        <div className="flex flex-col gap-5 grow">
+          <label className="flex flex-col gap-0.75">
             <span className="text-xxs text-text-grey-dark">Название</span>
             <Input
               type="text"
@@ -51,9 +51,9 @@ export const LinkForm = ({ links, onAddLink, onRemoveLink }: LinkFormType) => {
                 }
               })}
             />
-            <span className="text-xxs text-text-error min-h-[16px]">{errors.title?.message || '\u00A0'}</span>
+            <span className="text-xxs text-text-error min-h-4">{errors.title?.message || '\u00A0'}</span>
           </label>
-          <label className="flex flex-col gap-[3px]">
+          <label className="flex flex-col gap-0.75">
             <span className="text-xxs text-text-grey-dark">URL</span>
             <Input
               type="url"
@@ -73,24 +73,24 @@ export const LinkForm = ({ links, onAddLink, onRemoveLink }: LinkFormType) => {
                 }
               })}
             />
-            <span className="text-xxs text-text-error min-h-[16px]">{errors.url?.message || '\u00A0'}</span>
+            <span className="text-xxs text-text-error min-h-4">{errors.url?.message || '\u00A0'}</span>
           </label>
         </div>
-        <Button type="submit" label="Загрузить" size="default" className="self-end w-[196px] mb-[19px]" />
+        <Button type="submit" label="Загрузить" size="default" className="self-end w-49 mb-4.75" />
       </form>
 
       {links.length > 0 && (
-        <div className="flex gap-[20px] flex-wrap">
+        <div className="flex gap-5 flex-wrap">
           {links.map(link => (
-            <div key={link.id} className="flex gap-[21px] pl-[12px] pt-[10px] pb-[8px]">
+            <div key={link.id} className="flex gap-5.25 pl-3 pt-2.5 pb-2">
               <Link
                 to={link.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="button-text text-text pb-[2px] border-b 
+                className="button-text text-text pb-0.5 border-b 
                   border-yellow-accent-light 
                   hover:border-yellow-accent-dark
-                  active:border-yellow-accent-dark active:border-b-[2px]"
+                  active:border-yellow-accent-dark active:border-b-2"
               >
                 {link.title}
               </Link>
@@ -98,7 +98,7 @@ export const LinkForm = ({ links, onAddLink, onRemoveLink }: LinkFormType) => {
                 type="button"
                 onClick={() => onRemoveLink(link.id)}
                 aria-label="Удалить ссылку"
-                className="w-[24px] h-[24px] cursor-pointer"
+                className="w-6 h-6 cursor-pointer"
               >
                 <CloseIcon className="w-full h-full text-text" />
               </button>
