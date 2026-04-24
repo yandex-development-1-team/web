@@ -46,10 +46,10 @@ export function DataTable<T extends Record<string, unknown>>(props: DataTablePro
   if (isLoading || !sortedData) {
     const rowsToShow = 10
     return (
-      <div className="rounded-lg border bg-white">
-        <table className="w-full border-collapse">
+      <div className="rounded-lg border border-grey-light bg-white">
+        <table className="min-w-max whitespace-nowrap">
           <thead>
-            <tr className="h-12 border-b bg-gray-100">
+            <tr className="h-12 border-b border-grey-light bg-white bg-gray-100">
               {enableCheckboxes && <th className="w-12 p-4" />}
               {columns.map((col, index) => (
                 <th key={String(col.key ?? index)} className="p-4 text-left">

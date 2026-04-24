@@ -1,5 +1,5 @@
 import { Card } from '@/components/ui/Card'
-import image_placeholder from '@/mockData/box_image_placeholder.png'
+// import image_placeholder from '@/mockData/box_image_placeholder.png'//TODO: add placeholder
 import type { ComponentProps } from 'react'
 import type { IBox } from '../BoxSolutions.types'
 import { BoxActions } from './BoxActions'
@@ -22,7 +22,7 @@ export const Box = ({ box, onDelete, onEdit, onDetailsView }: BoxPropsType) => {
       <StatusLabel status={status} className="top-8 right-8" />
       <div className="flex flex-col gap-3 grow">
         <div className="border-0 rounded-xl overflow-hidden h-36">
-          <img src={image || image_placeholder} alt="" className="h-full w-full object-cover object-center" />
+          <img src={image} alt="" className="h-full w-full object-cover object-center" />
         </div>
         <p className="text-h4sb text-text">{name}</p>
         <p className="text-text text-xs">{description}</p>

@@ -9,8 +9,8 @@ export class RequestInterceptor {
   }
   public intercept(config: InternalAxiosRequestConfig): InternalAxiosRequestConfig {
     const token = this.getValidToken()
-    if (token && config.headers) {
-      config.headers.Authorization = `Bearer ${token}`
+    if (token) {
+      config.headers.set('Authorization', `Bearer ${token}`)
     }
     return config
   }

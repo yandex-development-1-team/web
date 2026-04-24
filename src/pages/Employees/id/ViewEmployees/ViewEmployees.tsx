@@ -2,7 +2,7 @@ import { ROUTES } from '@/app/router'
 import { Card, Loader } from '@/components/ui'
 import { cn } from '@/lib/utils.clsx'
 import { href, Link, useParams } from 'react-router-dom'
-import { useEmployee } from './hooks/useEmployee'
+import { useEmployee } from '../../hooks/useEmployee'
 import { Content } from './ui/Content'
 import { EmployeeDetails } from './ui/EmployeeDetails'
 import { EmployeeSidebar } from './ui/EmployeeSidebar'
@@ -27,6 +27,8 @@ const ViewEmployees = () => {
           status={employee.status}
           employeeId={employeeId}
           queryKey={queryKey}
+          phone={employee.contacts.phone}
+          email={employee.contacts.email}
         />
         <EmployeeDetails employee={employee} />
       </Content>

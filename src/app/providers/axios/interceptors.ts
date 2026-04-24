@@ -6,7 +6,7 @@ import type { TokenStorage, ErrorHandlerConfig } from '@/app/providers/axios/typ
 export const setupInterceptors = (
   tokenStorage: TokenStorage,
   errorConfig: Omit<ErrorHandlerConfig, 'tokenStorage'>
-): void => {
+): (() => void) => {
   const fullConfig: ErrorHandlerConfig = {
     ...errorConfig,
     tokenStorage
@@ -15,13 +15,18 @@ export const setupInterceptors = (
   const requestInterceptor = new RequestInterceptor(tokenStorage)
   const responseInterceptor = new ResponseInterceptor(fullConfig)
 
-  api.interceptors.request.use(
+  const reqInterceptor = api.interceptors.request.use(
     config => requestInterceptor.intercept(config),
     error => Promise.reject(error)
   )
 
-  api.interceptors.response.use(
+  const resInterceptor = api.interceptors.response.use(
     response => responseInterceptor.intercept(response),
     error => responseInterceptor.handleError(error)
   )
+
+  return () => {
+    api.interceptors.request.eject(reqInterceptor)
+    api.interceptors.response.eject(resInterceptor)
+  }
 }
