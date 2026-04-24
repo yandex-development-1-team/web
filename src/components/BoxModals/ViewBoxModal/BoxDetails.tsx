@@ -1,19 +1,19 @@
-import type { IBox } from '../../pages/BoxSolutions/BoxSolutions.types'
-import { StatusLabel } from '../../pages/BoxSolutions/ui/StatusLabel'
+import { StatusLabel } from '@/pages/BoxSolutions/ui/StatusLabel'
+import type { IBox } from '../ManageBoxModal/ManageBoxModal.type'
 
 export const BoxDetails = ({ box }: { box: IBox }) => {
   if (!box) return null
 
-  const { name, date, image, price, organizer, description, location, rules, slots, status } = box
+  const { name, image, price, organizer, description, location, rules, slots, status, createdAt } = box
 
   // const formattedDate = date.replace(/(\d{2})(\d{2})(\d{4})/, '$1.$2.$3')//TODO: fix
 
   return (
     <div className="flex flex-col gap-8">
-      <StatusLabel isActive={status} className="self-end" />
+      <StatusLabel status={status} className="self-end" />
       <div className="grid grid-cols-[min-content_1fr] gap-3">
         <p className="mr-5">Дата</p>
-        <p>{date}</p>
+        <p>{createdAt}</p>
         <p className="mr-5">Время</p>
         <p>{slots.length ? `с ${slots[0].timeFrom} до ${slots[0].timeTo}` : ' - '}</p>
         <p className="mr-5">Место</p>

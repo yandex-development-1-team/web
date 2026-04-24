@@ -1,5 +1,6 @@
 import { Card } from '@/components/ui/Card'
 import image_placeholder from '@/mockData/box_image_placeholder.png'
+import type { ComponentProps } from 'react'
 import type { IBox } from '../BoxSolutions.types'
 import { BoxActions } from './BoxActions'
 import { StatusLabel } from './StatusLabel'
@@ -9,16 +10,16 @@ type BoxPropsType = {
   onDelete: () => void
   onEdit: () => void
   onDetailsView: (id: string) => void
-}
+} & ComponentProps<'div'>
 
 export const Box = ({ box, onDelete, onEdit, onDetailsView }: BoxPropsType) => {
   const { id, name, description, status, image } = box
   return (
     <Card
-      className="flex flex-col relative shadow transition-shadow duration-300  hover:shadow-2xl "
+      className="flex flex-col relative shadow transition-shadow duration-300  hover:shadow-2xl"
       onClick={() => onDetailsView(String(id))}
     >
-      <StatusLabel isActive={status} className="top-8 right-8" />
+      <StatusLabel status={status} className="top-8 right-8" />
       <div className="flex flex-col gap-3 grow">
         <div className="border-0 rounded-xl overflow-hidden h-36">
           <img src={image || image_placeholder} alt="" className="h-full w-full object-cover object-center" />

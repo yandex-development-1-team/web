@@ -5,7 +5,21 @@ import { cn } from '@/lib/utils.clsx'
 import { type ComponentProps } from 'react'
 import { boxSolutionsParamsSchema } from '../BoxSolutions.types'
 
-const statusSelectOptions = {
+export type SelectProps = {
+  options: {
+    value: string
+    label: string
+  }[]
+  placeholder: string
+  classNames?: {
+    trigger?: string
+    value?: string
+    content?: string
+    item?: string
+  }
+}
+
+const statusSelectOptions: SelectProps = {
   options: [
     {
       value: 'all',
@@ -20,7 +34,6 @@ const statusSelectOptions = {
       label: 'Не активен в боте'
     }
   ],
-  label: 'Статус',
   placeholder: 'Выберите статус',
   classNames: {
     trigger: 'grow bg-white min-w-58 w-full text-text',
@@ -36,9 +49,8 @@ export const QueryFilters = ({ className, ...props }: ComponentProps<'div'>) => 
   return (
     <div className={cn('flex gap-5', className)} {...props}>
       <div className="flex flex-col">
-        <span className="text-xxs text-grey-light">Название коробки</span>
         <Input
-          placeholder=""
+          placeholder="Название коробки"
           variant="icon"
           icon={<SearchIcon />}
           iconPosition="inline-start"
@@ -49,7 +61,6 @@ export const QueryFilters = ({ className, ...props }: ComponentProps<'div'>) => 
         />
       </div>
       <div className="flex flex-col">
-        <span className="text-xxs text-grey-light">{statusSelectOptions.label}</span>
         <Select
           options={statusSelectOptions.options}
           placeholder={statusSelectOptions.placeholder}

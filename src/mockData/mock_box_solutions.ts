@@ -36,7 +36,7 @@ export const MOCK_BOXES: IBox[] = Array.from({ length: 72 }, (_, index) => {
     slug: `secret-box-${id}`,
     description: descriptions[Math.floor(Math.random() * descriptions.length)],
     rules: rulesList[Math.floor(Math.random() * rulesList.length)],
-    date: '25122024',
+    // date: '25122024',
     slots: [
       {
         date: `2024-03-${randomDay}`,
@@ -52,10 +52,10 @@ export const MOCK_BOXES: IBox[] = Array.from({ length: 72 }, (_, index) => {
     location: `ул. ${streets[Math.floor(Math.random() * streets.length)]}, д. ${Math.floor(Math.random() * 90) + 1}`,
     price: Math.floor(Math.random() * (5000 - 500 + 1)) + 500,
     image: index % 4 === 0 ? '' : images[index % 5],
-    status: index % 3 === 0,
+    status: index % 3 === 0 ? 'active' : 'inactive',
     organizer: 'Secret Events Team',
     createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-    createdBy: 101
+    updatedAt: new Date().toISOString()
+    // createdBy: 101
   }
 })

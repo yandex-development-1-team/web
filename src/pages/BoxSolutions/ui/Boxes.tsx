@@ -6,7 +6,7 @@ import type { IBox } from '../BoxSolutions.types'
 import { Box } from './Box'
 
 type BoxesProps = {
-  boxesList: IBox[] | undefined
+  boxList: IBox[] | undefined
   pagination?: React.ReactElement<IPagination>
   isLoading: boolean
   onDelete: (id: string) => void
@@ -15,7 +15,7 @@ type BoxesProps = {
 } & ComponentProps<'div'>
 
 export const Boxes = ({
-  boxesList,
+  boxList,
   isLoading,
   onDelete,
   onEdit,
@@ -28,8 +28,10 @@ export const Boxes = ({
   return (
     <div className={cn('flex flex-col gap-10', className)} {...props}>
       <div className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-5">
-        {boxesList?.map(box => {
+        {boxList?.map(box => {
           const id = String(box.id)
+          console.log({ box })
+
           return (
             <Box
               box={box}

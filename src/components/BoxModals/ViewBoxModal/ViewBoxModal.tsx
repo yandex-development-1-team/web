@@ -1,7 +1,7 @@
-import { BoxDetails } from '@/components/BoxDetailsModal/BoxDetails'
-import { getBoxById } from '@/pages/BoxSolutions/api/getBoxById'
 import { useQuery } from '@tanstack/react-query'
-import { Modal } from '../ui'
+import { Modal } from '../../ui'
+import { getBox } from '../api/getBox'
+import { BoxDetails } from './BoxDetails'
 
 type BoxDetailsModalPropsType = {
   boxId: string | null
@@ -9,10 +9,10 @@ type BoxDetailsModalPropsType = {
   onClose: () => void
 }
 
-export const BoxDetailsModal = ({ boxId, isOpen, onClose }: BoxDetailsModalPropsType) => {
+export const ViewBoxModal = ({ boxId, isOpen, onClose }: BoxDetailsModalPropsType) => {
   const { data: box } = useQuery({
     queryKey: ['box', boxId],
-    queryFn: () => getBoxById(boxId)
+    queryFn: () => getBox(boxId)
   })
 
   if (!box)

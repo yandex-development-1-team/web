@@ -6,22 +6,22 @@ export interface TimeSlot {
   timeTo: string
 }
 
+export type StatusType = 'active' | 'inactive'
+
 export interface IBox {
   id: number
   name: string
   slug: string
   description: string
   rules: string
-  date: string
   slots: TimeSlot[]
   location: string
   price: number
   image: string
-  status: boolean
+  status: StatusType
   organizer: string
   createdAt: string
   updatedAt: string
-  createdBy: number
 }
 
 type ModalType = 'create' | 'edit' | 'delete' | 'details'

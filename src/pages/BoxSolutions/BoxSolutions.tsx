@@ -1,9 +1,8 @@
-import { BoxDetailsModal } from '@/components/BoxDetailsModal/BoxDetailsModal'
-import { BoxSolutionModal } from '@/components/BoxSolutionModal'
+import { ManageBoxModal, ViewBoxModal } from '@/components/BoxModals'
 import { BoxButton, DeleteModal } from '@/components/ui'
 import { Pagination } from '@/components/ui/Pagination'
 import { useState } from 'react'
-import { deleteBoxById } from './api/deleteBoxById'
+import { deleteBox } from './api/deleteBox'
 import type { ModalStateType } from './BoxSolutions.types'
 import { useBoxes } from './hooks/useBoxes'
 import { Boxes } from './ui/Boxes'
@@ -12,6 +11,7 @@ import { QueryFilters } from './ui/QueryFilters'
 const BoxSolutions = () => {
   const [modal, setModal] = useState<ModalStateType | null>(null)
   const { boxes, pagination, isError, isLoading, isPending, queryKey } = useBoxes()
+  console.log({ modal })
 
   if (isError) return <div className="text-text">Ошибка при получении данных</div>
 
@@ -40,7 +40,7 @@ const BoxSolutions = () => {
         <div className="text-text">Коробочные решения не найдены</div>
       ) : (
         <Boxes
-          boxesList={boxes}
+          boxList={boxes}
           isLoading={isLoading}
           onDelete={(id: string) => setModal({ type: 'delete', id })}
           onEdit={(id: string) => setModal({ type: 'edit', id })}
@@ -52,24 +52,25 @@ const BoxSolutions = () => {
         <DeleteModal
           title="Удалить коробку!"
           isOpen={true}
-          onDelete={() => deleteBoxById(modal?.id ?? '')}
+          onDelete={() => deleteBox(modal?.id)}
           onClose={() => setModal(null)}
-          itemId={Number(modal?.id)}
+          itemId={modal?.id}
           queryKey={queryKey}
         >
           Вы действительно хотите удалить эту коробку?
         </DeleteModal>
       )}
       {isShowSolutions && (
-        <BoxSolutionModal
+        <ManageBoxModal
           key={modal.id}
           isOpen={true}
           onClose={() => setModal(null)}
           onSave={() => {}}
           boxId={modal?.id}
+          queryKey={queryKey}
         />
       )}
-      {isShowDetails && <BoxDetailsModal boxId={modal.id} isOpen={true} onClose={() => setModal(null)} />}
+      {isShowDetails && <ViewBoxModal boxId={modal.id} isOpen={true} onClose={() => setModal(null)} />}
     </div>
   )
 }

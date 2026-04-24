@@ -10,7 +10,6 @@ export type BoxSolutionModalType = {
   isOpen: boolean
   onClose: () => void
   boxData?: BoxSolutionModalData
-  boxId?: string | null
   onSave: (data: Partial<Omit<BoxData, 'id'>>) => void
 }
 

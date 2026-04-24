@@ -9,7 +9,7 @@ export const useDeleteItem = (
   const queryClient = useQueryClient()
   const { showNotification } = useNotification()
 
-  return useMutation({
+  const { mutateAsync: deleteItem, isPending } = useMutation({
     mutationFn: (id: string | number) => onDelete(id),
 
     onSuccess: () => {
@@ -29,4 +29,6 @@ export const useDeleteItem = (
       })
     }
   })
+
+  return { deleteItem, isPending }
 }

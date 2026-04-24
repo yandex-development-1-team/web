@@ -16,7 +16,6 @@ export const API_ROUTES = {
   },
   boxes: {
     byId: (id: string) => `${BOXES_BASE}${id}`,
-    deleteById: (id: string) => `${BOXES_BASE}/${id}`,
     get: `${BOXES_BASE}`
   }
 } as const
