@@ -1,8 +1,11 @@
 import type { TApplicationStatus } from '@/types/applications'
 import z from 'zod'
 
-export type StatusType = 'pending' | 'confirmed' | 'cancelled'
-export type AppType = 'box' | 'specialProject'
+const appStatus = ['pending', 'confirmed', 'cancelled'] as const
+const appType = ['box', 'specialProject'] as const
+
+export type StatusType = (typeof appStatus)[number]
+export type AppType = (typeof appType)[number]
 export type SourceType = 'telegram_bot' | 'manual'
 
 export type SpecialProjectListItemType = {
@@ -42,13 +45,11 @@ export type BoxType = {
   updatedAt: string
 } & BoxListItemType
 
-const applicationStatus = ['pending', 'confirmed', 'cancelled'] as const
-
 export const applicationsParamsSchema = z.object({
-  status: z.enum(applicationStatus).optional(),
-  search: z.string().optional(),
+  status: z.enum(appStatus).optional(),
   customer_name: z.string().optional(),
   manager_id: z.string().optional(),
+  type: z.enum(appType).default('box'),
   date_from: z
     .string()
     .regex(/^\d{4}-\d{2}-\d{2}$/)

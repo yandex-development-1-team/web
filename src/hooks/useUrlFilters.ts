@@ -1,20 +1,11 @@
 import { parseQueryParams } from '@/components/ui/Pagination'
-import { useCallback, useEffect, useRef, type ChangeEvent } from 'react'
+import { useCallback, useRef, type ChangeEvent } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import type { z, ZodObject, ZodRawShape } from 'zod'
 
 export const useUrlFilters = <S extends ZodObject<ZodRawShape>>(schema: S) => {
   const [searchParams, setSearchParams] = useSearchParams()
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-
-  useEffect(() => {
-    const timer = timeoutRef.current
-    return () => {
-      if (timer) {
-        clearTimeout(timer)
-      }
-    }
-  }, [])
 
   const params = parseQueryParams(searchParams, schema)
 
@@ -30,7 +21,7 @@ export const useUrlFilters = <S extends ZodObject<ZodRawShape>>(schema: S) => {
             )
           )
 
-          return { ...cleanParams, offset: '0' }
+          return { ...cleanParams }
         })
       }
     },
@@ -48,7 +39,7 @@ export const useUrlFilters = <S extends ZodObject<ZodRawShape>>(schema: S) => {
 
         timeoutRef.current = setTimeout(() => {
           updateOnSelectParams(key)(value)
-        }, 500)
+        }, 300)
       }
     },
     [updateOnSelectParams]

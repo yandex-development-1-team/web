@@ -1,11 +1,11 @@
+import { UserIcon } from '@/assets/icons'
 import { Button, DeleteModal, Modal, Select } from '@/components/ui'
+import { formatDateToLocalUI } from '@/lib/utils.date'
 import type { TApplicationStatus } from '@/types/applications'
 import { useState } from 'react'
 import type { ModalPropsType } from '../../applications.types'
-import { useStatus } from '../../hooks/useBoxes'
+import { useStatus } from '../../hooks/useStatus'
 import type { SelectType } from '../types'
-import { UserIcon } from '@/assets/icons'
-import { formatDateToLocalUI } from '@/lib/utils.date'
 
 const specialProjectSelectOptions: SelectType = {
   options: [
@@ -100,13 +100,12 @@ export const SpecialProjectModal = ({
             <div>
               <p className={`${labelClasses} !mb-[10px]`}>Менеджер</p>
               <div className="flex mb-[16px] items-center">
-                {specialProject?.processing.manager?.photo && (
-                    <img
-                      className="rounded-full size-[32px] object-cover"
-                      src={specialProject?.processing.manager?.photo}
-                    />
-                  ) || <UserIcon className="text-text-grey-light size-[32px]" />
-                }
+                {(specialProject?.processing.manager?.photo && (
+                  <img
+                    className="rounded-full size-[32px] object-cover"
+                    src={specialProject?.processing.manager?.photo}
+                  />
+                )) || <UserIcon className="text-text-grey-light size-[32px]" />}
                 <p className="text-h5 ml-[5px]">{specialProject?.processing.manager?.name}</p>
               </div>
               <p className={labelClasses}>Дата заявки</p>
