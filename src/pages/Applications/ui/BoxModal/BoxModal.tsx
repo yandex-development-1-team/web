@@ -6,8 +6,6 @@ import { useState } from 'react'
 import type { ModalPropsType } from '../../applications.types'
 import { useStatus } from '../../hooks/useStatus'
 import type { SelectType } from '../types'
-import { UserIcon } from '@/assets/icons'
-import { formatDateToLocalUI } from '@/lib/utils.date'
 
 const boxSelectOptions: SelectType = {
   options: [
