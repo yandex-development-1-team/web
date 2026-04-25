@@ -1,27 +1,29 @@
 import type { Column } from '@/components/ui/DataTable/DataTable.types'
 import type { BookingRequest } from './types'
 import { InlineStatus } from './ui/EditableStatus'
+import { formatDateTime } from '@/lib/utils.date'
 
 export const headerTableData: Column<BookingRequest>[] = [
   {
-    key: 'date',
+    key: 'created_at',
     label: 'Дата заявки',
+    render: value => formatDateTime(value),
     sortable: true
   },
   {
-    key: 'account',
+    key: 'telegram_nick',
     label: 'Tg-аккаунт'
   },
   {
-    key: 'clientName',
+    key: 'name',
     label: 'Имя клиента'
   },
   {
-    key: 'service',
+    key: 'service_type',
     label: 'Услуга'
   },
   {
-    key: 'projectName',
+    key: 'service_name',
     label: 'Название проекта'
   },
   {

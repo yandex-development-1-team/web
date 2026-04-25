@@ -6,19 +6,28 @@ import { BoxSolutionModal } from '@/components/BoxSolutionModal'
 import { SpecialProjectModal } from '@/components/SpecialProjectModal/SpecialProjectModal'
 import FilterDropdown from './ui/FilterDropdown'
 import { headerTableData } from './homePageData'
-import { bookingRequestsMock } from '@/mockData/bookingRequestsMock'
 import type { BoxData } from '@/types/solutions'
 import { usePermissions, PERMISSIONS } from '@/hooks/usePermissions'
+import { useBookingRequests } from '@/hooks/useBookingRequests'
+import type { Column } from '@/components/ui/DataTable/DataTable.types'
 
 const Home = () => {
   const [statusFilter, setStatusFilter] = useState('all')
   const { isOpen: isCreateBoxModalOpen, open: openCreateBoxModal, close: closeCreateBoxModal } = useModal()
   const { isOpen: isCreateProjectModalOpen, open: openCreateProjectModal, close: closeCreateProjectModal } = useModal()
-  const data = bookingRequestsMock
+  const { data = [] } = useBookingRequests()
+  const [visibleCount, setVisibleCount] = useState(8)
+  const filteredData = statusFilter === 'all' ? data : data.filter(item => item.status === statusFilter)
 
-  const countQueue = data.filter(item => item.status === 'queue').length
-  const countInProgress = data.filter(item => item.status === 'progress').length
-  const countDone = data.filter(item => item.status === 'done').length
+  const preparedData = filteredData.map((item, index) => ({
+    ...item,
+    id: index
+  }))
+
+  const visibleData = preparedData.slice(0, visibleCount)
+  const countQueue = preparedData.filter(item => item.status === 'pending').length
+  const countInProgress = preparedData.filter(item => item.status === 'confirmed').length
+  const countСancelled = preparedData.filter(item => item.status === 'cancelled').length
 
   const stats = [
     { title: 'Новые заявки', value: countQueue },
@@ -37,8 +46,6 @@ const Home = () => {
     void data
     closeCreateBoxModal()
   }
-
-  const filteredData = statusFilter === 'all' ? data : data.filter(item => item.status === statusFilter)
 
   const { hasAccess } = usePermissions()
 
@@ -81,7 +88,7 @@ const Home = () => {
 
             <div className="flex flex-col justify-center items-center min-w-[100px] gap-[4px] max-w-[185px] text-text-grey-dark ">
               <span className="text-h5 ">Обработаны: </span>
-              <span className="text-h3 font-bold">{countDone}</span>
+              <span className="text-h3 font-bold">{countСancelled}</span>
             </div>
           </div>
         </div>
@@ -93,7 +100,7 @@ const Home = () => {
         )}
       </div>
 
-      <div>
+      <div className="bg-white p-[24px] rounded-[12px]">
         <h3 className="mb-[12px] text-h3">Заявки на бронирование</h3>
 
         <div className="min-w-[320px]">
@@ -105,8 +112,20 @@ const Home = () => {
               className="text-text-grey-light text-small italic px-[6px] py-[12px] border border-grey-light rounded-[8px] pl-[12px] xl:min-w-[494px]  md:min-w-[320px] bg-white"
             />
           </div>
-          <DataTable idKey="id" data={filteredData} enableLoadMore columns={headerTableData} />
+          <DataTable
+            idKey="id"
+            data={visibleData as unknown as Record<string, unknown>[]}
+            enableLoadMore
+            columns={headerTableData as unknown as Column<Record<string, unknown>>[]}
+          />
         </div>
+        {visibleCount < preparedData.length && (
+          <div className="flex justify-end mt-[10px]">
+            <button onClick={() => setVisibleCount(prev => prev + 8)} className="text-h5 text-grey-dark underline">
+              Показать больше
+            </button>
+          </div>
+        )}
       </div>
 
       {isCreateBoxModalOpen && (

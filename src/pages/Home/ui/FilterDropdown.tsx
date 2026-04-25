@@ -4,9 +4,9 @@ import type { FilterDropdownProps } from '../types'
 
 const options = [
   { value: 'all', label: 'Все заявки' },
-  { value: 'queue', label: 'Новые заявки' },
-  { value: 'progress', label: 'Заявки в работе' },
-  { value: 'done', label: 'Готово' }
+  { value: 'pending', label: 'В очереди' },
+  { value: 'confirmed', label: 'Заявки в работе' },
+  { value: 'cancelled', label: 'Отмененные' }
 ]
 
 const FilterDropdown: React.FC<FilterDropdownProps> = ({ className, onChange, value }) => {
