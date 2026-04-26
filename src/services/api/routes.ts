@@ -1,5 +1,5 @@
 const EXPORT_BASE = '/export' as const
-const BOXES_BASE = '/boxes' as const
+const BOXES_BASE = '/boxes/' as const
 export const BOOKINGS_BASE = '/bookings/' as const
 export const APPLICATIONS_BASE = '/applications/' as const
 
@@ -10,6 +10,7 @@ export const API_ROUTES = {
   logout: '/auth/logout',
   refreshToken: '/auth/refresh',
   users: '/users',
+  imageUrl: '/files/upload',
 
   analytics: {
     boxes: '/analytics/boxes',
@@ -33,6 +34,7 @@ export const API_ROUTES = {
   },
   boxes: {
     byId: (id: string) => `${BOXES_BASE}${id}`,
-    get: `${BOXES_BASE}`
+    get: BOXES_BASE,
+    create: BOXES_BASE
   }
 } as const

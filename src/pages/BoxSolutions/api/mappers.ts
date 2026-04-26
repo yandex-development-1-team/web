@@ -1,4 +1,4 @@
-import type { IBox } from '../BoxSolutions.types'
+import type { IBox } from '../types'
 import type { IBoxDTO } from './types'
 
 export const mapBoxDTOToBox = (box: IBoxDTO): IBox => {

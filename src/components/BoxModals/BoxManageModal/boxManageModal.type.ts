@@ -9,10 +9,10 @@ export type BoxSolutionModalData = Omit<BoxData, 'slug' | 'date' | 'created_at' 
 export type BoxSolutionModalType = {
   isOpen: boolean
   onClose: () => void
+  queryKey: readonly string[] | undefined
+  boxId: string | null
   boxData?: BoxSolutionModalData
-  boxId?: string | null
-  onSave: (data: Partial<Omit<BoxData, 'id'>>) => void
-  queryKey?: readonly string[] | undefined
+  onSave?: (data: Partial<Omit<BoxData, 'id'>>) => Promise<void>
 }
 
 export type BoxSolutionFormData = z.infer<typeof boxSolutionSchema>

@@ -3,7 +3,7 @@ import box_image_1 from '@/mockData/box_image_1.jpg'
 import box_image_2 from '@/mockData/box_image_2.jpg'
 import box_image_3 from '@/mockData/box_image_3.jpg'
 import box_image_4 from '@/mockData/box_image_4.jpg'
-import type { IBox } from '@/pages/BoxSolutions/BoxSolutions.types'
+import type { IBox } from '@/pages/BoxSolutions/types'
 
 const names = ['Олимп', 'Спартак', 'Лидер', 'Арена Сити', 'Вымпел', 'Старт', 'Рекорд', 'Титан']
 

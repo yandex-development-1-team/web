@@ -24,3 +24,7 @@ export type BoxesSolutionsResponseType<T> = {
   items: T[]
   pagination: IPagination
 }
+
+export type DeleteBoxResponse = {
+  message: string
+}

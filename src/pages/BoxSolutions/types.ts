@@ -17,7 +17,7 @@ export interface IBox {
   slots: TimeSlot[]
   location: string
   price: number
-  image: string
+  image: string | null
   status: StatusType
   organizer: string
   createdAt: string
@@ -43,3 +43,17 @@ export const boxSolutionsParamsSchema = z.object({
 })
 
 export type BoxSolutionsSearchParamsType = z.infer<typeof boxSolutionsParamsSchema>
+
+export type SelectProps = {
+  options: {
+    value: string
+    label: string
+  }[]
+  placeholder: string
+  classNames?: {
+    trigger?: string
+    value?: string
+    content?: string
+    item?: string
+  }
+}

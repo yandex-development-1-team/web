@@ -1,12 +1,12 @@
-import { createBrowserRouter, Outlet } from 'react-router-dom'
-import { ROUTES } from './routes'
-import { NotificationProvider } from '@/app/providers/notification'
-import { AxiosProvider } from '@/app/providers/axios'
 import App from '@/App'
+import { AxiosProvider } from '@/app/providers/axios'
+import { NotificationProvider } from '@/app/providers/notification'
 import { QueryProvider } from '@/app/providers/tanstack-query'
-import { ProtectedRoute } from './protectedRoute'
-import { PERMISSIONS } from './permissions'
 import { HomeIndex } from '@/pages/Home/HomeIndex'
+import { createBrowserRouter, Outlet } from 'react-router-dom'
+import { PERMISSIONS } from './permissions'
+import { ProtectedRoute } from './protectedRoute'
+import { ROUTES } from './routes'
 
 export const router = createBrowserRouter(
   [
@@ -38,10 +38,10 @@ export const router = createBrowserRouter(
                 {
                   element: <ProtectedRoute requiredRole="manager" />,
                   children: [
-                    {
-                      path: ROUTES.boxSolutions,
-                      lazy: () => import('@/pages/BoxSolutions/BoxSolutions')
-                    },
+                    // {
+                    //   path: ROUTES.boxSolutions,
+                    //   lazy: () => import('@/pages/BoxSolutions/BoxSolutions')
+                    // },
                     {
                       element: <ProtectedRoute requiredPermission={PERMISSIONS.specprojectsView} />,
                       children: [
@@ -69,6 +69,10 @@ export const router = createBrowserRouter(
                 {
                   element: <ProtectedRoute requiredRole="admin" />,
                   children: [
+                    {
+                      path: ROUTES.boxSolutions,
+                      lazy: () => import('@/pages/BoxSolutions/BoxSolutions')
+                    },
                     {
                       path: ROUTES.stats,
                       lazy: () => import('@/pages/Stats/StatsMain/StatsMain')

@@ -17,3 +17,9 @@ export interface IBoxDTO {
   created_at: string
   updated_at: string
 }
+
+export interface FileUploadResponse {
+  uuid: string
+  url: string
+  filename: string
+}

@@ -1,13 +1,13 @@
 import { formatDateISO, parseToDate } from '@/lib/utils.date'
 import type { BoxData, TimeSlot } from '@/types/solutions'
+import type { IBoxDTO } from '../api/type'
 import type {
   BoxSolutionFormData,
   BoxSolutionModalData,
-  IBox,
   ICreateBoxRequest,
   IUpdateBoxRequest,
   StatusType
-} from './ManageBoxModal.type'
+} from '../BoxManageModal/boxManageModal.type'
 
 export const FORM_TO_API_KEYS: Record<keyof BoxSolutionFormData, keyof Omit<BoxData, 'id'> | null> = {
   name: 'name',
@@ -70,7 +70,7 @@ export const getFormValues = (boxData?: BoxSolutionModalData): BoxSolutionFormDa
   }
 }
 
-export const mapIBoxToModalData = (box: IBox | undefined): BoxSolutionModalData | undefined => {
+export const mapIBoxToModalData = (box: IBoxDTO | undefined): BoxSolutionModalData | undefined => {
   if (!box) return undefined
   return {
     id: box.id,
@@ -81,8 +81,8 @@ export const mapIBoxToModalData = (box: IBox | undefined): BoxSolutionModalData 
     price: box.price,
     image: box.image,
     organizer: box.organizer,
-    time_slots: box.slots.map(box => {
-      return { date: box.date, time_from: box.timeFrom, time_to: box.timeTo }
+    time_slots: (box.slots || []).map(slot => {
+      return { date: slot.date, time_from: slot.time_from, time_to: slot.time_to }
     }),
     is_active_in_bot: box.status === 'active'
   }
@@ -110,14 +110,14 @@ export const mapFormDataToBoxData = (data: BoxSolutionFormData, imageBase64?: st
   }
 }
 
-export function mapFormDataToBoxRequest(data: BoxSolutionFormData, id: string, img?: string): IUpdateBoxRequest
+export function mapFormDataToBoxRequest(data: BoxSolutionFormData, boxId: number, img?: string): IUpdateBoxRequest
 
 export function mapFormDataToBoxRequest(data: BoxSolutionFormData, img?: string): ICreateBoxRequest
 
 export function mapFormDataToBoxRequest(
   data: BoxSolutionFormData,
-  id?: string,
-  imageBase64?: string
+  boxIdOrImg?: number | string,
+  img?: string
 ): IUpdateBoxRequest | ICreateBoxRequest {
   const time_slots = data.timeSlots
     .filter(slot => slot.date && slot.timeRange?.from && slot.timeRange?.to)
@@ -127,7 +127,7 @@ export function mapFormDataToBoxRequest(
       time_to: slot.timeRange?.to || ''
     }))
 
-  const status = (data.isActive ? 'active' : 'inactive') as StatusType
+  const status: StatusType = data.isActive ? 'active' : 'inactive'
 
   const request = {
     name: data.name,
@@ -138,8 +138,19 @@ export function mapFormDataToBoxRequest(
     rules: data.rules,
     price: Number(data.cost),
     organizer: data.organizer,
-    ...(imageBase64 && { image: imageBase64 })
+    ...(img && { image: img })
   }
 
-  return id ? { ...request, id } : request
+  if (typeof boxIdOrImg === 'number') {
+    return {
+      ...request,
+      id: String(boxIdOrImg),
+      ...(img && { image: img })
+    }
+  }
+
+  return {
+    ...request,
+    ...(boxIdOrImg && { image: boxIdOrImg })
+  }
 }

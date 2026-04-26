@@ -1,27 +1,28 @@
 import { AddIcon } from '@/assets/icons'
 import { Button, CalendarInput, ImageCropper, Input, Modal, Switch, TimeRangeInput } from '@/components/ui'
-import { fileToBase64 } from '@/lib/fileUtils/fileToBase64'
 import { cn } from '@/lib/utils.clsx'
-import { getImageURL } from '@/pages/BoxSolutions/api/getImageURL'
-import type { BoxData } from '@/types/solutions'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
 import { Controller, useFieldArray, useForm, useWatch } from 'react-hook-form'
-import { useActions } from '../hooks/useActions'
-import { useBox } from '../hooks/useBox'
+import { useCreateBox, useFetchBox, useUpdateBox } from '../queries/queries'
 import type {
   BoxSolutionFormData,
   BoxSolutionModalType,
   ICreateBoxRequest,
   IUpdateBoxRequest
-} from './ManageBoxModal.type'
-import { FORM_TO_API_KEYS, getFormValues, mapFormDataToBoxData, mapFormDataToBoxRequest } from './helpers'
+} from './boxManageModal.type'
+
+import { useNotification } from '@/app/providers/notification'
+import { fetchImageUrl } from '../api/boxModalsApi'
+import { getFormValues, mapFormDataToBoxRequest } from '../helpers/helpers'
 import { boxSolutionSchema } from './schema'
 import { FormInput } from './ui'
 
-export const ManageBoxModal = ({ isOpen, onClose, boxData, boxId = null, onSave, queryKey }: BoxSolutionModalType) => {
-  const { parsedFormData } = useBox(boxId)
-  const { createNewBox, updateBox } = useActions(queryKey)
+export const ManageBoxModal = ({ isOpen, onClose, boxData, boxId, onSave }: BoxSolutionModalType) => {
+  const { showNotification } = useNotification()
+  const { data: formData } = useFetchBox(boxId)
+  const createMutation = useCreateBox()
+  const updateMuatation = useUpdateBox()
 
   const {
     control,
@@ -30,9 +31,9 @@ export const ManageBoxModal = ({ isOpen, onClose, boxData, boxId = null, onSave,
     setValue,
     setError,
     clearErrors,
-    formState: { errors, dirtyFields }
+    formState: { errors } //, dirtyFields }
   } = useForm<BoxSolutionFormData>({
-    values: getFormValues(parsedFormData),
+    values: getFormValues(formData),
     resolver: zodResolver(boxSolutionSchema)
   })
 
@@ -65,58 +66,17 @@ export const ManageBoxModal = ({ isOpen, onClose, boxData, boxId = null, onSave,
       return
     }
 
-    let imageBase64: string | undefined = undefined
+    if (formData) {
+      const payloadToUpdateBox: IUpdateBoxRequest = mapFormDataToBoxRequest(data, formData.id, data.imageUrl)
+      await updateMuatation.mutateAsync(payloadToUpdateBox)
 
-    if (data.image && data.image.length > 0) {
-      imageBase64 = await fileToBase64(data.image[0])
-    } else if (boxData?.image) {
-      imageBase64 = boxData.image
-    }
-
-    const fullData = mapFormDataToBoxData(data, imageBase64)
-
-    if (parsedFormData) {
-      const changed = Object.entries(dirtyFields).reduce(
-        (acc, [formKey, isDirty]) => {
-          const apiKey = FORM_TO_API_KEYS[formKey as keyof BoxSolutionFormData]
-
-          if (!apiKey || !isDirty) return acc
-
-          return {
-            ...acc,
-            [apiKey]: fullData[apiKey]
-          }
-        },
-        {} as Partial<Omit<BoxData, 'id'>>
-      )
-
-      if (data.image && data.image.length > 0 && !changed.image) {
-        changed.image = imageBase64
-      }
-
-      const payloadToUpdateBox: IUpdateBoxRequest = mapFormDataToBoxRequest(
-        data,
-        String(parsedFormData.id),
-        data.imageUrl //imageBase64
-      )
-
-      onSave(changed)
-      console.log('changedData', { changed })
-
-      updateBox(payloadToUpdateBox, {
-        onSuccess: () => {
-          onClose()
-        }
-      })
+      onClose()
+      await onSave?.(payloadToUpdateBox)
     } else {
-      onSave(fullData)
-      console.log('fullData', { fullData })
-      const payloadToCreateBox: ICreateBoxRequest = mapFormDataToBoxRequest(data, imageBase64)
-      createNewBox(payloadToCreateBox, {
-        onSuccess: () => {
-          onClose()
-        }
-      })
+      const payloadToCreateBox: ICreateBoxRequest = mapFormDataToBoxRequest(data, data.imageUrl)
+      await createMutation.mutateAsync(payloadToCreateBox)
+      close()
+      await onSave?.(payloadToCreateBox)
     }
   }
 
@@ -128,13 +88,25 @@ export const ManageBoxModal = ({ isOpen, onClose, boxData, boxId = null, onSave,
   }
 
   const handleCropp = async (fileList: FileList) => {
-    if (!boxId) return
-    const response = await getImageURL(boxId, fileList)
-    const url = response?.image_url
-    if (!url) return
-    setValue('imageUrl', url, {
-      shouldDirty: true
-    })
+    try {
+      const response = await fetchImageUrl(fileList)
+      const url = response?.url
+      if (!url) return
+
+      showNotification({
+        message: 'Изображение загружено',
+        status: 'success'
+      })
+
+      setValue('imageUrl', url, {
+        shouldDirty: true
+      })
+    } catch {
+      showNotification({
+        message: 'Загрузка изображения не удалась',
+        status: 'error'
+      })
+    }
   }
 
   const displayFields = fields.length > 0 ? fields : [{ id: 'empty' }]

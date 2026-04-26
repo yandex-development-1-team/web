@@ -2,15 +2,15 @@ import { Loader } from '@/components/ui'
 import type { IPagination } from '@/components/ui/Pagination/Pagination.types'
 import { cn } from '@/lib/utils.clsx'
 import type { ComponentProps } from 'react'
-import type { IBox } from '../BoxSolutions.types'
+import type { IBox } from '../types'
 import { Box } from './Box'
 
 type BoxesProps = {
   boxList: IBox[] | undefined
   pagination?: React.ReactElement<IPagination>
   isLoading: boolean
-  onDelete?: (id: string) => void
-  onEdit?: (id: string) => void
+  onDelete: (id: string) => void
+  onEdit: (id: string) => void
   onDetailsView: (id: string) => void
 } & ComponentProps<'div'>
 
@@ -30,14 +30,12 @@ export const Boxes = ({
       <div className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-5">
         {boxList?.map(box => {
           const id = String(box.id)
-          console.log({ box })
-
           return (
             <Box
               box={box}
               key={box.id}
-              onDelete={onDelete ? () => onDelete(id) : undefined}
-              onEdit={onEdit ? () => onEdit(id) : undefined}
+              onDelete={() => onDelete(id)}
+              onEdit={() => onEdit(id)}
               onDetailsView={(id: string) => onDetailsView(id)}
             />
           )

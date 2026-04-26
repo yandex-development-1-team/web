@@ -1,2 +1,2 @@
-export { ManageBoxModal } from './ManageBoxModal/ManageBoxModal'
-export { ViewBoxModal } from './ViewBoxModal/ViewBoxModal'
+export { BoxDetailsModal } from './BoxDetailsModal/BoxDetailsModal'
+export { ManageBoxModal } from './BoxManageModal/BoxManageModal'
