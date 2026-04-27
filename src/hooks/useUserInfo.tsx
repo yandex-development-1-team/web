@@ -18,7 +18,7 @@ export const useUserInfo = () => {
         if (token) {
           const decoded = jwtDecode<TokenPayload>(token)
           const role = decoded.role || ''
-          userGrade = role === 'admin' ? 0 : (Number(role.at(-1)) || 3)
+          userGrade = role === 'admin' ? 0 : Number(role.at(-1)) || 3
         }
       } catch {
         console.error('Invalid token')

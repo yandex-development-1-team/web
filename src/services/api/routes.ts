@@ -14,10 +14,15 @@ export const API_ROUTES = {
     permissions: (role?: string) => `/settings/permissions${role ? `/${role}` : ''}`
   },
 
+  events: (id?: number) => `/events${id ? `/${id}` : ''}`,
+
   analytics: {
     boxes: '/analytics/boxes',
-    export: '/analytics/export'
+    export: '/analytics/export',
+    users: '/analytics/users'
   },
+
+  employees: (employeeId: string) => `/employee/${employeeId}`,
 
   export: {
     byId: (id: string) => `${EXPORT_BASE}/${id}`,
