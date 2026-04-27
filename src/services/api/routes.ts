@@ -9,6 +9,11 @@ export const API_ROUTES = {
   refreshToken: '/auth/refresh',
   users: '/users',
 
+  settings: {
+    messages: '/settings/messages',
+    permissions: (role?: string) => `/settings/permissions${role ? `/${role}` : ''}`
+  },
+
   analytics: {
     boxes: '/analytics/boxes',
     export: '/analytics/export'

@@ -1,15 +1,41 @@
-import { useRef, useState } from 'react'
+import { useRef, useState, useLayoutEffect, useCallback } from 'react'
 import { Switch, ToggleButton, Button } from '@/components/ui'
 import { ArrowIcon } from '@/assets/icons'
 import { accounts, accessRightsGroups, accessRights, textFields } from './settingsData'
-import { mockTextFieldsValues, mockAccountAccessRights } from '@/mockData/mockSettingsPageData'
+import { useMessages } from './hooks/useMessages'
+import { useAccessSettings } from '@/hooks/useAccessSettings'
 
 const Settings = () => {
   const [phase, setPhase] = useState('roleSelection')
   const [editingAccountId, setEditingAccountId] = useState(0)
   const [switchesState, setSwitchesState] = useState<boolean[]>([])
-
   const textFieldsRefs = useRef<HTMLTextAreaElement[]>([])
+
+  const {
+    messages: serverTextFieldsValues,
+    updateMessages,
+    isLoadingMessages,
+    isFetchingMessages,
+    isUpdatingMessages
+  } = useMessages()
+
+  const currentRoleServerName = accounts.find(account => account.id === editingAccountId)?.serverName
+
+  const {
+    accessSettings: serverAccessSettings,
+    updateAccessSettings,
+    isLoadingAccessSettings,
+    isFetchingAccessSettings,
+    isUpdatingAccessSettings
+  } = useAccessSettings(currentRoleServerName)
+
+  const buttonsDisabled =
+    isLoadingMessages ||
+    isFetchingMessages ||
+    isUpdatingMessages ||
+    isLoadingAccessSettings ||
+    isFetchingAccessSettings ||
+    isUpdatingAccessSettings
 
   const handleSettingsGroupSelect = (selectedSide: 'left' | 'right') => {
     if (!(selectedSide === 'left' && phase !== 'textsSetup')) {
@@ -19,7 +45,6 @@ const Settings = () => {
 
   const handleRoleSelect = (roleId: number) => {
     setEditingAccountId(roleId)
-    loadSwitchesStates(roleId)
     setPhase('accessSetup')
   }
 
@@ -29,43 +54,30 @@ const Settings = () => {
 
   const saveTextFieldsValues = () => {
     const values = textFieldsRefs.current.map(ref => ref.value || '')
-    mockTextFieldsValues.forEach(element => {
-      if (values[element.id]) {
-        element.value = values[element.id]
-      } else {
-        element.value = ''
-      }
-    })
+    updateMessages(values)
   }
 
   const loadTextFieldsValues = () => {
+    if (textFieldsRefs.current.length === 0 || !serverTextFieldsValues) return
     textFieldsRefs.current.forEach((ref, index) => {
-      const value = mockTextFieldsValues.find(value => value.id === index)?.value
-      if (value) {
-        ref.value = value
-      } else {
-        ref.value = ''
-      }
+      ref.value = serverTextFieldsValues?.find(value => value.id === index)?.value || ''
     })
   }
 
-  const saveSwitchesStates = (accountId: number, values: boolean[]) => {
-    mockAccountAccessRights
-      .find(account => account.accountId === accountId)
-      ?.accessRights.forEach(elem => {
-        if (values[elem.id] === true || values[elem.id] === false) {
-          elem.value = values[elem.id]
-        } else {
-          elem.value = false
-        }
-      })
+  const saveSwitchesStates = (values: boolean[]) => {
+    if (!currentRoleServerName) return
+    const selectedAccessRights = accessRights.filter((_, index) => values[index]).map(right => right.serverName)
+    updateAccessSettings({
+      data: selectedAccessRights,
+      roleServerId: currentRoleServerName
+    })
   }
 
   const handleSaveValues = () => {
     if (phase === 'textsSetup') {
       saveTextFieldsValues()
     } else {
-      saveSwitchesStates(editingAccountId, switchesState)
+      saveSwitchesStates(switchesState)
     }
   }
 
@@ -73,27 +85,32 @@ const Settings = () => {
     if (phase === 'textsSetup') {
       loadTextFieldsValues()
     } else {
-      loadSwitchesStates(editingAccountId)
+      loadSwitchesStates()
     }
   }
 
-  const loadSwitchesStates = (roleId: number) => {
+  const loadSwitchesStates = useCallback(() => {
     const accessArray = new Array(accessRights.length).fill(false)
     accessRights.forEach(accessRight => {
       const currentAccessRightId = accessRight.id
-      const loadedAccessRight = mockAccountAccessRights
-        .find(account => account.accountId === roleId)
-        ?.accessRights.find(elem => elem.id === currentAccessRightId)?.value
+      const loadedAccessRight = serverAccessSettings ? serverAccessSettings.includes(accessRight.serverName) : false
+
       accessArray[currentAccessRightId] = loadedAccessRight
     })
     setSwitchesState(accessArray)
-  }
+  }, [serverAccessSettings])
 
   const handleSwitch = (accessRightId: number, newState: boolean) => {
     setSwitchesState(currentState => {
       return [...currentState.slice(0, accessRightId), newState, ...currentState.slice(accessRightId + 1)]
     })
   }
+
+  useLayoutEffect(() => {
+    if (phase === 'accessSetup' && serverAccessSettings) {
+      loadSwitchesStates()
+    }
+  }, [serverAccessSettings, phase, loadSwitchesStates])
 
   return (
     <>
@@ -132,8 +149,14 @@ const Settings = () => {
                 variant="secondary"
                 onClick={handleResetValues}
                 className="w-[168px] mr-[20px] min-h-[46px]"
+                disabled={buttonsDisabled}
               />
-              <Button label="Сохранить" onClick={handleSaveValues} className="w-[168px] min-h-[46px]" />
+              <Button
+                label="Сохранить"
+                onClick={handleSaveValues}
+                className="w-[168px] min-h-[46px]"
+                disabled={buttonsDisabled}
+              />
             </div>
           )}
         </div>
@@ -209,7 +232,7 @@ const Settings = () => {
                   placeholder:border-grey-light
                   hover:placeholder:text-text-grey-dark
                 `}
-                defaultValue={mockTextFieldsValues.find(value => value.id === index)?.value}
+                defaultValue={serverTextFieldsValues?.find(value => value.id === index)?.value || ''}
               />
             </div>
           ))}
@@ -271,7 +294,10 @@ const Settings = () => {
                             <div key={index} className="h-[40px] ml-[40px] flex items-center gap-[12px]">
                               <Switch
                                 checked={switchesState[accessRight.id]}
-                                onChange={newState => handleSwitch(accessRight.id, newState)}
+                                onChange={
+                                  editingAccountId !== 0 ? newState => handleSwitch(accessRight.id, newState) : () => {}
+                                }
+                                className={`${editingAccountId === 0 && 'cursor-not-allowed!'}`}
                               />
                               <span className="text-h5">{accessRight.name}</span>
                             </div>

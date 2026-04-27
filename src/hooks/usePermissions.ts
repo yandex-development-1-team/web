@@ -1,62 +1,51 @@
-import { useQuery } from '@tanstack/react-query'
+import { useMemo, useCallback } from 'react'
 import { jwtDecode } from 'jwt-decode'
-import { api } from '@/app/providers/axios'
 import { tokenStorage } from '@/app/providers/axios/lib/tokenStorageInstance'
-import { API_ROUTES } from '@/services/api/routes'
+import { useAccessSettings } from './useAccessSettings'
+import type { TokenPayload } from '@/app/providers/axios/types/api'
 
 export { PERMISSIONS } from '@/app/router/permissions'
 
-interface TokenPayload {
-  user_id: number
-  role: string
-  exp: number
-  iat: number
-}
-
 export const usePermissions = () => {
   const token = tokenStorage.getToken()
-  let decodedToken: TokenPayload | null = null
-  try {
-    if (token) decodedToken = jwtDecode<TokenPayload>(token)
-  } catch (e) {
-    tokenStorage.removeToken()
-    decodedToken = null
-    console.error('Invalid token', e)
-  }
 
-  const { data: userDetails, isLoading } = useQuery({
-    queryKey: ['user', decodedToken?.user_id ?? 'guest'],
-    queryFn: async () => {
-      if (!decodedToken?.user_id) return null
+  const decodedToken = useMemo(() => {
+    if (!token) return null
+    try {
+      return jwtDecode<TokenPayload>(token)
+    } catch {
+      tokenStorage.removeToken()
+      console.error('Invalid token')
+      return null
+    }
+  }, [token])
 
-      const res = await api.get(`${API_ROUTES.users}/${decodedToken.user_id}`)
-      return res.data || null
-    },
-    enabled: !!decodedToken?.user_id,
-    staleTime: 5 * 60 * 1000
-  })
+  const roleServerId = decodedToken?.role
 
-  const permissions = userDetails?.permissions?.items || []
-  const roleReceived = decodedToken?.role || ''
+  const { accessSettings = [], isLoadingAccessSettings: isLoading } = useAccessSettings(roleServerId)
 
   const isLoggedIn = !!decodedToken?.role
 
-  const hasAccess = (code: string) => permissions.includes(code) || roleReceived === 'admin' || true // убрать потом
-  const hasRole = (role: string) => {
-    if (role === 'admin') {
-      return roleReceived === 'admin'
-    }
-    if (role === 'manager') {
-      return roleReceived.startsWith('manager')
-    }
-    return false
-  }
+  const hasAccess = useCallback(
+    (code: string): boolean => {
+      return accessSettings?.includes(code) || roleServerId === 'admin'
+    },
+    [accessSettings, roleServerId]
+  )
+
+  const hasRole = useCallback(
+    (role: string) => {
+      if (role === 'admin') return roleServerId === 'admin'
+      if (role === 'manager') return roleServerId?.startsWith('manager')
+      return false
+    },
+    [roleServerId]
+  )
 
   return {
     hasRole,
     hasAccess,
-    isLoading: isLoggedIn && isLoading,
     isLoggedIn,
-    user: decodedToken ? { ...decodedToken, ...userDetails } : null
+    isLoading
   }
 }

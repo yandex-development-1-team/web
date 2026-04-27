@@ -6,7 +6,8 @@ export const UserSchema = z.object({
   role: z.string(),
   name: z.string().optional(),
   last_name: z.string().optional(),
-  status: z.string().optional()
+  status: z.string().optional(),
+  image: z.string().optional()
 })
 
 export const LoginResponseSchema = z.object({
