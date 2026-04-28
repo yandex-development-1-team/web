@@ -8,3 +8,11 @@ export type ResourcesData = {
 }
 
 export type LinkBlockKey = keyof Omit<ResourcesData, 'organizationInfo'>
+
+export interface IResourcesResponseData {
+  slug: string
+  title: string
+  content: string
+  links: LinkWithId[]
+  updated_at: string
+}

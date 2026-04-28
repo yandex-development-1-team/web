@@ -1,63 +1,117 @@
-import { useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 import { Block, InfoForm, LinkForm } from './ui'
-import type { LinkBlockKey, ResourcesData } from './Resources.types'
+import type { LinkBlockKey } from './Resources.types'
 import type { InfoFormData, LinkFormFields } from './ui/Form/Form.types'
 import { usePermissions, PERMISSIONS } from '@/hooks/usePermissions'
+import { useResources } from '@/pages/Resources/hooks/useResources'
+import { Loader } from '@/components/ui'
 
 const Resources = () => {
-  const [data, setData] = useState<ResourcesData>({
-    organizationInfo: '',
-    usefulLinks: [],
-    faq: [],
-    eventSchedule: []
-  })
+  const {
+    organizationInfo,
+    usefulLinks,
+    faq,
+    eventSchedule,
+    isLoadingOrganizationInfo,
+    isLoadingFaq,
+    isLoadingEventSchedule,
+    updateOrganizationInfo,
+    deleteOrganizationLink,
+    updateFaq,
+    deleteFaqLink,
+    updateEventSchedule,
+    deleteEventScheduleLink
+  } = useResources()
 
   const handleSaveInfo = (infoData: InfoFormData) => {
-    setData(prev => ({ ...prev, organizationInfo: infoData.info }))
+    updateOrganizationInfo.mutate({ content: infoData.info, links: usefulLinks })
   }
 
   const handleDeleteInfo = () => {
-    setData(prev => ({ ...prev, organizationInfo: '' }))
+    updateOrganizationInfo.mutate({ content: '', links: usefulLinks })
   }
 
   const addLink = (blockKey: LinkBlockKey) => (linkData: LinkFormFields) => {
     const linkWithId = { ...linkData, id: uuidv4() }
-    setData(prev => ({ ...prev, [blockKey]: [...prev[blockKey], linkWithId] }))
+
+    const actions = {
+      usefulLinks: () => {
+        updateOrganizationInfo.mutate({
+          content: organizationInfo,
+          links: [...usefulLinks, linkWithId]
+        })
+      },
+      faq: () => {
+        updateFaq.mutate([...faq, linkWithId])
+      },
+      eventSchedule: () => {
+        updateEventSchedule.mutate([...eventSchedule, linkWithId])
+      }
+    }
+
+    actions[blockKey]()
   }
 
   const removeLink = (blockKey: LinkBlockKey) => (id: string) => {
-    setData(prev => ({ ...prev, [blockKey]: prev[blockKey].filter(link => link.id !== id) }))
+    const actions = {
+      usefulLinks: () => {
+        deleteOrganizationLink.mutate(id)
+      },
+      faq: () => {
+        deleteFaqLink.mutate(id)
+      },
+      eventSchedule: () => {
+        deleteEventScheduleLink.mutate(id)
+      }
+    }
+
+    actions[blockKey]()
   }
 
   const { hasAccess } = usePermissions()
 
   return (
-    <div className="flex flex-col gap-[20px]">
+    <div className="flex flex-col gap-5">
       {hasAccess(PERMISSIONS.about) && (
         <Block title="Информация об организации">
-          <InfoForm defaultValue={data.organizationInfo} onSaveInfo={handleSaveInfo} onDeleteInfo={handleDeleteInfo} />
+          {isLoadingOrganizationInfo ? (
+            <Loader />
+          ) : (
+            <InfoForm defaultValue={organizationInfo} onSaveInfo={handleSaveInfo} onDeleteInfo={handleDeleteInfo} />
+          )}
         </Block>
       )}
       <Block title="Полезные ссылки">
-        <LinkForm
-          links={data.usefulLinks}
-          onAddLink={addLink('usefulLinks')}
-          onRemoveLink={removeLink('usefulLinks')}
-        />
+        {isLoadingOrganizationInfo ? (
+          <Loader />
+        ) : (
+          <LinkForm
+            links={usefulLinks || []}
+            onAddLink={addLink('usefulLinks')}
+            onRemoveLink={removeLink('usefulLinks')}
+          />
+        )}
       </Block>
       {hasAccess(PERMISSIONS.faq) && (
         <Block title="FAQ">
-          <LinkForm links={data.faq} onAddLink={addLink('faq')} onRemoveLink={removeLink('faq')} />
+          {isLoadingFaq ? (
+            <Loader />
+          ) : (
+            <LinkForm links={faq || []} onAddLink={addLink('faq')} onRemoveLink={removeLink('faq')} />
+          )}
         </Block>
       )}
       {hasAccess(PERMISSIONS.affiche) && (
         <Block title="Афиша Partner Relations">
-          <LinkForm
-            links={data.eventSchedule}
-            onAddLink={addLink('eventSchedule')}
-            onRemoveLink={removeLink('eventSchedule')}
-          />
+          {isLoadingEventSchedule ? (
+            <Loader />
+          ) : (
+            <LinkForm
+              links={eventSchedule || []}
+              onAddLink={addLink('eventSchedule')}
+              onRemoveLink={removeLink('eventSchedule')}
+            />
+          )}
         </Block>
       )}
     </div>
