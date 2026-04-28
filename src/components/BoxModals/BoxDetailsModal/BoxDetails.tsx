@@ -1,4 +1,5 @@
 import { StatusLabel, type StatusSettings } from '@/components/ui/StatusLabel/StatusLabel'
+import { Fragment } from 'react/jsx-runtime'
 import type { BoxSolutionModalData, StatusType } from '../BoxManageModal/boxManageModal.type'
 
 const STATUS_SETTINGS: StatusSettings<StatusType> = {
@@ -25,13 +26,13 @@ export const BoxDetails = ({ box }: { box: BoxSolutionModalData }) => {
           {time_slots.map((slot, i) => {
             const title = time_slots.length > 1 ? 'Даты' : 'Дата'
             return (
-              <>
+              <Fragment key={i}>
                 {i === 0 ? <p className="mr-5">{`${title}`}</p> : <p>{''}</p>}
                 <p>
                   {slot?.date || '-'}
                   {time_slots.length > 0 ? ` (с ${time_slots[0]?.time_from} до ${time_slots[0]?.time_to})` : ' - '}
                 </p>
-              </>
+              </Fragment>
             )
           })}
         </div>

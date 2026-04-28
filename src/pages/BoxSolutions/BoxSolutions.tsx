@@ -5,7 +5,7 @@ import { Pagination } from '@/components/ui/Pagination'
 import { PERMISSIONS, usePermissions } from '@/hooks/usePermissions'
 import { BOX_SOLUTIONS_KEYS } from '@/services/api/queryKeys'
 import { useState } from 'react'
-import { deleteBox } from './api/api'
+import { boxSolutionApi } from './api/api'
 import { useFetchBoxes } from './queries/queries'
 import type { ModalStateType } from './types'
 import { Boxes } from './ui/Boxes'
@@ -58,7 +58,7 @@ const BoxSolutions = () => {
           <DeleteModal
             title="Удалить коробку!"
             isOpen={true}
-            onDelete={() => deleteBox(modal?.id || null)}
+            onDelete={() => boxSolutionApi.deleteBox(modal?.id || null)}
             onClose={() => setModal(null)}
             itemId={modal?.id || null}
             queryKey={BOX_SOLUTIONS_KEYS.all}

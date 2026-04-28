@@ -1,9 +1,12 @@
+import { useNotification } from '@/app/providers/notification'
 import { AddIcon } from '@/assets/icons'
 import { Button, CalendarInput, ImageCropper, Input, Modal, Switch, TimeRangeInput } from '@/components/ui'
 import { cn } from '@/lib/utils.clsx'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
 import { Controller, useFieldArray, useForm, useWatch } from 'react-hook-form'
+import { fetchImageUrl } from '../api/boxModalsApi'
+import { getFormValues, mapFormDataToBoxRequest } from '../helpers/helpers'
 import { useCreateBox, useFetchBox, useUpdateBox } from '../queries/queries'
 import type {
   BoxSolutionFormData,
@@ -11,10 +14,6 @@ import type {
   ICreateBoxRequest,
   IUpdateBoxRequest
 } from './boxManageModal.type'
-
-import { useNotification } from '@/app/providers/notification'
-import { fetchImageUrl } from '../api/boxModalsApi'
-import { getFormValues, mapFormDataToBoxRequest } from '../helpers/helpers'
 import { boxSolutionSchema } from './schema'
 import { FormInput } from './ui'
 
@@ -31,7 +30,7 @@ export const ManageBoxModal = ({ isOpen, onClose, boxData, boxId, onSave }: BoxS
     setValue,
     setError,
     clearErrors,
-    formState: { errors } //, dirtyFields }
+    formState: { errors, isDirty } //, dirtyFields }
   } = useForm<BoxSolutionFormData>({
     values: getFormValues(formData),
     resolver: zodResolver(boxSolutionSchema)
@@ -75,7 +74,8 @@ export const ManageBoxModal = ({ isOpen, onClose, boxData, boxId, onSave }: BoxS
     } else {
       const payloadToCreateBox: ICreateBoxRequest = mapFormDataToBoxRequest(data, data.imageUrl)
       await createMutation.mutateAsync(payloadToCreateBox)
-      close()
+
+      onClose()
       await onSave?.(payloadToCreateBox)
     }
   }
@@ -116,11 +116,19 @@ export const ManageBoxModal = ({ isOpen, onClose, boxData, boxId, onSave }: BoxS
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title={`${!boxData ? 'Создать' : 'Редактировать'} коробочное решение`}
+      title={`${!boxId ? 'Создать' : 'Редактировать'} коробочное решение`}
       footer={
         <div className="flex justify-between w-full">
           <Button type="button" label="Отмена" variant="secondary" size="default" onClick={onClose} />
-          <Button type="submit" label="Сохранить" variant="primary" size="default" onClick={handleSubmit(onSubmit)} />
+          <Button
+            type="submit"
+            label="Сохранить"
+            variant="primary"
+            size="default"
+            onClick={handleSubmit(onSubmit)}
+            disabled={!isDirty}
+            className={cn(!isDirty && 'opacity-50 pointer-events-none')}
+          />
         </div>
       }
     >
