@@ -1,37 +1,39 @@
-import { BoxButton, Button, DataTable } from '@/components/ui'
+import { BoxButton, DataTable } from '@/components/ui'
 import { Application2 } from '@/assets/icons'
 import { useState } from 'react'
 import { useModal } from '@/components/ui/Modal/useModal'
 import { BoxSolutionModal } from '@/components/BoxSolutionModal'
 import { SpecialProjectModal } from '@/components/SpecialProjectModal/SpecialProjectModal'
 import FilterDropdown from './ui/FilterDropdown'
-import { headerTableData } from './homePageData'
 import type { BoxData } from '@/types/solutions'
 import { usePermissions, PERMISSIONS } from '@/hooks/usePermissions'
 import { useBookingRequests } from '@/hooks/useBookingRequests'
-import type { Column } from '@/components/ui/DataTable/DataTable.types'
+import { headerTableData } from './homePageData'
 
 const Home = () => {
   const [statusFilter, setStatusFilter] = useState('all')
   const { isOpen: isCreateBoxModalOpen, open: openCreateBoxModal, close: closeCreateBoxModal } = useModal()
   const { isOpen: isCreateProjectModalOpen, open: openCreateProjectModal, close: closeCreateProjectModal } = useModal()
-  const { data = [] } = useBookingRequests()
-  const [visibleCount, setVisibleCount] = useState(8)
-  const filteredData = statusFilter === 'all' ? data : data.filter(item => item.status === statusFilter)
+  const { data } = useBookingRequests()
+  const PAGE_SIZE = 8
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE)
 
+  const managerStats = {
+    process: data?.manager_stats.processed,
+    progress: data?.manager_stats.in_progress
+  }
+
+  const applications = data?.applications ?? []
+  const filteredData = statusFilter === 'all' ? applications : applications.filter(item => item.status === statusFilter)
   const preparedData = filteredData.map((item, index) => ({
     ...item,
     id: index
   }))
-
   const visibleData = preparedData.slice(0, visibleCount)
-  const countQueue = preparedData.filter(item => item.status === 'pending').length
-  const countInProgress = preparedData.filter(item => item.status === 'confirmed').length
-  const countСancelled = preparedData.filter(item => item.status === 'cancelled').length
 
   const stats = [
-    { title: 'Новые заявки', value: countQueue },
-    { title: 'Заявки в работе', value: countInProgress }
+    { title: 'Новые заявки', value: managerStats.process },
+    { title: 'Заявки в работе', value: managerStats.progress }
   ]
 
   const handleBoxCreate = () => {
@@ -58,11 +60,11 @@ const Home = () => {
           <div key={stat.title} className="flex flex-col flex-1">
             <span className="text-h5 mb-[8px] text-text-grey-dark">{stat.title}</span>
 
-            <Button
-              className={`h-[92px] text-[48px] font-bold ${index === 1 ? 'bg-white border border-grey-light' : ''}`}
+            <div
+              className={`h-[92px] text-center text-[48px]  py-[14px] rounded-[8px]    font-bold ${index === 1 ? 'bg-white border border-grey-light' : 'bg-yellow-light'}`}
             >
               {stat.value}
-            </Button>
+            </div>
           </div>
         ))}
 
@@ -83,12 +85,12 @@ const Home = () => {
           <div className="flex lg:gap-[20px] gap-[10px]">
             <div className="flex flex-col justify-center items-center min-w-[100px] lg:gap-[4px] gap-[2px] xl:min-w-[185px] text-text-grey-dark">
               <span className="text-h5 ">В работе: </span>
-              <span className="text-h3 font-bold">{countInProgress}</span>
+              <span className="text-h3 font-bold">{managerStats.progress}</span>
             </div>
 
             <div className="flex flex-col justify-center items-center min-w-[100px] gap-[4px] max-w-[185px] text-text-grey-dark ">
               <span className="text-h5 ">Обработаны: </span>
-              <span className="text-h3 font-bold">{countСancelled}</span>
+              <span className="text-h3 font-bold">{managerStats.process}</span>
             </div>
           </div>
         </div>
@@ -112,16 +114,14 @@ const Home = () => {
               className="text-text-grey-light text-small italic px-[6px] py-[12px] border border-grey-light rounded-[8px] pl-[12px] xl:min-w-[494px]  md:min-w-[320px] bg-white"
             />
           </div>
-          <DataTable
-            idKey="id"
-            data={visibleData as unknown as Record<string, unknown>[]}
-            enableLoadMore
-            columns={headerTableData as unknown as Column<Record<string, unknown>>[]}
-          />
+          <DataTable idKey="id" data={visibleData} columns={headerTableData} />
         </div>
-        {visibleCount < preparedData.length && (
+        {visibleCount < filteredData.length && (
           <div className="flex justify-end mt-[10px]">
-            <button onClick={() => setVisibleCount(prev => prev + 8)} className="text-h5 text-grey-dark underline">
+            <button
+              onClick={() => setVisibleCount(prev => prev + PAGE_SIZE)}
+              className="text-h5 text-grey-dark underline"
+            >
               Показать больше
             </button>
           </div>

@@ -7,7 +7,7 @@ export const headerTableData: Column<BookingRequest>[] = [
   {
     key: 'created_at',
     label: 'Дата заявки',
-    render: value => formatDateTime(value),
+    render: value => formatDateTime(String(value)),
     sortable: true
   },
   {

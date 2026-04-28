@@ -1,13 +1,14 @@
 import { api } from '@/app/providers/axios'
-import type { BookingRequest } from '@/pages/Home/types'
+import type { BookingResponse } from '@/pages/Home/types'
+import { API_ROUTES } from '@/services/api/routes'
 import { useQuery } from '@tanstack/react-query'
 
 export const useBookingRequests = () => {
-  return useQuery({
+  return useQuery<BookingResponse>({
     queryKey: ['bookingRequests'],
     queryFn: async () => {
-      const res = await api.get<{ applications: BookingRequest[] }>('/dashboard')
-      return res.data.applications
+      const res = await api.get(API_ROUTES.dashboard)
+      return res.data
     }
   })
 }

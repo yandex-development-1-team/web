@@ -9,6 +9,8 @@ export const API_ROUTES = {
   refreshToken: '/auth/refresh',
   users: '/users',
 
+  dashboard: '/dashboard',
+
   analytics: {
     boxes: '/analytics/boxes',
     export: '/analytics/export'

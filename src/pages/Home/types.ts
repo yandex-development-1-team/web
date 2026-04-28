@@ -1,6 +1,6 @@
-export type StatusType = 'pending' | 'confirmed' | 'cancelled'
+export const statuses = ['pending', 'confirmed', 'cancelled'] as const
 
-export const statuses: StatusType[] = ['pending', 'confirmed', 'cancelled']
+export type StatusType = (typeof statuses)[number]
 
 export interface StatusProps {
   status: StatusType
@@ -11,6 +11,7 @@ export interface InlineStatusProps {
 }
 
 export interface BookingRequest {
+  id: number
   telegram_nick: string
   name: string
   service_type: string
@@ -23,4 +24,16 @@ export interface FilterDropdownProps {
   value: string
   className?: string
   onChange: (value: string) => void
+}
+
+export type BookingResponse = {
+  overview: {
+    new_applications: number
+    in_progress_applications: number
+  }
+  manager_stats: {
+    in_progress: number
+    processed: number
+  }
+  applications: BookingRequest[]
 }
