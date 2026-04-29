@@ -17,7 +17,7 @@ import type {
 import { boxSolutionSchema } from './schema'
 import { FormInput } from './ui'
 
-export const ManageBoxModal = ({ isOpen, onClose, boxData, boxId, onSave }: BoxSolutionModalType) => {
+export const ManageBoxModal = ({ isOpen, onClose, boxId, onSave }: BoxSolutionModalType) => {
   const { showNotification } = useNotification()
   const { data: formData } = useFetchBox(boxId)
   const createMutation = useCreateBox()
@@ -53,7 +53,7 @@ export const ManageBoxModal = ({ isOpen, onClose, boxData, boxId, onSave }: BoxS
     if (imageFileList && imageFileList.length > 0) {
       return URL.createObjectURL(imageFileList[0])
     }
-    return boxData?.image || null
+    return formData?.image || null
   })()
 
   const onSubmit = async (data: BoxSolutionFormData) => {
