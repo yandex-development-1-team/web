@@ -38,10 +38,10 @@ export const router = createBrowserRouter(
                 {
                   element: <ProtectedRoute requiredRole="manager" />,
                   children: [
-                    // {
-                    //   path: ROUTES.boxSolutions,
-                    //   lazy: () => import('@/pages/BoxSolutions/BoxSolutions')
-                    // },
+                    {
+                      path: ROUTES.boxSolutions,
+                      lazy: () => import('@/pages/BoxSolutions/BoxSolutions')
+                    },
                     {
                       element: <ProtectedRoute requiredPermission={PERMISSIONS.specprojectsView} />,
                       children: [
@@ -69,10 +69,6 @@ export const router = createBrowserRouter(
                 {
                   element: <ProtectedRoute requiredRole="admin" />,
                   children: [
-                    {
-                      path: ROUTES.boxSolutions,
-                      lazy: () => import('@/pages/BoxSolutions/BoxSolutions')
-                    },
                     {
                       path: ROUTES.stats,
                       lazy: () => import('@/pages/Stats/StatsMain/StatsMain')
