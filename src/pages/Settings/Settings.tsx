@@ -4,12 +4,13 @@ import { ArrowIcon } from '@/assets/icons'
 import { accounts, accessRightsGroups, accessRights, textFields } from './settingsData'
 import { useMessages } from './hooks/useMessages'
 import { useAccessSettings } from '@/hooks/useAccessSettings'
+import type { ITextFieldValue } from './Settings.types'
 
 const Settings = () => {
   const [phase, setPhase] = useState('roleSelection')
   const [editingAccountId, setEditingAccountId] = useState(0)
   const [switchesState, setSwitchesState] = useState<boolean[]>([])
-  const textFieldsRefs = useRef<HTMLTextAreaElement[]>([])
+  const textFieldsRefs = useRef<Record<number, HTMLTextAreaElement | null>>({})
 
   const {
     messages: serverTextFieldsValues,
@@ -53,14 +54,20 @@ const Settings = () => {
   }
 
   const saveTextFieldsValues = () => {
-    const values = textFieldsRefs.current.map(ref => ref.value || '')
-    updateMessages(values)
+    const dataToSave: ITextFieldValue[] = textFields.map(field => ({
+      id: field.id,
+      value: textFieldsRefs.current[field.id]?.value || ''
+    }))
+    updateMessages(dataToSave)
   }
 
   const loadTextFieldsValues = () => {
-    if (textFieldsRefs.current.length === 0 || !serverTextFieldsValues) return
-    textFieldsRefs.current.forEach((ref, index) => {
-      ref.value = serverTextFieldsValues?.find(value => value.id === index)?.value || ''
+    if (!serverTextFieldsValues) return
+    serverTextFieldsValues.forEach((item) => {
+      const inputElement = textFieldsRefs.current[item.id]
+      if (inputElement) {
+        inputElement.value = item.value
+      }
     })
   }
 
@@ -214,7 +221,7 @@ const Settings = () => {
               </style>
               <textarea
                 ref={el => {
-                  textFieldsRefs.current[field.id] = el!
+                  textFieldsRefs.current[field.id] = el
                 }}
                 placeholder="Место для текста"
                 className={`
@@ -239,7 +246,7 @@ const Settings = () => {
                   placeholder:border-grey-light
                   hover:placeholder:text-text-grey-dark
                 `}
-                defaultValue={serverTextFieldsValues?.find(value => value.id === index)?.value || ''}
+                defaultValue={serverTextFieldsValues?.find(value => value.id === field.id)?.value || ''}
               />
             </div>
           ))}

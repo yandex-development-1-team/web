@@ -1,5 +1,6 @@
-import type { IAccount, IAccessRightsGroup, IAccessRight } from './Settings.types'
+import type { IAccount, IAccessRightsGroup, IAccessRight, ITextField } from './Settings.types'
 import { PERMISSIONS } from '@/hooks/usePermissions'
+import { settingsMessagesServerNames } from './api/messages'
 
 export const accounts: IAccount[] = [
   { id: 0, name: 'Администратор', description: 'Высший уровень доступа', serverName: 'admin' },
@@ -37,12 +38,23 @@ export const accessRights: IAccessRight[] = [
   { id: 16, groupId: 5, name: 'FAQ', serverName: PERMISSIONS.faq }
 ]
 
-export const textFields = [
-  { id: 0, name: 'Поле для приветствия' },
-  { id: 1, name: 'Текст для подтверждения записи' },
-  { id: 2, name: 'Напоминание №1 о мероприятии (за 1 неделю)' },
-  { id: 3, name: 'Напоминание №2 о мероприятии (за 24 часа)' },
-  { id: 4, name: 'Текст сообщения при отмене бронирования' },
-  { id: 5, name: 'Благодарность по завершению мероприятия' },
-  { id: 6, name: 'Текст системной ошибки' }
+export const textFields: ITextField[] = [
+  { id: 0, name: 'Поле для приветствия', serverName: settingsMessagesServerNames.welcome_message },
+  { id: 1, name: 'Текст для подтверждения записи', serverName: settingsMessagesServerNames.record_confirmation },
+  {
+    id: 2,
+    name: 'Напоминание №1 о мероприятии (за 1 неделю)',
+    serverName: settingsMessagesServerNames.event_reminder_for_week
+  },
+  {
+    id: 3,
+    name: 'Напоминание №2 о мероприятии (за 24 часа)',
+    serverName: settingsMessagesServerNames.event_reminder_for_24_hours
+  },
+  { id: 4,
+    name: 'Текст сообщения при отмене бронирования',
+    serverName: settingsMessagesServerNames.cancellation_message
+  },
+  { id: 5, name: 'Благодарность по завершению мероприятия', serverName: settingsMessagesServerNames.thanks_message },
+  { id: 6, name: 'Текст системной ошибки', serverName: settingsMessagesServerNames.system_err_message }
 ]

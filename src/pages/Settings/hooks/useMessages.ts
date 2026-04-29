@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { getMessages, putMessages } from '../api/messages'
 import { useNotification } from '@/app/providers/notification'
+import type { ITextFieldValue } from '../Settings.types'
 
 export const useMessages = () => {
   const { showNotification } = useNotification()
@@ -14,7 +15,7 @@ export const useMessages = () => {
   })
 
   const mutation = useMutation({
-    mutationFn: (data: string[]) => putMessages(data),
+    mutationFn: (data: ITextFieldValue[]) => putMessages(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: messagesKey })
     },

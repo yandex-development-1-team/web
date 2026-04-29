@@ -1,6 +1,17 @@
 import { api } from '@/app/providers/axios'
 import { API_ROUTES } from '@/services/api/routes'
 import type { ITextFieldValue } from '../Settings.types'
+import { textFields } from '../settingsData'
+
+export const settingsMessagesServerNames = {
+  welcome_message: 'welcome_message',
+  record_confirmation: 'record_confirmation',
+  event_reminder_for_week: 'event_reminder_for_week',
+  event_reminder_for_24_hours: 'event_reminder_for_24_hours',
+  cancellation_message: 'cancellation_message',
+  thanks_message: 'thanks_message',
+  system_err_message: 'system_err_message'
+}
 
 export interface MessagesDTO {
   welcome_message?: string
@@ -29,16 +40,11 @@ export const getMessages = async ({ signal }: { signal: AbortSignal }) => {
   return textFieldsValues
 }
 
-export const putMessages = (values: string[]) => {
-  const data: MessagesDTO = {
-    welcome_message: values[0] || '',
-    record_confirmation: values[1] || '',
-    event_reminder_for_week: values[2] || '',
-    event_reminder_for_24_hours: values[3] || '',
-    cancellation_message: values[4] || '',
-    thanks_message: values[5] || '',
-    system_err_message: values[6] || ''
-  }
-
+export const putMessages = (values: ITextFieldValue[]) => {
+  const data = textFields.reduce((acc, field) => {
+    const item = values.find(v => v.id === field.id)
+    acc[field.serverName as keyof MessagesDTO] = item?.value || ''
+    return acc
+  }, {} as MessagesDTO)
   return api.put<void>(API_ROUTES.settings.messages, data)
 }

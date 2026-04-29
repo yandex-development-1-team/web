@@ -19,6 +19,12 @@ export interface IAccessRight {
   serverName: string
 }
 
+export interface ITextField {
+  id: number
+  name: string
+  serverName: string
+}
+
 export interface ITextFieldValue {
   id: number
   value: string
