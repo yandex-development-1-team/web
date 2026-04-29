@@ -1,6 +1,7 @@
 import { api } from '@/app/providers/axios'
 import { mockUsersStats } from '@/mockData/mockUsersStatsPageData'
 import type { IUsersStats, IDateRangeParams, ExportData } from '@/types/users_stats'
+import { API_ROUTES } from './api/routes'
 
 export const usersStatsApi = {
   getUsers: async (params: IDateRangeParams): Promise<IUsersStats[]> => {
@@ -9,7 +10,7 @@ export const usersStatsApi = {
       date_to: params.dateTo
     }
     try {
-      const response = await api.get('/api/v1/analytics/users', {
+      const response = await api.get(API_ROUTES.analytics.users, {
         params: queryParams
       })
       const data = response.data.users ?? response.data
@@ -27,7 +28,7 @@ export const usersStatsApi = {
       format: 'xlsx'
     }
     return api
-      .get('/api/v1/analytics/export', {
+      .get(API_ROUTES.analytics.export, {
         params: queryParams,
         responseType: 'blob'
       })

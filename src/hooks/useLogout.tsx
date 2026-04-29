@@ -19,6 +19,7 @@ export const useLogout = () => {
     } finally {
       tokenStorage.removeToken()
       tokenStorage.removeRefreshToken()
+      tokenStorage.removeUser()
 
       queryClient.clear()
 

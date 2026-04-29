@@ -11,9 +11,17 @@ export const API_ROUTES = {
   refreshToken: '/auth/refresh',
   users: '/users',
 
+  settings: {
+    messages: '/settings/messages',
+    permissions: (role?: string) => `/settings/permissions${role ? `/${role}` : ''}`
+  },
+
+  events: (id?: number) => `/events${id ? `/${id}` : ''}`,
+
   analytics: {
     boxes: '/analytics/boxes',
-    export: '/analytics/export'
+    export: '/analytics/export',
+    users: '/analytics/users'
   },
   bookings: {
     get: BOOKINGS_BASE,
@@ -25,6 +33,8 @@ export const API_ROUTES = {
     byId: (id: string) => `${APPLICATIONS_BASE}${id}`,
     changeStatus: (id: string) => `${APPLICATIONS_BASE}${id}/status`
   },
+
+  employees: (employeeId: string) => `/employee/${employeeId}`,
 
   export: {
     byId: (id: string) => `${EXPORT_BASE}/${id}`,
