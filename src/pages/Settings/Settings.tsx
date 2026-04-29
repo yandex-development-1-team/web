@@ -9,7 +9,7 @@ import type { ITextFieldValue } from './Settings.types'
 const Settings = () => {
   const [phase, setPhase] = useState('roleSelection')
   const [editingAccountId, setEditingAccountId] = useState(0)
-  const [switchesState, setSwitchesState] = useState<boolean[]>([])
+  const [switchesState, setSwitchesState] = useState<Record<number, boolean>>({})
   const textFieldsRefs = useRef<Record<number, HTMLTextAreaElement | null>>({})
 
   const {
@@ -71,9 +71,11 @@ const Settings = () => {
     })
   }
 
-  const saveSwitchesStates = (values: boolean[]) => {
+  const saveSwitchesStates = (values: Record<number, boolean>) => {
     if (!currentRoleServerName) return
-    const selectedAccessRights = accessRights.filter((_, index) => values[index]).map(right => right.serverName)
+    const selectedAccessRights = accessRights
+      .filter(right => !!values[right.id])
+      .map(right => right.serverName)
     updateAccessSettings({
       data: selectedAccessRights,
       roleServerId: currentRoleServerName
@@ -97,20 +99,20 @@ const Settings = () => {
   }
 
   const loadSwitchesStates = useCallback(() => {
-    const accessArray = new Array(accessRights.length).fill(false)
+    const newStates: Record<number, boolean> = {}
     accessRights.forEach(accessRight => {
-      const currentAccessRightId = accessRight.id
-      const loadedAccessRight = serverAccessSettings ? serverAccessSettings.includes(accessRight.serverName) : false
-
-      accessArray[currentAccessRightId] = loadedAccessRight
+      const isEnabled = serverAccessSettings ? serverAccessSettings.includes(accessRight.serverName) : false
+      newStates[accessRight.id] = isEnabled
     })
-    setSwitchesState(accessArray)
+    setSwitchesState(newStates)
   }, [serverAccessSettings])
 
+
   const handleSwitch = (accessRightId: number, newState: boolean) => {
-    setSwitchesState(currentState => {
-      return [...currentState.slice(0, accessRightId), newState, ...currentState.slice(accessRightId + 1)]
-    })
+     setSwitchesState(currentState => ({
+      ...currentState,
+      [accessRightId]: newState
+    }))
   }
 
   useEffect(() => {
