@@ -22,9 +22,11 @@ export const usePermissions = () => {
 
   const roleServerId = decodedToken?.role
 
-  const { accessSettings = [], isLoadingAccessSettings: isLoading } = useAccessSettings(roleServerId)
+  const { accessSettings = [], isLoadingAccessSettings } = useAccessSettings(roleServerId)
 
-  const isLoggedIn = !!decodedToken?.role
+  const isLoading = !!roleServerId && isLoadingAccessSettings
+
+  const isLoggedIn = !!roleServerId
 
   const hasAccess = useCallback(
     (code: string): boolean => {

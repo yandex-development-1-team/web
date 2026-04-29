@@ -9,7 +9,9 @@ const Login = () => {
         <EventIcon className="h-[51px] w-[96px]" />
         <div className="flex flex-col justify-center flex-1">
           <h2 className="mb-[32px] font-bold text-[32px] text-left">Вход</h2>
-          <LoginForm />
+          <div className="min-h-[270px]">
+            <LoginForm />
+          </div>
         </div>
       </div>
 

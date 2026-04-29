@@ -27,7 +27,7 @@ export const LoginForm = () => {
   const { isLoggedIn } = usePermissions()
 
   if (isPending) {
-    return <Loader />
+    return <Loader className="h-[100%]" />
   }
   if (isLoggedIn) {
     return <Navigate to={ROUTES.home} replace />
@@ -48,7 +48,7 @@ export const LoginForm = () => {
     setTouched(prev => ({ ...prev, [name]: true }))
   }
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     try {
@@ -103,7 +103,7 @@ export const LoginForm = () => {
           </button>
         </div>
 
-        <div className="text-xs min-h-[18px]">
+        <div className="text-xs min-h-[19px]">
           <p
             className={`
             ${passwordError && touched.password ? 'text-text-red-dark opacity-100' : 'opacity-0'} transition-opacity

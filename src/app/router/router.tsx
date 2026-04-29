@@ -1,13 +1,14 @@
-import { createBrowserRouter, Outlet } from 'react-router-dom'
-import { ROUTES } from './routes'
+import { Suspense } from 'react'
+import { QueryProvider } from '@/app/providers/tanstack-query'
 import { NotificationProvider } from '@/app/providers/notification'
 import { AxiosProvider } from '@/app/providers/axios'
+import { createBrowserRouter, Outlet } from 'react-router-dom'
 import App from '@/App'
-import { QueryProvider } from '@/app/providers/tanstack-query'
-import { ProtectedRoute } from './protectedRoute'
-import { PERMISSIONS } from './permissions'
 import { HomeIndex } from '@/pages/Home/HomeIndex'
 import { Loader } from '@/components/ui'
+import { PERMISSIONS } from './permissions'
+import { ProtectedRoute } from './protectedRoute'
+import { ROUTES } from './routes'
 
 export const router = createBrowserRouter(
   [
@@ -16,7 +17,9 @@ export const router = createBrowserRouter(
         <QueryProvider>
           <NotificationProvider>
             <AxiosProvider>
-              <Outlet />
+              <Suspense fallback={<Loader className="min-h-[100vh]" />}>
+                <Outlet />
+              </Suspense>
             </AxiosProvider>
           </NotificationProvider>
         </QueryProvider>
