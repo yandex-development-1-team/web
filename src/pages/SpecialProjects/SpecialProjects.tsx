@@ -236,7 +236,7 @@ const SpecialProjects = () => {
         }}
         modalTitle={projectToEdit !== undefined ? 'Редактировать спецпроект' : 'Создать спецпроект'}
         initialData={projectToEdit || undefined}
-      /> 
+      />
 
       <DeleteModal
         title="Удалить спецпроект?"

@@ -7,6 +7,7 @@ import { QueryProvider } from '@/app/providers/tanstack-query'
 import { ProtectedRoute } from './protectedRoute'
 import { PERMISSIONS } from './permissions'
 import { HomeIndex } from '@/pages/Home/HomeIndex'
+import { Loader } from '@/components/ui'
 
 export const router = createBrowserRouter(
   [
@@ -20,6 +21,7 @@ export const router = createBrowserRouter(
           </NotificationProvider>
         </QueryProvider>
       ),
+      hydrateFallbackElement: <Loader className="min-h-[100vh]" />,
       children: [
         {
           path: ROUTES.login,

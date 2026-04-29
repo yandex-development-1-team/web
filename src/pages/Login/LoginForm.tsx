@@ -24,11 +24,12 @@ export const LoginForm = () => {
   const { mutateAsync, isPending } = useLogin()
   const { isOpen: isOpenRecoveryModal, open: openRecoveryModal, close: closeRecoveryModal } = useModal()
 
-  const { isLoggedIn, isLoading, user: currentUser } = usePermissions()
-  if (isLoading) {
+  const { isLoggedIn } = usePermissions()
+
+  if (isPending) {
     return <Loader />
   }
-  if (isLoggedIn && currentUser) {
+  if (isLoggedIn) {
     return <Navigate to={ROUTES.home} replace />
   }
 

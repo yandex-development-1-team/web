@@ -1,3 +1,5 @@
+import type { TRoleServerId } from '@/services/api/accessSettings'
+
 export interface ApiErrorData {
   message: string
   code?: string
@@ -10,6 +12,11 @@ export interface ApiErrorResponse {
   originalError: unknown
 }
 
+export type UserLoginInfo = {
+  name: string
+  photo: string
+}
+
 export interface TokenStorage {
   getToken: () => string | null
   setToken: (token: string) => void
@@ -18,6 +25,10 @@ export interface TokenStorage {
   getRefreshToken: () => string | null
   setRefreshToken: (token: string) => void
   removeRefreshToken: () => void
+
+  getUser: () => UserLoginInfo | null
+  setUser: (user: UserLoginInfo) => void
+  removeUser: () => void
 }
 
 export interface ErrorHandlerConfig {
@@ -28,4 +39,11 @@ export interface ErrorHandlerConfig {
   onNetworkError: () => void
   isCriticalError?: (status: number) => boolean
   onCriticalError?: (status: number, message: string) => void
+}
+
+export interface TokenPayload {
+  user_id: number
+  role: TRoleServerId
+  exp: number
+  iat: number
 }

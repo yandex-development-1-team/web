@@ -83,11 +83,7 @@ export function ImagePickerWithCrop({ name, getIsCropping, previewImg }: ImagePi
           />
         ) : (
           cropImage && (
-            <img
-              src={cropImage || ''}
-              alt="preview"
-              className="w-[262px] h-[172px] object-contain rounded-lg"
-            />
+            <img src={cropImage || ''} alt="preview" className="w-[262px] h-[172px] object-contain rounded-lg" />
           )
         )}
       </>
