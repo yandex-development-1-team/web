@@ -1,5 +1,5 @@
-import { useRef, useState, useLayoutEffect, useCallback } from 'react'
-import { Switch, ToggleButton, Button } from '@/components/ui'
+import { useRef, useState, useEffect, useCallback } from 'react'
+import { Switch, ToggleButton, Button, Loader } from '@/components/ui'
 import { ArrowIcon } from '@/assets/icons'
 import { accounts, accessRightsGroups, accessRights, textFields } from './settingsData'
 import { useMessages } from './hooks/useMessages'
@@ -30,12 +30,12 @@ const Settings = () => {
   } = useAccessSettings(currentRoleServerName)
 
   const buttonsDisabled =
-    isLoadingMessages ||
-    isFetchingMessages ||
-    isUpdatingMessages ||
-    isLoadingAccessSettings ||
-    isFetchingAccessSettings ||
-    isUpdatingAccessSettings
+    isLoadingMessages
+    || isFetchingMessages
+    || isUpdatingMessages
+    || isLoadingAccessSettings
+    || isFetchingAccessSettings
+    || isUpdatingAccessSettings
 
   const handleSettingsGroupSelect = (selectedSide: 'left' | 'right') => {
     if (!(selectedSide === 'left' && phase !== 'textsSetup')) {
@@ -45,7 +45,7 @@ const Settings = () => {
 
   const handleRoleSelect = (roleId: number) => {
     setEditingAccountId(roleId)
-    setPhase('accessSetup')
+    setPhase('accessSetupLoading')
   }
 
   const handleRoleDeselect = () => {
@@ -106,11 +106,14 @@ const Settings = () => {
     })
   }
 
-  useLayoutEffect(() => {
-    if (phase === 'accessSetup' && serverAccessSettings) {
+  useEffect(() => {
+    if (phase === 'accessSetupLoading' && !isFetchingAccessSettings) {
       loadSwitchesStates()
+      setTimeout(() => {
+        setPhase('accessSetup')
+      }, 0);
     }
-  }, [serverAccessSettings, phase, loadSwitchesStates])
+  }, [isFetchingAccessSettings, phase, loadSwitchesStates])
 
   return (
     <>
@@ -118,7 +121,7 @@ const Settings = () => {
 
       <div
         className={`
-          ${phase !== 'accessSetup' ? 'bg-white' : ''}
+          ${!(phase === 'accessSetup') ? 'bg-white' : ''}
           rounded-[8px]
           h-full
           mt-[20px]
@@ -133,7 +136,7 @@ const Settings = () => {
             min-h-[46px]
             gap-[20px]
             justify-between
-            ${phase !== 'accessSetup' && 'm-[20px]'}
+            ${!(phase === 'accessSetup') && 'm-[20px]'}
           `}
         >
           <ToggleButton
@@ -142,7 +145,7 @@ const Settings = () => {
             rightLabel="Настройка текстов"
             onToggle={handleSettingsGroupSelect}
           />
-          {phase !== 'roleSelection' && (
+          {!(phase === 'roleSelection' || phase === 'accessSetupLoading') && (
             <div>
               <Button
                 label="Отменить"
@@ -161,7 +164,7 @@ const Settings = () => {
           )}
         </div>
 
-        {phase === 'roleSelection' && (
+        {(phase === 'roleSelection' || phase === 'accessSetupLoading') && (
           <div className="mt-[32px]">
             {accounts.map((account, index) => (
               <button
@@ -181,6 +184,7 @@ const Settings = () => {
                   hover:border-yellow-light
                   active:border-yellow-accent-dark
                   cursor-pointer
+                  relative
                 `}
                 onClick={() => handleRoleSelect(account.id)}
               >
@@ -188,6 +192,9 @@ const Settings = () => {
                   <span className="text-h3 text-text mt-[-3px]">{account.name}</span>
                   <span className="text-h4sb text-text-grey-dark mt-[-3px]">{account.description}</span>
                 </div>
+                {isFetchingAccessSettings && editingAccountId === account.id && (
+                  <Loader className='absolute inset-0' />
+                )}
                 <ArrowIcon className="w-[23px] text-text-grey-dark mr-[9px]" />
               </button>
             ))}
@@ -294,10 +301,9 @@ const Settings = () => {
                             <div key={index} className="h-[40px] ml-[40px] flex items-center gap-[12px]">
                               <Switch
                                 checked={switchesState[accessRight.id]}
-                                onChange={
-                                  editingAccountId !== 0 ? newState => handleSwitch(accessRight.id, newState) : () => {}
-                                }
-                                className={`${editingAccountId === 0 && 'cursor-not-allowed!'}`}
+                                onChange={newState => handleSwitch(accessRight.id, newState)}
+                                disabled={editingAccountId === 0}
+                                disabledColorful={editingAccountId === 0}
                               />
                               <span className="text-h5">{accessRight.name}</span>
                             </div>
