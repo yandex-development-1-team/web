@@ -6,21 +6,17 @@ import { ROUTES } from '@/app/router'
 import { MENU_ADMIN, MENU_DOWN, MENU_MANAGER } from './menu'
 import { useLogout } from '@/hooks/useLogout'
 import { UserIcon } from '@/assets/icons'
-import type { IUser } from '@/types/user'
 import { usePermissions } from '@/hooks/usePermissions'
+import { useUserInfo } from '@/hooks/useUserInfo'
 
 export const Sidebar = () => {
-  const { user: rawUser, hasRole, hasAccess } = usePermissions()
-  const userGrade: number = hasRole('admin') ? 0 : Number(rawUser.role.at(-1)) || 3
-  const user: Partial<IUser> = {
-    name: rawUser.name,
-    grade: userGrade,
-    photo: rawUser.photo
-  }
+  const { hasRole, hasAccess } = usePermissions()
+  const { data: user } = useUserInfo()
+  const logout = useLogout()
 
   const [isExpanded, setIsExpanded] = useState<boolean>(true)
-  const logout = useLogout()
   const menu = hasRole('admin') ? MENU_ADMIN : MENU_MANAGER
+
   return (
     <aside
       className={`${isExpanded ? 'w-[328px]' : 'w-[120px]'} transition-[width] duration-400 h-screen 

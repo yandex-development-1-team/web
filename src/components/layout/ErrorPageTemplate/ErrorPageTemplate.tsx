@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import { ROUTES } from '@/app/router/routes'
 import { Button } from '@/components/ui'
 import backgroundImage from '@/assets/images/Background.jpg'
-import type { ErrorPageTemplateProps } from './/ErrorPageTemplate.types'
+import type { ErrorPageTemplateProps } from './ErrorPageTemplate.types'
 
 const ErrorPageTemplate = ({ title, text, image, code }: ErrorPageTemplateProps) => {
   const navigate = useNavigate()
