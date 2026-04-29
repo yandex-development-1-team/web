@@ -61,7 +61,10 @@ const Home = () => {
             <span className="text-h5 mb-[8px] text-text-grey-dark">{stat.title}</span>
 
             <div
-              className={`h-[92px] text-center text-[48px]  py-[14px] rounded-[8px]    font-bold ${index === 1 ? 'bg-white border border-grey-light' : 'bg-yellow-light'}`}
+              className={`
+                h-[92px] rounded-[8px] ${index === 1 ? 'bg-white border border-grey-light' : 'bg-yellow-light'}
+                flex items-center justify-center text-indicator-st
+              `}
             >
               {stat.value}
             </div>
