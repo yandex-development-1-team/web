@@ -31,12 +31,12 @@ const Settings = () => {
   } = useAccessSettings(currentRoleServerName)
 
   const buttonsDisabled =
-    isLoadingMessages
-    || isFetchingMessages
-    || isUpdatingMessages
-    || isLoadingAccessSettings
-    || isFetchingAccessSettings
-    || isUpdatingAccessSettings
+    isLoadingMessages ||
+    isFetchingMessages ||
+    isUpdatingMessages ||
+    isLoadingAccessSettings ||
+    isFetchingAccessSettings ||
+    isUpdatingAccessSettings
 
   const handleSettingsGroupSelect = (selectedSide: 'left' | 'right') => {
     if (!(selectedSide === 'left' && phase !== 'textsSetup')) {
@@ -63,7 +63,7 @@ const Settings = () => {
 
   const loadTextFieldsValues = () => {
     if (!serverTextFieldsValues) return
-    serverTextFieldsValues.forEach((item) => {
+    serverTextFieldsValues.forEach(item => {
       const inputElement = textFieldsRefs.current[item.id]
       if (inputElement) {
         inputElement.value = item.value
@@ -73,9 +73,7 @@ const Settings = () => {
 
   const saveSwitchesStates = (values: Record<number, boolean>) => {
     if (!currentRoleServerName) return
-    const selectedAccessRights = accessRights
-      .filter(right => !!values[right.id])
-      .map(right => right.serverName)
+    const selectedAccessRights = accessRights.filter(right => !!values[right.id]).map(right => right.serverName)
     updateAccessSettings({
       data: selectedAccessRights,
       roleServerId: currentRoleServerName
@@ -107,9 +105,8 @@ const Settings = () => {
     setSwitchesState(newStates)
   }, [serverAccessSettings])
 
-
   const handleSwitch = (accessRightId: number, newState: boolean) => {
-     setSwitchesState(currentState => ({
+    setSwitchesState(currentState => ({
       ...currentState,
       [accessRightId]: newState
     }))
@@ -120,7 +117,7 @@ const Settings = () => {
       loadSwitchesStates()
       setTimeout(() => {
         setPhase('accessSetup')
-      }, 0);
+      }, 0)
     }
   }, [isFetchingAccessSettings, phase, loadSwitchesStates])
 
@@ -201,9 +198,7 @@ const Settings = () => {
                   <span className="text-h3 text-text mt-[-3px]">{account.name}</span>
                   <span className="text-h4sb text-text-grey-dark mt-[-3px]">{account.description}</span>
                 </div>
-                {isFetchingAccessSettings && editingAccountId === account.id && (
-                  <Loader className='absolute inset-0' />
-                )}
+                {isFetchingAccessSettings && editingAccountId === account.id && <Loader className="absolute inset-0" />}
                 <ArrowIcon className="w-[23px] text-text-grey-dark mr-[9px]" />
               </button>
             ))}

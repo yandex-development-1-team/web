@@ -51,7 +51,8 @@ export const textFields: ITextField[] = [
     name: 'Напоминание №2 о мероприятии (за 24 часа)',
     serverName: settingsMessagesServerNames.event_reminder_for_24_hours
   },
-  { id: 4,
+  {
+    id: 4,
     name: 'Текст сообщения при отмене бронирования',
     serverName: settingsMessagesServerNames.cancellation_message
   },

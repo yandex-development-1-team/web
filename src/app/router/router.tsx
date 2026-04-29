@@ -21,7 +21,7 @@ export const router = createBrowserRouter(
           </NotificationProvider>
         </QueryProvider>
       ),
-      hydrateFallbackElement: <Loader className='min-h-[100vh]' />,
+      hydrateFallbackElement: <Loader className="min-h-[100vh]" />,
       children: [
         {
           path: ROUTES.login,
