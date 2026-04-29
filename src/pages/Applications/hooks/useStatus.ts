@@ -9,7 +9,7 @@ export const useStatus = (
   id: string,
   activeTab: AppType,
   onModify: (id: string, newStatus: TApplicationStatus) => Promise<void>,
-  invalidateQueryKey: string[] | undefined
+  invalidateQueryKey?: readonly string[]
 ) => {
   const { showNotification } = useNotification()
   const queryClient = useQueryClient()
