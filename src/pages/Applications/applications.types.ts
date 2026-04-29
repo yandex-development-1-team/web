@@ -70,8 +70,8 @@ export type ModalPropsType = {
   id: string
   isOpen: boolean
   activeTab: AppType
-  queryKey?: string[] | undefined
   onClose: () => void
   onDelete: (id: string | number) => Promise<void>
   onModify: (id: string, newStatus: TApplicationStatus) => Promise<void>
+  queryKey?: readonly string[]
 }

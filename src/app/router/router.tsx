@@ -1,13 +1,13 @@
-import { createBrowserRouter, Outlet } from 'react-router-dom'
-import { ROUTES } from './routes'
-import { NotificationProvider } from '@/app/providers/notification'
-import { AxiosProvider } from '@/app/providers/axios'
 import App from '@/App'
+import { AxiosProvider } from '@/app/providers/axios'
+import { NotificationProvider } from '@/app/providers/notification'
 import { QueryProvider } from '@/app/providers/tanstack-query'
-import { ProtectedRoute } from './protectedRoute'
-import { PERMISSIONS } from './permissions'
 import { HomeIndex } from '@/pages/Home/HomeIndex'
 import { Loader } from '@/components/ui'
+import { createBrowserRouter, Outlet } from 'react-router-dom'
+import { PERMISSIONS } from './permissions'
+import { ProtectedRoute } from './protectedRoute'
+import { ROUTES } from './routes'
 
 export const router = createBrowserRouter(
   [

@@ -1,18 +1,28 @@
+import { useNotification } from '@/app/providers/notification'
 import { AddIcon } from '@/assets/icons'
-import { Button, CalendarInput, Input, Modal, Switch, TimeRangeInput } from '@/components/ui'
-import { ImageCropper } from '@/components/ui/ImageCropper/ImageCropper'
-import { fileToBase64 } from '@/lib/fileUtils/fileToBase64'
+import { Button, CalendarInput, ImageCropper, Input, Modal, Switch, TimeRangeInput } from '@/components/ui'
 import { cn } from '@/lib/utils.clsx'
-import type { BoxData } from '@/types/solutions'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
 import { Controller, useFieldArray, useForm, useWatch } from 'react-hook-form'
-import type { BoxSolutionFormData, BoxSolutionModalType } from './BoxSolutionModal.type'
-import { FORM_TO_API_KEYS, getFormValues, mapFormDataToBoxData } from './helpers'
+import { fetchImageUrl } from '../api/boxModalsApi'
+import { getFormValues, mapFormDataToBoxRequest } from '../helpers/helpers'
+import { useCreateBox, useFetchBox, useUpdateBox } from '../queries/queries'
+import type {
+  BoxSolutionFormData,
+  BoxSolutionModalType,
+  ICreateBoxRequest,
+  IUpdateBoxRequest
+} from './boxManageModal.type'
 import { boxSolutionSchema } from './schema'
 import { FormInput } from './ui'
 
-export const BoxSolutionModal = ({ isOpen, onClose, boxData, onSave }: BoxSolutionModalType) => {
+export const ManageBoxModal = ({ isOpen, onClose, boxId, onSave }: BoxSolutionModalType) => {
+  const { showNotification } = useNotification()
+  const { data: formData } = useFetchBox(boxId)
+  const createMutation = useCreateBox()
+  const updateMuatation = useUpdateBox()
+
   const {
     control,
     handleSubmit,
@@ -20,9 +30,9 @@ export const BoxSolutionModal = ({ isOpen, onClose, boxData, onSave }: BoxSoluti
     setValue,
     setError,
     clearErrors,
-    formState: { errors, dirtyFields }
+    formState: { errors, isDirty } //, dirtyFields }
   } = useForm<BoxSolutionFormData>({
-    values: getFormValues(boxData),
+    values: getFormValues(formData),
     resolver: zodResolver(boxSolutionSchema)
   })
 
@@ -43,7 +53,7 @@ export const BoxSolutionModal = ({ isOpen, onClose, boxData, onSave }: BoxSoluti
     if (imageFileList && imageFileList.length > 0) {
       return URL.createObjectURL(imageFileList[0])
     }
-    return boxData?.image || null
+    return formData?.image || null
   })()
 
   const onSubmit = async (data: BoxSolutionFormData) => {
@@ -55,38 +65,18 @@ export const BoxSolutionModal = ({ isOpen, onClose, boxData, onSave }: BoxSoluti
       return
     }
 
-    let imageBase64: string | undefined = undefined
+    if (formData) {
+      const payloadToUpdateBox: IUpdateBoxRequest = mapFormDataToBoxRequest(data, formData.id, data.imageUrl)
+      await updateMuatation.mutateAsync(payloadToUpdateBox)
 
-    if (data.image && data.image.length > 0) {
-      imageBase64 = await fileToBase64(data.image[0])
-    } else if (boxData?.image) {
-      imageBase64 = boxData.image
-    }
-
-    const fullData = mapFormDataToBoxData(data, imageBase64)
-
-    if (boxData) {
-      const changed = Object.entries(dirtyFields).reduce(
-        (acc, [formKey, isDirty]) => {
-          const apiKey = FORM_TO_API_KEYS[formKey as keyof BoxSolutionFormData]
-
-          if (!apiKey || !isDirty) return acc
-
-          return {
-            ...acc,
-            [apiKey]: fullData[apiKey]
-          }
-        },
-        {} as Partial<Omit<BoxData, 'id'>>
-      )
-
-      if (data.image && data.image.length > 0 && !changed.image) {
-        changed.image = imageBase64
-      }
-
-      onSave(changed)
+      onClose()
+      await onSave?.(payloadToUpdateBox)
     } else {
-      onSave(fullData)
+      const payloadToCreateBox: ICreateBoxRequest = mapFormDataToBoxRequest(data, data.imageUrl)
+      await createMutation.mutateAsync(payloadToCreateBox)
+
+      onClose()
+      await onSave?.(payloadToCreateBox)
     }
   }
 
@@ -97,6 +87,28 @@ export const BoxSolutionModal = ({ isOpen, onClose, boxData, onSave }: BoxSoluti
     })
   }
 
+  const handleCropp = async (fileList: FileList) => {
+    try {
+      const response = await fetchImageUrl(fileList)
+      const url = response?.url
+      if (!url) return
+
+      showNotification({
+        message: 'Изображение загружено',
+        status: 'success'
+      })
+
+      setValue('imageUrl', url, {
+        shouldDirty: true
+      })
+    } catch {
+      showNotification({
+        message: 'Загрузка изображения не удалась',
+        status: 'error'
+      })
+    }
+  }
+
   const displayFields = fields.length > 0 ? fields : [{ id: 'empty' }]
   const hasMultipleSlots = fields.length > 1
 
@@ -104,11 +116,19 @@ export const BoxSolutionModal = ({ isOpen, onClose, boxData, onSave }: BoxSoluti
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title={`${!boxData ? 'Создать' : 'Редактировать'} коробочное решение`}
+      title={`${!boxId ? 'Создать' : 'Редактировать'} коробочное решение`}
       footer={
         <div className="flex justify-between w-full">
           <Button type="button" label="Отмена" variant="secondary" size="default" onClick={onClose} />
-          <Button type="submit" label="Сохранить" variant="primary" size="default" onClick={handleSubmit(onSubmit)} />
+          <Button
+            type="submit"
+            label="Сохранить"
+            variant="primary"
+            size="default"
+            onClick={handleSubmit(onSubmit)}
+            disabled={!isDirty}
+            className={cn(!isDirty && 'opacity-50 pointer-events-none')}
+          />
         </div>
       }
     >
@@ -296,6 +316,8 @@ export const BoxSolutionModal = ({ isOpen, onClose, boxData, onSave }: BoxSoluti
                 onComplete={file => {
                   const dataTransfer = new DataTransfer()
                   dataTransfer.items.add(file)
+
+                  handleCropp(dataTransfer.files)
 
                   setValue('image', dataTransfer.files, {
                     shouldDirty: true,

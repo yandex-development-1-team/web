@@ -62,6 +62,6 @@ export const formatDateToLocalUI = (dateStr: string | undefined) => {
   return date.toLocaleDateString('ru-RU', {
     day: '2-digit',
     month: '2-digit',
-    year: 'numeric',
+    year: 'numeric'
   })
 }
