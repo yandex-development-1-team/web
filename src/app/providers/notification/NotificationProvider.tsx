@@ -3,7 +3,7 @@ import { Toaster, toast } from 'sonner'
 import { NotificationContext } from './NotificationContext'
 import type { ShowNotificationParams } from './types'
 
-const DEFAULT_DURATION = 6000
+const DEFAULT_DURATION = 3000
 
 export const NotificationProvider = ({ children }: { children: ReactNode }) => {
   const showNotification = ({ message, status, duration = DEFAULT_DURATION }: ShowNotificationParams) => {

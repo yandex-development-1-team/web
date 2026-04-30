@@ -55,7 +55,7 @@ export class ResponseInterceptor {
       return Promise.reject(axiosError)
     }
 
-    if ((axiosError.response?.status === 401 || axiosError.response?.status === 400) && !originalRequest._retry) {
+    if (axiosError.response?.status === 401 && !originalRequest._retry) {
       if (isRefreshing) {
         return new Promise((resolve, reject) => {
           failedQueue.push({ resolve, reject })
