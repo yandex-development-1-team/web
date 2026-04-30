@@ -49,8 +49,8 @@ export const LoginForm = () => {
       await mutateAsync(authFormData)
       navigate(ROUTES.home, { replace: true })
     } catch (error) {
-      const axiosError = error as AxiosError<{ message: string }>
-      const message = axiosError.response?.data?.message || 'Неверный логин или пароль'
+      const axiosError = error as AxiosError<{ errors?: string[] }>
+      const message = axiosError.response?.data?.errors?.[0] || 'Неверный логин или пароль'
       setServerError(message)
     }
   }
