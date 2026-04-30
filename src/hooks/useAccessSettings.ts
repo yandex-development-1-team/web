@@ -3,9 +3,11 @@ import { getAccessSettings, postAccessSettings } from '@/services/api/accessSett
 import { useNotification } from '@/app/providers/notification'
 import type { TRoleServerId } from '@/services/api/accessSettings'
 import type { TAccessSettingsArray } from '@/services/api/accessSettings'
+import { useAxiosVerboseError, type AxiosVerboseError } from '@/hooks/useAxiosVerboseError'
 
 export const useAccessSettings = (roleServerId: TRoleServerId | undefined) => {
   const { showNotification } = useNotification()
+  const showError = useAxiosVerboseError()
   const queryClient = useQueryClient()
   const accessSettingsKey = ['accessSettings', roleServerId] as const
 
@@ -21,13 +23,12 @@ export const useAccessSettings = (roleServerId: TRoleServerId | undefined) => {
       postAccessSettings({ data, roleServerId }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: accessSettingsKey })
-    },
-    onError: () => {
       showNotification({
-        status: 'error',
-        message: 'Не удалось сохранить данные'
+        status: 'success',
+        message: 'Успешно сохранено'
       })
-    }
+    },
+    onError: error => showError(error as AxiosVerboseError)
   })
 
   return {

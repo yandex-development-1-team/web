@@ -3,12 +3,11 @@ import { Button, Input, Loader } from '@/components/ui'
 import { EyeIcon, EyeCloseIcon } from '@/assets/icons'
 import { useModal } from '@/components/ui/Modal/useModal'
 import { RecoveryModal } from './ui/RecoveryModal'
-import { Navigate, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { ROUTES } from '@/app/router'
 import { useLogin } from '../../hooks/useLogin'
 import { validateLogin, validatePassword } from './validation'
 import type { AxiosError } from 'axios'
-import { usePermissions } from '@/hooks/usePermissions'
 
 export const LoginForm = () => {
   const [authFormData, setAuthFormData] = useState({
@@ -24,13 +23,8 @@ export const LoginForm = () => {
   const { mutateAsync, isPending } = useLogin()
   const { isOpen: isOpenRecoveryModal, open: openRecoveryModal, close: closeRecoveryModal } = useModal()
 
-  const { isLoggedIn } = usePermissions()
-
   if (isPending) {
     return <Loader className="h-[100%]" />
-  }
-  if (isLoggedIn) {
-    return <Navigate to={ROUTES.home} replace />
   }
 
   const loginError = validateLogin(authFormData.login)

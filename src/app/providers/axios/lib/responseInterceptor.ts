@@ -41,6 +41,13 @@ export class ResponseInterceptor {
     const axiosError = error as AxiosError
     const originalRequest = axiosError.config as InternalAxiosRequestConfig & { _retry?: boolean }
 
+    const isAuthRoute =
+      originalRequest?.url?.includes(API_ROUTES.passwordReset) || originalRequest?.url?.includes(API_ROUTES.login)
+
+    if (isAuthRoute) {
+      return Promise.reject(axiosError)
+    }
+
     if (originalRequest?.url?.includes(API_ROUTES.refreshToken)) {
       isRefreshing = false
       this.processQueue(axiosError, null)
