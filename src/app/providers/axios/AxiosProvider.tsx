@@ -47,6 +47,12 @@ export const AxiosProvider = ({ children }: Props) => {
           message: msg || 'Ошибка сервера'
         })
       },
+      onConflict: msg => {
+        showNotification({
+          status: 'error',
+          message: msg
+        })
+      },
       onNetworkError: () => {
         showNotification({
           status: 'error',

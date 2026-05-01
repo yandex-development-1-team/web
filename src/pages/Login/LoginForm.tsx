@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Button, Input, Loader } from '@/components/ui'
+import { Button, Input } from '@/components/ui'
 import { EyeIcon, EyeCloseIcon } from '@/assets/icons'
 import { useModal } from '@/components/ui/Modal/useModal'
 import { RecoveryModal } from './ui/RecoveryModal'
@@ -22,10 +22,6 @@ export const LoginForm = () => {
 
   const { mutateAsync, isPending } = useLogin()
   const { isOpen: isOpenRecoveryModal, open: openRecoveryModal, close: closeRecoveryModal } = useModal()
-
-  if (isPending) {
-    return <Loader className="h-[100%]" />
-  }
 
   const loginError = validateLogin(authFormData.login)
   const passwordError = validatePassword(authFormData.password)
@@ -107,7 +103,7 @@ export const LoginForm = () => {
           </p>
         </div>
 
-        {serverError && <div className="text-xs text-text-red-dark mb-2">{serverError}</div>}
+        <div className="min-h-[19px] text-xs text-text-red-dark mb-2">{serverError}</div>
 
         <button
           type="button"

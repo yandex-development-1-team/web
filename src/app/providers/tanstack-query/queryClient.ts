@@ -5,11 +5,20 @@ export const queryClient = new QueryClient({
     queries: {
       staleTime: 1000 * 60 * 5,
       gcTime: 1000 * 60 * 10,
-      retry: 1,
-      refetchOnReconnect: true
+      
+      retry: (failureCount, error: any) => {
+        if (error?.status >= 400 && error?.status < 500) {
+           if (error.status === 408 || error.status === 429) return failureCount < 1
+           return false
+        }
+        return failureCount < 1
+      },
+      
+      refetchOnReconnect: true,
+      refetchOnWindowFocus: false, 
     },
     mutations: {
-      retry: 1
+      retry: false, 
     }
   }
 })

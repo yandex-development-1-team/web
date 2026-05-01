@@ -6,7 +6,8 @@ export type AxiosVerboseError = AxiosError<{ errors?: string[] }>
 export const useAxiosVerboseError = () => {
   const { showNotification } = useNotification()
   return (error: AxiosVerboseError) => {
-    const serverMessage = error.response?.data?.errors?.[0] || 'Ошибка'
+    const statusMessage = 'Ошибка' + (error.status ? ` ${error.status}` : '')
+    const serverMessage = error.response?.data?.errors?.join('. ') || statusMessage
     showNotification({
       status: 'error',
       message: serverMessage
