@@ -1,0 +1,1 @@
+import{E as n}from"./mockData-CIUFFNHc.js";import{h as t}from"./index-DW6Sg8UC.js";const s=async e=>n.find(r=>r.id.toString()===e),y=(e,r)=>{const o=t({queryKey:r,queryFn:()=>s(e)});return{employee:o.data,isPending:o.isPending,error:o.error}};export{y as u};
