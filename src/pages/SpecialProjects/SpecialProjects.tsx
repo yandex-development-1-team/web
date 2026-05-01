@@ -13,10 +13,15 @@ import { useSpecialProjects } from './hooks/useSpecialProjects'
 import { filterSchema } from './specialProjects.types'
 import { useQueryParams } from '@/hooks/useUrlFilters'
 import { FiltersBlock } from './ui/FiltersBlock'
+import { deleteSpecProject } from './api/deleteSpecialProject'
+import { mapProjectToCreateData, mapProjectToEditData } from './api/specProject.mappers'
+import { useUpdateSpecialProject } from './hooks/useUpdateSpecialProject'
+import { useCreateSpecialProject } from './hooks/useCreateSpecialProject'
 
 const SpecialProjects = () => {
+  const { mutate: editSpecProject } = useUpdateSpecialProject()
+  const { mutate: createSpecProject } = useCreateSpecialProject()
   const { data } = useSpecialProjects()
-  console.log(data)
 
   const { updateParam } = useQueryParams(filterSchema)
 
@@ -117,6 +122,16 @@ const SpecialProjects = () => {
   }
 
   const { hasAccess } = usePermissions()
+
+  const handleSubmitProject = (data: IProject) => {
+    if (projectToEdit) {
+      const finalData = mapProjectToEditData(data)
+      editSpecProject(finalData)
+    } else {
+      const finalData = mapProjectToCreateData(data)
+      createSpecProject(finalData)
+    }
+  }
 
   useEffect(() => {
     updateParam('limit')(String(pageSize))
@@ -228,8 +243,9 @@ const SpecialProjects = () => {
         isOpen={projectToEdit !== null}
         onClose={() => setProjectToEdit(null)}
         onSubmit={data => {
-          console.log(data)
           setProjectToEdit(null)
+
+          handleSubmitProject(data)
         }}
         modalTitle={projectToEdit !== undefined ? 'Редактировать спецпроект' : 'Создать спецпроект'}
         initialData={projectToEdit || undefined}
@@ -239,10 +255,11 @@ const SpecialProjects = () => {
         title="Удалить спецпроект?"
         isOpen={!!projectToDelete || projectToDelete === 0}
         onDelete={async id => {
-          console.log(id)
+          deleteSpecProject(Number(id))
         }}
         onClose={() => setProjectToDelete(null)}
         itemId={projectToDelete}
+        queryKey={['specialProjects']}
       >
         <p>Вы действительно хотите удалить этот спецпроект?</p>
         <p>Действие нельзя отменить</p>
