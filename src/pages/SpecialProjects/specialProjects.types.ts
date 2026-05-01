@@ -40,7 +40,7 @@ export interface ICreateSpecialProjectDTO {
 }
 
 export interface IUpdateSpecialProjecDTO extends Partial<ICreateSpecialProjectDTO> {
-  id?: number
+  id: number
 }
 
 export interface IProjectQueryParams {

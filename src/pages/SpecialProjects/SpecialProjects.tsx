@@ -1,7 +1,7 @@
 import { useEffect, useState, type ChangeEvent } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { BoxButton, Input, Dropzone, DeleteModal } from '@/components/ui'
-import { mockProjects, mockUrl } from '@/mockData/mockSpecialProjectsPageData'
+import { mockUrl } from '@/mockData/mockSpecialProjectsPageData'
 import { EnvelopeIcon } from '@/assets/icons'
 import { ProjectCard } from '@/components/layout/ProjectCard'
 import { Pagination } from '@/components/ui/Pagination'
@@ -105,7 +105,7 @@ const SpecialProjects = () => {
   }
 
   const handleProjectView = (id: number | string) => {
-    setProjectToView(mockProjects.find(project => project.id === id) || null)
+    setProjectToView(projects.find(project => project.id === id) || null)
   }
 
   const handleProjectEdit = (id: number | string) => {
