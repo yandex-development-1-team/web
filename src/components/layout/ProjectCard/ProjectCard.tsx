@@ -1,6 +1,8 @@
 import { Button } from '@/components/ui'
 import { Edit2Icon, Delete2Icon } from '@/assets/icons'
 import type { ProjectCardProps } from './ProjectCard.types'
+import fallbackImg from '@/assets/images/box_image_placeholder.png'
+import { cn } from '@/lib/utils.clsx'
 
 export const ProjectCard = ({
   onClick,
@@ -43,8 +45,14 @@ export const ProjectCard = ({
       `}
     >
       <div className="py-[20px_11px] min-h-[179px] flex flex-col items-center justify-center">
-        <div className="relative inline-block">
-          <img className="max-h-[148px] object-contain block" src={image} />
+        <div
+          className={cn('relative inline-block w-full bg-cover bg-center bg-no-repeat h-full')}
+          style={{
+            backgroundImage: !image ? `url(${fallbackImg})` : undefined,
+            borderRadius: 8
+          }}
+        >
+          <img className="max-h-[148px] object-contain block" src={image || undefined} />
           <p
             className={`
             absolute top-[12px] right-[12px] whitespace-nowrap text-h5 rounded-[4px]
