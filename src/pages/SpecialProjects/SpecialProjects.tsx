@@ -17,11 +17,15 @@ import { deleteSpecProject } from './api/deleteSpecialProject'
 import { mapProjectToCreateData, mapProjectToEditData } from './api/specProject.mappers'
 import { useUpdateSpecialProject } from './hooks/useUpdateSpecialProject'
 import { useCreateSpecialProject } from './hooks/useCreateSpecialProject'
+import { useFormLink } from './hooks/useFormLink'
+import { useUpdateFormLink } from './hooks/useUpdateFormLink'
 
 const SpecialProjects = () => {
   const { mutate: editSpecProject } = useUpdateSpecialProject()
   const { mutate: createSpecProject } = useCreateSpecialProject()
   const { data } = useSpecialProjects()
+  const { item, data: resourceData } = useFormLink()
+  const { mutate: updateLink } = useUpdateFormLink()
 
   const { updateParam } = useQueryParams(filterSchema)
 
@@ -102,6 +106,28 @@ const SpecialProjects = () => {
   const handleUrlKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       e.currentTarget.blur()
+
+      if (resourceData && !urlError) {
+        if (item) {
+          const { id } = item
+          const newItem = resourceData?.links?.find(item => item.id === id)
+
+          if (newItem) {
+            newItem.url = url
+
+            updateLink(resourceData)
+          }
+        } else {
+          const formLink = {
+            url,
+            title: 'Яндекс форма'
+          }
+
+          resourceData?.links?.push(formLink)
+
+          updateLink(resourceData)
+        }
+      }
     }
   }
 
@@ -136,6 +162,14 @@ const SpecialProjects = () => {
   useEffect(() => {
     updateParam('limit')(String(pageSize))
   }, [pageSize])
+
+  useEffect(() => {
+    const handleValue = () => {
+      setUrl(item?.url || '')
+    }
+
+    handleValue()
+  }, [resourceData])
 
   return (
     <>

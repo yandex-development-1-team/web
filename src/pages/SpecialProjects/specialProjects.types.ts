@@ -49,3 +49,13 @@ export interface IProjectQueryParams {
   offset?: number
   status?: TStatus
 }
+
+type TLinks = { id?: string; title?: string; url?: string }
+
+export interface TResources {
+  slug?: string
+  content?: string
+  title?: string
+  links?: TLinks[]
+  updated_at?: string
+}
