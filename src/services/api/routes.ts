@@ -2,6 +2,7 @@ const EXPORT_BASE = '/export' as const
 const BOXES_BASE = '/boxes/' as const
 export const BOOKINGS_BASE = '/bookings/' as const
 export const APPLICATIONS_BASE = '/applications/' as const
+export const SPECIAL_PROJECTS_BASE = '/special-projects/' as const
 
 export const API_ROUTES = {
   items: '/items',
@@ -46,5 +47,15 @@ export const API_ROUTES = {
     byId: (id: string) => `${BOXES_BASE}${id}`,
     get: BOXES_BASE,
     create: BOXES_BASE
+  },
+  specialProjects: {
+    get: SPECIAL_PROJECTS_BASE,
+    byId: (id: string) => `${SPECIAL_PROJECTS_BASE}${id}`,
+    putById: (id: string) => `${SPECIAL_PROJECTS_BASE}${id}`,
+    deleteById: (id: string) => `${SPECIAL_PROJECTS_BASE}${id}`,
+    post: `${SPECIAL_PROJECTS_BASE}`,
+    getFormLink: `/resources/req-spec-projects`,
+    putFormLink: `/resources/req-spec-projects`,
+    putPresentation: `/resources/spec-projects/file`
   }
 } as const
