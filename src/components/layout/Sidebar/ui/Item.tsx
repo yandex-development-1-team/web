@@ -2,8 +2,9 @@ import { useState } from 'react'
 import { NavLink, useMatch } from 'react-router-dom'
 import { ArrowIcon } from '@/assets/icons'
 import type { ItemProps } from './Item.types'
+import { LabelInDevelopment } from '@/components/ui'
 
-export const Item = ({ Icon, title, route, childrenItems, isExpanded }: ItemProps) => {
+export const Item = ({ Icon, title, route, childrenItems, isExpanded, inDevelopment }: ItemProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
 
   const isCurrentRoute = useMatch(route)
@@ -38,6 +39,7 @@ export const Item = ({ Icon, title, route, childrenItems, isExpanded }: ItemProp
             <div className="overflow-hidden">
               <h5 className="text-text text-h5 w-[174px]">{title}</h5>
             </div>
+            {inDevelopment && <LabelInDevelopment />}
 
             {childrenItems?.length && (
               <div
@@ -68,12 +70,15 @@ export const Item = ({ Icon, title, route, childrenItems, isExpanded }: ItemProp
               {({ isActive }) => (
                 <div
                   className={`
-              py-[8px] pr-[9px] pl-[21px] hover:rounded-xl cursor-pointer leading-[1.1]
-              hover:bg-grey-extra-light active:bg-system-background border-b border-transparent hover:border-transparent
-              ${isActive ? 'border-yellow-accent-dark' : ''}
-            `}
+                    py-[8px] pr-[9px] pl-[21px] hover:rounded-xl cursor-pointer leading-[1.1]
+                    hover:bg-grey-extra-light active:bg-system-background border-b border-transparent
+                    hover:border-transparent relative
+                    ${isActive ? 'border-yellow-accent-dark' : ''}
+                    color-red-dark
+                  `}
                 >
                   <span className="text-text text-xs">{item.title}</span>
+                  {item.inDevelopment && <LabelInDevelopment />}
                 </div>
               )}
             </NavLink>

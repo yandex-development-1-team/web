@@ -92,6 +92,7 @@ export const Sidebar = () => {
                   route={item.route}
                   childrenItems={item.childrenItems}
                   isExpanded={isExpanded}
+                  inDevelopment={item.inDevelopment}
                 />
               )
           )}
@@ -103,12 +104,13 @@ export const Sidebar = () => {
         >
           {MENU_DOWN.map(item => (
             <DownItem
-              key={item.route}
+              key={`${item.route}-down`}
               Icon={item.Icon}
               title={item.title}
               route={item.route}
               isExpanded={isExpanded}
               onClick={item.title === 'Выход' ? logout.logout : undefined}
+              inDevelopment={item.inDevelopment}
             />
           ))}
         </div>
