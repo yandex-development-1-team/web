@@ -1,8 +1,8 @@
-import { useState, type ChangeEvent } from 'react'
+import { useEffect, useState, type ChangeEvent } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { BoxButton, Input, Dropzone, DeleteModal, Select } from '@/components/ui'
+import { BoxButton, Input, Dropzone, DeleteModal } from '@/components/ui'
 import { mockProjects, mockUrl } from '@/mockData/mockSpecialProjectsPageData'
-import { EnvelopeIcon, SearchIcon } from '@/assets/icons'
+import { EnvelopeIcon } from '@/assets/icons'
 import { ProjectCard } from '@/components/layout/ProjectCard'
 import { Pagination } from '@/components/ui/Pagination'
 import { type IProject } from '@/types/solutions'
@@ -10,19 +10,18 @@ import { useMainWidth } from '@/hooks/useMainWidth'
 import { SpecialProjectModal } from '@/components/SpecialProjectModal/SpecialProjectModal'
 import { usePermissions, PERMISSIONS } from '@/hooks/usePermissions'
 import { useSpecialProjects } from './hooks/useSpecialProjects'
+import { filterSchema } from './specialProjects.types'
+import { useQueryParams } from '@/hooks/useUrlFilters'
+import { FiltersBlock } from './ui/FiltersBlock'
 
 const SpecialProjects = () => {
   const { data } = useSpecialProjects()
   console.log(data)
 
+  const { updateParam } = useQueryParams(filterSchema)
+
   const cardMinWidth = 284
   const cardMaxWidth = 344
-
-  const selectData = [
-    { value: 'all', label: 'Все' },
-    { value: 'active', label: 'Активные' },
-    { value: 'inactive', label: 'Не активные' }
-  ]
 
   const mainWidth = useMainWidth()
   const pageSize = Math.floor((mainWidth - 20) / (cardMinWidth + 20)) || 1
@@ -30,7 +29,6 @@ const SpecialProjects = () => {
   const [searchParams] = useSearchParams()
   const offset = Number(searchParams.get('offset')) || 0
 
-  // const [projects, setProjects] = useState<IProject[]>(mockProjects)
   const projects = data?.items || []
   const total = data?.pagination.total || 0
 
@@ -120,6 +118,10 @@ const SpecialProjects = () => {
 
   const { hasAccess } = usePermissions()
 
+  useEffect(() => {
+    updateParam('limit')(String(pageSize))
+  }, [pageSize])
+
   return (
     <>
       <h2 className="text-h2 text-text py-[38px_38px]">Управление спецпроектами</h2>
@@ -182,10 +184,7 @@ const SpecialProjects = () => {
         )}
       </div>
 
-      <div className="flex items-center gap-5 mb-6">
-        <Input variant="icon" icon={<SearchIcon />} className="bg-white min-[1440px]:min-w-84 h-full" placeholder="" />
-        <Select options={selectData} placeholder="Выберите статус" classNames={{ trigger: 'bg-white w-full h-11.5' }} />
-      </div>
+      <FiltersBlock />
 
       <div
         className={`mt-[30px] flex gap-[20px] ${justifyClass}`}
