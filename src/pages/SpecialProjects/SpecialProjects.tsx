@@ -9,8 +9,12 @@ import { type IProject } from '@/types/solutions'
 import { useMainWidth } from '@/hooks/useMainWidth'
 import { SpecialProjectModal } from '@/components/SpecialProjectModal/SpecialProjectModal'
 import { usePermissions, PERMISSIONS } from '@/hooks/usePermissions'
+import { useSpecialProjects } from './hooks/useSpecialProjects'
 
 const SpecialProjects = () => {
+  const { data } = useSpecialProjects()
+  console.log(data)
+
   const cardMinWidth = 284
   const cardMaxWidth = 344
 
@@ -26,7 +30,9 @@ const SpecialProjects = () => {
   const [searchParams] = useSearchParams()
   const offset = Number(searchParams.get('offset')) || 0
 
-  const [projects, setProjects] = useState<IProject[]>(mockProjects)
+  // const [projects, setProjects] = useState<IProject[]>(mockProjects)
+  const projects = data?.items || []
+  const total = data?.pagination.total || 0
 
   const pageSizeLow = Math.floor((mainWidth - 20) / (cardMaxWidth + 20)) || 1
   const cardsOnCurrentPageCount = projects.slice(offset, offset + pageSize).length
@@ -94,14 +100,6 @@ const SpecialProjects = () => {
     if (e.key === 'Enter') {
       e.currentTarget.blur()
     }
-  }
-
-  const deleteProject = async (id: string | number) => {
-    setProjects(prev => prev.filter(project => project.id !== id))
-  }
-
-  const updateProject = async (newData: IProject) => {
-    setProjects(prev => prev.map(project => (project.id === newData.id ? newData : project)))
   }
 
   const handleProjectCreate = () => {
@@ -193,7 +191,7 @@ const SpecialProjects = () => {
         className={`mt-[30px] flex gap-[20px] ${justifyClass}`}
         style={{ gridTemplateColumns: `repeat(${pageSize}, minmax(0, 1fr))` }}
       >
-        {projects.slice(offset, offset + pageSize).map(project => (
+        {projects.map(project => (
           <ProjectCard
             style={{ minWidth: `${cardMinWidth}px`, maxWidth: `${cardMaxWidth}px` }}
             key={project.id}
@@ -214,7 +212,7 @@ const SpecialProjects = () => {
         pagination={{
           limit: pageSize,
           offset: offset,
-          total: projects.length
+          total: total
         }}
       />
 
@@ -231,7 +229,7 @@ const SpecialProjects = () => {
         isOpen={projectToEdit !== null}
         onClose={() => setProjectToEdit(null)}
         onSubmit={data => {
-          updateProject(data)
+          console.log(data)
           setProjectToEdit(null)
         }}
         modalTitle={projectToEdit !== undefined ? 'Редактировать спецпроект' : 'Создать спецпроект'}
@@ -242,7 +240,7 @@ const SpecialProjects = () => {
         title="Удалить спецпроект?"
         isOpen={!!projectToDelete || projectToDelete === 0}
         onDelete={async id => {
-          deleteProject(id)
+          console.log(id)
         }}
         onClose={() => setProjectToDelete(null)}
         itemId={projectToDelete}
