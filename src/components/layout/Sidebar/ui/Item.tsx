@@ -74,7 +74,6 @@ export const Item = ({ Icon, title, route, childrenItems, isExpanded, inDevelopm
                     hover:bg-grey-extra-light active:bg-system-background border-b border-transparent
                     hover:border-transparent relative
                     ${isActive ? 'border-yellow-accent-dark' : ''}
-                    color-red-dark
                   `}
                 >
                   <span className="text-text text-xs">{item.title}</span>
