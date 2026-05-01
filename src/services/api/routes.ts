@@ -10,6 +10,8 @@ export const API_ROUTES = {
   login: '/auth/login',
   logout: '/auth/logout',
   refreshToken: '/auth/refresh',
+  passwordRecovery: 'auth/forgot-password',
+  passwordReset: 'auth/reset-password',
   users: '/users',
   imageUrl: '/files/upload',
 

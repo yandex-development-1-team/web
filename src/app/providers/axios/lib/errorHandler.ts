@@ -11,9 +11,9 @@ export class ErrorHandler {
     this.config = config
   }
 
-  public handleError(error: unknown): ApiError {
+  public handleError(error: unknown): ApiError | CancelledRequestError | NetworkError {
     if (this.isHandlingError) {
-      return new ApiError(500, 'RECURSIVE_ERROR')
+      return new ApiError(500, 'RECURSIVE_ERROR', 'Internal error')
     }
 
     this.isHandlingError = true
@@ -25,12 +25,12 @@ export class ErrorHandler {
     }
   }
 
-  private processError(error: unknown): ApiError {
+  private processError(error: unknown): ApiError | CancelledRequestError | NetworkError {
     if (axios.isCancel(error)) {
-      throw new CancelledRequestError()
+      return new CancelledRequestError()
     }
 
-    const axiosError = error as AxiosError<ApiErrorResponse['data']>
+    const axiosError = error as AxiosError<ApiErrorResponse>
 
     if (!axiosError.response) {
       this.config.onNetworkError()
@@ -38,10 +38,15 @@ export class ErrorHandler {
     }
 
     const { status, data } = axiosError.response
+    const combinedMessage = data?.errors
+      ? Array.isArray(data.errors)
+        ? data.errors.join('. ')
+        : String(data.errors)
+      : 'Ошибка' + (status ? ` ${status}` : '')
 
-    const apiError = new ApiError(status, data?.code || `HTTP_${status}`, data?.details)
+    const apiError = new ApiError(status, `HTTP_${status}`, combinedMessage)
 
-    this.handleByStatus(status, data?.message || apiError.message)
+    this.handleByStatus(status, combinedMessage)
 
     return apiError
   }
@@ -49,10 +54,13 @@ export class ErrorHandler {
   private handleByStatus(status: number, message: string): void {
     switch (status) {
       case 401:
-        this.handleUnauthorized()
+        this.config.onUnauthorized()
         break
       case 403:
         this.config.onForbidden(message)
+        break
+      case 409:
+        this.config.onConflict(message)
         break
       case 500:
         this.config.onServerError(message)
@@ -62,9 +70,5 @@ export class ErrorHandler {
           this.config.onCriticalError?.(status, message)
         }
     }
-  }
-
-  private handleUnauthorized(): void {
-    this.config.onUnauthorized()
   }
 }

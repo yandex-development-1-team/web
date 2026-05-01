@@ -3,7 +3,6 @@ import { ErrorHandler } from '@/app/providers/axios/lib/errorHandler'
 import type { ErrorHandlerConfig } from '@/app/providers/axios/types/api'
 import { api, refreshApi } from '../axiosInstance'
 import { API_ROUTES } from '@/services/api/routes'
-import type { ApiError } from '../utils/customErrors'
 
 type FailedRequest = {
   resolve: (token: string) => void
@@ -37,20 +36,27 @@ export class ResponseInterceptor {
     failedQueue = []
   }
 
-  public async handleError(error: unknown): Promise<AxiosResponse | ApiError> {
+  public async handleError(error: unknown): Promise<AxiosResponse | never> {
     const axiosError = error as AxiosError
     const originalRequest = axiosError.config as InternalAxiosRequestConfig & { _retry?: boolean }
+
+    const isAuthRoute =
+      originalRequest?.url?.includes(API_ROUTES.passwordReset) || originalRequest?.url?.includes(API_ROUTES.login)
+
+    if (isAuthRoute) {
+      return Promise.reject(axiosError)
+    }
 
     if (originalRequest?.url?.includes(API_ROUTES.refreshToken)) {
       isRefreshing = false
       this.processQueue(axiosError, null)
       this.config.onUnauthorized()
-      return Promise.reject(axiosError)
+      return Promise.reject(this.errorHandler.handleError(axiosError))
     }
 
-    if ((axiosError.response?.status === 401 || axiosError.response?.status === 400) && !originalRequest._retry) {
+    if (axiosError.response?.status === 401 && !originalRequest._retry) {
       if (isRefreshing) {
-        return new Promise((resolve, reject) => {
+        return new Promise<string>((resolve, reject) => {
           failedQueue.push({ resolve, reject })
         })
           .then(token => {
@@ -59,9 +65,7 @@ export class ResponseInterceptor {
             }
             return api(originalRequest)
           })
-          .catch(err => {
-            return this.errorHandler.handleError(err)
-          })
+          .catch(err => Promise.reject(this.errorHandler.handleError(err)))
       }
 
       originalRequest._retry = true
@@ -90,12 +94,13 @@ export class ResponseInterceptor {
       } catch (refreshError) {
         this.processQueue(refreshError as AxiosError | Error, null)
         this.config.onUnauthorized()
-        return Promise.reject(refreshError)
+        return Promise.reject(this.errorHandler.handleError(refreshError))
       } finally {
         isRefreshing = false
       }
     }
 
-    return this.errorHandler.handleError(error)
+    const processedError = this.errorHandler.handleError(axiosError)
+    return Promise.reject(processedError)
   }
 }

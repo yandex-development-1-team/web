@@ -31,6 +31,10 @@ export const router = createBrowserRouter(
           lazy: () => import('@/pages/Login/Login')
         },
         {
+          path: ROUTES.passwordReset,
+          lazy: () => import('@/pages/PasswordReset/PasswordReset')
+        },
+        {
           element: <ProtectedRoute />,
           children: [
             {

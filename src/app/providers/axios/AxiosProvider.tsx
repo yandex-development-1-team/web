@@ -19,9 +19,10 @@ export const AxiosProvider = ({ children }: Props) => {
   useEffect(() => {
     const cleanup = setupInterceptors(tokenStorage, {
       onUnauthorized: () => {
-        const isAtLogin = window.location.pathname === ROUTES.login
+        const isAuthPage =
+          window.location.pathname === ROUTES.login || window.location.pathname === ROUTES.passwordReset
 
-        if (!isAtLogin && !isRedirecting.current) {
+        if (!isAuthPage && !isRedirecting.current) {
           isRedirecting.current = true
 
           tokenStorage.removeToken()
@@ -44,6 +45,12 @@ export const AxiosProvider = ({ children }: Props) => {
         showNotification({
           status: 'error',
           message: msg || 'Ошибка сервера'
+        })
+      },
+      onConflict: msg => {
+        showNotification({
+          status: 'error',
+          message: msg
         })
       },
       onNetworkError: () => {
