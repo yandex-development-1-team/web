@@ -19,6 +19,7 @@ import { useUpdateSpecialProject } from './hooks/useUpdateSpecialProject'
 import { useCreateSpecialProject } from './hooks/useCreateSpecialProject'
 import { useFormLink } from './hooks/useFormLink'
 import { useUpdateFormLink } from './hooks/useUpdateFormLink'
+import { useUploadPresentation } from './hooks/useUploadPresentation'
 
 const SpecialProjects = () => {
   const { mutate: editSpecProject } = useUpdateSpecialProject()
@@ -26,6 +27,7 @@ const SpecialProjects = () => {
   const { data } = useSpecialProjects()
   const { item, data: resourceData } = useFormLink()
   const { mutate: updateLink } = useUpdateFormLink()
+  const { mutate: uploadPresentation } = useUploadPresentation()
 
   const { updateParam } = useQueryParams(filterSchema)
 
@@ -56,6 +58,11 @@ const SpecialProjects = () => {
 
   const handleFileAccept = (file: File) => {
     setPresentationFile(file)
+
+    const formData = new FormData()
+    formData.append('file', file)
+
+    uploadPresentation(formData)
   }
 
   const updateUrl = () => void url
