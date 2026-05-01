@@ -39,7 +39,9 @@ export class ErrorHandler {
 
     const { status, data } = axiosError.response
     const combinedMessage = data?.errors
-      ? (Array.isArray(data.errors) ? data.errors.join('. ') : String(data.errors))
+      ? Array.isArray(data.errors)
+        ? data.errors.join('. ')
+        : String(data.errors)
       : 'Ошибка' + (status ? ` ${status}` : '')
 
     const apiError = new ApiError(status, `HTTP_${status}`, combinedMessage)
