@@ -15,11 +15,6 @@ export type UserLoginInfo = {
   photo: string
 }
 
-export type UserLoginInfo = {
-  name: string
-  photo: string
-}
-
 export interface TokenStorage {
   getToken: () => string | null
   setToken: (token: string) => void
