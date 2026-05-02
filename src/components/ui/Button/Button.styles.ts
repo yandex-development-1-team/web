@@ -26,9 +26,6 @@ const defaultStyles = `
   text-black
   button-text
   hover:bg-yellow-light
-  focus:ring-2
-  focus:ring-yellow-accent-dark
-  focus:ring-offset-2
   active:bg-yellow-accent-dark
   aria-invalid:bg-red-medium
   aria-invalid:text-white
@@ -41,9 +38,6 @@ const outlineStyles = `
   text-black
   button-text
   hover:ring-yellow-light
-  focus:ring-2
-  focus:ring-yellow-accent-dark
-  focus:ring-offset-2
   active:ring-2
   active:ring-yellow-accent-dark
   aria-invalid:ring-2
@@ -86,14 +80,9 @@ const primaryStyles = `
   button-text
   hover:bg-yellow-light
   hover:border-yellow-light
-  focus:ring-2
-  focus:ring-yellow-accent-dark
-  focus:ring-offset-2
-  
   active:bg-yellow-accent-dark
   active:border-yellow-accent-dark
   active:outline-yellow-accent-dark
-
   disabled:bg-grey-extra-light
   disabled:border-grey-extra-light
 `
@@ -104,14 +93,9 @@ const secondaryStyles = `
   text-text
   button-text
   bg-white
-
   hover:border-yellow-light
-  focus:ring-2
-  focus:ring-yellow-accent-dark
-  focus:ring-offset-2
   active:border-yellow-accent-dark
   active:outline-yellow-accent-dark
-
   disabled:border-grey-extra-light
   disabled:outline-transparent
   disabled:text-text-grey-dark
@@ -121,10 +105,8 @@ const dangerStyles = `
   bg-system-error
   text-white
   button-text
-
   hover:bg-system-error-light
   active:bg-system-error-medium
-
   disabled:bg-grey-extra-light
   disabled:text-text-grey-light
 `
@@ -137,11 +119,9 @@ const secondaryDangerStyles = `
   bg-white
   outline-3
   outline-offset-[-3px]
-
   hover:border-red-medium
   active:border-red-dark
   active:outline-red-dark
-
   disabled:border-grey-extra-light
   disabled:outline-transparent
   disabled:text-text-grey-dark
@@ -150,16 +130,10 @@ const secondaryDangerStyles = `
 const elevatedStyles = `
   button-text
   shadow-[0px_1px_3px_0px_rgba(0,0,0,0.15),0px_1px_2px_0px_rgba(0,0,0,0.30)]
-
   hover:shadow-[0px_6px_12px_0px_rgba(0,0,0,0.18),0px_3px_6px_0px_rgba(0,0,0,0.33)]
   hover:-translate-y-px
-  focus:ring-2
-  focus:ring-yellow-accent-dark
-  focus:ring-offset-2
-
   active:shadow-[0px_1px_2px_0px_rgba(0,0,0,0.20),inset_0px_1px_2px_0px_rgba(0,0,0,0.15)]
   active:translate-y-0
-
   transition-all duration-200 ease-in-out
 `
 
