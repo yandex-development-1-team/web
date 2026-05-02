@@ -34,7 +34,7 @@ export class ErrorHandler {
 
     if (!axiosError.response) {
       this.config.onNetworkError()
-      throw new NetworkError()
+      return new NetworkError()
     }
 
     const { status, data } = axiosError.response
@@ -54,7 +54,6 @@ export class ErrorHandler {
   private handleByStatus(status: number, message: string): void {
     switch (status) {
       case 401:
-        this.config.onUnauthorized()
         break
       case 403:
         this.config.onForbidden(message)
