@@ -143,11 +143,11 @@ const SpecialProjects = () => {
   }
 
   const handleProjectView = (id: number | string) => {
-    setProjectToView(projects.find(project => project.id === id) || null)
+    setProjectToView(structuredClone(projects.find(project => project.id === id)) || null)
   }
 
   const handleProjectEdit = (id: number | string) => {
-    setProjectToEdit(projects.find(project => project.id === id) || null)
+    setProjectToEdit(structuredClone(projects.find(project => project.id === id)) || null)
   }
 
   const handleProjectDelete = (id: number | string) => {
@@ -272,15 +272,18 @@ const SpecialProjects = () => {
       />
 
       <SpecialProjectModal
+        key={projectToView?.id ?? 'new_view'}
         isOpen={projectToView !== null}
         onClose={() => setProjectToView(null)}
         onSubmit={() => setProjectToView(null)}
         modalTitle={'Спецпроект'}
         initialData={projectToView || undefined}
         viewOnly={true}
+        isImageUrl
       />
 
       <SpecialProjectModal
+        key={projectToEdit?.id ?? 'new_edit'}
         isOpen={projectToEdit !== null}
         onClose={() => setProjectToEdit(null)}
         onSubmit={data => {
@@ -290,6 +293,7 @@ const SpecialProjects = () => {
         }}
         modalTitle={projectToEdit !== undefined ? 'Редактировать спецпроект' : 'Создать спецпроект'}
         initialData={projectToEdit || undefined}
+        isImageUrl
       />
 
       <DeleteModal

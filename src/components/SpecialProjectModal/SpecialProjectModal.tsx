@@ -18,6 +18,7 @@ interface SpecialProjectModalProps {
   modalTitle?: string
   isPending?: boolean
   viewOnly?: boolean
+  isImageUrl?: boolean
 }
 
 export function SpecialProjectModal({
@@ -27,7 +28,8 @@ export function SpecialProjectModal({
   onClose,
   modalTitle,
   isPending,
-  viewOnly = false
+  viewOnly = false,
+  isImageUrl = false
 }: SpecialProjectModalProps) {
   const getDefaultData = (): TFormData => ({
     id: uuidv4(),
@@ -110,7 +112,7 @@ export function SpecialProjectModal({
                       text: 'Активен'
                     }}
                   >
-                    <Switch {...field} checked={field.value} />
+                    <Switch {...field} checked={field.value} disabled={viewOnly} />
                   </FormItem>
                 )
               }}
@@ -124,7 +126,13 @@ export function SpecialProjectModal({
             }}
             errorMessage={errors.title?.message}
           >
-            <Input {...register('title')} placeholder="Текст" id="spec-title" invalid={!!errors.title} />
+            <Input
+              {...register('title')}
+              placeholder="Текст"
+              id="spec-title"
+              invalid={!!errors.title}
+              disabled={viewOnly}
+            />
           </FormItem>
           <FormItem
             labelSetting={{ text: 'Описание', id: 'spec-description' }}
@@ -135,14 +143,39 @@ export function SpecialProjectModal({
               placeholder="Текст"
               id="spec-description"
               invalid={!!errors.description}
+              disabled={viewOnly}
             />
           </FormItem>
-          <div className="px-6">
-            <ImagePickerWithCrop
-              name="image"
-              getIsCropping={setCheckCropping}
-              previewImg={initialData?.image || undefined}
-            />
+          <div
+            className={cn({
+              ['px-6']: !isImageUrl
+            })}
+          >
+            {!isImageUrl ? (
+              <ImagePickerWithCrop
+                name="image"
+                getIsCropping={setCheckCropping}
+                previewImg={initialData?.image || undefined}
+              />
+            ) : (
+              <FormItem
+                labelSetting={{ text: 'Ссылка на изображение', id: 'spec-image' }}
+                errorMessage={errors.image?.message}
+              >
+                <Input
+                  {...register('image')}
+                  placeholder="Добавьте ссылку на изображение (https)"
+                  id="spec-image"
+                  invalid={!!errors.image}
+                  disabled={viewOnly}
+                />
+              </FormItem>
+            )}
+            {isImageUrl && initialData?.image && (
+              <div className="flex items-center justify-center p-3">
+                <img src={initialData?.image} alt="preview" className="w-[262px] h-[172px] object-cover rounded-lg" />
+              </div>
+            )}
           </div>
           {errors.root?.croppingInProgress && (
             <div className="flex items-center justify-center">

@@ -46,13 +46,13 @@ export const ProjectCard = ({
     >
       <div className="py-[20px_11px] min-h-[179px] flex flex-col items-center justify-center">
         <div
-          className={cn('relative inline-block w-full bg-cover bg-center bg-no-repeat h-full')}
+          className={cn('relative inline-block w-full bg-cover bg-center bg-no-repeat h-full  overflow-hidden')}
           style={{
             backgroundImage: !image ? `url(${fallbackImg})` : undefined,
             borderRadius: 8
           }}
         >
-          <img className="max-h-[148px] object-contain block" src={image || undefined} />
+          <img className="max-h-[148px] w-full object-cover block" src={image || undefined} />
           <p
             className={`
             absolute top-[12px] right-[12px] whitespace-nowrap text-h5 rounded-[4px]
