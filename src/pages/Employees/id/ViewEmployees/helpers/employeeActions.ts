@@ -10,16 +10,11 @@ type TContactAction = {
   onClick?: () => void
 }
 
-type EmployeeContacts = {
-  phone: string
-  email: string
-}
-
-export const getEmployeeActions = (contacts: EmployeeContacts): TContactAction[] => {
+export const getEmployeeActions = ({ phone, email }: { phone?: string; email?: string }): TContactAction[] => {
   return [
     {
       id: 'msg',
-      link: `mailto:${contacts.email}`,
+      link: email ? `mailto:${email}` : '',
       label: 'Написать сообщение',
       variant: 'primary',
       Icon: MessageIcon,
@@ -27,7 +22,7 @@ export const getEmployeeActions = (contacts: EmployeeContacts): TContactAction[]
     },
     {
       id: 'call',
-      link: `tel:${contacts.phone.replace(/\D/g, '')}`,
+      link: phone ? `tel:${phone.replace(/\D/g, '')}` : '',
       label: 'Позвонить',
       variant: 'outline',
       Icon: PhoneIcon,

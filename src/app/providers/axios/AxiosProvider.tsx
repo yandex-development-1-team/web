@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState, type ReactNode } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { setupInterceptors } from '@/app/providers/axios/interceptors'
 import { useNotification } from '@/app/providers/notification'
 import { ROUTES } from '@/app/router/routes'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { tokenStorage } from './lib/tokenStorageInstance'
 
 interface Props {
@@ -44,6 +44,12 @@ export const AxiosProvider = ({ children }: Props) => {
         showNotification({
           status: 'error',
           message: msg || 'Ошибка сервера'
+        })
+      },
+      onConflict: msg => {
+        showNotification({
+          status: 'error',
+          message: msg
         })
       },
       onNetworkError: () => {

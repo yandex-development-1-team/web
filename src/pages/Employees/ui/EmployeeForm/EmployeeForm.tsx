@@ -1,19 +1,25 @@
+import { useNotification } from '@/app/providers/notification'
+import { DownloadIcon, UserCreateIcon } from '@/assets/icons'
+import { Button, Card, Input, Switch } from '@/components/ui'
+import { formatPhone, handlePhoneKeyDown } from '@/lib/utils.phone'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useRef, useState } from 'react'
 import { Controller, useForm, useWatch, type SubmitHandler } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { Button, Card, Input, Switch } from '@/components/ui'
-import { FormInput } from '../FormInput/FormInput'
-import { DownloadIcon, UserCreateIcon } from '@/assets/icons'
-import { useNotification } from '@/app/providers/notification'
-import { formatPhone, handlePhoneKeyDown } from '@/lib/utils.phone'
-import { roles } from './roles'
 import { employeeFormSchema, type EmployeeFormData } from '../../schema'
+import { FormInput } from '../FormInput/FormInput'
 import type { EmployeeFormType } from './EmployeeForm.types'
+import { roles } from './roles'
 
-export const EmployeeForm = ({ initialData, initialPreview = null, onSubmit, onCancel, title }: EmployeeFormType) => {
+export const EmployeeForm = ({
+  initialData,
+  initialPreview = null,
+  onSubmit,
+  onCancel,
+  title,
+  isSubmiting
+}: EmployeeFormType) => {
   const fileRef = useRef<HTMLInputElement>(null)
   const [preview, setPreview] = useState<string | null>(initialPreview)
-  const [hasNewImage, setHasNewImage] = useState<boolean>(false)
   const { showNotification } = useNotification()
 
   const {
@@ -31,11 +37,11 @@ export const EmployeeForm = ({ initialData, initialPreview = null, onSubmit, onC
       personalInfo: { surname: '', firstName: '', patronymic: '' },
       contactInfo: { phone: '', email: '', city: '' },
       jobInfo: { department: '', position: '', chief: '' },
-      accessLevel: { roleId: undefined }
+      accessLevel: { role: undefined }
     }
   })
 
-  const roleId = useWatch({ control, name: 'accessLevel.roleId' })
+  const userRole = useWatch({ control, name: 'accessLevel.role' })
 
   const handlePhoto = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -47,7 +53,6 @@ export const EmployeeForm = ({ initialData, initialPreview = null, onSubmit, onC
     }
 
     setValue('photo', file)
-    setHasNewImage(true)
 
     const reader = new FileReader()
     reader.onloadend = () => setPreview(reader.result as string)
@@ -58,14 +63,13 @@ export const EmployeeForm = ({ initialData, initialPreview = null, onSubmit, onC
     reset()
 
     setPreview(initialPreview)
-    setHasNewImage(false)
 
     if (fileRef.current) fileRef.current.value = ''
     onCancel()
   }
 
   const handleFormSubmit: SubmitHandler<EmployeeFormData> = async data => {
-    await onSubmit(data, hasNewImage)
+    await onSubmit(data)
   }
 
   return (
@@ -279,8 +283,8 @@ export const EmployeeForm = ({ initialData, initialPreview = null, onSubmit, onC
                 <UserCreateIcon className="w-4 h-4 text-text" />
                 <h3 className="text-h3 text-text">Уровень доступа</h3>
               </div>
-              {errors.accessLevel?.roleId?.message && (
-                <span className="text-xxs text-text-error">{errors.accessLevel.roleId.message}</span>
+              {errors.accessLevel?.role?.message && (
+                <span className="text-xxs text-text-error">{errors.accessLevel.role.message}</span>
               )}
               <div className="grid grid-cols-2 gap-x-[100px] gap-y-[42px]">
                 {roles.map(role => (
@@ -294,10 +298,10 @@ export const EmployeeForm = ({ initialData, initialPreview = null, onSubmit, onC
                     </div>
 
                     <Switch
-                      checked={roleId === role.id}
+                      checked={userRole === role.role}
                       onChange={() => {
-                        setValue('accessLevel.roleId', role.id)
-                        clearErrors('accessLevel.roleId')
+                        setValue('accessLevel.role', role.role)
+                        clearErrors('accessLevel.role')
                       }}
                       paleStyle={false}
                     />
@@ -309,7 +313,13 @@ export const EmployeeForm = ({ initialData, initialPreview = null, onSubmit, onC
         </form>
         <div className="flex justify-end gap-[11px] mt-[12px]">
           <Button label="Отменить" variant="secondary" type="button" size="default" onClick={handleCancel} />
-          <Button label="Сохранить" type="submit" size="default" onClick={handleSubmit(handleFormSubmit)} />
+          <Button
+            label="Сохранить"
+            type="submit"
+            size="default"
+            onClick={handleSubmit(handleFormSubmit)}
+            disabled={isSubmiting}
+          />
         </div>
       </div>
     </>

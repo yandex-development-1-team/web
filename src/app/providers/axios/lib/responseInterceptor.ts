@@ -1,8 +1,8 @@
-import { AxiosError, type AxiosResponse, type InternalAxiosRequestConfig } from 'axios'
 import { ErrorHandler } from '@/app/providers/axios/lib/errorHandler'
 import type { ErrorHandlerConfig } from '@/app/providers/axios/types/api'
-import { api, refreshApi } from '../axiosInstance'
 import { API_ROUTES } from '@/services/api/routes'
+import { AxiosError, type AxiosResponse, type InternalAxiosRequestConfig } from 'axios'
+import { api, refreshApi } from '../axiosInstance'
 import type { ApiError } from '../utils/customErrors'
 
 type FailedRequest = {
@@ -48,7 +48,7 @@ export class ResponseInterceptor {
       return Promise.reject(axiosError)
     }
 
-    if ((axiosError.response?.status === 401 || axiosError.response?.status === 400) && !originalRequest._retry) {
+    if (axiosError.response?.status === 401 && !originalRequest._retry) {
       if (isRefreshing) {
         return new Promise((resolve, reject) => {
           failedQueue.push({ resolve, reject })
@@ -60,7 +60,7 @@ export class ResponseInterceptor {
             return api(originalRequest)
           })
           .catch(err => {
-            return this.errorHandler.handleError(err)
+            return Promise.reject(this.errorHandler.handleError(err))
           })
       }
 
@@ -96,6 +96,6 @@ export class ResponseInterceptor {
       }
     }
 
-    return this.errorHandler.handleError(error)
+    return Promise.reject(this.errorHandler.handleError(error))
   }
 }

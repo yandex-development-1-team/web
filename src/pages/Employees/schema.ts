@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { userRole } from './employees.types'
 
 const onlyLetters = (val: string) => /^[a-zA-ZА-Яа-яЁё\s-]+$/.test(val)
 
@@ -46,13 +47,10 @@ const jobInfoSchema = z.object({
   chief: requiredLettersValidation
 })
 
-const accessLevelSchema = z.object({
-  roleId: z
-    .number()
-    .optional()
-    .refine(roleId => roleId !== undefined, {
-      message: 'Выберите уровень доступа'
-    })
+const roleSchema = z.object({
+  role: z.enum(userRole).refine(roleId => roleId !== undefined, {
+    message: 'Выберите уровень доступа'
+  })
 })
 
 export const employeeFormSchema = z.object({
@@ -60,7 +58,17 @@ export const employeeFormSchema = z.object({
   personalInfo: personalInfoSchema,
   contactInfo: contactInfoSchema,
   jobInfo: jobInfoSchema,
-  accessLevel: accessLevelSchema
+  accessLevel: roleSchema
 })
 
 export type EmployeeFormData = z.infer<typeof employeeFormSchema>
+
+export const employeesSearchParamsSchema = z.object({
+  role: z.string().optional(),
+  status: z.string().optional(),
+  search: z.string().optional(),
+  limit: z.coerce.number().min(1).max(100).default(50),
+  offset: z.coerce.number().min(0).default(0)
+})
+
+export type EmployeesSearchParamsType = z.infer<typeof employeesSearchParamsSchema>

@@ -2,7 +2,7 @@ import type { ComponentProps } from 'react'
 
 interface DetailItem {
   label: string
-  value: string
+  value?: string
 }
 
 type DetailSectionType = {

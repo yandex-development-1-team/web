@@ -2,15 +2,13 @@ const EXPORT_BASE = '/export' as const
 const BOXES_BASE = '/boxes/' as const
 export const BOOKINGS_BASE = '/bookings/' as const
 export const APPLICATIONS_BASE = '/applications/' as const
+const USERS_BASE = '/users/' as const
 
 export const API_ROUTES = {
   items: '/items',
-
   login: '/auth/login',
   logout: '/auth/logout',
   refreshToken: '/auth/refresh',
-  users: '/users',
-  imageUrl: '/files/upload',
 
   settings: {
     messages: '/settings/messages',
@@ -18,6 +16,14 @@ export const API_ROUTES = {
   },
 
   events: (id?: number) => `/events${id ? `/${id}` : ''}`,
+
+  users: {
+    get: USERS_BASE,
+    create: USERS_BASE,
+    byId: (id: string) => `${USERS_BASE}${id}`,
+    status: (id: string) => `${USERS_BASE}${id}/status`
+  },
+  imageUrl: '/files/upload',
 
   analytics: {
     boxes: '/analytics/boxes',
@@ -48,3 +54,5 @@ export const API_ROUTES = {
     create: BOXES_BASE
   }
 } as const
+
+// PUT /api/v1/users/{id}/block — заблокировать сотрудника

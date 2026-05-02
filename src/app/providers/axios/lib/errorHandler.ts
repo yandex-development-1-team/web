@@ -1,7 +1,7 @@
-import axios from 'axios'
-import type { AxiosError } from 'axios'
-import { ApiError, NetworkError, CancelledRequestError } from '@/app/providers/axios/utils/customErrors'
 import type { ApiErrorResponse, ErrorHandlerConfig } from '@/app/providers/axios/types/api'
+import { ApiError, CancelledRequestError, NetworkError } from '@/app/providers/axios/utils/customErrors'
+import type { AxiosError } from 'axios'
+import axios from 'axios'
 
 export class ErrorHandler {
   private isHandlingError = false
@@ -30,8 +30,8 @@ export class ErrorHandler {
       throw new CancelledRequestError()
     }
 
-    const axiosError = error as AxiosError<ApiErrorResponse['data']>
-
+    // const axiosError = error as AxiosError<ApiErrorResponse['data']>
+    const axiosError = error as AxiosError<ApiErrorResponse>
     if (!axiosError.response) {
       this.config.onNetworkError()
       throw new NetworkError()
@@ -39,9 +39,13 @@ export class ErrorHandler {
 
     const { status, data } = axiosError.response
 
-    const apiError = new ApiError(status, data?.code || `HTTP_${status}`, data?.details)
+    const combinedMessage = Array.isArray(data.errors) ? data.errors.join('. ') : `Ошибка ${status}`
 
-    this.handleByStatus(status, data?.message || apiError.message)
+    // const apiError = new ApiError(status, data?.code || `HTTP_${status}`, data?.details)
+    const apiError = new ApiError(status, `HTTP_${status}`, combinedMessage)
+
+    // this.handleByStatus(status, data?.[0] || apiError.message)
+    this.handleByStatus(status, combinedMessage || apiError.message)
 
     return apiError
   }
@@ -53,6 +57,9 @@ export class ErrorHandler {
         break
       case 403:
         this.config.onForbidden(message)
+        break
+      case 409:
+        this.config.onConflict(message)
         break
       case 500:
         this.config.onServerError(message)

@@ -1,32 +1,17 @@
 import { useNavigate } from 'react-router-dom'
-import { EmployeeForm } from '../ui'
-import { useCreateEmployee } from '../hooks/useCreateEmployee'
-import { useNotification } from '@/app/providers/notification'
-import { fileToBase64 } from '@/lib/fileUtils/fileToBase64'
-import { formDataToCreateEmployee } from '../helpers'
+import { useCreateUser } from '../api/userQueries'
+import { formDataToUserUpdatePayload } from '../helpers'
 import type { EmployeeFormData } from '../schema'
+import { EmployeeForm } from '../ui'
 
 const CreateEmployees = () => {
   const navigate = useNavigate()
-  const { showNotification } = useNotification()
-  const { mutateAsync: createEmployeeMutation } = useCreateEmployee()
+  const { mutate: createUserMutation } = useCreateUser()
 
-  const handleSubmit = async (data: EmployeeFormData, hasNewImage: boolean) => {
-    try {
-      let imageBase64: string | undefined = undefined
+  const handleSubmit = async (formData: EmployeeFormData) => {
+    const userUpdatePayload = await formDataToUserUpdatePayload(formData, formData.photo)
 
-      if (hasNewImage && data.photo) {
-        imageBase64 = await fileToBase64(data.photo)
-      }
-
-      const employeeData = formDataToCreateEmployee(data, imageBase64)
-      const newEmployee = await createEmployeeMutation(employeeData)
-
-      showNotification({ message: 'Сотрудник добавлен', status: 'success' })
-      navigate(`/employees/${newEmployee.id}`)
-    } catch {
-      showNotification({ message: 'Ошибка при создании', status: 'error' })
-    }
+    createUserMutation(userUpdatePayload)
   }
 
   return <EmployeeForm title="Добавить сотрудника" onSubmit={handleSubmit} onCancel={() => navigate(-1)} />

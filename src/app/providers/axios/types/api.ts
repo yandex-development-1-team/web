@@ -6,10 +6,13 @@ export interface ApiErrorData {
   details?: unknown
 }
 
+// export interface ApiErrorResponse {
+//   status: number
+//   data: ApiErrorData
+//   originalError: unknown
+// }
 export interface ApiErrorResponse {
-  status: number
-  data: ApiErrorData
-  originalError: unknown
+  errors: string[]
 }
 
 export type UserLoginInfo = {
@@ -36,6 +39,7 @@ export interface ErrorHandlerConfig {
   onUnauthorized: () => void
   onForbidden: (message: string) => void
   onServerError: (message: string) => void
+  onConflict: (message: string) => void
   onNetworkError: () => void
   isCriticalError?: (status: number) => boolean
   onCriticalError?: (status: number, message: string) => void

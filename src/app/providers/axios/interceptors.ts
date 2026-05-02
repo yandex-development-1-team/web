@@ -1,7 +1,7 @@
 import { api } from '@/app/providers/axios/axiosInstance'
 import { RequestInterceptor } from '@/app/providers/axios/lib/requestInterceptor'
 import { ResponseInterceptor } from '@/app/providers/axios/lib/responseInterceptor'
-import type { TokenStorage, ErrorHandlerConfig } from '@/app/providers/axios/types/api'
+import type { ErrorHandlerConfig, TokenStorage } from '@/app/providers/axios/types/api'
 
 export const setupInterceptors = (
   tokenStorage: TokenStorage,

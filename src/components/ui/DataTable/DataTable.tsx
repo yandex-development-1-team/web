@@ -48,7 +48,8 @@ export function DataTable<T extends Record<string, unknown>>(props: DataTablePro
     const rowsToShow = 10
     return (
       <div className="rounded-lg border border-grey-light bg-white">
-        <table className="min-w-max whitespace-nowrap">
+        {/* <table className="min-w-max whitespace-nowrap"> */}
+        <table className="w-full table-fixed">
           <thead>
             <tr className="h-12 border-b border-grey-light bg-white bg-gray-100">
               {enableCheckboxes && <th className="w-12 p-4" />}

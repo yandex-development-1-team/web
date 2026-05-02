@@ -65,17 +65,21 @@ export function TableBody<T>({
               </td>
             )}
 
-            {columns.map(col => (
-              <td key={col.key as string} className={`px-4 py-1 h-[52px] ${col.className || ''}`}>
-                {col.render ? (
-                  col.render(row[col.key], row)
-                ) : isValidNumber(row[col.key]) ? (
-                  <PaddedNumber maxLen={maxLen || 0} value={+row[col.key]} />
-                ) : (
-                  String(row[col.key] ?? '')
-                )}
-              </td>
-            ))}
+            {columns.map(col => {
+              console.log(col.key)
+
+              return (
+                <td key={col.key as string} className={`px-4 py-1 h-[52px] ${col.className || ''}`}>
+                  {col.render ? (
+                    col.render(row[col.key], row)
+                  ) : isValidNumber(row[col.key]) ? (
+                    <PaddedNumber maxLen={maxLen || 0} value={+row[col.key]} />
+                  ) : (
+                    String(row[col.key] ?? '')
+                  )}
+                </td>
+              )
+            })}
 
             {enableRowActions && (
               <td className="w-24 p-4">

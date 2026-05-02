@@ -141,7 +141,7 @@ export const EMPLOYEES: IEmployee[] = initialEmployeesData.map((emp, index) => (
   job_info: {
     department: emp.department,
     position: emp.position,
-    role: emp.level === 'A' ? 'Администратор' : `Менеджер ${emp.level} звена`,
+    role: emp.level === 'A' ? 'admin' : `manager_1`,
     chief: emp.chief
   },
   status: index % 2 === 0 ? 'inactive' : 'active',
