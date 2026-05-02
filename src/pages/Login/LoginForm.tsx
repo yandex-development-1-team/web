@@ -1,14 +1,13 @@
 import { useState } from 'react'
-import { Button, Input, Loader } from '@/components/ui'
+import { Button, Input } from '@/components/ui'
 import { EyeIcon, EyeCloseIcon } from '@/assets/icons'
 import { useModal } from '@/components/ui/Modal/useModal'
 import { RecoveryModal } from './ui/RecoveryModal'
-import { Navigate, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { ROUTES } from '@/app/router'
 import { useLogin } from '../../hooks/useLogin'
 import { validateLogin, validatePassword } from './validation'
 import type { AxiosError } from 'axios'
-import { usePermissions } from '@/hooks/usePermissions'
 
 export const LoginForm = () => {
   const [authFormData, setAuthFormData] = useState({
@@ -23,15 +22,6 @@ export const LoginForm = () => {
 
   const { mutateAsync, isPending } = useLogin()
   const { isOpen: isOpenRecoveryModal, open: openRecoveryModal, close: closeRecoveryModal } = useModal()
-
-  const { isLoggedIn } = usePermissions()
-
-  if (isPending) {
-    return <Loader className="h-[100%]" />
-  }
-  if (isLoggedIn) {
-    return <Navigate to={ROUTES.home} replace />
-  }
 
   const loginError = validateLogin(authFormData.login)
   const passwordError = validatePassword(authFormData.password)
@@ -55,8 +45,8 @@ export const LoginForm = () => {
       await mutateAsync(authFormData)
       navigate(ROUTES.home, { replace: true })
     } catch (error) {
-      const axiosError = error as AxiosError<{ message: string }>
-      const message = axiosError.response?.data?.message || 'Неверный логин или пароль'
+      const axiosError = error as AxiosError<{ errors?: string[] }>
+      const message = axiosError.response?.data?.errors?.[0] || 'Неверный логин или пароль'
       setServerError(message)
     }
   }
@@ -113,7 +103,7 @@ export const LoginForm = () => {
           </p>
         </div>
 
-        {serverError && <div className="text-xs text-text-red-dark mb-2">{serverError}</div>}
+        <div className="min-h-[19px] text-xs text-text-red-dark mb-2">{serverError}</div>
 
         <button
           type="button"

@@ -1,25 +1,33 @@
 import { useState } from 'react'
 import { Button, Input, Modal } from '@/components/ui'
 import type { RecoveryModalProps } from './RecoveryModal.types'
+import { usePasswordRecovery } from '../../hooks/usePasswordRecovery'
 
 export const RecoveryModal = ({ isOpen, onClose, validateLogin }: RecoveryModalProps) => {
   const [login, setLogin] = useState('')
   const [loginError, setLoginError] = useState('')
   const [touched, setTouched] = useState(false)
 
+  const { send, isPending } = usePasswordRecovery()
+
   const resetLogin = () => {
     setLogin('')
     setLoginError('')
   }
 
-  const handleSubmit = (e: React.SubmitEvent) => {
+  const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault()
     const loginErr = validateLogin(login)
     if (loginErr) {
       setLoginError(loginErr)
       return
     }
-    handleClose()
+    try {
+      await send(login)
+      handleClose()
+    } catch (e) {
+      void e
+    }
   }
 
   const handleClose = () => {
@@ -39,7 +47,13 @@ export const RecoveryModal = ({ isOpen, onClose, validateLogin }: RecoveryModalP
       footer={
         <div className="flex justify-between w-full">
           <Button type="button" label="Отмена" variant="secondary" onClick={handleClose} size="normal" />
-          <Button type="submit" label="Отправить" disabled={!!loginError || !login} size="normal" form="recovery" />
+          <Button
+            type="submit"
+            label="Отправить"
+            disabled={!!loginError || !login || isPending}
+            size="normal"
+            form="recovery"
+          />
         </div>
       }
       showBorders={true}
@@ -56,7 +70,7 @@ export const RecoveryModal = ({ isOpen, onClose, validateLogin }: RecoveryModalP
           placeholder="Логин"
           className={`min-h-[46px] ${loginError && touched ? 'border-red-dark focus:ring-red-dark' : ''}`}
         />
-        <div className="min-h-[18px] text-xs">
+        <div className="min-h-[19px] text-xs">
           <p className={`${loginError && touched ? 'text-red-dark opacity-100' : 'opacity-0'} transition-opacity`}>
             {loginError}
           </p>

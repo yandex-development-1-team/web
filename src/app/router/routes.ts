@@ -25,6 +25,7 @@ export const ROUTES = {
   employeesEdit: '/employees/:employeeId/edit',
 
   settings: '/settings',
+  passwordReset: '/reset-password',
 
   notFound: '/404'
 } as const
