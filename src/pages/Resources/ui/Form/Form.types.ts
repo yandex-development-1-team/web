@@ -4,7 +4,7 @@ export type LinkFormFields = {
 }
 
 export type LinkWithId = LinkFormFields & {
-  id: string
+  id?: string
 }
 
 export type LinkFormType = {

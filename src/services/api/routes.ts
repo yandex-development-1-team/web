@@ -1,5 +1,6 @@
 const EXPORT_BASE = '/export' as const
-const BOXES_BASE = '/boxes/' as const
+const BOXES_BASE = '/boxes' as const
+const RESOURCES_BASE = '/resources' as const
 export const BOOKINGS_BASE = '/bookings/' as const
 export const APPLICATIONS_BASE = '/applications/' as const
 export const SPECIAL_PROJECTS_BASE = '/special-projects/' as const
@@ -29,11 +30,13 @@ export const API_ROUTES = {
     export: '/analytics/export',
     users: '/analytics/users'
   },
+  
   bookings: {
     get: BOOKINGS_BASE,
     byId: (id: string) => `${BOOKINGS_BASE}${id}`,
     changeStatus: (id: string) => `${BOOKINGS_BASE}${id}/status`
   },
+  
   applications: {
     get: APPLICATIONS_BASE,
     byId: (id: string) => `${APPLICATIONS_BASE}${id}`,
@@ -47,11 +50,20 @@ export const API_ROUTES = {
     deleteById: (id: string) => `${EXPORT_BASE}/${id}`,
     byPath: (path: string) => `${EXPORT_BASE}/${path}`
   },
+  
   boxes: {
     byId: (id: string) => `${BOXES_BASE}${id}`,
     get: BOXES_BASE,
     create: BOXES_BASE
   },
+
+  resources: {
+    get: RESOURCES_BASE,
+    orgInfo: `${RESOURCES_BASE}/org-info`,
+    faq: `${RESOURCES_BASE}/faq`,
+    eventSchedule: `${RESOURCES_BASE}/event-schedule`
+  },
+  
   specialProjects: {
     get: SPECIAL_PROJECTS_BASE,
     byId: (id: string) => `${SPECIAL_PROJECTS_BASE}${id}`,
@@ -61,5 +73,6 @@ export const API_ROUTES = {
     getFormLink: `/resources/req-spec-projects`,
     putFormLink: `/resources/req-spec-projects`,
     putPresentation: `/resources/spec-projects/file`
-  }
+
+}
 } as const
