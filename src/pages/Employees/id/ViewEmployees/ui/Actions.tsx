@@ -45,7 +45,7 @@ export const Actions = ({ actions, className, ...rest }: TActionProps) => {
                 {action.label}
               </a>
             </Button>
-            {action.link === '' && <LabelInDevelopment />}
+            {action.id === 'video' && <LabelInDevelopment />}
           </div>
         )
       })}
