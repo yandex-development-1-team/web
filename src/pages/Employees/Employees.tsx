@@ -88,18 +88,16 @@ const Employees = () => {
         </div>
       </div>
 
-      <div className="mb-2">
-        <DataTable
-          idKey="id"
-          columns={COLUMNS_CONFIG}
-          data={sortedUserList}
-          pagination={<Pagination pagination={pagination} className="p-3 pt-2" />}
-          enableCheckboxes
-          enableLoadMore
-          onSelect={setSelect}
-          onRowClick={data => navigate(`/employees/${data.id}`)}
-        />
-      </div>
+      <DataTable
+        idKey="id"
+        columns={COLUMNS_CONFIG}
+        data={sortedUserList}
+        pagination={<Pagination pagination={pagination} className="mt-4" />}
+        enableCheckboxes
+        enableLoadMore
+        onSelect={setSelect}
+        onRowClick={data => navigate(`/employees/${data.id}`)}
+      />
     </>
   )
 }

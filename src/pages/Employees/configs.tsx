@@ -33,7 +33,7 @@ export const COLUMNS_CONFIG: Column<UserListItem>[] = [
   {
     key: 'id',
     label: 'ID',
-    className: 'w-20',
+    // className: 'min-w-max',
     render: value => {
       return <span>{value}</span>
     }
@@ -42,13 +42,11 @@ export const COLUMNS_CONFIG: Column<UserListItem>[] = [
     key: 'fullName',
     label: 'Имя сотрудника',
     sortable: true,
-    className: 'w-[20%]',
     render: value => <span className="cursor-pointer">{value}</span>
   },
   {
     key: 'department',
     label: 'Отдел, руководитель',
-    className: 'w-40',
     render: (_, row) => (
       <div className="flex flex-col">
         <div>{row.department}</div>
@@ -56,11 +54,10 @@ export const COLUMNS_CONFIG: Column<UserListItem>[] = [
       </div>
     )
   },
-  { key: 'position', label: 'Должность', className: 'w-35' },
+  { key: 'position', label: 'Должность', className: 'w-[15%]' },
   {
     key: 'role',
     label: 'Уровень',
-    className: 'w-30',
     render: (_, row) => (
       <div className="flex justify-center gap-3">
         <span>{USER_ROLE_MAP[row.role].table}</span>
@@ -70,12 +67,14 @@ export const COLUMNS_CONFIG: Column<UserListItem>[] = [
   {
     key: 'phoneNumber',
     label: 'Телефон',
-    className: 'w-40',
     render: value => {
       return <span>{value}</span>
     }
   },
-  { key: 'email', label: 'Эл. адрес', className: 'w-55' }
+  {
+    key: 'email',
+    label: 'Эл. адрес'
+  }
 ]
 
 type SortOptions = {

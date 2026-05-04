@@ -48,9 +48,12 @@ const jobInfoSchema = z.object({
 })
 
 const roleSchema = z.object({
-  role: z.enum(userRole).refine(roleId => roleId !== undefined, {
-    message: 'Выберите уровень доступа'
-  })
+  role: z
+    .enum(userRole)
+    .optional()
+    .refine(roleId => roleId !== undefined, {
+      message: 'Выберите уровень доступа'
+    })
 })
 
 export const employeeFormSchema = z.object({
