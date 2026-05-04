@@ -7,4 +7,5 @@ export interface ItemProps {
   childrenItems?: Omit<ItemProps, 'Icon' | 'isExpanded'>[]
   isExpanded: boolean
   accessName?: string
+  inDevelopment?: boolean
 }

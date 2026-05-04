@@ -6,4 +6,5 @@ export interface DownItemProps {
   route?: string
   onClick?: () => void
   isExpanded: boolean
+  inDevelopment?: boolean
 }

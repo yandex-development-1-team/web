@@ -6,6 +6,7 @@ export { DataTable } from './DataTable'
 export { Dropzone } from './Dropzone'
 export { ImageCropper } from './ImageCropper'
 export { Input } from './Input'
+export { LabelInDevelopment } from './LabelInDevelopment'
 export { Loader } from './Loader'
 export { DeleteModal, Modal } from './Modal'
 export {

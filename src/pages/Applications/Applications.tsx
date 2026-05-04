@@ -1,4 +1,4 @@
-import { Button, DataTable, DeleteModal } from '@/components/ui'
+import { Button, DataTable, DeleteModal, LabelInDevelopment } from '@/components/ui'
 import { Card } from '@/components/ui/Card'
 import { Pagination } from '@/components/ui/Pagination'
 import { Tabs } from '@/components/ui/Tabs'
@@ -54,12 +54,14 @@ const Applications = () => {
       <Card>
         <h1 className=" text-text-black-dark text-h2">Заявки</h1>
         <Tabs activeTab={activeTab} onTabClick={onTabClick} tabs={TABS} className="w-full" />
-        {/* <Filters className="mt-4" /> */}
         <div className="flex justify-between mt-4 h-11">
           <QueryFilters key={activeTab} />
-          <Button size={'default'} className="text-text p-5 w-43 self-end" onClick={() => {}}>
-            Экспорт XLSX
-          </Button>
+          <div className="relative self-end h-11">
+            <Button size={'default'} className="text-text p-2 w-43" onClick={() => {}}>
+              Экспорт XLSX
+            </Button>
+            <LabelInDevelopment />
+          </div>
         </div>
       </Card>
       <Card>
