@@ -8,6 +8,5 @@ const axiosConfig: AxiosRequestConfig = {
     'Content-Type': 'application/json'
   }
 }
-
 export const api = axios.create(axiosConfig)
 export const refreshApi = axios.create(axiosConfig)

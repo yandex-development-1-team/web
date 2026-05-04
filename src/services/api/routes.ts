@@ -29,6 +29,8 @@ export const API_ROUTES = {
   },
   imageUrl: '/files/upload',
 
+  dashboard: '/dashboard',
+
   analytics: {
     boxes: '/analytics/boxes',
     export: '/analytics/export',
