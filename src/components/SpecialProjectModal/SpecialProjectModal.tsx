@@ -7,6 +7,7 @@ import { Button, Input, Modal, Switch } from '@/components/ui'
 import { cn } from '@/lib/utils.clsx'
 import { FormItem } from './ui/FormItem'
 import { ImagePickerWithCrop } from './ui/ImagePickerWithCrop'
+import fallbackImg from '@/assets/images/box_image_placeholder.png'
 
 export type TFormData = TProjectSchema
 
@@ -108,10 +109,10 @@ export function SpecialProjectModal({
                   <FormItem
                     className="flex items-center gap-3"
                     labelSetting={{
-                      text: 'Активен'
+                      text: field.value ? 'Активен' : 'Не активен'
                     }}
                   >
-                    <Switch {...field} checked={field.value} disabled={viewOnly} />
+                    <Switch {...field} checked={field.value} disabled={viewOnly} disabledColorful />
                   </FormItem>
                 )
               }}
@@ -151,11 +152,21 @@ export function SpecialProjectModal({
             })}
           >
             {!isImageUrl ? (
-              <ImagePickerWithCrop
-                name="image"
-                getIsCropping={setCheckCropping}
-                previewImg={initialData?.image || undefined}
-              />
+              !viewOnly ? (
+                <ImagePickerWithCrop
+                  name="image"
+                  getIsCropping={setCheckCropping}
+                  previewImg={initialData?.image || undefined}
+                />
+              ) : (
+                <div className="flex justify-center my-2">
+                  <img
+                    src={initialData?.image || fallbackImg}
+                    alt="preview"
+                    className="w-[262px] h-[172px] object-contain rounded-lg"
+                  />
+                </div>
+              )
             ) : (
               <FormItem
                 labelSetting={{ text: 'Ссылка на изображение', id: 'spec-image' }}
