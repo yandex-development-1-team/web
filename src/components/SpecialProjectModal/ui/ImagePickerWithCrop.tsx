@@ -5,6 +5,8 @@ import { AddIcon } from '@/assets/icons'
 import { Button, Input } from '@/components/ui'
 import { ImageCropper } from '@/components/ui/ImageCropper/ImageCropper'
 import { usePreview } from '@/hooks/usePreview'
+import { fetchImageUrl } from '@/components/BoxModals/api/boxModalsApi'
+import { useNotification } from '@/app/providers/notification'
 
 interface ImagePickerWithCropProps {
   name?: string
@@ -14,6 +16,7 @@ interface ImagePickerWithCropProps {
 
 export function ImagePickerWithCrop({ name, getIsCropping, previewImg }: ImagePickerWithCropProps) {
   const inputRef = useRef<HTMLInputElement | null>(null)
+  const { showNotification } = useNotification()
 
   const { handleFileChange, previewUrl, clearPreview } = usePreview()
   const [cropImage, setCropImage] = useState<string | null>(() => {
@@ -44,6 +47,38 @@ export function ImagePickerWithCrop({ name, getIsCropping, previewImg }: ImagePi
     }
   }, [getIsCropping, isCropping])
 
+  const handleCropComplete = async (file: File) => {
+    try {
+      const dataTransfer = new DataTransfer()
+      dataTransfer.items.add(file)
+      const fileList = dataTransfer.files
+
+      const response = await fetchImageUrl(fileList)
+      const url = response?.url
+
+      if (!url) throw new Error('No URL')
+
+      setValue(name || 'image', url, { shouldDirty: true, shouldValidate: true })
+
+      const finalImgUrl = URL.createObjectURL(file)
+      setCropImage(finalImgUrl)
+
+      showNotification({
+        message: 'Изображение загружено',
+        status: 'success'
+      })
+    } catch {
+      showNotification({
+        message: 'Загрузка изображения не удалась',
+        status: 'error'
+      })
+    } finally {
+      setIsCropping(false)
+      clearPreview()
+      clearErrors('root.croppingInProgress')
+    }
+  }
+
   return (
     <div
       className={cn(
@@ -61,25 +96,7 @@ export function ImagePickerWithCrop({ name, getIsCropping, previewImg }: ImagePi
             containerWidth={262}
             aspect={262 / 172}
             onCancel={handleCancelCrop}
-            onComplete={async file => {
-              const finalImgUrl = URL.createObjectURL(file)
-
-              const reader = new FileReader()
-              reader.readAsDataURL(file)
-              reader.onloadend = () => {
-                const croppedBase64 = reader.result as string
-
-                setValue('image', croppedBase64, {
-                  shouldDirty: true,
-                  shouldValidate: true
-                })
-
-                setCropImage(finalImgUrl)
-                setIsCropping(false)
-                clearPreview()
-                clearErrors('root.croppingInProgress')
-              }
-            }}
+            onComplete={handleCropComplete}
           />
         ) : (
           cropImage && (

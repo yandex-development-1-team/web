@@ -16,7 +16,7 @@ export function useMainWidth(ms: number = 0) {
         setWidth(newWidth)
       } else {
         if (timeoutRef.current) clearTimeout(timeoutRef.current)
-        
+
         timeoutRef.current = setTimeout(() => {
           setWidth(newWidth)
         }, ms)
@@ -32,13 +32,14 @@ export function useMainWidth(ms: number = 0) {
 
     const initialViewportWidth = document.documentElement.clientWidth
     const initialAsideWidth = aside ? aside.offsetWidth : 0
-    setWidth(initialViewportWidth - initialAsideWidth)
+    setTimeout(() => {
+      setWidth(initialViewportWidth - initialAsideWidth)
+    }, 0)
 
     return () => {
       resizeObserver.disconnect()
       if (timeoutRef.current) clearTimeout(timeoutRef.current)
     }
-
   }, [ms])
 
   return width

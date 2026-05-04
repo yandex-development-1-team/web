@@ -39,7 +39,7 @@ export const Sidebar = () => {
           className={`
             border border-grey-extra-light rounded-[8px] cursor-pointer hover:border-yellow-light
             active:bg-yellow-light active:border-yellow-accent-dark focus-visible:border-yellow-accent-dark
-            transition-[border-color,bg-color] duration-400
+            transition-[border-color,background-color] duration-400
             ${isExpanded ? 'px-[13px] py-[13px]' : 'px-[31px] py-[15px]'}
           `}
           onClick={() => setIsExpanded(state => !state)}

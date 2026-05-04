@@ -67,7 +67,6 @@ export function SpecialProjectModal({
       })
       return
     }
-
     onSubmit?.(data)
   }
 
@@ -92,7 +91,7 @@ export function SpecialProjectModal({
               variant="primary"
               size="default"
               onClick={handleSubmit(handleFormSubmit)}
-              disabled={isSaveDisabled}
+              disabled={isSaveDisabled || checkCropping}
             />
           )}
         </div>

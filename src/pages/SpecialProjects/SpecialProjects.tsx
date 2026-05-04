@@ -1,7 +1,7 @@
 import { useEffect, useState, type ChangeEvent } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { BoxButton, Input, Dropzone, DeleteModal } from '@/components/ui'
-import { mockUrl } from '@/mockData/mockSpecialProjectsPageData'
+//import { mockUrl } from '@/mockData/mockSpecialProjectsPageData'
 import { EnvelopeIcon } from '@/assets/icons'
 import { ProjectCard } from '@/components/layout/ProjectCard'
 import { Pagination } from '@/components/ui/Pagination'
@@ -47,7 +47,7 @@ const SpecialProjects = () => {
   const cardsOnCurrentPageCount = projects.slice(offset, offset + pageSize).length
   const justifyClass = cardsOnCurrentPageCount < pageSizeLow ? 'justify-start' : 'justify-between'
 
-  const [url, setUrl] = useState(mockUrl)
+  const [url, setUrl] = useState('')
   const [presentationFile, setPresentationFile] = useState<File | null>(null)
 
   const [projectToDelete, setProjectToDelete] = useState<number | string | null>(null)
@@ -86,7 +86,7 @@ const SpecialProjects = () => {
 
         updateLink(resourceData)
       }
-    }    
+    }
   }
 
   const handleUrlInput = () => {
@@ -170,15 +170,13 @@ const SpecialProjects = () => {
     const currentFirstItemIndex = offset
     const newOffset = Math.floor(currentFirstItemIndex / pageSize) * pageSize
     updateParam('limit', newOffset)(String(pageSize))
-  }, [pageSize])
+  }, [pageSize, updateParam, offset])
 
   useEffect(() => {
-    const handleValue = () => {
+    setTimeout(() => {
       setUrl(item?.url || '')
-    }
-
-    handleValue()
-  }, [resourceData])
+    }, 0)
+  }, [item?.url])
 
   return (
     <>
@@ -289,7 +287,6 @@ const SpecialProjects = () => {
         onClose={() => setProjectToEdit(null)}
         onSubmit={data => {
           setProjectToEdit(null)
-
           handleSubmitProject(data)
         }}
         modalTitle={projectToEdit !== undefined ? 'Редактировать спецпроект' : 'Создать спецпроект'}
