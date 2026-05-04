@@ -1,4 +1,3 @@
-import { v4 as uuidv4 } from 'uuid'
 import { Block, InfoForm, LinkForm } from './ui'
 import type { LinkBlockKey } from './Resources.types'
 import type { InfoFormData, LinkFormFields } from './ui/Form/Form.types'
@@ -32,20 +31,18 @@ const Resources = () => {
   }
 
   const addLink = (blockKey: LinkBlockKey) => (linkData: LinkFormFields) => {
-    const linkWithId = { ...linkData, id: uuidv4() }
-
     const actions = {
       usefulLinks: () => {
         updateOrganizationInfo.mutate({
           content: organizationInfo,
-          links: [...usefulLinks, linkWithId]
+          links: [...usefulLinks, linkData]
         })
       },
       faq: () => {
-        updateFaq.mutate([...faq, linkWithId])
+        updateFaq.mutate([...faq, linkData])
       },
       eventSchedule: () => {
-        updateEventSchedule.mutate([...eventSchedule, linkWithId])
+        updateEventSchedule.mutate([...eventSchedule, linkData])
       }
     }
 
