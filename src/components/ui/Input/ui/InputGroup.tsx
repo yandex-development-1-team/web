@@ -1,10 +1,10 @@
-import type { ComponentProps } from 'react'
-import { type VariantProps } from 'class-variance-authority'
-import { Button, buttonVariants } from '@/components/ui/Button'
-import { InputBasic } from './InputBasic'
-import { cn } from '@/lib/utils.clsx'
 import type { ButtonProps } from '@/components/ui/Button'
+import { Button, buttonVariants } from '@/components/ui/Button'
+import { cn } from '@/lib/utils.clsx'
+import { type VariantProps } from 'class-variance-authority'
+import type { ComponentProps } from 'react'
 import { inputWithIconVariants } from './Input.styles'
+import { InputBasic } from './InputBasic'
 
 function InputGroup({ disabled, className, ...props }: ComponentProps<'div'> & { disabled?: boolean }) {
   return (

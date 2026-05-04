@@ -15,8 +15,8 @@ interface IManager {
   photo?: string
 }
 
-export type TApplicationStatus = 'В работе' | 'В очереди' | 'Готово'
-
+// export type TApplicationStatus = 'В работе' | 'В очереди' | 'Завершено'
+export type TApplicationStatus = 'pending' | 'confirmed' | 'cancelled'
 interface IApplicationProcessing {
   manager?: IManager
   boxName?: string

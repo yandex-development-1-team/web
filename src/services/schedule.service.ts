@@ -1,6 +1,7 @@
 import { api } from '@/app/providers/axios'
 import { events as mockEvents } from '@/mockData/mockScheduleData'
 import type { TEvent } from '@/types/schedule.types'
+import { API_ROUTES } from './api/routes'
 
 export interface IParams {
   date_from: string
@@ -48,7 +49,7 @@ export const scheduleApi = {
       }
     }
 
-    const response = await api.get('/events', { params })
+    const response = await api.get(API_ROUTES.events(), { params })
     return response.data
   },
 
@@ -69,7 +70,7 @@ export const scheduleApi = {
       return MOCK_EVENTS[index]
     }
 
-    const response = await api.put(`/events/${id}`, data)
+    const response = await api.put(API_ROUTES.events(id), data)
     return response.data
   },
 
@@ -86,7 +87,7 @@ export const scheduleApi = {
       return { message: 'Event deleted successfully' }
     }
 
-    const response = await api.delete(`/events/${id}`)
+    const response = await api.delete(API_ROUTES.events(id))
     return response.data
   }
 }

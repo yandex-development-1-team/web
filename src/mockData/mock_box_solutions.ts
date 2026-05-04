@@ -3,7 +3,7 @@ import box_image_1 from '@/mockData/box_image_1.jpg'
 import box_image_2 from '@/mockData/box_image_2.jpg'
 import box_image_3 from '@/mockData/box_image_3.jpg'
 import box_image_4 from '@/mockData/box_image_4.jpg'
-import type { IBox } from '@/pages/BoxSolutions/BoxSolutions.types'
+import type { IBox } from '@/pages/BoxSolutions/types'
 
 const names = ['Олимп', 'Спартак', 'Лидер', 'Арена Сити', 'Вымпел', 'Старт', 'Рекорд', 'Титан']
 
@@ -36,26 +36,26 @@ export const MOCK_BOXES: IBox[] = Array.from({ length: 72 }, (_, index) => {
     slug: `secret-box-${id}`,
     description: descriptions[Math.floor(Math.random() * descriptions.length)],
     rules: rulesList[Math.floor(Math.random() * rulesList.length)],
-    date: '25122024',
-    time_slots: [
+    // date: '25122024',
+    slots: [
       {
         date: `2024-03-${randomDay}`,
-        time_from: `${startHour}:00`,
-        time_to: `${startHour + 2}:00`
+        timeFrom: `${startHour}:00`,
+        timeTo: `${startHour + 2}:00`
       },
       {
         date: `2024-03-${randomDay + 1}`,
-        time_from: `${startHour + 4}:00`,
-        time_to: `${startHour + 6}:00`
+        timeFrom: `${startHour + 4}:00`,
+        timeTo: `${startHour + 6}:00`
       }
     ],
     location: `ул. ${streets[Math.floor(Math.random() * streets.length)]}, д. ${Math.floor(Math.random() * 90) + 1}`,
     price: Math.floor(Math.random() * (5000 - 500 + 1)) + 500,
     image: index % 4 === 0 ? '' : images[index % 5],
-    is_active_in_bot: index % 3 === 0,
+    status: index % 3 === 0 ? 'active' : 'inactive',
     organizer: 'Secret Events Team',
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
-    created_by: 101
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString()
+    // createdBy: 101
   }
 })

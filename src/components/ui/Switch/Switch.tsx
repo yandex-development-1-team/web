@@ -1,6 +1,13 @@
 import type { SwitchProps } from './Switch.types'
 
-export const Switch = ({ onChange, disabled = false, checked = false, paleStyle = true, className }: SwitchProps) => {
+export const Switch = ({
+  onChange,
+  disabled = false,
+  checked = false,
+  paleStyle = true,
+  disabledColorful = false,
+  className
+}: SwitchProps) => {
   const disabledBg = 'bg-grey-extra-light opacity-60'
   const disabledBorder = 'border-grey-light'
   const disabledCursor = 'cursor-not-allowed'
@@ -39,9 +46,10 @@ export const Switch = ({ onChange, disabled = false, checked = false, paleStyle 
           border-1
           outline-2
           outline-offset-[-2px]
-          ${disabled ? `${disabledBg} ${disabledBorder} ${disabledCursor}` : 'cursor-pointer'}
+          ${disabled && !disabledColorful && `${disabledBg} ${disabledBorder}`}
+          ${disabled ? `${disabledCursor}` : 'cursor-pointer'}
           ${
-            !disabled &&
+            (!disabled || disabledColorful) &&
             (checked
               ? `${switchBackgroundColorChecked} ${switchBorderColorChecked} ${switchOutlineColorChecked}`
               : `${switchBackgroundColorUnchecked} ${switchBorderColorUnchecked} ${switchOutlineColorUnchecked}`)

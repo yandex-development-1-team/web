@@ -28,7 +28,7 @@ export const Tabs = <T extends string>({ tabs, onTabClick, activeTab, className,
               'border-transparent border-b',
               activeTab === path && 'border-b-2 border-b-yellow-accent-dark'
             )}
-            onClick={() => onTabClick(path)}
+            onClick={() => onTabClick?.(path)}
           >
             <div className={`w-6 h-6 shrink-0`}>
               <Icon className={`w-full h-full`} style={{ color: 'text-text-grey' }} />

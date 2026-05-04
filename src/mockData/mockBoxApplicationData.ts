@@ -19,7 +19,7 @@ export const mockBoxApplicationData: IBoxApplication = {
       photo: mockPhoto
     },
     boxName: 'Приватная экскурсия',
-    status: 'В работе',
+    status: 'confirmed',
     applicationDate: '01.11.2025'
   }
 }

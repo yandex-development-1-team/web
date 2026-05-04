@@ -1,8 +1,8 @@
-import React, { useState, useRef } from 'react'
-import ReactCrop, { type Crop, centerCrop, makeAspectCrop, type PixelCrop } from 'react-image-crop'
+import React, { useRef, useState } from 'react'
+import ReactCrop, { centerCrop, makeAspectCrop, type Crop, type PixelCrop } from 'react-image-crop'
 import 'react-image-crop/dist/ReactCrop.css'
-import { Button } from '@/components/ui'
 import { CheckIcon, CloseIcon } from '@/assets/icons'
+import { Button } from '../Button'
 
 type ImageCropperType = {
   image: string
