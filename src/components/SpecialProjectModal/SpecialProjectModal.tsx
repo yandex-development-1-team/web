@@ -112,7 +112,7 @@ export function SpecialProjectModal({
                       text: field.value ? 'Активен' : 'Не активен'
                     }}
                   >
-                    <Switch {...field} checked={field.value} disabled={viewOnly} disabledColorful />
+                    <Switch {...field} checked={field.value} disabled={viewOnly} disabledColorful={viewOnly} />
                   </FormItem>
                 )
               }}
