@@ -74,7 +74,7 @@ const Applications = () => {
             rowActions={Actions({ onDelete: setItemToDelete, onDownload: start })}
             isLoading={boxes.isLoading}
             onRowClick={handleRowClick}
-            pagination={<Pagination pagination={boxes.data?.pagination} className="p-4 pt-0" />}
+            pagination={<Pagination pagination={boxes.data?.pagination} className="p-3 pt-2" />}
           />
         ) : (
           <DataTable
@@ -85,7 +85,7 @@ const Applications = () => {
             rowActions={Actions({ onDelete: setItemToDelete, onDownload: start })}
             isLoading={projects.isLoading}
             onRowClick={handleRowClick}
-            pagination={<Pagination pagination={projects.data?.pagination} className="p-4 pt-0" />}
+            pagination={<Pagination pagination={projects.data?.pagination} className="p-3 pt-2" />}
           />
         )}
       </Card>

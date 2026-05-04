@@ -3,17 +3,15 @@ const BOXES_BASE = '/boxes/' as const
 export const BOOKINGS_BASE = '/bookings/' as const
 export const APPLICATIONS_BASE = '/applications/' as const
 const RESOURCES_BASE = '/resources' as const
+const USERS_BASE = '/users/' as const
 
 export const API_ROUTES = {
   items: '/items',
-
   login: '/auth/login',
   logout: '/auth/logout',
   refreshToken: '/auth/refresh',
   passwordRecovery: 'auth/forgot-password',
   passwordReset: 'auth/reset-password',
-  users: '/users',
-  imageUrl: '/files/upload',
 
   settings: {
     messages: '/settings/messages',
@@ -21,6 +19,14 @@ export const API_ROUTES = {
   },
 
   events: (id?: number) => `/events${id ? `/${id}` : ''}`,
+
+  users: {
+    get: USERS_BASE,
+    create: USERS_BASE,
+    byId: (id: string) => `${USERS_BASE}${id}`,
+    status: (id: string) => `${USERS_BASE}${id}/status`
+  },
+  imageUrl: '/files/upload',
 
   analytics: {
     boxes: '/analytics/boxes',
@@ -58,3 +64,5 @@ export const API_ROUTES = {
     eventSchedule: `${RESOURCES_BASE}/event-schedule`
   }
 } as const
+
+// PUT /api/v1/users/{id}/block — заблокировать сотрудника

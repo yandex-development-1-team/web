@@ -1,8 +1,8 @@
-import { AxiosError, type AxiosResponse, type InternalAxiosRequestConfig } from 'axios'
 import { ErrorHandler } from '@/app/providers/axios/lib/errorHandler'
 import type { ErrorHandlerConfig } from '@/app/providers/axios/types/api'
-import { api, refreshApi } from '../axiosInstance'
 import { API_ROUTES } from '@/services/api/routes'
+import { AxiosError, type AxiosResponse, type InternalAxiosRequestConfig } from 'axios'
+import { api, refreshApi } from '../axiosInstance'
 
 type FailedRequest = {
   resolve: (token: string) => void
