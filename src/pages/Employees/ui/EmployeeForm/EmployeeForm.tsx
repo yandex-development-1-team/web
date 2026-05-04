@@ -1,6 +1,7 @@
 import { useNotification } from '@/app/providers/notification'
 import { DownloadIcon, UserCreateIcon } from '@/assets/icons'
 import { Button, Card, Input, Switch } from '@/components/ui'
+import { cn } from '@/lib/utils.clsx'
 import { formatPhone, handlePhoneKeyDown } from '@/lib/utils.phone'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRef, useState } from 'react'
@@ -124,7 +125,7 @@ export const EmployeeForm = ({
 
             <Card className="flex flex-col gap-[19px]">
               <h3 className="text-h3">Персональная информация</h3>
-              <div className="flex flex-col gap-[11px]">
+              <div className="flex flex-col gap-[20px]">
                 <FormInput
                   label="Фамилия"
                   errorMessage={errors.personalInfo?.surname?.message}
@@ -175,7 +176,7 @@ export const EmployeeForm = ({
               <div className="flex flex-col gap-[20px]">
                 <h3 className="text-h3">Контактная информация</h3>
 
-                <div className="flex flex-col gap-[11px] max-w-[352px]">
+                <div className="flex flex-col gap-[20px] max-w-[352px]">
                   <FormInput
                     label="Номер телефона"
                     errorMessage={errors.contactInfo?.phone?.message}
@@ -233,7 +234,7 @@ export const EmployeeForm = ({
 
               <div className="flex flex-col gap-[20px]">
                 <h3 className="text-h3">Должностная информация</h3>
-                <div className="flex flex-col gap-[11px]">
+                <div className="flex flex-col gap-[20px]">
                   <FormInput
                     label="Отдел"
                     errorMessage={errors.jobInfo?.department?.message}
@@ -280,20 +281,24 @@ export const EmployeeForm = ({
             </div>
           </Card>
 
-          <div className="grid grid-cols gap-[20px]">
+          <div className="relative grid grid-cols gap-[20px]">
             <Card className="py-[20px] flex flex-col gap-[11px]">
               <div className="flex items-center gap-3 col-span-2 ml-[5px] mb-[7px]">
                 <UserCreateIcon className="w-4 h-4 text-text" />
                 <h3 className="text-h3 text-text">Уровень доступа</h3>
               </div>
               {errors.accessLevel?.role?.message && (
-                <span className="text-xxs text-text-error">{errors.accessLevel.role.message}</span>
+                <span className="absolute top-[10%] left-[45%] text-xxs text-text-error">
+                  {errors.accessLevel.role.message}
+                </span>
               )}
               <div className="grid grid-cols-2 gap-x-[100px] gap-y-[42px]">
                 {roles.map(role => (
                   <div
                     key={role.id}
-                    className="flex items-center justify-between gap-[4px] border-b border-grey-light pb-1"
+                    className={cn(
+                      `flex items-center justify-between gap-[4px] border-b ${errors.accessLevel?.role?.message ? 'border-red-500' : 'border-grey-light'} pb-1`
+                    )}
                   >
                     <div>
                       <div className="mb-[4px] text-xs text-text">{role.name}</div>

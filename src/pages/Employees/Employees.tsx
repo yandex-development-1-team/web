@@ -1,6 +1,6 @@
 import { ROUTES } from '@/app/router'
 import { BoxFilter, DownloadIcon } from '@/assets/icons'
-import { Button, DataTable, Loader, LabelInDevelopment } from '@/components/ui'
+import { Button, DataTable, LabelInDevelopment, Loader } from '@/components/ui'
 import { sortData } from '@/components/ui/DataTable/helpers'
 import { Pagination } from '@/components/ui/Pagination'
 import { useRef, useState } from 'react'
@@ -91,18 +91,16 @@ const Employees = () => {
         </div>
       </div>
 
-      <div className="mb-2">
-        <DataTable
-          idKey="id"
-          columns={COLUMNS_CONFIG}
-          data={sortedUserList}
-          pagination={<Pagination pagination={pagination} className="p-3 pt-2" />}
-          enableCheckboxes
-          enableLoadMore
-          onSelect={setSelect}
-          onRowClick={data => navigate(`/employees/${data.id}`)}
-        />
-      </div>
+      <DataTable
+        idKey="id"
+        columns={COLUMNS_CONFIG}
+        data={sortedUserList}
+        pagination={<Pagination pagination={pagination} className="mt-4" />}
+        enableCheckboxes
+        enableLoadMore
+        onSelect={setSelect}
+        onRowClick={data => navigate(`/employees/${data.id}`)}
+      />
     </>
   )
 }
