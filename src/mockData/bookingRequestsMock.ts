@@ -1,4 +1,4 @@
-import type { BookingRequest } from '@/pages/Home/types'
+/*import type { BookingRequest } from '@/pages/Home/types'
 
 export const bookingRequestsMock: BookingRequest[] = [
   {
@@ -74,3 +74,4 @@ export const bookingRequestsMock: BookingRequest[] = [
     status: 'queue'
   }
 ]
+*/

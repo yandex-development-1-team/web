@@ -55,6 +55,17 @@ export function formatDateISO(date: Date | undefined): string {
   return `${year}-${month}-${day}`
 }
 
+export const formatDateToLocalUI = (dateStr: string | undefined) => {
+  if (!dateStr) return
+  const date = new Date(dateStr)
+  if (isNaN(date.getTime())) return dateStr
+  return date.toLocaleDateString('ru-RU', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric'
+  })
+}
+
 export function formatDateTime(value: string | undefined): string {
   if (!value) return ''
 

@@ -1,22 +1,27 @@
 import { BoxButton, DataTable } from '@/components/ui'
 import { Application2 } from '@/assets/icons'
 import { useState } from 'react'
-import { useModal } from '@/components/ui/Modal/useModal'
-import { BoxSolutionModal } from '@/components/BoxSolutionModal'
 import { SpecialProjectModal } from '@/components/SpecialProjectModal/SpecialProjectModal'
 import FilterDropdown from './ui/FilterDropdown'
-import type { BoxData } from '@/types/solutions'
 import { usePermissions, PERMISSIONS } from '@/hooks/usePermissions'
 import { useBookingRequests } from '@/hooks/useBookingRequests'
 import { headerTableData } from './homePageData'
+import { useCreateSpecialProject } from '@/pages/SpecialProjects/hooks/useCreateSpecialProject'
+import { mapProjectToCreateData } from '@/pages/SpecialProjects/api/specProject.mappers'
+import { type IProject } from '@/types/solutions'
+import { ManageBoxModal } from '@/components/BoxModals'
+import { BOX_SOLUTIONS_KEYS } from '@/services/api/queryKeys'
+
 
 const Home = () => {
   const [statusFilter, setStatusFilter] = useState('all')
-  const { isOpen: isCreateBoxModalOpen, open: openCreateBoxModal, close: closeCreateBoxModal } = useModal()
-  const { isOpen: isCreateProjectModalOpen, open: openCreateProjectModal, close: closeCreateProjectModal } = useModal()
   const { data } = useBookingRequests()
   const PAGE_SIZE = 8
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE)
+
+  const [projectToEdit, setProjectToEdit] = useState<null | undefined>(null)
+  const { mutate: createSpecProject } = useCreateSpecialProject()
+  const [modal, setModal] = useState<'create' | null>(null)
 
   const managerStats = {
     process: data?.manager_stats.processed,
@@ -36,17 +41,17 @@ const Home = () => {
     { title: 'Заявки в работе', value: managerStats.progress }
   ]
 
-  const handleBoxCreate = () => {
-    openCreateBoxModal()
-  }
-
   const handleSpecProjectCreate = () => {
-    openCreateProjectModal()
+    setProjectToEdit(undefined)
   }
 
-  const handleBoxSave = (data: Partial<Omit<BoxData, 'id'>>) => {
-    void data
-    closeCreateBoxModal()
+  const handleSubmitProject = (data: IProject) => {
+    const finalData = mapProjectToCreateData(data)
+    createSpecProject(finalData)
+  }
+
+  const handleBoxCreate = () => {
+    setModal('create')
   }
 
   const { hasAccess } = usePermissions()
@@ -131,14 +136,22 @@ const Home = () => {
         )}
       </div>
 
-      {isCreateBoxModalOpen && (
-        <BoxSolutionModal isOpen={isCreateBoxModalOpen} onClose={closeCreateBoxModal} onSave={handleBoxSave} />
-      )}
+      <ManageBoxModal
+        isOpen={!!modal}
+        onClose={() => setModal(null)}
+        boxId={null}
+        queryKey={BOX_SOLUTIONS_KEYS.all}
+      />
       <SpecialProjectModal
-        isOpen={isCreateProjectModalOpen}
-        onClose={closeCreateProjectModal}
-        onSubmit={closeCreateProjectModal}
+        key={'new_edit'}
+        isOpen={projectToEdit !== null}
+        onClose={() => setProjectToEdit(null)}
+        onSubmit={data => {
+          setProjectToEdit(null)
+          handleSubmitProject(data)
+        }}
         modalTitle={'Создать спецпроект'}
+        initialData={undefined}
       />
     </div>
   )
