@@ -4,6 +4,7 @@ export const BOOKINGS_BASE = '/bookings/' as const
 export const APPLICATIONS_BASE = '/applications/' as const
 const RESOURCES_BASE = '/resources' as const
 const USERS_BASE = '/users/' as const
+export const SPECIAL_PROJECTS_BASE = '/special-projects/' as const
 
 export const API_ROUTES = {
   items: '/items',
@@ -62,6 +63,17 @@ export const API_ROUTES = {
     orgInfo: `${RESOURCES_BASE}/org-info`,
     faq: `${RESOURCES_BASE}/faq`,
     eventSchedule: `${RESOURCES_BASE}/event-schedule`
+  },
+
+  specialProjects: {
+    get: SPECIAL_PROJECTS_BASE,
+    byId: (id: string) => `${SPECIAL_PROJECTS_BASE}${id}`,
+    putById: (id: string) => `${SPECIAL_PROJECTS_BASE}${id}`,
+    deleteById: (id: string) => `${SPECIAL_PROJECTS_BASE}${id}`,
+    post: `${SPECIAL_PROJECTS_BASE}`,
+    getFormLink: `/resources/req-spec-projects`,
+    putFormLink: `/resources/req-spec-projects`,
+    putPresentation: `/resources/spec-projects/file`
   }
 } as const
 
