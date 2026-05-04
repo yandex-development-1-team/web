@@ -122,6 +122,6 @@ export const STATUS_MAP: Record<
     checked: false,
     label: 'Приглашен',
     description: 'Отправлено приглашение',
-    nextStatus: 'invited'
+    nextStatus: 'active'
   }
 }

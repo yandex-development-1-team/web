@@ -30,7 +30,7 @@ export const EmployeeSidebar = ({ avatar, status, queryKey, employeeId, phone, e
   return (
     <section className="flex flex-col gap-5 text-text w-full">
       <Card className="flex justify-center items-center h-60">
-        <Avatar src={avatar || photo_placeholder} width={146} height={146} />
+        <Avatar src={avatar || photo_placeholder} placeholder={photo_placeholder} width={146} height={146} />
       </Card>
       <Actions actions={actions} />
       <Card className="flex flex-row">
@@ -43,7 +43,7 @@ export const EmployeeSidebar = ({ avatar, status, queryKey, employeeId, phone, e
           onChange={handleToggleStatus}
           checked={checked}
           className="self-center ml-auto min-w-13"
-          disabled={isStatusPending || status === 'invited'}
+          disabled={isStatusPending}
         />
       </Card>
     </section>

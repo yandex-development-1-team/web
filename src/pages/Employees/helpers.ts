@@ -75,7 +75,7 @@ export const formDataToUserUpdatePayload = async (
     second_name: data.personalInfo.patronymic,
     email: data.contactInfo.email,
     role: data.accessLevel.role,
-    status: employeeStatus || 'blocked',
+    status: employeeStatus || 'active',
     phone_number: data.contactInfo.phone,
     department: data.jobInfo.department,
     position: data.jobInfo.position,

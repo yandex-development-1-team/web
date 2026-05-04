@@ -18,8 +18,11 @@ export const EmployeeForm = ({
   title,
   isSubmiting
 }: EmployeeFormType) => {
+  const isValidUrl = (url: string | null) => url?.startsWith('http')
+  const validatedInitialPreview = isValidUrl(initialPreview) ? initialPreview : null
+
   const fileRef = useRef<HTMLInputElement>(null)
-  const [preview, setPreview] = useState<string | null>(initialPreview)
+  const [preview, setPreview] = useState<string | null>(validatedInitialPreview)
   const { showNotification } = useNotification()
 
   const {
@@ -62,7 +65,7 @@ export const EmployeeForm = ({
   const handleCancel = () => {
     reset()
 
-    setPreview(initialPreview)
+    setPreview(validatedInitialPreview)
 
     if (fileRef.current) fileRef.current.value = ''
     onCancel()

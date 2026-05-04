@@ -67,7 +67,7 @@ export const employeesSearchParamsSchema = z.object({
   role: z.string().optional(),
   status: z.string().optional(),
   search: z.string().optional(),
-  limit: z.coerce.number().min(1).max(100).default(50),
+  limit: z.coerce.number().min(1).max(100).default(10),
   offset: z.coerce.number().min(0).default(0)
 })
 

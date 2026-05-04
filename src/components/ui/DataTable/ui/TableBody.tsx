@@ -13,6 +13,7 @@ type Props<T> = {
   onRowClick?: (data: T) => void
   onSelectRow: (row: T) => void
   rowActions?: (row: T) => React.ReactNode
+  paginationEnabled?: boolean
 }
 
 export function TableBody<T>({
@@ -24,7 +25,8 @@ export function TableBody<T>({
   selectedRows,
   onSelectRow,
   rowActions,
-  onRowClick
+  onRowClick,
+  paginationEnabled = false
 }: Props<T>) {
   const maxLen = findMaxNumber(data, columns)
 
@@ -36,7 +38,8 @@ export function TableBody<T>({
           <tr
             key={String(row[idKey])}
             className={`
-              ${isSelected ? 'bg-creamy' : ''} border-b whitespace-nowrap border-b-grey-blue-light last:border-b-0
+              ${isSelected ? 'bg-creamy' : ''} border-b whitespace-nowrap border-b-grey-blue-light
+              ${!paginationEnabled && 'last:border-b-0'}
               transition-colors duration-300 hover:cursor-pointer hover:bg-grey-extra-light
             `}
             onClick={() => onRowClick?.(row)}
@@ -66,8 +69,6 @@ export function TableBody<T>({
             )}
 
             {columns.map(col => {
-              console.log(col.key)
-
               return (
                 <td key={col.key as string} className={`px-4 py-1 h-[52px] ${col.className || ''}`}>
                   {col.render ? (

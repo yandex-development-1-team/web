@@ -93,7 +93,7 @@ const Employees = () => {
           idKey="id"
           columns={COLUMNS_CONFIG}
           data={sortedUserList}
-          pagination={<Pagination pagination={pagination} className="m-4" />}
+          pagination={<Pagination pagination={pagination} className="p-3 pt-2" />}
           enableCheckboxes
           enableLoadMore
           onSelect={setSelect}
