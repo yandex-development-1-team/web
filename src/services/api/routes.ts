@@ -22,6 +22,8 @@ export const API_ROUTES = {
 
   events: (id?: number) => `/events${id ? `/${id}` : ''}`,
 
+  dashboard: '/dashboard',
+
   analytics: {
     boxes: '/analytics/boxes',
     export: '/analytics/export',
