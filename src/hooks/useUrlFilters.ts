@@ -10,10 +10,10 @@ export const useQueryParams = <S extends ZodObject<ZodRawShape>>(schema: S) => {
   const params = parseQueryParams(searchParams, schema)
 
   const updateParam = useCallback(
-    (key: keyof z.infer<S>) => {
+    (key: keyof z.infer<S>, newOffset = 0) => {
       return (value: string) => {
         setSearchParams(prev => {
-          const combineParams = { ...Object.fromEntries(prev.entries()), ...{ [key]: value }, offset: '0' }
+          const combineParams = { ...Object.fromEntries(prev.entries()), ...{ [key]: value }, offset: String(newOffset)}
 
           const cleanParams = Object.fromEntries(
             Object.entries(combineParams).filter(

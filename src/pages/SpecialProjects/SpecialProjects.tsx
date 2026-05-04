@@ -34,7 +34,7 @@ const SpecialProjects = () => {
   const cardMinWidth = 284
   const cardMaxWidth = 344
 
-  const mainWidth = useMainWidth()
+  const mainWidth = useMainWidth(300)
   const pageSize = Math.floor((mainWidth - 20) / (cardMinWidth + 20)) || 1
 
   const [searchParams] = useSearchParams()
@@ -65,7 +65,29 @@ const SpecialProjects = () => {
     uploadPresentation(formData)
   }
 
-  const updateUrl = () => void url
+  const updateUrl = () => {
+    if (resourceData && !urlError) {
+      if (item) {
+        const { id } = item
+        const newItem = resourceData?.links?.find(item => item.id === id)
+
+        if (newItem) {
+          newItem.url = url
+
+          updateLink(resourceData)
+        }
+      } else {
+        const formLink = {
+          url,
+          title: 'Яндекс форма'
+        }
+
+        resourceData?.links?.push(formLink)
+
+        updateLink(resourceData)
+      }
+    }    
+  }
 
   const handleUrlInput = () => {
     validateUrl()
@@ -113,28 +135,6 @@ const SpecialProjects = () => {
   const handleUrlKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       e.currentTarget.blur()
-
-      if (resourceData && !urlError) {
-        if (item) {
-          const { id } = item
-          const newItem = resourceData?.links?.find(item => item.id === id)
-
-          if (newItem) {
-            newItem.url = url
-
-            updateLink(resourceData)
-          }
-        } else {
-          const formLink = {
-            url,
-            title: 'Яндекс форма'
-          }
-
-          resourceData?.links?.push(formLink)
-
-          updateLink(resourceData)
-        }
-      }
     }
   }
 
@@ -167,7 +167,9 @@ const SpecialProjects = () => {
   }
 
   useEffect(() => {
-    updateParam('limit')(String(pageSize))
+    const currentFirstItemIndex = offset
+    const newOffset = Math.floor(currentFirstItemIndex / pageSize) * pageSize
+    updateParam('limit', newOffset)(String(pageSize))
   }, [pageSize])
 
   useEffect(() => {
@@ -279,7 +281,6 @@ const SpecialProjects = () => {
         modalTitle={'Спецпроект'}
         initialData={projectToView || undefined}
         viewOnly={true}
-        isImageUrl
       />
 
       <SpecialProjectModal
@@ -293,7 +294,6 @@ const SpecialProjects = () => {
         }}
         modalTitle={projectToEdit !== undefined ? 'Редактировать спецпроект' : 'Создать спецпроект'}
         initialData={projectToEdit || undefined}
-        isImageUrl
       />
 
       <DeleteModal
