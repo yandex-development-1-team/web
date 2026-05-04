@@ -1,15 +1,42 @@
-import { useRef, useState } from 'react'
-import { Switch, ToggleButton, Button } from '@/components/ui'
+import { useRef, useState, useEffect, useCallback } from 'react'
+import { Switch, ToggleButton, Button, Loader } from '@/components/ui'
 import { ArrowIcon } from '@/assets/icons'
 import { accounts, accessRightsGroups, accessRights, textFields } from './settingsData'
-import { mockTextFieldsValues, mockAccountAccessRights } from '@/mockData/mockSettingsPageData'
+import { useMessages } from './hooks/useMessages'
+import { useAccessSettings } from '@/hooks/useAccessSettings'
+import type { ITextFieldValue } from './Settings.types'
 
 const Settings = () => {
   const [phase, setPhase] = useState('roleSelection')
   const [editingAccountId, setEditingAccountId] = useState(0)
-  const [switchesState, setSwitchesState] = useState<boolean[]>([])
+  const [switchesState, setSwitchesState] = useState<Record<number, boolean>>({})
+  const textFieldsRefs = useRef<Record<number, HTMLTextAreaElement | null>>({})
 
-  const textFieldsRefs = useRef<HTMLTextAreaElement[]>([])
+  const {
+    messages: serverTextFieldsValues,
+    updateMessages,
+    isLoadingMessages,
+    isFetchingMessages,
+    isUpdatingMessages
+  } = useMessages()
+
+  const currentRoleServerName = accounts.find(account => account.id === editingAccountId)?.serverName
+
+  const {
+    accessSettings: serverAccessSettings,
+    updateAccessSettings,
+    isLoadingAccessSettings,
+    isFetchingAccessSettings,
+    isUpdatingAccessSettings
+  } = useAccessSettings(currentRoleServerName)
+
+  const buttonsDisabled =
+    isLoadingMessages ||
+    isFetchingMessages ||
+    isUpdatingMessages ||
+    isLoadingAccessSettings ||
+    isFetchingAccessSettings ||
+    isUpdatingAccessSettings
 
   const handleSettingsGroupSelect = (selectedSide: 'left' | 'right') => {
     if (!(selectedSide === 'left' && phase !== 'textsSetup')) {
@@ -19,8 +46,7 @@ const Settings = () => {
 
   const handleRoleSelect = (roleId: number) => {
     setEditingAccountId(roleId)
-    loadSwitchesStates(roleId)
-    setPhase('accessSetup')
+    setPhase('accessSetupLoading')
   }
 
   const handleRoleDeselect = () => {
@@ -28,44 +54,37 @@ const Settings = () => {
   }
 
   const saveTextFieldsValues = () => {
-    const values = textFieldsRefs.current.map(ref => ref.value || '')
-    mockTextFieldsValues.forEach(element => {
-      if (values[element.id]) {
-        element.value = values[element.id]
-      } else {
-        element.value = ''
-      }
-    })
+    const dataToSave: ITextFieldValue[] = textFields.map(field => ({
+      id: field.id,
+      value: textFieldsRefs.current[field.id]?.value || ''
+    }))
+    updateMessages(dataToSave)
   }
 
   const loadTextFieldsValues = () => {
-    textFieldsRefs.current.forEach((ref, index) => {
-      const value = mockTextFieldsValues.find(value => value.id === index)?.value
-      if (value) {
-        ref.value = value
-      } else {
-        ref.value = ''
+    if (!serverTextFieldsValues) return
+    serverTextFieldsValues.forEach(item => {
+      const inputElement = textFieldsRefs.current[item.id]
+      if (inputElement) {
+        inputElement.value = item.value
       }
     })
   }
 
-  const saveSwitchesStates = (accountId: number, values: boolean[]) => {
-    mockAccountAccessRights
-      .find(account => account.accountId === accountId)
-      ?.accessRights.forEach(elem => {
-        if (values[elem.id] === true || values[elem.id] === false) {
-          elem.value = values[elem.id]
-        } else {
-          elem.value = false
-        }
-      })
+  const saveSwitchesStates = (values: Record<number, boolean>) => {
+    if (!currentRoleServerName) return
+    const selectedAccessRights = accessRights.filter(right => !!values[right.id]).map(right => right.serverName)
+    updateAccessSettings({
+      data: selectedAccessRights,
+      roleServerId: currentRoleServerName
+    })
   }
 
   const handleSaveValues = () => {
     if (phase === 'textsSetup') {
       saveTextFieldsValues()
     } else {
-      saveSwitchesStates(editingAccountId, switchesState)
+      saveSwitchesStates(switchesState)
     }
   }
 
@@ -73,27 +92,34 @@ const Settings = () => {
     if (phase === 'textsSetup') {
       loadTextFieldsValues()
     } else {
-      loadSwitchesStates(editingAccountId)
+      loadSwitchesStates()
     }
   }
 
-  const loadSwitchesStates = (roleId: number) => {
-    const accessArray = new Array(accessRights.length).fill(false)
+  const loadSwitchesStates = useCallback(() => {
+    const newStates: Record<number, boolean> = {}
     accessRights.forEach(accessRight => {
-      const currentAccessRightId = accessRight.id
-      const loadedAccessRight = mockAccountAccessRights
-        .find(account => account.accountId === roleId)
-        ?.accessRights.find(elem => elem.id === currentAccessRightId)?.value
-      accessArray[currentAccessRightId] = loadedAccessRight
+      const isEnabled = serverAccessSettings ? serverAccessSettings.includes(accessRight.serverName) : false
+      newStates[accessRight.id] = isEnabled
     })
-    setSwitchesState(accessArray)
-  }
+    setSwitchesState(newStates)
+  }, [serverAccessSettings])
 
   const handleSwitch = (accessRightId: number, newState: boolean) => {
-    setSwitchesState(currentState => {
-      return [...currentState.slice(0, accessRightId), newState, ...currentState.slice(accessRightId + 1)]
-    })
+    setSwitchesState(currentState => ({
+      ...currentState,
+      [accessRightId]: newState
+    }))
   }
+
+  useEffect(() => {
+    if (phase === 'accessSetupLoading' && !isFetchingAccessSettings) {
+      loadSwitchesStates()
+      setTimeout(() => {
+        setPhase('accessSetup')
+      }, 0)
+    }
+  }, [isFetchingAccessSettings, phase, loadSwitchesStates])
 
   return (
     <>
@@ -101,7 +127,7 @@ const Settings = () => {
 
       <div
         className={`
-          ${phase !== 'accessSetup' ? 'bg-white' : ''}
+          ${!(phase === 'accessSetup') ? 'bg-white' : ''}
           rounded-[8px]
           h-full
           mt-[20px]
@@ -116,7 +142,7 @@ const Settings = () => {
             min-h-[46px]
             gap-[20px]
             justify-between
-            ${phase !== 'accessSetup' && 'm-[20px]'}
+            ${!(phase === 'accessSetup') && 'm-[20px]'}
           `}
         >
           <ToggleButton
@@ -125,20 +151,26 @@ const Settings = () => {
             rightLabel="Настройка текстов"
             onToggle={handleSettingsGroupSelect}
           />
-          {phase !== 'roleSelection' && (
+          {!(phase === 'roleSelection' || phase === 'accessSetupLoading') && (
             <div>
               <Button
                 label="Отменить"
                 variant="secondary"
                 onClick={handleResetValues}
                 className="w-[168px] mr-[20px] min-h-[46px]"
+                disabled={buttonsDisabled}
               />
-              <Button label="Сохранить" onClick={handleSaveValues} className="w-[168px] min-h-[46px]" />
+              <Button
+                label="Сохранить"
+                onClick={handleSaveValues}
+                className="w-[168px] min-h-[46px]"
+                disabled={buttonsDisabled}
+              />
             </div>
           )}
         </div>
 
-        {phase === 'roleSelection' && (
+        {(phase === 'roleSelection' || phase === 'accessSetupLoading') && (
           <div className="mt-[32px]">
             {accounts.map((account, index) => (
               <button
@@ -158,6 +190,7 @@ const Settings = () => {
                   hover:border-yellow-light
                   active:border-yellow-accent-dark
                   cursor-pointer
+                  relative
                 `}
                 onClick={() => handleRoleSelect(account.id)}
               >
@@ -165,6 +198,7 @@ const Settings = () => {
                   <span className="text-h3 text-text mt-[-3px]">{account.name}</span>
                   <span className="text-h4sb text-text-grey-dark mt-[-3px]">{account.description}</span>
                 </div>
+                {isFetchingAccessSettings && editingAccountId === account.id && <Loader className="absolute inset-0" />}
                 <ArrowIcon className="w-[23px] text-text-grey-dark mr-[9px]" />
               </button>
             ))}
@@ -184,7 +218,7 @@ const Settings = () => {
               </style>
               <textarea
                 ref={el => {
-                  textFieldsRefs.current[field.id] = el!
+                  textFieldsRefs.current[field.id] = el
                 }}
                 placeholder="Место для текста"
                 className={`
@@ -209,7 +243,7 @@ const Settings = () => {
                   placeholder:border-grey-light
                   hover:placeholder:text-text-grey-dark
                 `}
-                defaultValue={mockTextFieldsValues.find(value => value.id === index)?.value}
+                defaultValue={serverTextFieldsValues?.find(value => value.id === field.id)?.value || ''}
               />
             </div>
           ))}
@@ -272,6 +306,8 @@ const Settings = () => {
                               <Switch
                                 checked={switchesState[accessRight.id]}
                                 onChange={newState => handleSwitch(accessRight.id, newState)}
+                                disabled={editingAccountId === 0}
+                                disabledColorful={editingAccountId === 0}
                               />
                               <span className="text-h5">{accessRight.name}</span>
                             </div>

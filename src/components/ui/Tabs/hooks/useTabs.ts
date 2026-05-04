@@ -11,12 +11,9 @@ export const useTabs = <T extends string>(tabs: ITab<T>[]) => {
   }, [searchParams, tabs]) as ITab<T>['path']
 
   const onTabClick = (path: ITab<T>['path']) => {
-    const currentParams = Object.fromEntries(searchParams.entries())
-
     setSearchParams({
-      ...currentParams,
-      type: path,
-      offset: '0'
+      ...new URLSearchParams(),
+      type: path
     })
   }
 

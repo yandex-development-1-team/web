@@ -6,21 +6,17 @@ import { ROUTES } from '@/app/router'
 import { MENU_ADMIN, MENU_DOWN, MENU_MANAGER } from './menu'
 import { useLogout } from '@/hooks/useLogout'
 import { UserIcon } from '@/assets/icons'
-import type { IUser } from '@/types/user'
 import { usePermissions } from '@/hooks/usePermissions'
+import { useUserInfo } from '@/hooks/useUserInfo'
 
 export const Sidebar = () => {
-  const { user: rawUser, hasRole, hasAccess } = usePermissions()
-  const userGrade: number = hasRole('admin') ? 0 : Number(rawUser.role.at(-1)) || 3
-  const user: Partial<IUser> = {
-    name: rawUser.name,
-    grade: userGrade,
-    photo: rawUser.photo
-  }
+  const { hasRole, hasAccess } = usePermissions()
+  const { data: user } = useUserInfo()
+  const logout = useLogout()
 
   const [isExpanded, setIsExpanded] = useState<boolean>(true)
-  const logout = useLogout()
   const menu = hasRole('admin') ? MENU_ADMIN : MENU_MANAGER
+
   return (
     <aside
       className={`${isExpanded ? 'w-[328px]' : 'w-[120px]'} transition-[width] duration-400 h-screen 
@@ -43,7 +39,7 @@ export const Sidebar = () => {
           className={`
             border border-grey-extra-light rounded-[8px] cursor-pointer hover:border-yellow-light
             active:bg-yellow-light active:border-yellow-accent-dark focus-visible:border-yellow-accent-dark
-            transition-[border-color,bg-color] duration-400
+            transition-[border-color,background-color] duration-400
             ${isExpanded ? 'px-[13px] py-[13px]' : 'px-[31px] py-[15px]'}
           `}
           onClick={() => setIsExpanded(state => !state)}
@@ -76,9 +72,7 @@ export const Sidebar = () => {
         <div className={`overflow-hidden transition-[width] duration-400 ${isExpanded ? 'w-[200px]' : 'w-0'}`}>
           <div className="flex flex-col gap-[4px] w-[200px]">
             <span className="button-text">{user.name}</span>
-            <span className="text-xs">
-              {hasRole('admin') ? 'Администратор' : `Менеджер ${user.grade} звена`}
-            </span>
+            <span className="text-xs">{hasRole('admin') ? 'Администратор' : `Менеджер ${user.grade} звена`}</span>
           </div>
         </div>
       </div>
@@ -98,6 +92,7 @@ export const Sidebar = () => {
                   route={item.route}
                   childrenItems={item.childrenItems}
                   isExpanded={isExpanded}
+                  inDevelopment={item.inDevelopment}
                 />
               )
           )}
@@ -109,12 +104,13 @@ export const Sidebar = () => {
         >
           {MENU_DOWN.map(item => (
             <DownItem
-              key={item.route}
+              key={`${item.route}-down`}
               Icon={item.Icon}
               title={item.title}
               route={item.route}
               isExpanded={isExpanded}
               onClick={item.title === 'Выход' ? logout.logout : undefined}
+              inDevelopment={item.inDevelopment}
             />
           ))}
         </div>

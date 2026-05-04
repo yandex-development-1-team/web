@@ -9,7 +9,7 @@ export const Pagination = ({ pagination, variant = 'default', className, ...prop
   const { nav, pagesRange, selectedPage, totalPages } = usePaginationNav(pagination)
   const { changeLimit } = usePaginationLimit()
 
-  if (!pagination || pagination.total <= pagination.limit) return null
+  if (!pagination) return null
 
   const showLimit = variant === 'default' || variant === 'limit'
   const showNav = variant === 'default' || variant === 'nav'

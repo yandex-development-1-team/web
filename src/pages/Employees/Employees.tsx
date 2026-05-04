@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
-import { Button, DataTable, Input, Loader } from '@/components/ui'
+import { Button, DataTable, Input, LabelInDevelopment, Loader } from '@/components/ui'
 import { BoxFilter, DownloadIcon, SearchIcon, SortByNumbersIcon } from '@/assets/icons'
 import { ROUTES } from '@/app/router'
 import { getEmployees } from './api/getEmployees'
@@ -135,9 +135,12 @@ const Employees = () => {
                 </div>
               )}
             </div>
-            <Button onClick={handleDownload} className="p-4 bg-transparent border-grey-border">
-              <DownloadIcon />
-            </Button>
+            <div className="relative">
+              <Button onClick={handleDownload} className="p-4 bg-transparent border-grey-border">
+                <DownloadIcon />
+              </Button>
+              <LabelInDevelopment className="-right-[14px]" />
+            </div>
           </div>
         </div>
       </div>

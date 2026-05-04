@@ -10,6 +10,7 @@ type Props<T> = {
   enableCheckboxes?: boolean
   enableRowActions?: boolean
   selectedRows: T[]
+  onRowClick?: (data: T) => void
   onSelectRow: (row: T) => void
   rowActions?: (row: T) => React.ReactNode
 }
@@ -22,7 +23,8 @@ export function TableBody<T>({
   enableRowActions,
   selectedRows,
   onSelectRow,
-  rowActions
+  rowActions,
+  onRowClick
 }: Props<T>) {
   const maxLen = findMaxNumber(data, columns)
 
@@ -33,11 +35,15 @@ export function TableBody<T>({
         return (
           <tr
             key={String(row[idKey])}
-            className={`${isSelected ? 'bg-creamy' : ''} border-b whitespace-nowrap border-b-grey-blue-light last:border-b-0`}
+            className={`
+              ${isSelected ? 'bg-creamy' : ''} border-b whitespace-nowrap border-b-grey-blue-light last:border-b-0
+              transition-colors duration-300 hover:cursor-pointer hover:bg-grey-extra-light
+            `}
+            onClick={() => onRowClick?.(row)}
           >
             {enableCheckboxes && (
               <td className="w-12 p-4">
-                <label className="flex cursor-pointer items-center justify-center">
+                <label className="flex cursor-pointer items-center justify-center" onClick={e => e.stopPropagation()}>
                   <input
                     type="checkbox"
                     checked={isSelected}

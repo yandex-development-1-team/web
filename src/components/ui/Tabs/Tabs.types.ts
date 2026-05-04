@@ -10,5 +10,5 @@ export interface ITab<T extends string> {
 export type TabsPropsType<T extends string> = {
   readonly tabs: readonly ITab<T>[]
   activeTab: ITab<T>['path']
-  onTabClick: (path: ITab<T>['path']) => void
+  onTabClick?: (path: ITab<T>['path']) => void
 } & ComponentProps<'div'>

@@ -54,3 +54,28 @@ export function formatDateISO(date: Date | undefined): string {
 
   return `${year}-${month}-${day}`
 }
+
+export const formatDateToLocalUI = (dateStr: string | undefined) => {
+  if (!dateStr) return
+  const date = new Date(dateStr)
+  if (isNaN(date.getTime())) return dateStr
+  return date.toLocaleDateString('ru-RU', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric'
+  })
+}
+
+export function formatDateTime(value: string | undefined): string {
+  if (!value) return ''
+
+  const date = new Date(value)
+
+  if (isNaN(date.getTime())) return ''
+
+  const day = String(date.getDate()).padStart(2, '0')
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const year = date.getFullYear()
+
+  return `${day}.${month}.${year}`
+}

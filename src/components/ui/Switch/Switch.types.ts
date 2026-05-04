@@ -4,4 +4,5 @@ export interface SwitchProps {
   paleStyle?: boolean
   className?: string
   disabled?: boolean
+  disabledColorful?: boolean
 }

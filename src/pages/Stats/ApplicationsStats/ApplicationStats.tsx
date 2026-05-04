@@ -1,8 +1,186 @@
+import { useNotification } from '@/app/providers/notification'
+import { Diagram, DownloadIcon } from '@/assets/icons'
+import { Button, CalendarInput } from '@/components/ui'
+import { Chart } from '@/components/ui/Chart'
+import { formatDateISO } from '@/lib/utils.date'
+import type { BoxStatsSearchParams, DateRangeField } from '@/pages/Stats/ApplicationsStats/ApplicationStats.types'
+import { useBoxNameAutocomplete } from '@/pages/Stats/ApplicationsStats/hooks/useBoxNameAutocomplete'
+import { useBoxNames } from '@/pages/Stats/ApplicationsStats/hooks/useBoxNames'
+import { useBoxStats } from '@/pages/Stats/ApplicationsStats/hooks/useBoxStats'
+import { isValidDateRange } from '@/pages/Stats/ApplicationsStats/utils/isValidDateRange'
+import {
+  mapLoadedSeriesToChartData,
+  mapLoadedSeriesToTableRows
+} from '@/pages/Stats/ApplicationsStats/utils/mapBoxStats'
+import { ApplicationTable } from '@/pages/Stats/ApplicationsStats/ui/ApplicationTable'
+import { BoxNameSearchField } from '@/pages/Stats/ApplicationsStats/ui/BoxNameSearchField'
+import { useCallback, useMemo, useState } from 'react'
+
+function periodKey(dateFrom: string, dateTo: string) {
+  return `${dateFrom}_${dateTo}`
+}
+
+function canCompareByLimits(boxCount: number, periodCount: number) {
+  return (periodCount === 1 && boxCount <= 2) || (boxCount === 1 && periodCount <= 3)
+}
+
 const ApplicationStats = () => {
+  const { showNotification } = useNotification()
+  const [dateRange, setDateRange] = useState<{
+    dateFrom: Date | undefined
+    dateTo: Date | undefined
+  }>({
+    dateFrom: undefined,
+    dateTo: undefined
+  })
+  const [chartVisible, setChartVisible] = useState(false)
+
+  const { boxNames } = useBoxNames()
+  const nameSearch = useBoxNameAutocomplete(boxNames)
+  const { loadedSeries, appendSeries, isAppending, removeSeries } = useBoxStats()
+
+  const isDateRangeValid = isValidDateRange(dateRange.dateFrom, dateRange.dateTo)
+
+  const tableRows = useMemo(() => mapLoadedSeriesToTableRows(loadedSeries), [loadedSeries])
+  const chartData = useMemo(() => mapLoadedSeriesToChartData(loadedSeries), [loadedSeries])
+  const nextComparisonCounts = useMemo(() => {
+    const boxes = new Set(loadedSeries.map(item => item.queryParams.search))
+    const periods = new Set(loadedSeries.map(item => periodKey(item.queryParams.dateFrom, item.queryParams.dateTo)))
+
+    if (nameSearch.pickedName) {
+      boxes.add(nameSearch.pickedName)
+    }
+    if (dateRange.dateFrom && dateRange.dateTo) {
+      periods.add(periodKey(formatDateISO(dateRange.dateFrom), formatDateISO(dateRange.dateTo)))
+    }
+
+    return {
+      boxCount: boxes.size,
+      periodCount: periods.size
+    }
+  }, [loadedSeries, nameSearch.pickedName, dateRange.dateFrom, dateRange.dateTo])
+
+  const clearFilters = useCallback(() => {
+    nameSearch.reset()
+    setDateRange({
+      dateFrom: undefined,
+      dateTo: undefined
+    })
+  }, [nameSearch])
+
+  const handleDateChange = (field: DateRangeField) => (date: Date | undefined) => {
+    setDateRange(prev => ({
+      ...prev,
+      [field]: date
+    }))
+  }
+
+  const handleAddToTable = useCallback(() => {
+    if (!isDateRangeValid || !dateRange.dateFrom || !dateRange.dateTo || !nameSearch.pickedName) {
+      return
+    }
+
+    const params: BoxStatsSearchParams = {
+      dateFrom: formatDateISO(dateRange.dateFrom),
+      dateTo: formatDateISO(dateRange.dateTo),
+      search: nameSearch.pickedName
+    }
+
+    appendSeries(params, {
+      onSuccess: () => clearFilters(),
+      onError: () => {
+        showNotification({
+          status: 'error',
+          message: 'Ошибка при добавлении данных'
+        })
+      }
+    })
+  }, [
+    isDateRangeValid,
+    dateRange.dateFrom,
+    dateRange.dateTo,
+    nameSearch.pickedName,
+    appendSeries,
+    clearFilters,
+    showNotification
+  ])
+
+  const handleDownload = () => {}
+
+  const toggleChart = () => {
+    setChartVisible(prev => !prev)
+  }
+
+  const canSubmit =
+    isDateRangeValid &&
+    !isAppending &&
+    !nameSearch.invalid &&
+    !!nameSearch.query &&
+    !!nameSearch.pickedName &&
+    canCompareByLimits(nextComparisonCounts.boxCount, nextComparisonCounts.periodCount)
+
   return (
     <>
-      <h1>Работа с заявками</h1>
-      <p>Страница в разработке...</p>
+      <div className="bg-white text-black px-5 pb-5 rounded-lg">
+        <h2 className="text-h2 mt-5">Заявки по коробкам</h2>
+        <h4 className="text-h3 mt-2">Сравнение посещений за период</h4>
+        <p className="text-h5 mt-2">
+          Вы можете сравнить не более двух коробок за ОДИН период или одну коробку за НЕСКОЛЬКО (не более трёх)
+          периодов.
+        </p>
+        <div className="grid grid-cols-1 min-[1235px]:grid-cols-[548px_1fr] gap-5 items-end mt-8">
+          <BoxNameSearchField autocomplete={nameSearch} disabled={isAppending} />
+          <div className="grid grid-cols-1 min-[1235px]:grid-cols-2 gap-3">
+            <div className="flex flex-col gap-1">
+              <span className="text-xxs text-text-grey-medium">Период с</span>
+              <CalendarInput
+                variant="single"
+                value={dateRange.dateFrom}
+                onChange={handleDateChange('dateFrom')}
+                disabled={isAppending}
+              />
+            </div>
+            <div className="flex flex-col gap-1">
+              <span className="text-xxs text-text-grey-medium">Период по</span>
+              <CalendarInput
+                variant="single"
+                value={dateRange.dateTo}
+                onChange={handleDateChange('dateTo')}
+                disabled={isAppending}
+              />
+            </div>
+          </div>
+          <div className="flex flex-wrap min-[1235px]:justify-between gap-3">
+            <Button disabled={!canSubmit} className="h-11.5 px-8 py-3" onClick={handleAddToTable}>
+              {isAppending ? 'Добавление...' : 'Добавить в таблицу'}
+            </Button>
+
+            <Button
+              disabled={isAppending}
+              variant="secondary"
+              className="size-11.5 border-grey-light"
+              onClick={handleDownload}
+            >
+              <DownloadIcon />
+            </Button>
+          </div>
+          <ApplicationTable data={tableRows} onRemove={removeSeries} />
+          <Button
+            leftIcon={<Diagram className="size-6" />}
+            variant="ghost"
+            className="w-55.25 h-12 shadow-[0px_1px_3px_1px_#00000026,0px_1px_2px_0px_#0000004D]"
+            onClick={toggleChart}
+            disabled={chartData.periods.length === 0}
+          >
+            {!chartVisible ? 'Посмотреть график' : 'Скрыть график'}
+          </Button>
+        </div>
+      </div>
+      {chartVisible && (
+        <div className="grid grid-cols gap-8.5 bg-white pl-0 p-5 mt-5 rounded-lg">
+          <Chart data={chartData} />
+        </div>
+      )}
     </>
   )
 }

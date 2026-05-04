@@ -1,14 +1,13 @@
 import { useState } from 'react'
-import { Button, Input, Loader } from '@/components/ui'
+import { Button, Input } from '@/components/ui'
 import { EyeIcon, EyeCloseIcon } from '@/assets/icons'
 import { useModal } from '@/components/ui/Modal/useModal'
 import { RecoveryModal } from './ui/RecoveryModal'
-import { Navigate, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { ROUTES } from '@/app/router'
 import { useLogin } from '../../hooks/useLogin'
 import { validateLogin, validatePassword } from './validation'
 import type { AxiosError } from 'axios'
-import { usePermissions } from '@/hooks/usePermissions'
 
 export const LoginForm = () => {
   const [authFormData, setAuthFormData] = useState({
@@ -23,14 +22,6 @@ export const LoginForm = () => {
 
   const { mutateAsync, isPending } = useLogin()
   const { isOpen: isOpenRecoveryModal, open: openRecoveryModal, close: closeRecoveryModal } = useModal()
-
-  const { isLoggedIn, isLoading, user: currentUser } = usePermissions()
-  if (isLoading) {
-    return <Loader />
-  }
-  if (isLoggedIn && currentUser) {
-    return <Navigate to={ROUTES.home} replace />
-  }
 
   const loginError = validateLogin(authFormData.login)
   const passwordError = validatePassword(authFormData.password)
@@ -47,15 +38,15 @@ export const LoginForm = () => {
     setTouched(prev => ({ ...prev, [name]: true }))
   }
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     try {
       await mutateAsync(authFormData)
       navigate(ROUTES.home, { replace: true })
     } catch (error) {
-      const axiosError = error as AxiosError<{ message: string }>
-      const message = axiosError.response?.data?.message || 'Неверный логин или пароль'
+      const axiosError = error as AxiosError<{ errors?: string[] }>
+      const message = axiosError.response?.data?.errors?.[0] || 'Неверный логин или пароль'
       setServerError(message)
     }
   }
@@ -102,7 +93,7 @@ export const LoginForm = () => {
           </button>
         </div>
 
-        <div className="text-xs min-h-[18px]">
+        <div className="text-xs min-h-[19px]">
           <p
             className={`
             ${passwordError && touched.password ? 'text-text-red-dark opacity-100' : 'opacity-0'} transition-opacity
@@ -112,13 +103,13 @@ export const LoginForm = () => {
           </p>
         </div>
 
-        {serverError && <div className="text-xs text-text-red-dark mb-2">{serverError}</div>}
+        <div className="min-h-[19px] text-xs text-text-red-dark mb-2">{serverError}</div>
 
         <button
           type="button"
           className={`
             text-text-grey-dark text-xs mb-6 inline-block cursor-pointer outline-0 hover:text-text-grey-light
-            focus:ring-1 focus:ring-yellow-accent-dark transition-[color,shadow] duration-300
+            transition-[color,shadow] duration-300
           `}
           onClick={() => openRecoveryModal()}
         >

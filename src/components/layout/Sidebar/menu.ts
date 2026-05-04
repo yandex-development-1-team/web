@@ -53,23 +53,26 @@ export const MENU_ADMIN: Omit<ItemProps, 'isExpanded'>[] = [
     Icon: AnalyticsIcon,
     title: 'Аналитика',
     route: ROUTES.stats,
+    inDevelopment: true,
     childrenItems: [
-      { title: 'Средняя посещаемость на коробку', route: ROUTES.statsAttendance },
-      { title: 'Работа с заяками', route: ROUTES.statsApplications },
-      { title: 'Популярность коробочных решений', route: ROUTES.statsPopularity },
-      { title: 'Экспорт данных', route: ROUTES.statsDataExport },
-      { title: 'Аналитика пользователей', route: ROUTES.statsUsers }
+      { title: 'Средняя посещаемость на коробку', route: ROUTES.statsAttendance, inDevelopment: true },
+      { title: 'Работа с заяками', route: ROUTES.statsApplications, inDevelopment: true },
+      { title: 'Популярность коробочных решений', route: ROUTES.statsPopularity, inDevelopment: true },
+      { title: 'Экспорт данных', route: ROUTES.statsDataExport, inDevelopment: true },
+      { title: 'Аналитика пользователей', route: ROUTES.statsUsers, inDevelopment: true }
     ]
   },
   {
     Icon: BoxIcon,
     title: 'Управление коробками',
-    route: ROUTES.manageSolutions
+    route: ROUTES.manageSolutions,
+    inDevelopment: true
   },
   {
     Icon: ScheduleIcon,
     title: 'Управление расписанием',
-    route: ROUTES.schedule
+    route: ROUTES.schedule,
+    inDevelopment: true
   },
   {
     Icon: UsersIcon,
@@ -92,7 +95,8 @@ export const MENU_DOWN: Omit<DownItemProps, 'isExpanded'>[] = [
   {
     Icon: SupportIcon,
     title: 'Поддержка',
-    route: ROUTES.notFound
+    route: ROUTES.notFound,
+    inDevelopment: true
   },
   {
     Icon: ExitIcon,

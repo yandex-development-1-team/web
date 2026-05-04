@@ -22,7 +22,7 @@ export const BoxSolutionModal = ({ isOpen, onClose, boxData, onSave }: BoxSoluti
     clearErrors,
     formState: { errors, dirtyFields }
   } = useForm<BoxSolutionFormData>({
-    defaultValues: getFormValues(boxData),
+    values: getFormValues(boxData),
     resolver: zodResolver(boxSolutionSchema)
   })
 
