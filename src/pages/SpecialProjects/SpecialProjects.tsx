@@ -1,38 +1,52 @@
-import { useState, type ChangeEvent } from 'react'
+import { useEffect, useState, type ChangeEvent } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { BoxButton, Input, Dropzone, DeleteModal, Select } from '@/components/ui'
-import { mockProjects, mockUrl } from '@/mockData/mockSpecialProjectsPageData'
-import { EnvelopeIcon, SearchIcon } from '@/assets/icons'
+import { BoxButton, Input, Dropzone, DeleteModal } from '@/components/ui'
+import { EnvelopeIcon } from '@/assets/icons'
 import { ProjectCard } from '@/components/layout/ProjectCard'
 import { Pagination } from '@/components/ui/Pagination'
 import { type IProject } from '@/types/solutions'
 import { useMainWidth } from '@/hooks/useMainWidth'
 import { SpecialProjectModal } from '@/components/SpecialProjectModal/SpecialProjectModal'
 import { usePermissions, PERMISSIONS } from '@/hooks/usePermissions'
+import { useSpecialProjects } from './hooks/useSpecialProjects'
+import { filterSchema } from './specialProjects.types'
+import { useQueryParams } from '@/hooks/useUrlFilters'
+import { FiltersBlock } from './ui/FiltersBlock'
+import { deleteSpecProject } from './api/deleteSpecialProject'
+import { mapProjectToCreateData, mapProjectToEditData } from './api/specProject.mappers'
+import { useUpdateSpecialProject } from './hooks/useUpdateSpecialProject'
+import { useCreateSpecialProject } from './hooks/useCreateSpecialProject'
+import { useFormLink } from './hooks/useFormLink'
+import { useUpdateFormLink } from './hooks/useUpdateFormLink'
+import { useUploadPresentation } from './hooks/useUploadPresentation'
 
 const SpecialProjects = () => {
+  const { mutate: editSpecProject } = useUpdateSpecialProject()
+  const { mutate: createSpecProject } = useCreateSpecialProject()
+  const { data } = useSpecialProjects()
+  const { item, data: resourceData } = useFormLink()
+  const { mutate: updateLink } = useUpdateFormLink()
+  const { mutate: uploadPresentation } = useUploadPresentation()
+
+  const { updateParam } = useQueryParams(filterSchema)
+
   const cardMinWidth = 284
   const cardMaxWidth = 344
 
-  const selectData = [
-    { value: 'all', label: 'Все' },
-    { value: 'active', label: 'Активные' },
-    { value: 'inactive', label: 'Не активные' }
-  ]
-
-  const mainWidth = useMainWidth()
+  const mainWidth = useMainWidth(300)
   const pageSize = Math.floor((mainWidth - 20) / (cardMinWidth + 20)) || 1
 
   const [searchParams] = useSearchParams()
   const offset = Number(searchParams.get('offset')) || 0
 
-  const [projects, setProjects] = useState<IProject[]>(mockProjects)
+  const projects = data?.items || []
+  const total = data?.pagination.total || 0
 
   const pageSizeLow = Math.floor((mainWidth - 20) / (cardMaxWidth + 20)) || 1
   const cardsOnCurrentPageCount = projects.slice(offset, offset + pageSize).length
   const justifyClass = cardsOnCurrentPageCount < pageSizeLow ? 'justify-start' : 'justify-between'
 
-  const [url, setUrl] = useState(mockUrl)
+  const [url, setUrl] = useState('')
   const [presentationFile, setPresentationFile] = useState<File | null>(null)
 
   const [projectToDelete, setProjectToDelete] = useState<number | string | null>(null)
@@ -43,9 +57,36 @@ const SpecialProjects = () => {
 
   const handleFileAccept = (file: File) => {
     setPresentationFile(file)
+
+    const formData = new FormData()
+    formData.append('file', file)
+
+    uploadPresentation(formData)
   }
 
-  const updateUrl = () => void url
+  const updateUrl = () => {
+    if (resourceData && !urlError) {
+      if (item) {
+        const { id } = item
+        const newItem = resourceData?.links?.find(item => item.id === id)
+
+        if (newItem) {
+          newItem.url = url
+
+          updateLink(resourceData)
+        }
+      } else {
+        const formLink = {
+          url,
+          title: 'Яндекс форма'
+        }
+
+        resourceData?.links?.push(formLink)
+
+        updateLink(resourceData)
+      }
+    }
+  }
 
   const handleUrlInput = () => {
     validateUrl()
@@ -96,24 +137,16 @@ const SpecialProjects = () => {
     }
   }
 
-  const deleteProject = async (id: string | number) => {
-    setProjects(prev => prev.filter(project => project.id !== id))
-  }
-
-  const updateProject = async (newData: IProject) => {
-    setProjects(prev => prev.map(project => (project.id === newData.id ? newData : project)))
-  }
-
   const handleProjectCreate = () => {
     setProjectToEdit(undefined)
   }
 
   const handleProjectView = (id: number | string) => {
-    setProjectToView(mockProjects.find(project => project.id === id) || null)
+    setProjectToView(structuredClone(projects.find(project => project.id === id)) || null)
   }
 
   const handleProjectEdit = (id: number | string) => {
-    setProjectToEdit(projects.find(project => project.id === id) || null)
+    setProjectToEdit(structuredClone(projects.find(project => project.id === id)) || null)
   }
 
   const handleProjectDelete = (id: number | string) => {
@@ -121,6 +154,28 @@ const SpecialProjects = () => {
   }
 
   const { hasAccess } = usePermissions()
+
+  const handleSubmitProject = (data: IProject) => {
+    if (projectToEdit) {
+      const finalData = mapProjectToEditData(data)
+      editSpecProject(finalData)
+    } else {
+      const finalData = mapProjectToCreateData(data)
+      createSpecProject(finalData)
+    }
+  }
+
+  useEffect(() => {
+    const currentFirstItemIndex = offset
+    const newOffset = Math.floor(currentFirstItemIndex / pageSize) * pageSize
+    updateParam('limit', newOffset)(String(pageSize))
+  }, [pageSize, updateParam, offset])
+
+  useEffect(() => {
+    setTimeout(() => {
+      setUrl(item?.url || '')
+    }, 0)
+  }, [item?.url])
 
   return (
     <>
@@ -184,16 +239,13 @@ const SpecialProjects = () => {
         )}
       </div>
 
-      <div className="flex items-center gap-5 mb-6">
-        <Input variant="icon" icon={<SearchIcon />} className="bg-white min-[1440px]:min-w-84 h-full" placeholder="" />
-        <Select options={selectData} placeholder="Выберите статус" classNames={{ trigger: 'bg-white w-full h-11.5' }} />
-      </div>
+      <FiltersBlock />
 
       <div
         className={`mt-[30px] flex gap-[20px] ${justifyClass}`}
         style={{ gridTemplateColumns: `repeat(${pageSize}, minmax(0, 1fr))` }}
       >
-        {projects.slice(offset, offset + pageSize).map(project => (
+        {projects.map(project => (
           <ProjectCard
             style={{ minWidth: `${cardMinWidth}px`, maxWidth: `${cardMaxWidth}px` }}
             key={project.id}
@@ -214,11 +266,12 @@ const SpecialProjects = () => {
         pagination={{
           limit: pageSize,
           offset: offset,
-          total: projects.length
+          total: total
         }}
       />
 
       <SpecialProjectModal
+        key={projectToView?.id ?? 'new_view'}
         isOpen={projectToView !== null}
         onClose={() => setProjectToView(null)}
         onSubmit={() => setProjectToView(null)}
@@ -228,11 +281,12 @@ const SpecialProjects = () => {
       />
 
       <SpecialProjectModal
+        key={projectToEdit?.id ?? 'new_edit'}
         isOpen={projectToEdit !== null}
         onClose={() => setProjectToEdit(null)}
         onSubmit={data => {
-          updateProject(data)
           setProjectToEdit(null)
+          handleSubmitProject(data)
         }}
         modalTitle={projectToEdit !== undefined ? 'Редактировать спецпроект' : 'Создать спецпроект'}
         initialData={projectToEdit || undefined}
@@ -242,10 +296,11 @@ const SpecialProjects = () => {
         title="Удалить спецпроект?"
         isOpen={!!projectToDelete || projectToDelete === 0}
         onDelete={async id => {
-          deleteProject(id)
+          deleteSpecProject(Number(id))
         }}
         onClose={() => setProjectToDelete(null)}
         itemId={projectToDelete}
+        queryKey={['specialProjects']}
       >
         <p>Вы действительно хотите удалить этот спецпроект?</p>
         <p>Действие нельзя отменить</p>

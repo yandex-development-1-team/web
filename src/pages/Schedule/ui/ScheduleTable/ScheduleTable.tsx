@@ -46,7 +46,7 @@ export const ScheduleTable = (props: TScheduleTable) => {
 
   const buttonClasses = `
     size-11.5 border-grey-light hover:ring-1 hover:ring-yellow-light focus:ring-1 focus:ring-yellow-accent-dark
-    active:bg-yellow-light transition-[border-color,bg-color,shadow] duration-300
+    active:bg-yellow-light transition-[border-color,background-color,shadow] duration-300
   `
 
   const renderRowActions = (row: TTableEvent) => (
