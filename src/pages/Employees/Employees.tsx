@@ -19,6 +19,8 @@ const Employees = () => {
     key: keyof UserListItem
     direction: 'asc' | 'desc'
   } | null>(null)
+  const [resetCount, setResetCount] = useState(0);
+  const forceResetSort = () => setResetCount(c => c + 1);
 
   const { userList, pagination, isPending } = useFetchUserList()
   const filterRef = useRef<HTMLDivElement>(null)
@@ -33,6 +35,7 @@ const Employees = () => {
     setSortConfig(prev =>
       prev?.key === key ? { key, direction: prev.direction === 'asc' ? 'desc' : 'asc' } : { key, direction: 'asc' }
     )
+    forceResetSort()
   }
 
   const handleDownload = () => void select
@@ -90,7 +93,6 @@ const Employees = () => {
           </div>
         </div>
       </div>
-
       <DataTable
         idKey="id"
         columns={COLUMNS_CONFIG}
@@ -100,6 +102,7 @@ const Employees = () => {
         enableLoadMore
         onSelect={setSelect}
         onRowClick={data => navigate(`/employees/${data.id}`)}
+        resetSortTrigger={resetCount}
       />
     </>
   )
