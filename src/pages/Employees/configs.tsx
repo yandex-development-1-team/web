@@ -95,7 +95,7 @@ export const SORT_OPTIONS: SortOptions = {
       label: 'По должности'
     },
     {
-      value: 'level',
+      value: 'role',
       label: 'По уровню'
     }
   ]

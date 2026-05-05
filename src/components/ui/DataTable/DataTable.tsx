@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import type { DataTableProps, SortConfig } from './DataTable.types'
 import { sortData, toggleAllSelection, toggleRowSelection } from './helpers'
 
@@ -17,7 +17,8 @@ export function DataTable<T extends Record<string, unknown>>(props: DataTablePro
     enableCheckboxes = false,
     onSelect,
     onRowClick,
-    pagination
+    pagination,
+    resetSortTrigger
   } = props
 
   const [sortConfig, setSortConfig] = useState<SortConfig<T> | null>(null)
@@ -41,6 +42,14 @@ export function DataTable<T extends Record<string, unknown>>(props: DataTablePro
     setSelectedRows(newSelected)
     onSelect?.(newSelected)
   }
+
+  useEffect(() => {
+    if (resetSortTrigger !== undefined) {
+      setTimeout(() => {
+        setSortConfig(null)
+      }, 0)
+    }
+  }, [resetSortTrigger])
 
   if (error) return <div>Не удалось загрузить данные</div>
 
@@ -80,7 +89,7 @@ export function DataTable<T extends Record<string, unknown>>(props: DataTablePro
   return (
     <>
       <div className="rounded-lg border border-grey-light bg-white text-color-black text-xs mb-2 overflow-x-auto">
-        <table className="w-full min-w-max">
+        <table className="w-full">
           <TableHeader
             columns={columns}
             enableCheckboxes={enableCheckboxes}
