@@ -1,10 +1,10 @@
 const EXPORT_BASE = '/export' as const
-const BOXES_BASE = '/boxes/' as const
+const BOXES_BASE = '/boxes' as const
+const RESOURCES_BASE = '/resources' as const
 export const BOOKINGS_BASE = '/bookings/' as const
 export const APPLICATIONS_BASE = '/applications/' as const
-const RESOURCES_BASE = '/resources' as const
-const USERS_BASE = '/users/' as const
 export const SPECIAL_PROJECTS_BASE = '/special-projects/' as const
+const USERS_BASE = '/users/' as const
 
 export const API_ROUTES = {
   items: '/items',
@@ -13,6 +13,8 @@ export const API_ROUTES = {
   refreshToken: '/auth/refresh',
   passwordRecovery: 'auth/forgot-password',
   passwordReset: 'auth/reset-password',
+  imageUrl: '/files/upload',
+  dashboard: '/dashboard',
 
   settings: {
     messages: '/settings/messages',
@@ -27,20 +29,19 @@ export const API_ROUTES = {
     byId: (id: string) => `${USERS_BASE}${id}`,
     status: (id: string) => `${USERS_BASE}${id}/status`
   },
-  imageUrl: '/files/upload',
-
-  dashboard: '/dashboard',
 
   analytics: {
     boxes: '/analytics/boxes',
     export: '/analytics/export',
     users: '/analytics/users'
   },
+  
   bookings: {
     get: BOOKINGS_BASE,
     byId: (id: string) => `${BOOKINGS_BASE}${id}`,
     changeStatus: (id: string) => `${BOOKINGS_BASE}${id}/status`
   },
+  
   applications: {
     get: APPLICATIONS_BASE,
     byId: (id: string) => `${APPLICATIONS_BASE}${id}`,
@@ -54,6 +55,7 @@ export const API_ROUTES = {
     deleteById: (id: string) => `${EXPORT_BASE}/${id}`,
     byPath: (path: string) => `${EXPORT_BASE}/${path}`
   },
+  
   boxes: {
     byId: (id: string) => `${BOXES_BASE}${id}`,
     get: BOXES_BASE,
@@ -67,6 +69,7 @@ export const API_ROUTES = {
     eventSchedule: `${RESOURCES_BASE}/event-schedule`
   },
 
+  
   specialProjects: {
     get: SPECIAL_PROJECTS_BASE,
     byId: (id: string) => `${SPECIAL_PROJECTS_BASE}${id}`,
@@ -77,6 +80,7 @@ export const API_ROUTES = {
     putFormLink: `/resources/req-spec-projects`,
     putPresentation: `/resources/spec-projects/file`
   }
+
 } as const
 
 // PUT /api/v1/users/{id}/block — заблокировать сотрудника

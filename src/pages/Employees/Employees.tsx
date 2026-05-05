@@ -1,10 +1,10 @@
-import { ROUTES } from '@/app/router'
-import { BoxFilter, DownloadIcon } from '@/assets/icons'
-import { Button, DataTable, LabelInDevelopment, Loader } from '@/components/ui'
-import { sortData } from '@/components/ui/DataTable/helpers'
-import { Pagination } from '@/components/ui/Pagination'
 import { useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { Button, DataTable, LabelInDevelopment, Loader } from '@/components/ui'
+import { BoxFilter, DownloadIcon } from '@/assets/icons'
+import { ROUTES } from '@/app/router'
+import { sortData } from '@/components/ui/DataTable/helpers'
+import { Pagination } from '@/components/ui/Pagination'
 import { useFetchUserList } from './api/userQueries'
 import { COLUMNS_CONFIG, SORT_OPTIONS } from './configs'
 import type { UserListItem } from './employees.types'
@@ -19,6 +19,8 @@ const Employees = () => {
     key: keyof UserListItem
     direction: 'asc' | 'desc'
   } | null>(null)
+  const [resetCount, setResetCount] = useState(0);
+  const forceResetSort = () => setResetCount(c => c + 1);
 
   const { userList, pagination, isPending } = useFetchUserList()
   const filterRef = useRef<HTMLDivElement>(null)
@@ -33,6 +35,7 @@ const Employees = () => {
     setSortConfig(prev =>
       prev?.key === key ? { key, direction: prev.direction === 'asc' ? 'desc' : 'asc' } : { key, direction: 'asc' }
     )
+    forceResetSort()
   }
 
   const handleDownload = () => void select
@@ -90,7 +93,6 @@ const Employees = () => {
           </div>
         </div>
       </div>
-
       <DataTable
         idKey="id"
         columns={COLUMNS_CONFIG}
@@ -100,6 +102,7 @@ const Employees = () => {
         enableLoadMore
         onSelect={setSelect}
         onRowClick={data => navigate(`/employees/${data.id}`)}
+        resetSortTrigger={resetCount}
       />
     </>
   )
