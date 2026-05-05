@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import type { DataTableProps, SortConfig } from './DataTable.types'
 import { sortData, toggleAllSelection, toggleRowSelection } from './helpers'
-import { SkeletonRow } from './ui/Skeleton'
 
+import { SkeletonRow } from './ui/Skeleton'
 import { TableBody } from './ui/TableBody'
 import { TableHeader } from './ui/TableHeader'
 
@@ -48,7 +48,7 @@ export function DataTable<T extends Record<string, unknown>>(props: DataTablePro
     const rowsToShow = 10
     return (
       <div className="rounded-lg border border-grey-light bg-white">
-        <table className="min-w-max whitespace-nowrap">
+        <table className="w-full">
           <thead>
             <tr className="h-12 border-b border-grey-light bg-white bg-gray-100">
               {enableCheckboxes && <th className="w-12 p-4" />}
@@ -79,8 +79,8 @@ export function DataTable<T extends Record<string, unknown>>(props: DataTablePro
 
   return (
     <>
-      <div className="overflow-x-auto rounded-lg border border-grey-light bg-white text-color-black text-xs mb-2">
-        <table className="w-full">
+      <div className="rounded-lg border border-grey-light bg-white text-color-black text-xs mb-2 overflow-x-auto">
+        <table className="w-full min-w-max">
           <TableHeader
             columns={columns}
             enableCheckboxes={enableCheckboxes}
@@ -100,10 +100,11 @@ export function DataTable<T extends Record<string, unknown>>(props: DataTablePro
             onSelectRow={handleSelectRow}
             rowActions={rowActions}
             onRowClick={onRowClick}
+            paginationEnabled={!!pagination}
           />
         </table>
-        {pagination}
       </div>
+      {pagination}
     </>
   )
 }

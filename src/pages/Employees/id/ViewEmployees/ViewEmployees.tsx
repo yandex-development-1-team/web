@@ -1,20 +1,20 @@
 import { ROUTES } from '@/app/router'
 import { Card, Loader } from '@/components/ui'
 import { cn } from '@/lib/utils.clsx'
+import { USERS_KEYS } from '@/services/api/queryKeys'
 import { href, Link, useParams } from 'react-router-dom'
-import { useEmployee } from '../../hooks/useEmployee'
+import { useFetchUser } from '../../api/userQueries'
 import { Content } from './ui/Content'
 import { EmployeeDetails } from './ui/EmployeeDetails'
 import { EmployeeSidebar } from './ui/EmployeeSidebar'
 
 const ViewEmployees = () => {
-  const { employeeId } = useParams<{ employeeId: string }>() as { employeeId: string }
-  const queryKey = ['employee', employeeId]
-  const { employee, isPending, error } = useEmployee(employeeId, queryKey)
+  const { employeeId } = useParams<{ employeeId: string }>()
+  const { user, isPending, error } = useFetchUser(employeeId)
 
   if (error) return <div className="text-h4 text-text-grey-dark">Ошибка при получении данных</div>
   if (isPending) return <Loader />
-  if (!employee) return <div className="text-h4 text-text-grey-dark">Сотрудник не найден</div>
+  if (!user) return <div className="text-h4 text-text-grey-dark">Сотрудник не найден</div>
 
   return (
     <div className="flex flex-col">
@@ -23,14 +23,14 @@ const ViewEmployees = () => {
       </Card>
       <Content>
         <EmployeeSidebar
-          avatar={employee.avatar}
-          status={employee.status}
+          avatar={user.image}
+          status={user.status}
           employeeId={employeeId}
-          queryKey={queryKey}
-          phone={employee.contacts.phone}
-          email={employee.contacts.email}
+          queryKey={USERS_KEYS.all}
+          phone={user.phoneNumber}
+          email={user.email}
         />
-        <EmployeeDetails employee={employee} />
+        <EmployeeDetails employee={user} />
       </Content>
       <Link
         className={cn(

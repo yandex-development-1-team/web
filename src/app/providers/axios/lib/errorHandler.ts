@@ -1,7 +1,7 @@
-import axios from 'axios'
-import type { AxiosError } from 'axios'
-import { ApiError, NetworkError, CancelledRequestError } from '@/app/providers/axios/utils/customErrors'
 import type { ApiErrorResponse, ErrorHandlerConfig } from '@/app/providers/axios/types/api'
+import { ApiError, CancelledRequestError, NetworkError } from '@/app/providers/axios/utils/customErrors'
+import type { AxiosError } from 'axios'
+import axios from 'axios'
 
 export class ErrorHandler {
   private isHandlingError = false
@@ -46,7 +46,7 @@ export class ErrorHandler {
 
     const apiError = new ApiError(status, `HTTP_${status}`, combinedMessage)
 
-    this.handleByStatus(status, combinedMessage)
+    this.handleByStatus(status, combinedMessage || apiError.message)
 
     return apiError
   }

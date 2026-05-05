@@ -6,6 +6,11 @@ export interface ApiErrorData {
   details?: unknown
 }
 
+// export interface ApiErrorResponse {
+//   status: number
+//   data: ApiErrorData
+//   originalError: unknown
+// }
 export interface ApiErrorResponse {
   errors: string[]
 }
