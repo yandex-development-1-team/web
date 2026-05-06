@@ -1,5 +1,5 @@
 import { DeleteIcon, DownloadIcon } from '@/assets/icons'
-import { Button } from '@/components/ui'
+import { Button, LabelInDevelopment } from '@/components/ui'
 import type { CSSProperties } from 'react'
 
 type ActionProps = {
@@ -24,6 +24,7 @@ export const Actions =
           <DeleteIcon style={style} />
         </Button>
         <Button
+          className='relative'
           variant="ghost"
           onClick={e => {
             e.stopPropagation()
@@ -31,6 +32,7 @@ export const Actions =
           }}
         >
           <DownloadIcon style={style} />
+          <LabelInDevelopment className="-right-[20px] text-[10px]! -rotate-40" />
         </Button>
       </>
     )
