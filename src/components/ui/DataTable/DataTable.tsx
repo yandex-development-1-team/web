@@ -109,7 +109,6 @@ export function DataTable<T extends Record<string, unknown>>(props: DataTablePro
             onSelectRow={handleSelectRow}
             rowActions={rowActions}
             onRowClick={onRowClick}
-            paginationEnabled={!!pagination}
           />
         </table>
       </div>
