@@ -2,7 +2,7 @@ import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { useSearchParams } from 'react-router-dom'
 import { getSpecialProjects } from '../api/getSpecialProjects'
 
-export const useSpecialProjects = () => {
+export const useSpecialProjects = (options?: { enabled?: boolean }) => {
   const [queryParams] = useSearchParams()
   const params = Object.fromEntries(queryParams.entries())
 
@@ -10,6 +10,7 @@ export const useSpecialProjects = () => {
     queryKey: ['specialProjects', params],
     queryFn: () => getSpecialProjects({ params }),
     // placeholderData: prev => prev
-    placeholderData: keepPreviousData
+    placeholderData: keepPreviousData,
+    enabled: options?.enabled ?? true
   })
 }

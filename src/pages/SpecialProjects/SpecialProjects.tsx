@@ -23,8 +23,6 @@ import { useUploadPresentation } from './hooks/useUploadPresentation'
 const SpecialProjects = () => {
   const { mutate: editSpecProject } = useUpdateSpecialProject()
   const { mutate: createSpecProject } = useCreateSpecialProject()
-  const { data } = useSpecialProjects()
-  const { item, data: resourceData } = useFormLink()
   const { mutate: updateLink } = useUpdateFormLink()
   const { mutate: uploadPresentation } = useUploadPresentation()
 
@@ -38,6 +36,10 @@ const SpecialProjects = () => {
 
   const [searchParams] = useSearchParams()
   const offset = Number(searchParams.get('offset')) || 0
+
+  const hasLimit = searchParams.has('limit')
+  const { data } = useSpecialProjects({ enabled: hasLimit })
+  const { item, data: resourceData } = useFormLink()
 
   const projects = data?.items || []
   const total = data?.pagination.total || 0
