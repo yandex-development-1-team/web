@@ -1,7 +1,7 @@
 import box_image_placeholder from '@/assets/images/box_image_placeholder.png'
 import { Card } from '@/components/ui/Card'
 import { StatusLabel } from '@/components/ui/StatusLabel/StatusLabel'
-import type { ComponentProps } from 'react'
+import { useState, type ComponentProps } from 'react'
 import { STATUS_LABEL_MAP } from '../configs'
 import type { IBox } from '../types'
 import { BoxActions } from './BoxActions'
@@ -15,6 +15,7 @@ type BoxPropsType = {
 
 export const Box = ({ box, onDelete, onEdit, onDetailsView }: BoxPropsType) => {
   const { id, name, description, status, image } = box
+  const [imgSrc, setImgSrc] = useState(image)
 
   return (
     <Card
@@ -24,7 +25,12 @@ export const Box = ({ box, onDelete, onEdit, onDetailsView }: BoxPropsType) => {
       <StatusLabel settings={STATUS_LABEL_MAP} status={status} className="top-8 right-8" />
       <div className="flex flex-col gap-3 grow">
         <div className="border-0 rounded-xl overflow-hidden h-36">
-          <img src={image || box_image_placeholder} alt="" className="h-full w-full object-cover object-center" />
+          <img
+            src={imgSrc || box_image_placeholder}
+            alt=""
+            className="h-full w-full object-cover object-center"
+            onError={() => setImgSrc(box_image_placeholder)}
+          />
         </div>
         <p className="text-h4sb text-text">{name}</p>
         <p className="text-text text-xs">{description}</p>
