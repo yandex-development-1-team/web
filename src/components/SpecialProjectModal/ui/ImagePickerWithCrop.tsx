@@ -104,30 +104,32 @@ export function ImagePickerWithCrop({ name, getIsCropping, previewImg }: ImagePi
           )
         )}
       </>
-      <div className={`flex items-center ${!cropImage ? 'flex-col gap-2' : 'gap-3'}`}>
-        <Button
-          size="icon-48"
-          type="button"
-          className={`relative ${!cropImage ? 'order-2' : 'order-1'}`}
-          onClick={() => inputRef.current?.click()}
-          disabled={isCropping}
-        >
-          <AddIcon className="size-full" />
-          <div className="absolute">
-            <Input
-              {...register(`${name}`)}
-              type="file"
-              hidden
-              accept="image/jpeg, image/png, image/webp"
-              ref={inputRef}
-              onChange={handleCropImg}
-            />
+      {!isCropping && (  
+        <div className={`flex items-center ${!cropImage ? 'flex-col gap-2' : 'gap-3'}`}>
+          <Button
+            size="icon-48"
+            type="button"
+            className={`relative ${!cropImage ? 'order-2' : 'order-1'}`}
+            onClick={() => inputRef.current?.click()}
+            disabled={isCropping}
+          >
+            <AddIcon className="size-full" />
+            <div className="absolute">
+              <Input
+                {...register(`${name}`)}
+                type="file"
+                hidden
+                accept="image/jpeg, image/png, image/webp"
+                ref={inputRef}
+                onChange={handleCropImg}
+              />
+            </div>
+          </Button>
+          <div className={`text-small ${!cropImage ? 'order-1' : 'order-2'}`}>
+            {!cropImage ? 'Загрузить изображение' : 'Загрузить другое изображение'}
           </div>
-        </Button>
-        <div className={`text-small ${!cropImage ? 'order-1' : 'order-2'}`}>
-          {!cropImage ? 'Загрузить изображение' : 'Загрузить другое изображение'}
         </div>
-      </div>
+      )}
     </div>
   )
 }
