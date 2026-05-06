@@ -188,7 +188,7 @@ export const EmployeeForm = ({
                           <Input
                             type="tel"
                             variant="text"
-                            placeholder="+7 999 999-66-77"
+                            placeholder="+7 000 000-00-00"
                             aria-invalid={!!errors.contactInfo?.phone}
                             value={field.value || ''}
                             onChange={e => {
