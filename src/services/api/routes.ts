@@ -57,7 +57,7 @@ export const API_ROUTES = {
   },
   
   boxes: {
-    byId: (id: string) => `${BOXES_BASE}${id}`,
+    byId: (id: string) => `${BOXES_BASE}/${id}`,
     get: BOXES_BASE,
     create: BOXES_BASE
   },
