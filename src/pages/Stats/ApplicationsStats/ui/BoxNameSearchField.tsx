@@ -11,7 +11,8 @@ export function BoxNameSearchField({ autocomplete, disabled }: BoxNameSearchFiel
   const { query, suggestions, listOpen, setListOpen, invalid, hint, onQueryChange, pickName, onBlur } = autocomplete
 
   return (
-    <div className="min-[1235px]:col-span-2 relative">
+    // <div className="min-[1235px]:col-span-2 relative">
+    <div className="flex flex-col relative">
       <span className="text-xxs text-text-grey-medium">Название</span>
       <Input
         variant="icon"
@@ -19,7 +20,7 @@ export function BoxNameSearchField({ autocomplete, disabled }: BoxNameSearchFiel
         onChange={e => onQueryChange(e.target.value)}
         value={query}
         onFocus={() => setListOpen(true)}
-        className="h-11 my-0.5 py-3.5 w-full pl-1 rounded-lg"
+        className="h-11 py-3.5 w-full pl-1 rounded-lg"
         placeholder=""
         invalid={invalid}
         onBlur={onBlur}

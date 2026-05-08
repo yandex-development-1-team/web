@@ -7,13 +7,13 @@ import type { BoxStatsSearchParams, DateRangeField } from '@/pages/Stats/Applica
 import { useBoxNameAutocomplete } from '@/pages/Stats/ApplicationsStats/hooks/useBoxNameAutocomplete'
 import { useBoxNames } from '@/pages/Stats/ApplicationsStats/hooks/useBoxNames'
 import { useBoxStats } from '@/pages/Stats/ApplicationsStats/hooks/useBoxStats'
+import { ApplicationTable } from '@/pages/Stats/ApplicationsStats/ui/ApplicationTable'
+import { BoxNameSearchField } from '@/pages/Stats/ApplicationsStats/ui/BoxNameSearchField'
 import { isValidDateRange } from '@/pages/Stats/ApplicationsStats/utils/isValidDateRange'
 import {
   mapLoadedSeriesToChartData,
   mapLoadedSeriesToTableRows
 } from '@/pages/Stats/ApplicationsStats/utils/mapBoxStats'
-import { ApplicationTable } from '@/pages/Stats/ApplicationsStats/ui/ApplicationTable'
-import { BoxNameSearchField } from '@/pages/Stats/ApplicationsStats/ui/BoxNameSearchField'
 import { useCallback, useMemo, useState } from 'react'
 
 function periodKey(dateFrom: string, dateTo: string) {
@@ -118,6 +118,15 @@ const ApplicationStats = () => {
     !!nameSearch.query &&
     !!nameSearch.pickedName &&
     canCompareByLimits(nextComparisonCounts.boxCount, nextComparisonCounts.periodCount)
+
+  const canCompareByLimitsResult = canCompareByLimits(nextComparisonCounts.boxCount, nextComparisonCounts.periodCount)
+
+  console.log('canSubmit', canSubmit, {
+    isDateRangeValid,
+    isAppending,
+    nameSearch,
+    canCompareByLimitsResult
+  })
 
   return (
     <>
