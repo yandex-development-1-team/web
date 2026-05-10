@@ -16,8 +16,6 @@ interface AttendanceTableProps {
 }
 
 export const AttendanceTable = memo(({ data, onRemove }: AttendanceTableProps) => {
-  console.log('tableRows=>', data)
-
   return (
     <div className="min-[1235px]:col-span-2">
       <DataTable

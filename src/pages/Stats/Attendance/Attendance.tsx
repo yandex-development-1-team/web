@@ -16,8 +16,11 @@ import { AttendanceTable } from './AttendanceTable'
 import { dashboard } from './configs'
 import type { DateRange } from './types'
 import { mapLoadedSeriesToChartData, mapLoadedSeriesToTableRows } from './utils/mapBoxStats'
-// import { indicators } from './solutionsData'
-// import { ManageButton } from './ui/ManageButton'
+
+type Range = {
+  from: Date | undefined
+  to: Date | undefined
+}
 
 function periodKey(dateFrom: string, dateTo: string) {
   return `${dateFrom}_${dateTo}`
@@ -31,18 +34,12 @@ const Attendance = () => {
   const { showNotification } = useNotification()
   const [chartVisible, setChartVisible] = useState(false)
 
-  const [dateRange, setDateRange] = useState<{
-    from: Date | undefined
-    to: Date | undefined
-  }>({
+  const [dateRange, setDateRange] = useState<Range>({
     from: undefined,
     to: undefined
   })
 
-  const [dateSecondRange, setDateSecondRange] = useState<{
-    from: Date | undefined
-    to: Date | undefined
-  }>({
+  const [dateSecondRange, setDateSecondRange] = useState<Range>({
     from: undefined,
     to: undefined
   })
@@ -51,8 +48,6 @@ const Attendance = () => {
   const nameSearch = useBoxNameAutocomplete(boxNames)
 
   const { loadedSeries, appendSeries, isAppending, removeSeries } = useBoxStats()
-
-  const isDateRangeValid = isValidDateRange(dateRange.from, dateRange.to)
 
   const tableRows = useMemo(() => mapLoadedSeriesToTableRows(loadedSeries), [loadedSeries])
   const chartData = useMemo(() => mapLoadedSeriesToChartData(loadedSeries), [loadedSeries])
@@ -75,19 +70,21 @@ const Attendance = () => {
     }
   }, [loadedSeries, nameSearch.pickedName, dateRange.from, dateRange.to])
 
-  const clearFilters = () => {
+  const clearFilters = useCallback(() => {
     nameSearch.reset()
+
     setDateRange({
       from: undefined,
       to: undefined
     })
+
     setDateSecondRange({
       from: undefined,
       to: undefined
     })
-  }
+  }, [nameSearch])
 
-  const handleDateChange = (field?: DateRange) => {
+  const handleDateChange = async (field?: DateRange) => {
     setDateRange(prev => ({
       ...prev,
       ...field
@@ -101,21 +98,24 @@ const Attendance = () => {
     }))
   }
 
+  const isDateRangeValid = isValidDateRange(dateRange.from, dateRange.to)
+
   const handleAddToTable = useCallback(() => {
     if (!isDateRangeValid || !dateRange.from || !dateRange.to || !nameSearch.pickedName) {
       return
     }
+
     const params: BoxStatsSearchParams = {
       dateFrom: formatDateISO(dateRange.from),
       dateTo: formatDateISO(dateRange.to),
       search: nameSearch.pickedName
     }
 
-    // const paramsSecond: BoxStatsSearchParams = {
-    //   dateFrom: formatDateISO(dateSecondRange.from),
-    //   dateTo: formatDateISO(dateSecondRange.to),
-    //   search: nameSearch.pickedName
-    // }
+    const paramsSecond: BoxStatsSearchParams = {
+      dateFrom: formatDateISO(dateSecondRange.from),
+      dateTo: formatDateISO(dateSecondRange.to),
+      search: nameSearch.pickedName
+    }
 
     appendSeries(params, {
       onSuccess: () => clearFilters(),
@@ -126,10 +126,20 @@ const Attendance = () => {
         })
       }
     })
+
+    appendSeries(paramsSecond, {
+      onSuccess: () => clearFilters(),
+      onError: () => {
+        showNotification({
+          status: 'error',
+          message: 'Ошибка при добавлении данных'
+        })
+      }
+    })
   }, [
     isDateRangeValid,
-    dateRange.from,
-    dateRange.to,
+    dateRange,
+    dateSecondRange,
     nameSearch.pickedName,
     appendSeries,
     clearFilters,
@@ -142,8 +152,6 @@ const Attendance = () => {
     setChartVisible(prev => !prev)
   }
 
-  // const canCompareByLimitsResult = canCompareByLimits(nextComparisonCounts.boxCount, nextComparisonCounts.periodCount)
-
   const canSubmit =
     isDateRangeValid &&
     !isAppending &&
@@ -151,13 +159,6 @@ const Attendance = () => {
     !!nameSearch.query &&
     !!nameSearch.pickedName &&
     canCompareByLimits(nextComparisonCounts.boxCount, nextComparisonCounts.periodCount)
-
-  // console.log('canSubmit', canSubmit, {
-  //   isDateRangeValid,
-  //   isAppending,
-  //   nameSearch,
-  //   canCompareByLimitsResult
-  // })
 
   return (
     <div className="flex flex-col gap-5">
@@ -170,18 +171,11 @@ const Attendance = () => {
           ))}
         </div>
       </Card>
-
       <Card className="flex flex-col gap-5">
         <div className="grid grid-cols-1 min-[940px]:grid-cols-[2fr_auto] min-[1335px]:grid-cols-[2fr_1fr_1fr_auto] gap-3 items-end">
           <BoxNameSearchField autocomplete={nameSearch} disabled={isAppending} />
           <div className="flex flex-col justify-center">
             <span className="text-xxs text-text-grey-medium">Период 1</span>
-            {/*<CalendarInput
-              variant="single"
-              value={dateRange.dateFrom}
-              onChange={handleDateChange('dateFrom')}
-              disabled={isAppending}
-            />*/}
             <CalendarRangeInput
               key={nameSearch.pickedName}
               value={dateRange}
@@ -191,12 +185,6 @@ const Attendance = () => {
           </div>
           <div className="flex flex-col">
             <span className="text-xxs text-text-grey-medium">Период 2</span>
-            {/*<CalendarInput
-              variant="single"
-              value={dateRange.dateTo}
-              onChange={handleDateChange('dateTo')}
-              disabled={isAppending}
-            />*/}
             <CalendarRangeInput
               key={nameSearch.pickedName}
               value={dateSecondRange}
@@ -230,24 +218,11 @@ const Attendance = () => {
           {!chartVisible ? 'Посмотреть график' : 'Скрыть график'}
         </Button>
       </Card>
-
       {chartVisible && (
         <div className="grid grid-cols gap-8.5 bg-white pl-0 p-5 mt-5 rounded-lg">
           <Chart data={chartData} />
         </div>
       )}
-      {/*<DeleteModal
-        title="Удалить спецпроект?"
-        isOpen={!!projectToDelete || projectToDelete === 0}
-        onDelete={async id => {
-          deleteProject(id)
-        }}
-        onClose={() => setProjectToDelete(null)}
-        itemId={projectToDelete}
-      >
-        <p>Вы действительно хотите удалить этот спецпроект?</p>
-        <p>Действие нельзя отменить</p>
-      </DeleteModal>*/}
     </div>
   )
 }
