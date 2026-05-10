@@ -12,7 +12,6 @@ import { type IProject } from '@/types/solutions'
 import { ManageBoxModal } from '@/components/BoxModals'
 import { BOX_SOLUTIONS_KEYS } from '@/services/api/queryKeys'
 
-
 const Home = () => {
   const [statusFilter, setStatusFilter] = useState('all')
   const { data } = useBookingRequests()
@@ -136,12 +135,7 @@ const Home = () => {
         )}
       </div>
 
-      <ManageBoxModal
-        isOpen={!!modal}
-        onClose={() => setModal(null)}
-        boxId={null}
-        queryKey={BOX_SOLUTIONS_KEYS.all}
-      />
+      <ManageBoxModal isOpen={!!modal} onClose={() => setModal(null)} boxId={null} queryKey={BOX_SOLUTIONS_KEYS.all} />
       <SpecialProjectModal
         key={'new_edit'}
         isOpen={projectToEdit !== null}

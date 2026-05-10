@@ -32,6 +32,6 @@ export interface DataTableProps<T> {
   onSort?: (config: SortConfig<T>) => void
   onLoadMore?: () => void
   onSelect?: (selected: T[]) => void
-  
+
   resetSortTrigger?: number
 }
