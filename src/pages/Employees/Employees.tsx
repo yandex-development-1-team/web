@@ -19,8 +19,8 @@ const Employees = () => {
     key: keyof UserListItem
     direction: 'asc' | 'desc'
   } | null>(null)
-  const [resetCount, setResetCount] = useState(0);
-  const forceResetSort = () => setResetCount(c => c + 1);
+  const [resetCount, setResetCount] = useState(0)
+  const forceResetSort = () => setResetCount(c => c + 1)
 
   const { userList, pagination, isPending } = useFetchUserList()
   const filterRef = useRef<HTMLDivElement>(null)

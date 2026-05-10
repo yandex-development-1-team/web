@@ -1,19 +1,18 @@
 import { useNotification } from '@/app/providers/notification'
 import { Diagram, DownloadIcon } from '@/assets/icons'
-import { Button, CalendarInput } from '@/components/ui'
-import { Chart } from '@/components/ui/Chart'
+import { Button, CalendarInput, Chart } from '@/components/ui'
 import { formatDateISO } from '@/lib/utils.date'
 import type { BoxStatsSearchParams, DateRangeField } from '@/pages/Stats/ApplicationsStats/ApplicationStats.types'
 import { useBoxNameAutocomplete } from '@/pages/Stats/ApplicationsStats/hooks/useBoxNameAutocomplete'
 import { useBoxNames } from '@/pages/Stats/ApplicationsStats/hooks/useBoxNames'
 import { useBoxStats } from '@/pages/Stats/ApplicationsStats/hooks/useBoxStats'
+import { ApplicationTable } from '@/pages/Stats/ApplicationsStats/ui/ApplicationTable'
+import { BoxNameSearchField } from '@/pages/Stats/ApplicationsStats/ui/BoxNameSearchField'
 import { isValidDateRange } from '@/pages/Stats/ApplicationsStats/utils/isValidDateRange'
 import {
   mapLoadedSeriesToChartData,
   mapLoadedSeriesToTableRows
 } from '@/pages/Stats/ApplicationsStats/utils/mapBoxStats'
-import { ApplicationTable } from '@/pages/Stats/ApplicationsStats/ui/ApplicationTable'
-import { BoxNameSearchField } from '@/pages/Stats/ApplicationsStats/ui/BoxNameSearchField'
 import { useCallback, useMemo, useState } from 'react'
 
 function periodKey(dateFrom: string, dateTo: string) {
@@ -118,6 +117,8 @@ const ApplicationStats = () => {
     !!nameSearch.query &&
     !!nameSearch.pickedName &&
     canCompareByLimits(nextComparisonCounts.boxCount, nextComparisonCounts.periodCount)
+
+  //const canCompareByLimitsResult = canCompareByLimits(nextComparisonCounts.boxCount, nextComparisonCounts.periodCount)
 
   return (
     <>

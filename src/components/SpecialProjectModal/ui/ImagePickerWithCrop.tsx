@@ -104,7 +104,7 @@ export function ImagePickerWithCrop({ name, getIsCropping, previewImg }: ImagePi
           )
         )}
       </>
-      {!isCropping && (  
+      {!isCropping && (
         <div className={`flex items-center ${!cropImage ? 'flex-col gap-2' : 'gap-3'}`}>
           <Button
             size="icon-48"

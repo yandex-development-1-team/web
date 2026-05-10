@@ -24,7 +24,7 @@ export const Actions =
           <DeleteIcon style={style} />
         </Button>
         <Button
-          className='relative'
+          className="relative"
           variant="ghost"
           onClick={e => {
             e.stopPropagation()

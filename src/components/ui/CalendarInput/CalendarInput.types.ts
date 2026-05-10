@@ -1,7 +1,7 @@
 import type { DateRange } from 'react-day-picker'
 
 export type TCalendarRangeInputProps = {
-  value: DateRange | undefined
+  value?: DateRange | undefined
   onChange: (value: DateRange | undefined) => void
   placeholder?: string
   disabled?: boolean
