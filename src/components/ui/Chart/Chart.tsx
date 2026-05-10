@@ -1,10 +1,11 @@
-import { ChartTooltip, type ChartProps } from '@/components/ui/Chart'
-import { generateRandomColor } from '@/components/ui/Chart/helpers/generateRandomColor'
-import { transformChartData } from '@/components/ui/Chart/helpers/transformChartData'
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine } from 'recharts'
+import { ChartTooltip } from './ui/ChartTooltip'
+import { type ChartProps } from './Chart.types'
+import { generateRandomColor } from './helpers/generateRandomColor'
+import { transformChartData } from './helpers/transformChartData'
 
-export const Chart: React.FC<ChartProps> = ({ data, height = 400, label = 'Динамика посещаемости', colors }) => {
+export const Chart = ({ data, height = 400, label = 'Динамика посещаемости', colors }: ChartProps) => {
   const chartData = useMemo(() => transformChartData(data), [data])
 
   const periodColors = useMemo(() => {

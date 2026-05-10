@@ -1,7 +1,6 @@
 import { useNotification } from '@/app/providers/notification'
 import { Diagram, DownloadIcon } from '@/assets/icons'
-import { Button, CalendarInput } from '@/components/ui'
-import { Chart } from '@/components/ui/Chart'
+import { Button, CalendarInput, Chart } from '@/components/ui'
 import { formatDateISO } from '@/lib/utils.date'
 import type { BoxStatsSearchParams, DateRangeField } from '@/pages/Stats/ApplicationsStats/ApplicationStats.types'
 import { useBoxNameAutocomplete } from '@/pages/Stats/ApplicationsStats/hooks/useBoxNameAutocomplete'
