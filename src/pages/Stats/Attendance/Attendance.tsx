@@ -116,25 +116,29 @@ const Attendance = () => {
       search: nameSearch.pickedName
     }
 
-    appendSeries(params, {
-      onSuccess: () => clearFilters(),
-      onError: () => {
-        showNotification({
-          status: 'error',
-          message: 'Ошибка при добавлении данных'
-        })
-      }
-    })
+    if (params.dateFrom) {
+      appendSeries(params, {
+        onSuccess: () => clearFilters(),
+        onError: () => {
+          showNotification({
+            status: 'error',
+            message: 'Ошибка при добавлении данных'
+          })
+        }
+      })
+    }
 
-    appendSeries(paramsSecond, {
-      onSuccess: () => clearFilters(),
-      onError: () => {
-        showNotification({
-          status: 'error',
-          message: 'Ошибка при добавлении данных'
-        })
-      }
-    })
+    if (paramsSecond.dateFrom) {
+      appendSeries(paramsSecond, {
+        onSuccess: () => clearFilters(),
+        onError: () => {
+          showNotification({
+            status: 'error',
+            message: 'Ошибка при добавлении данных'
+          })
+        }
+      })
+    }
   }, [
     isDateRangeValid,
     dateRange,

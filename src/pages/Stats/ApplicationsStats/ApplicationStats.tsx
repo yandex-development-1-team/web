@@ -119,14 +119,7 @@ const ApplicationStats = () => {
     !!nameSearch.pickedName &&
     canCompareByLimits(nextComparisonCounts.boxCount, nextComparisonCounts.periodCount)
 
-  const canCompareByLimitsResult = canCompareByLimits(nextComparisonCounts.boxCount, nextComparisonCounts.periodCount)
-
-  console.log('canSubmit', canSubmit, {
-    isDateRangeValid,
-    isAppending,
-    nameSearch,
-    canCompareByLimitsResult
-  })
+  //const canCompareByLimitsResult = canCompareByLimits(nextComparisonCounts.boxCount, nextComparisonCounts.periodCount)
 
   return (
     <>

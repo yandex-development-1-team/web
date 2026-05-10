@@ -20,8 +20,6 @@ export function mapLoadedSeriesToTableRows(series: AttendanceLoadedSeries[]): At
     const total = item.data?.reduce((sum, record) => sum + (record.visitors | 0), 0)
     const averageVisits = item.data?.length ? Math.round(total / item.data?.length) : 0
 
-    console.log('series', series, 'total:', total, ' averageVisits:', averageVisits)
-
     return {
       id: item._id,
       name: item.name,
