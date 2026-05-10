@@ -8,10 +8,7 @@ function chartSeriesName(item: AttendanceLoadedSeries) {
 
 export const EMPTY_STATS_TABLE_ROW: AttendanceTableRow = {
   id: '_',
-  // name: '',
   period: '',
-  // records: '',
-  // visits: ''
   attendance: 0,
   dynamics: 0
 }
@@ -29,8 +26,6 @@ export function mapLoadedSeriesToTableRows(series: AttendanceLoadedSeries[]): At
       id: item._id,
       name: item.name,
       period: `${item.queryParams.dateFrom} - ${item.queryParams.dateTo}`,
-      // records: item.data?.reduce((sum, record) => sum + (record.records || 0), 0) || 0,
-      // visits: item.data?.reduce((sum, record) => sum + (record.visitors || 0), 0) || 0
       attendance: averageVisits,
       dynamics: 0
     }

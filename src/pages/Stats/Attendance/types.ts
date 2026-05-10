@@ -1,9 +1,6 @@
 export interface AttendanceTableRow extends Record<string, unknown> {
   id: string
-  // name: string
   period: string
-  // records: number | string
-  // visits: number | string
   attendance: number
   dynamics: number
 }

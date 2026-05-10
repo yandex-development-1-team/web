@@ -1,6 +1,5 @@
 import { BoxesIcon, CloseIcon, EditIcon } from '@/assets/icons'
 import type { ManageButtonProps } from './ManageButton.types'
-// import type { ManageButtonProps } from './ManageButton.types'
 
 export const ManageButton = ({ onClick, onEdit, onDelete, text, className }: ManageButtonProps) => {
   const handleEdit = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
@@ -30,29 +29,29 @@ export const ManageButton = ({ onClick, onEdit, onDelete, text, className }: Man
       role="button"
       onClick={onClick}
       className={`
-        h-[92px] min-h-[92px] w-full px-[19px_15px] flex items-center text-text-grey-dark cursor-pointer 
-        border-1 border-grey-extra-light rounded-[8px]
+        h-23 min-h-23 w-full px-[19px_15px] flex items-center text-text-grey-dark cursor-pointer
+        border border-grey-extra-light rounded-lg
         transition-[outline-color] duration-300 ease-in-out
-        outline-2 outline-offset-[-2px] outline-transparent
+        outline-2 -outline-offset-2 outline-transparent
         hover:outline-grey-extra-light active:outline-grey-light
         ${className}
       `}
     >
-      <BoxesIcon className="w-[60px]" />
+      <BoxesIcon className="w-15" />
       <span
         className={`
-        flex-1 text-left text-text button-text break-words max-h-[74px] my-2 mx-3 overflow-hidden
+        flex-1 text-left text-text button-text wrap-break-word max-h-18.5 my-2 mx-3 overflow-hidden
       `}
       >
         {text}
       </span>
       <div className="flex flex-row gap-3">
         <button onClick={handleEdit} className={buttonClasses}>
-          <EditIcon className="w-[24px] h-[24px]" color="var(--color-grey-dark)" />
+          <EditIcon className="w-6 h-6" color="var(--color-grey-dark)" />
         </button>
 
         <button onClick={handleDelete} className={buttonClasses}>
-          <CloseIcon className="w-[32px] h-[32px]" color="var(--color-grey-dark)" />
+          <CloseIcon className="w-8 h-8" color="var(--color-grey-dark)" />
         </button>
       </div>
     </div>
