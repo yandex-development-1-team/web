@@ -39,3 +39,5 @@ export interface IAccountAccessRight {
   accountId: number
   accessRights: IAccessRightValue[]
 }
+
+export type TPhase = 'roleSelection' | 'textsSetup' | 'accessSetupLoading' | 'accessSetup'
