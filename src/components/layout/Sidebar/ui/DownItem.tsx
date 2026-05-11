@@ -9,17 +9,41 @@ export const DownItem = ({ Icon, title, route, onClick, isExpanded, inDevelopmen
     <div
       className={`
         pr-[8px] pl-[17px] rounded-xl flex items-center cursor-pointer gap-[8px]
-        hover:bg-grey-extra-light group active:bg-system-background
+        hover:bg-grey-extra-light group active:bg-system-background relative
+        transition-[background-color] duration-400
         ${isActive ? 'bg-yellow-light' : ''}
       `}
     >
       <div className="w-[40px] h-[40px] flex-shrink-0">
-        <Icon className="w-full h-full text-text group-active:text-yellow-accent-light" />
+        <Icon
+          className={`
+            w-full h-full text-text group-active:text-yellow-accent-light transition-[color] duration-400 ease-in-out
+          `}
+        />
       </div>
-      <div className={`transition-[width] duration-400 relative ${isExpanded ? 'w-[180px]' : 'w-0'}`}>
-        {isExpanded && <h5 className="text-text text-h5 w-[180px]">{title}</h5>}
-        {inDevelopment && <LabelInDevelopment className={!isExpanded ? '-right-[6px]' : ''} />}
+
+      <div
+        className={`
+        transition-[width] duration-400 ease-in-out overflow-hidden ${isExpanded ? 'w-[180px]' : 'w-0'}
+      `}
+      >
+        <h5
+          className={`
+            text-text text-h5 w-[180px]
+          `}
+        >
+          {title}
+        </h5>
       </div>
+
+      {inDevelopment && (
+        <LabelInDevelopment
+          className={`
+            transition-[right] duration-400 ease-in-out
+            ${isExpanded ? '-right-[2px]' : 'right-[0px]'}
+          `}
+        />
+      )}
     </div>
   )
 
@@ -29,13 +53,13 @@ export const DownItem = ({ Icon, title, route, onClick, isExpanded, inDevelopmen
   }
 
   return (
-    <div className={`flex flex-col gap-[13px] transition-[width] duration-400 ${isExpanded ? 'w-full' : 'w-[60px]'}`}>
+    <div className={`h-10 transition-[width] duration-400 ease-in-out ${isExpanded ? 'w-[284px]' : 'w-[73px]'}`}>
       {route ? (
         <NavLink to={route} onClick={onClick}>
           {({ isActive }) => content(isActive)}
         </NavLink>
       ) : (
-        <button type="button" onClick={handleButtonClick} className="text-left">
+        <button type="button" onClick={handleButtonClick} className="text-left w-full">
           {content(isButtonActive)}
         </button>
       )}

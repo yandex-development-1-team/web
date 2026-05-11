@@ -31,7 +31,7 @@ export const PaginationNav = ({
             key={`page-${page}`}
             to={current(page)}
             className={`
-              w-10 h-10 flex items-center justify-center rounded-md transition-[border-color,bg-color,shadow]
+              w-10 h-10 flex items-center justify-center rounded-md transition-[border-color,background-color,shadow]
               duration-300 border-transparent
               ${
                 page === activePage
