@@ -1,3 +1,4 @@
+import { useSearchParams } from 'react-router-dom'
 import { Button, DataTable, DeleteModal, LabelInDevelopment } from '@/components/ui'
 import { Card } from '@/components/ui/Card'
 import { Pagination } from '@/components/ui/Pagination'
@@ -20,6 +21,7 @@ import { QueryFilters } from './ui/QueryFilters'
 import { SpecialProjectModal } from './ui/SpecialProjectModal'
 
 const Applications = () => {
+  const [searchParams, setSearchParams] = useSearchParams()
   const [modal, setModal] = useState<ModalStateType | null>(null)
   const [itemToDelete, setItemToDelete] = useState<string | number | null>(null)
   const { start } = useDownload()
@@ -38,6 +40,19 @@ const Applications = () => {
       case 'specialProject':
         await changeSpecialProjectStatus(id, { status })
         break
+    }
+  }
+
+  const handleDeleteSuccess = () => {
+    const currentData = isBoxTab ? boxes.data : projects.data
+    if (!currentData) return
+    const { items, pagination } = currentData
+    const { offset, limit } = pagination
+    if (items.length === 1 && offset > 0) {
+      const newParams = new URLSearchParams(searchParams)
+      const newOffset = Math.max(0, offset - limit)
+      newParams.set('offset', String(newOffset))
+      setSearchParams(newParams)
     }
   }
 
@@ -89,34 +104,39 @@ const Applications = () => {
           />
         )}
       </Card>
-      {isShowBoxDetails && (
-        <BoxModal
-          key={modal.id}
-          isOpen={true}
-          onClose={() => setModal(null)}
-          onDelete={id => deleteBoxById(String(id))}
-          onModify={handleModify}
-          id={modal.id}
-          queryKey={[boxesQueryKey]}
-          activeTab={modal.type}
-        />
-      )}
-      {isShowSpecialProjectDetails && (
-        <SpecialProjectModal
-          key={modal.id}
-          isOpen={true}
-          onClose={() => setModal(null)}
-          onDelete={id => deleteSpecialProjectById(String(id))}
-          onModify={handleModify}
-          id={modal.id}
-          queryKey={[specialProjectsQueryKey]}
-          activeTab={modal.type}
-        />
-      )}
+      <BoxModal
+        isOpen={isShowBoxDetails}
+        onClose={() => setModal(null)}
+        onDelete={async id => {
+          await deleteBoxById(String(id))
+          setModal(null)
+          handleDeleteSuccess()
+        }}
+        onModify={handleModify}
+        id={modal?.id ?? ''}
+        queryKey={[boxesQueryKey]}
+        activeTab={modal?.type || 'box'}
+      />
+      <SpecialProjectModal
+        isOpen={isShowSpecialProjectDetails}
+        onClose={() => setModal(null)}
+        onDelete={async id => {
+          await deleteSpecialProjectById(String(id))
+          setModal(null)
+          handleDeleteSuccess()
+        }}
+        onModify={handleModify}
+        id={modal?.id ?? ''}
+        queryKey={[specialProjectsQueryKey]}
+        activeTab={modal?.type || 'specialProject'}
+      />
       <DeleteModal
         title="Удалить заявку?"
         isOpen={!!itemToDelete || itemToDelete === 0}
-        onDelete={id => currentDeleteFn(String(id))}
+        onDelete={async id => {
+          await currentDeleteFn(String(id))
+          handleDeleteSuccess()
+        }}
         onClose={() => setItemToDelete(null)}
         itemId={itemToDelete}
         queryKey={[currentQueryKey]}

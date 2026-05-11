@@ -125,13 +125,13 @@ export const Sidebar = () => {
             (item, index) =>
               (!item.accessName || hasRole('admin') || hasAccess(item.accessName)) && (
                 <div
+                  key={`${item.route}-${index}`}
                   className={`
                     transition-[margin] duration-400 ease-in-out
                     ${index !== 0 && (isExpanded ? 'mt-5' : 'mt-4')}
                   `}
                 >
                   <Item
-                    key={`${item.route}-${index}`}
                     Icon={item.Icon}
                     title={item.title}
                     route={item.route}
@@ -152,13 +152,13 @@ export const Sidebar = () => {
         >
           {MENU_DOWN.map((item, index) => (
             <div
+              key={`${item.route}-down`}
               className={`
                   transition-[margin] duration-400 ease-in-out
                   ${index === 0 && (isExpanded ? 'mb-4' : 'mb-3')}
                 `}
             >
               <DownItem
-                key={`${item.route}-down`}
                 Icon={item.Icon}
                 title={item.title}
                 route={item.route}

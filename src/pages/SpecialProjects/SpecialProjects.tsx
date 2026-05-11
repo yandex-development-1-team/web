@@ -21,6 +21,7 @@ import { useUpdateFormLink } from './hooks/useUpdateFormLink'
 import { useUploadPresentation } from './hooks/useUploadPresentation'
 
 const SpecialProjects = () => {
+  const [searchParams, setSearchParams] = useSearchParams()
   const { mutate: editSpecProject } = useUpdateSpecialProject()
   const { mutate: createSpecProject } = useCreateSpecialProject()
   const { mutate: updateLink } = useUpdateFormLink()
@@ -34,7 +35,6 @@ const SpecialProjects = () => {
   const mainWidth = useMainWidth(300)
   const pageSize = Math.floor((mainWidth - 20) / (cardMinWidth + 20)) || 1
 
-  const [searchParams] = useSearchParams()
   const offset = Number(searchParams.get('offset')) || 0
 
   const hasLimit = searchParams.has('limit')
@@ -179,6 +179,19 @@ const SpecialProjects = () => {
     }, 0)
   }, [item?.url])
 
+  const handleDeleteSuccess = () => {
+    if (!data) return
+    const { items, pagination } = data
+    const { offset, limit } = pagination
+    if (!offset || !limit) return
+    if (items.length === 1 && offset > 0) {
+      const newParams = new URLSearchParams(searchParams)
+      const newOffset = Math.max(0, offset - limit)
+      newParams.set('offset', String(newOffset))
+      setSearchParams(newParams)
+    }
+  }
+
   return (
     <>
       <h2 className="text-h2 text-text py-[38px_38px]">Управление спецпроектами</h2>
@@ -296,7 +309,8 @@ const SpecialProjects = () => {
         title="Удалить спецпроект?"
         isOpen={!!projectToDelete || projectToDelete === 0}
         onDelete={async id => {
-          deleteSpecProject(Number(id))
+          await deleteSpecProject(Number(id))
+          handleDeleteSuccess()
         }}
         onClose={() => setProjectToDelete(null)}
         itemId={projectToDelete}

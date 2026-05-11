@@ -143,10 +143,7 @@ export const BoxModal = ({ id, isOpen, onClose, onDelete, onModify, queryKey, ac
         title="Удалить заявку?"
         isOpen={!!boxApplicationToDelete || boxApplicationToDelete === 0}
         onDelete={id => onDelete(id)}
-        onClose={() => {
-          // setBoxApplicationToDelete(null)
-          onClose()
-        }}
+        onClose={() => setBoxApplicationToDelete(null)}
         itemId={boxApplicationToDelete}
         queryKey={queryKey}
       >

@@ -150,7 +150,7 @@ export const SpecialProjectModal = ({
         title="Удалить заявку?"
         isOpen={!!applicationToDelete || applicationToDelete === 0}
         onDelete={id => onDelete(id)}
-        onClose={() => onClose()}
+        onClose={() => setApplicationToDelete(null)}
         itemId={applicationToDelete}
         queryKey={queryKey}
       >
