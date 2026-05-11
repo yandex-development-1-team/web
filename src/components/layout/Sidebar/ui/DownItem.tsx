@@ -21,10 +21,12 @@ export const DownItem = ({ Icon, title, route, onClick, isExpanded, inDevelopmen
           `}
         />
       </div>
-      
-      <div className={`
+
+      <div
+        className={`
         transition-[width] duration-400 ease-in-out overflow-hidden ${isExpanded ? 'w-[180px]' : 'w-0'}
-      `}>
+      `}
+      >
         <h5
           className={`
             text-text text-h5 w-[180px]
@@ -34,17 +36,14 @@ export const DownItem = ({ Icon, title, route, onClick, isExpanded, inDevelopmen
         </h5>
       </div>
 
-      {inDevelopment && 
+      {inDevelopment && (
         <LabelInDevelopment
           className={`
             transition-[right] duration-400 ease-in-out
-            ${isExpanded
-              ? '-right-[2px]'
-              : 'right-[0px]'
-            }
+            ${isExpanded ? '-right-[2px]' : 'right-[0px]'}
           `}
         />
-      }
+      )}
     </div>
   )
 

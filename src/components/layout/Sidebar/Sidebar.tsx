@@ -26,20 +26,14 @@ export const Sidebar = () => {
         className={`
           border-grey-extra-light transition-[margin] duration-400 ease-in-out
           relative
-          ${isExpanded
-            ? 'mb-[44px]'
-            : 'mb-[84px]'
-          }
+          ${isExpanded ? 'mb-[44px]' : 'mb-[84px]'}
         `}
       >
         <div
           className={`
             overflow-hidden transition-[width,margin] duration-400 ease-in-out
             mt-[17px] mb-[12px]
-            ${isExpanded
-              ? 'w-[81px] ml-[3px]'
-              : 'w-[33px] ml-[25px]'
-            }
+            ${isExpanded ? 'w-[81px] ml-[3px]' : 'w-[33px] ml-[25px]'}
           `}
         >
           <Link to={ROUTES.home}>
@@ -51,10 +45,7 @@ export const Sidebar = () => {
             h-[1px] bg-grey-extra-light
             transition-[opacity] duration-400 ease-in-out
             w-full
-            ${isExpanded
-              ? 'opacity-0'
-              : 'opacity-100'
-            }
+            ${isExpanded ? 'opacity-0' : 'opacity-100'}
           `}
         />
         <button
@@ -63,10 +54,7 @@ export const Sidebar = () => {
             active:bg-yellow-light active:border-yellow-accent-dark focus-visible:border-yellow-accent-dark
             transition-[border-color,background-color,width,top] duration-400 ease-in-out
             absolute -right-[1px] h-12
-            ${isExpanded
-              ? 'top-1 w-12'
-              : 'top-[63px] w-20'
-            }
+            ${isExpanded ? 'top-1 w-12' : 'top-[63px] w-20'}
           `}
           onClick={() => setIsExpanded(state => !state)}
         >
@@ -92,10 +80,7 @@ export const Sidebar = () => {
           flex border-b border-grey-extra-light
           transition-[padding] duration-400 ease-in-out
           mb-8
-          ${isExpanded
-            ? 'pb-[11px]'
-            : 'pb-[7px]'
-          }
+          ${isExpanded ? 'pb-[11px]' : 'pb-[7px]'}
         `}
       >
         <div
@@ -103,10 +88,7 @@ export const Sidebar = () => {
             h-[48px] p-[4px] rounded-full border border-yellow-accent-light flex-shrink-0
             transition-[margin] duration-400 ease-in-out
             w-[48px] mr-[11px] 
-            ${isExpanded
-              ? 'ml-0'
-              : 'ml-4'
-            }
+            ${isExpanded ? 'ml-0' : 'ml-4'}
           `}
         >
           {(user.photo && (
@@ -117,9 +99,11 @@ export const Sidebar = () => {
             />
           )) || <UserIcon className="text-text-grey-light" />}
         </div>
-        <div className={`
+        <div
+          className={`
           overflow-hidden transition-[width] duration-400 ease-in-out ${isExpanded ? 'w-[200px]' : 'w-0'}
-        `}>
+        `}
+        >
           <div className="flex flex-col w-[200px]">
             <span className="button-text mb-1">{user.name}</span>
             <span className="text-xs ml-[1px]">
@@ -134,10 +118,7 @@ export const Sidebar = () => {
           className={`
             flex flex-col transition-[margin] duration-400 ease-in-out
             overflow-y-auto narrow-scrollbar [scrollbar-gutter:stable]
-            ${isExpanded
-              ? 'mb-5 mt-2'
-              : 'mb-4 mt-0'
-            }
+            ${isExpanded ? 'mb-5 mt-2' : 'mb-4 mt-0'}
           `}
         >
           {menu.map(
@@ -146,10 +127,7 @@ export const Sidebar = () => {
                 <div
                   className={`
                     transition-[margin] duration-400 ease-in-out
-                    ${index !== 0 && (isExpanded
-                      ? 'mt-5'
-                      : 'mt-4'
-                    )}
+                    ${index !== 0 && (isExpanded ? 'mt-5' : 'mt-4')}
                   `}
                 >
                   <Item
@@ -169,19 +147,16 @@ export const Sidebar = () => {
           className={`
             flex flex-col border-t border-grey-extra-light flex-shrink-0
             transition-[margin,padding] duration-400 ease-in-out
-            ${isExpanded
-              ? 'pt-4 ml-0'
-              : 'pt-3 ml-[5px]'
-            }
+            ${isExpanded ? 'pt-4 ml-0' : 'pt-3 ml-[5px]'}
           `}
         >
           {MENU_DOWN.map((item, index) => (
-              <div
-                className={`
+            <div
+              className={`
                   transition-[margin] duration-400 ease-in-out
                   ${index === 0 && (isExpanded ? 'mb-4' : 'mb-3')}
                 `}
-              >
+            >
               <DownItem
                 key={`${item.route}-down`}
                 Icon={item.Icon}
@@ -190,7 +165,7 @@ export const Sidebar = () => {
                 isExpanded={isExpanded}
                 onClick={item.title === 'Выход' ? logout.logout : undefined}
                 inDevelopment={item.inDevelopment}
-            />
+              />
             </div>
           ))}
         </div>

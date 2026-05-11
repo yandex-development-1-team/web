@@ -70,10 +70,12 @@ export const Item = ({ Icon, title, route, childrenItems, isExpanded, inDevelopm
         )}
       </NavLink>
 
-      <div className={`
+      <div
+        className={`
         grid transition-[grid-template-rows] duration-400 ease-in-out
         ${isOpen && isExpanded ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}
-      `}>
+      `}
+      >
         <div className="overflow-hidden">
           {childrenItems && (
             <div className="pl-[77px] pr-[12px] flex flex-col gap-[21.5px]">

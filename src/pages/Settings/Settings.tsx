@@ -136,10 +136,7 @@ const Settings = () => {
           className={`
             flex flex-wrap min-h-[46px] justify-between
             transition-[margin] duration-300 ease-in-out
-            ${phase !== 'accessSetup'
-              ? (phase === 'textsSetup' ? 'm-[20px] mb-0' : 'm-[20px] mb-[12px]')
-              : 'm-0'
-            }
+            ${phase !== 'accessSetup' ? (phase === 'textsSetup' ? 'm-[20px] mb-0' : 'm-[20px] mb-[12px]') : 'm-0'}
           `}
         >
           <ToggleButton
@@ -174,9 +171,12 @@ const Settings = () => {
         <div
           className={`
             mt-0 overflow-y-hidden transition-[height] duration-300 ease-in-out
-            ${(phase==='roleSelection' || phase==='accessSetupLoading')
+            ${
+              phase === 'roleSelection' || phase === 'accessSetupLoading'
                 ? 'h-[484px]'
-                : (phase==='accessSetup' ? 'h-[102px]' : 'h-0')
+                : phase === 'accessSetup'
+                  ? 'h-[102px]'
+                  : 'h-0'
             }
           `}
         >
@@ -185,22 +185,20 @@ const Settings = () => {
               key={index}
               type="button"
               className={`
-                ${phase==='accessSetup'
-                  ? 'w-[100%] m-0 bg-white'
-                  : 'w-[calc(100%-20px*2)] m-[20px] mt-0'
-                }
+                ${phase === 'accessSetup' ? 'w-[100%] m-0 bg-white' : 'w-[calc(100%-20px*2)] m-[20px] mt-0'}
                 flex overflow-y-hidden border-1 border-yellow-accent-light rounded-[8px]
                 justify-between items-center hover:border-yellow-light active:border-yellow-accent-dark
                 cursor-pointer relative
                 transition-[width,height,margin,padding,background-color,border-color] duration-300 ease-in-out
-                ${phase==='accessSetup' && account.id === editingAccountId
-                  || phase === 'roleSelection'
-                  || phase === 'accessSetupLoading'
+                ${
+                  (phase === 'accessSetup' && account.id === editingAccountId) ||
+                  phase === 'roleSelection' ||
+                  phase === 'accessSetupLoading'
                     ? 'h-[101px] p-[20px]'
                     : 'h-0 p-0 border-transparent! bg-transparent! mt-[-2px]'
                 }
               `}
-              onClick={phase==='accessSetup' ? handleRoleDeselect : () => handleRoleSelect(account.id)}
+              onClick={phase === 'accessSetup' ? handleRoleDeselect : () => handleRoleSelect(account.id)}
             >
               <div className="flex flex-col items-start">
                 <span className="text-h3 text-text mt-[-3px]">{account.name}</span>
@@ -211,7 +209,7 @@ const Settings = () => {
                 className={`
                   w-[23px] text-text-grey-dark mr-[9px]
                   transition-transform duration-300 ease-in-out
-                  ${phase==='accessSetup' ? 'rotate-180' : ''}
+                  ${phase === 'accessSetup' ? 'rotate-180' : ''}
                 `}
               />
             </button>
@@ -221,10 +219,7 @@ const Settings = () => {
         <div
           className={`
             overflow-y-hidden transition-[height] duration-300 ease-in-out
-            ${phase==='textsSetup'
-              ? 'h-[672px]'
-              : 'h-0'
-            }
+            ${phase === 'textsSetup' ? 'h-[672px]' : 'h-0'}
           `}
         >
           {textFields.map((field, index) => (
@@ -232,7 +227,7 @@ const Settings = () => {
               key={index}
               className={`
                 flex flex-col m-[16px_20px]
-                ${index===0 ? 'mt-0' : ''}
+                ${index === 0 ? 'mt-0' : ''}
               `}
             >
               <span className="text-text-grey-dark text-xxs pb-[2px]">{field.name}</span>
@@ -271,15 +266,12 @@ const Settings = () => {
           className={`
             bg-white rounded-[8px] flex-1 
             overflow-y-hidden transition-[height,padding,margin] duration-300 ease-in-out
-            ${phase==='accessSetup'
-              ? 'h-[1252px] [@media(min-width:1244px)]:h-[656px] p-[20px] mt-2'
-              : 'h-0 p-0 mt-0'
+            ${
+              phase === 'accessSetup' ? 'h-[1252px] [@media(min-width:1244px)]:h-[656px] p-[20px] mt-2' : 'h-0 p-0 mt-0'
             }
           `}
         >
-          <div
-            className="flex flex-col flex-wrap content-start [@media(min-width:1244px)]:max-h-[616px] gap-x-[60px]"
-          >
+          <div className="flex flex-col flex-wrap content-start [@media(min-width:1244px)]:max-h-[616px] gap-x-[60px]">
             {accessRightsGroups.map((group, groupIndex) => {
               let mbClass
               switch (groupIndex) {
