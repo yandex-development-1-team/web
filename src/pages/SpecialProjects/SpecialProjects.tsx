@@ -273,7 +273,6 @@ const SpecialProjects = () => {
       />
 
       <SpecialProjectModal
-        key={projectToView?.id ?? 'new_view'}
         isOpen={projectToView !== null}
         onClose={() => setProjectToView(null)}
         onSubmit={() => setProjectToView(null)}
@@ -283,7 +282,6 @@ const SpecialProjects = () => {
       />
 
       <SpecialProjectModal
-        key={projectToEdit?.id ?? 'new_edit'}
         isOpen={projectToEdit !== null}
         onClose={() => setProjectToEdit(null)}
         onSubmit={data => {

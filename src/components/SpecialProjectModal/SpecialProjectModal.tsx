@@ -72,8 +72,10 @@ export function SpecialProjectModal({
   }
 
   useEffect(() => {
-    if (isOpen) {
-      reset(initialData || getDefaultData())
+    if (isOpen && initialData) {
+      reset(initialData)
+    } else if (isOpen) {
+      reset(getDefaultData())
     }
   }, [initialData, isOpen, reset])
 

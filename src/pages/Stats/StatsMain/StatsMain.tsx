@@ -70,9 +70,7 @@ const Stats = () => {
         </Card>
       </div>
 
-      {isCreateBoxModalOpen && (
-        <BoxSolutionModal isOpen={isCreateBoxModalOpen} onClose={closeCreateBoxModal} onSave={closeCreateBoxModal} />
-      )}
+      <BoxSolutionModal isOpen={isCreateBoxModalOpen} onClose={closeCreateBoxModal} onSave={closeCreateBoxModal} />
       <SpecialProjectModal
         isOpen={isCreateProjectModalOpen}
         onClose={closeCreateProjectModal}

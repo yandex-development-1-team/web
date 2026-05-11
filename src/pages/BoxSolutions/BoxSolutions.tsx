@@ -54,27 +54,23 @@ const BoxSolutions = () => {
             pagination={<Pagination pagination={pagination} />}
           />
         )}
-        {isShowDelete && (
-          <DeleteModal
-            title="Удалить коробку!"
-            isOpen={true}
-            onDelete={() => boxSolutionApi.deleteBox(modal?.id || null)}
-            onClose={() => setModal(null)}
-            itemId={modal?.id || null}
-            queryKey={BOX_SOLUTIONS_KEYS.all}
-          >
-            Вы действительно хотите удалить эту коробку?
-          </DeleteModal>
-        )}
-        {isShowSolutions && (
-          <ManageBoxModal
-            isOpen={true}
-            onClose={() => setModal(null)}
-            boxId={modal?.id || null}
-            queryKey={BOX_SOLUTIONS_KEYS.all}
-          />
-        )}
-        {isShowDetails && <BoxDetailsModal boxId={modal?.id || null} isOpen={true} onClose={() => setModal(null)} />}
+        <DeleteModal
+          title="Удалить коробку!"
+          isOpen={isShowDelete}
+          onDelete={() => boxSolutionApi.deleteBox(modal?.id || null)}
+          onClose={() => setModal(null)}
+          itemId={modal?.id || null}
+          queryKey={BOX_SOLUTIONS_KEYS.all}
+        >
+          Вы действительно хотите удалить эту коробку?
+        </DeleteModal>
+        <ManageBoxModal
+          isOpen={isShowSolutions}
+          onClose={() => setModal(null)}
+          boxId={modal?.id || null}
+          queryKey={BOX_SOLUTIONS_KEYS.all}
+        />
+        <BoxDetailsModal boxId={modal?.id || null} isOpen={isShowDetails} onClose={() => setModal(null)} />
       </div>{' '}
     </div>
   )
